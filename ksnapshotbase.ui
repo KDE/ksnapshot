@@ -133,7 +133,7 @@ The image can be dragged to another application or document to copy the full scr
                         <bool>true</bool>
                     </property>
                     <property name="whatsThis" stdset="0">
-                        <string>This button saves the snapshot to the defualt location, then increments the filename.</string>
+                        <string>This button saves the snapshot to the default location, then increments the filename.</string>
                     </property>
                 </widget>
             </grid>
@@ -218,7 +218,7 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
                         <bool>true</bool>
                     </property>
                     <property name="whatsThis" stdset="0">
-                        <string>Checking this option causes only the window that the mouse is over, when the snapshot is taken, to be captured.</string>
+                        <string>Checking this option causes only the window that the mouse is over to be captured, when the snapshot is taken.</string>
                     </property>
                 </widget>
                 <widget class="QCheckBox">
