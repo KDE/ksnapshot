@@ -166,7 +166,7 @@ If the delay is set to "No Delay" the snapshot will be taken when you click the 
                         <string>Snapshot delay in seconds</string>
                     </property>
                     <property name="whatsThis" stdset="0">
-                        <string>This is the number of seconds to wait after clicking the "Take a  new snapshot" button before taking the snapshot.
+                        <string>This is the number of seconds to wait after clicking the "Take a new snapshot" button before taking the snapshot.
 
 This is very useful for getting windows, menus and other items on the screen set up just the way you want.
 
@@ -201,7 +201,7 @@ If no delay is set, the program will wait for a mouse click before taking a snap
                         <bool>true</bool>
                     </property>
                     <property name="whatsThis" stdset="0">
-                        <string>Checking this option causes only the window that the mouse is over when the snapshot is taken to be captured. Any other elements, including menus , covering the window will appear as a black box in the snapshot.</string>
+                        <string>Checking this option causes only the window that the mouse is over, when the snapshot is taken, to be captured. Any other elements, including menus, covering the window will appear as a black box in the snapshot.</string>
                     </property>
                 </widget>
             </grid>
