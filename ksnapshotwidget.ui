@@ -297,6 +297,15 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
         <slot>slotStartDrag()</slot>
     </connection>
 </connections>
+<tabstops>
+    <tabstop>btnNew</tabstop>
+    <tabstop>btnSave</tabstop>
+    <tabstop>btnSaveAs</tabstop>
+    <tabstop>btnPrint</tabstop>
+    <tabstop>comboMode</tabstop>
+    <tabstop>spinDelay</tabstop>
+    <tabstop>cbIncludeDecorations</tabstop>
+</tabstops>
 <includes>
     <include location="global" impldecl="in implementation">kdialog.h</include>
     <include location="global" impldecl="in implementation">kiconloader.h</include>
