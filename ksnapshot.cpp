@@ -94,7 +94,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     delaySpin->setValue(conf->readNumEntry("delay",0));
     onlyWindow->setChecked(conf->readBoolEntry("onlyWindow",true));
     includeDecorations->setChecked(conf->readBoolEntry("includeDecorations",true));
-    filename = conf->readEntry( "filename", QDir::currentDirPath()+"/"+i18n("snapshot")+"1.png" );
+    filename = conf->readPathEntry( "filename", QDir::currentDirPath()+"/"+i18n("snapshot")+"1.png" );
 
     // Make sure the name is not already being used
     QFileInfo fi( filename );
@@ -285,7 +285,7 @@ void KSnapshot::closeEvent( QCloseEvent * e )
     conf->writeEntry("delay",delaySpin->value());
     conf->writeEntry("onlyWindow",onlyWindow->isChecked());
     conf->writeEntry("includeDecorations",includeDecorations->isChecked());
-    conf->writeEntry("filename",filename);
+    conf->writePathEntry("filename",filename);
     e->accept();
 }
 
