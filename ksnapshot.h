@@ -11,6 +11,7 @@
 #include <dcopclient.h>
 #include <kglobalsettings.h>
 #include <kdialogbase.h>
+#include <kurl.h>
 
 class RegionGrabber;
 class KSnapshotWidget;
@@ -65,7 +66,7 @@ public:
   enum CaptureMode { FullScreen=0, WindowUnderCursor=1, Region=2 };
 
   bool save( const QString &filename );
-  QString url() const { return filename; }
+  QString url() const { return filename.url(); }
 
 protected slots:
   void slotGrab();
@@ -93,6 +94,7 @@ private slots:
     void slotRegionGrabbed( const QPixmap & );
 
 private:
+    bool save( const KURL& url );
     void updatePreview();
     void performGrab();
     void autoincFilename();
@@ -100,9 +102,9 @@ private:
     QPixmap snapshot;
     QTimer grabTimer;
     QWidget* grabber;
+    KURL filename;
     KSnapshotWidget *mainWidget;
     RegionGrabber *rgnGrab;
-    QString filename;
     bool modified;
     bool haveXShape;
 };

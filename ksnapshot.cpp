@@ -18,6 +18,9 @@
 #include <kdebug.h>
 #include <kapplication.h>
 #include <kprinter.h>
+#include <kio/netaccess.h>
+#include <ksavefile.h>
+#include <ktempfile.h>
 
 #include <qbitmap.h>
 #include <qdragobject.h>
@@ -95,13 +98,11 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     mainWidget->setDelay(conf->readNumEntry("delay",0));
     mainWidget->setMode( conf->readNumEntry( "mode", 0 ) );
     mainWidget->setIncludeDecorations(conf->readBoolEntry("includeDecorations",true));
-    filename = conf->readPathEntry( "filename", QDir::currentDirPath()+"/"+i18n("snapshot")+"1.png" );
+    filename = KURL::fromPathOrURL( conf->readPathEntry( "filename", QDir::currentDirPath()+"/"+i18n("snapshot")+"1.png" ));
 
     // Make sure the name is not already being used
-    QFileInfo fi( filename );
-    while(fi.exists()) {
+    while(KIO::NetAccess::exists( filename, false, this )) {
 	autoincFilename();
-	fi.setFile( filename );
     }
 
     connect( &grabTimer, SIGNAL( timeout() ), this, SLOT(  grabTimerDone() ) );
@@ -143,34 +144,55 @@ KSnapshot::~KSnapshot()
 
 bool KSnapshot::save( const QString &filename )
 {
-    if ( QFileInfo(filename).exists() ) {
+    return save( KURL::fromPathOrURL( filename ));
+}
+
+bool KSnapshot::save( const KURL& url )
+{
+    if ( KIO::NetAccess::exists( url, false, this ) ) {
         const QString title = i18n( "File Exists" );
-        const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" ).arg(filename);
+        const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" ).arg(url.prettyURL());
         if (KMessageBox::Yes != KMessageBox::warningYesNoCancel( this, text, title ) ) 
         {
             return false;
         }
     }
 
-    QString type( KImageIO::type(filename) );
+    QString type( KImageIO::type(url.path()) );
     if ( type.isNull() )
 	type = "PNG";
 
-    if ( snapshot.save( filename, type.ascii() ) ) {
-	QApplication::restoreOverrideCursor();
-	return true;
+    bool ok = false;
+
+    if ( url.isLocalFile() ) {
+	KSaveFile saveFile( url.path() );
+	if ( saveFile.status() == 0 ) {
+	    if ( snapshot.save( saveFile.file(), type.latin1() ) )
+		ok = saveFile.close();
+	}
     }
     else {
+	KTempFile tmpFile;
+        tmpFile.setAutoDelete( true );
+	if ( tmpFile.status() == 0 ) {
+	    if ( snapshot.save( tmpFile.file(), type.latin1() ) ) {
+		if ( tmpFile.close() )
+		    ok = KIO::NetAccess::upload( tmpFile.name(), url, this );
+	    }
+	}
+    }
+
+    QApplication::restoreOverrideCursor();
+    if ( !ok ) {
 	kdWarning() << "KSnapshot was unable to save the snapshot" << endl;
 
-	QApplication::restoreOverrideCursor();
 	QString caption = i18n("Unable to save image");
 	QString text = i18n("KSnapshot was unable to save the image to\n%1.")
-	               .arg(filename);
+	               .arg(url.prettyURL());
 	KMessageBox::error(this, text, caption);
     }
 
-    return false;
+    return ok;
 }
 
 void KSnapshot::slotSave()
@@ -184,11 +206,9 @@ void KSnapshot::slotSave()
 void KSnapshot::slotSaveAs()
 {
     QStringList mimetypes = KImageIO::mimeTypes( KImageIO::Writing );
-    KFileDialog dlg( QString::null, mimetypes.join(" "), this, "filedialog", true);
+    KFileDialog dlg( filename.url(), mimetypes.join(" "), this, "filedialog", true);
 
-    dlg.setSelection( filename );
     dlg.setOperationMode( KFileDialog::Saving );
-    dlg.setMode( KFile::LocalOnly );
     dlg.setCaption( i18n("Save As") );
 
     KImageFilePreview *ip = new KImageFilePreview( &dlg );
@@ -197,12 +217,12 @@ void KSnapshot::slotSaveAs()
     if ( !dlg.exec() )
         return;
 
-    QString name = dlg.selectedFile();
-    if ( name.isNull() )
+    KURL url = dlg.selectedURL();
+    if ( !url.isValid() )
         return;
 
-    if ( save(name) ) {
-        filename = name;
+    if ( save(url) ) {
+        filename = url;
         modified = false;
         autoincFilename();
     }
@@ -322,7 +342,9 @@ void KSnapshot::closeEvent( QCloseEvent * e )
     conf->writeEntry("delay",mainWidget->delay());
     conf->writeEntry("mode",mainWidget->mode());
     conf->writeEntry("includeDecorations",mainWidget->includeDecorations());
-    conf->writePathEntry("filename",filename);
+    KURL url = filename;
+    url.setPass( QString::null );
+    conf->writePathEntry("filename",url.url());
     e->accept();
 }
 
@@ -341,9 +363,7 @@ bool KSnapshot::eventFilter( QObject* o, QEvent* e)
 void KSnapshot::autoincFilename()
 {
     // Extract the filename from the path
-    QFileInfo fi( filename );
-    QString path= fi.dirPath();
-    QString name= fi.fileName();
+    QString name= filename.fileName();
 
     // If the name contains a number then increment it
     QRegExp numSearch("[0-9]+");
@@ -369,8 +389,10 @@ void KSnapshot::autoincFilename()
         }
     }
 
-    //Rebuilt the path 
-    setURL( path + '/' + name );
+    //Rebuild the path 
+    KURL newURL = filename;
+    newURL.setFileName( name );
+    setURL( newURL.url() );
 }
 
 void KSnapshot::updatePreview()
@@ -540,10 +562,11 @@ void KSnapshot::setTime(int newTime)
 
 void KSnapshot::setURL( const QString &url )
 {
-    if ( url == filename )
+    KURL newURL = KURL::fromPathOrURL( url );
+    if ( newURL == filename )
 	return;
 
-    filename = url;
+    filename = newURL;
     updateCaption();
 }
 
@@ -554,8 +577,7 @@ void KSnapshot::setGrabMode( int m )
 
 void KSnapshot::updateCaption()
 {
-    QFileInfo fi( filename );
-    setCaption( kApp->makeStdCaption( fi.fileName(), true, modified ) );
+    setCaption( kApp->makeStdCaption( filename.fileName(), true, modified ) );
 }
 
 void KSnapshot::slotMovePointer(int x, int y)
