@@ -25,7 +25,7 @@ int main(int argc, char **argv)
   aboutData.addAuthor("Richard J. Moore",0, "rich@kde.org");
   aboutData.addAuthor("Matthias Ettrich",0, "ettrich@kde.org");
   aboutData.addAuthor("Aaron J. Seigo", 0, "aseigo@kde.org");
-  aboutData.addCredit( "Nadeem Hasan", "Region Grabbing\nReworked GUI",
+  aboutData.addCredit( "Nadeem Hasan", I18N_NOOP("Region Grabbing\nReworked GUI"),
       "nhasan@kde.org" );
 
   KCmdLineArgs::init( argc, argv, &aboutData );
