@@ -23,6 +23,7 @@
 #include <qpalette.h>
 #include <qstyle.h>
 #include <qtimer.h>
+#include <qtooltip.h>
 
 #include <kglobalsettings.h>
 
@@ -34,12 +35,7 @@ SizeTip::SizeTip( QWidget *parent, const char *name )
   setIndent( 0 );
   setFrameStyle( QFrame::Plain | QFrame::Box );
 
-  QColorGroup cg(  Qt::black, QColor( 255,255,220 ),
-      QColor( 96,96,96 ), Qt::black, Qt::black,
-      Qt::black, QColor( 255,255,220 ) );
-  QPalette pal(  cg, cg, cg );
-
-  setPalette( pal );
+  setPalette( QToolTip::palette() );
 }
 
 void SizeTip::setTip( const QRect &rect )
