@@ -1,20 +1,25 @@
 #include <kapp.h>
 #include "ksnapshot.h"
 #include <kimgio.h>
+#include <klocale.h>
+#include <kcmdlineargs.h>
+
+
+static const char *description = 
+	I18N_NOOP("KDE Screenshot utility");
 
 int main(int argc, char **argv)
 {
-  KApplication *app;
-  KSnapShot *toplevel;
+  KCmdLineArgs::init(argc, argv, "ksnapshot", description, KSNAPVERSION);
 
-  app= new KApplication(argc, argv, "ksnapshot");
+  KApplication app;
 
   kimgioRegister();
 
   // Create top level window
-  toplevel= new KSnapShot();
-  app->setMainWidget(toplevel);
+  KSnapShot *toplevel= new KSnapShot();
+  app.setMainWidget(toplevel);
   toplevel->show();
-  app->exec();
+  return app.exec();
 }
 
