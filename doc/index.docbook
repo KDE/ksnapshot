@@ -167,7 +167,7 @@ will differ depending on what you have displayed on the desktop.</para>
 
 <para>The snapshot displayed may be saved immediately by clicking on
 the <guibutton>Save</guibutton> button. The filename that the snapshot
-will be saved under appears in the <guilabel>Filename</guilabel> box.
+will be saved under appears in the <guilabel>Filename:</guilabel> box.
 If multiple snapshots are taken, the filename is automatically
 incremented to prevent you from overwriting previous snapshots. You
 may however edit the filename to anything you wish, including the name
@@ -195,7 +195,7 @@ option.  &ksnapshot; will now capture the entire desktop if you press
 <sect2 id="delay">
 <title>Delay</title>
 
-<para>The <guilabel>Delay</guilabel> box allows you to enter an
+<para>The <guilabel>Delay:</guilabel> box allows you to enter an
 arbitrary time delay, in seconds, between the time that you press the
 <guibutton>Grab</guibutton> button and the time that the snapshot is
 taken.</para>  
