@@ -251,7 +251,15 @@ void KSnapshot::performGrab()
 	XQueryPointer( qt_xdisplay(), qt_xrootwin(), &root, &child,
 		       &rootX, &rootY, &winX, &winY,
 		      &mask);
-	snapshot = QPixmap::grabWindow( child );
+
+	int x, y;
+	unsigned int w, h;
+	unsigned int border;
+	unsigned int depth;
+	XGetGeometry( qt_xdisplay(), child, &root, &x, &y,
+		      &w, &h, &border, &depth );
+
+	snapshot = QPixmap::grabWindow( qt_xrootwin(), x, y, w, h );
     } 
     else {
 	snapshot = QPixmap::grabWindow( qt_xrootwin() );
