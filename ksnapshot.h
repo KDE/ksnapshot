@@ -3,10 +3,12 @@
 #ifndef KSNAPSHOT_H
 #define KSNAPSHOT_H
 #include "ksnapshotbase.h"
+#include "ksnapshotiface.h"
 #include <qpixmap.h>
 #include <qtimer.h>
+#include <dcopclient.h>
 
-class KSnapshot : public KSnapshotBase
+class KSnapshot : public KSnapshotBase , virtual public KSnapshotIface
 {
   Q_OBJECT
 
@@ -17,7 +19,10 @@ public:
   void slotSave();
   void slotGrab();
   void slotHelp();
-
+  void setTime(int newTime);
+  void setURL(QString newURL);
+  void setGrabPointer(bool grab);
+  void exit();
 protected:
     void reject() { close(); }
 

@@ -31,6 +31,7 @@
 
 KSnapshot::KSnapshot(QWidget *parent, const char *name)
   : KSnapshotBase(parent, name)
+  , DCOPObject("interface")
 {
 
     grabber = new QWidget( 0, 0, WStyle_Customize | WX11BypassWM );
@@ -226,4 +227,23 @@ void KSnapshot::performGrab()
     show();
 }
 
+void KSnapshot::setTime(int newTime)
+{
+        delaySpin->setValue(newTime);
+}
+
+void KSnapshot::setURL(QString newURL)
+{
+        urlRequester->setURL( newURL );
+}
+
+void KSnapshot::setGrabPointer(bool grab)
+{
+        onlyWindow->setChecked( grab );
+}
+
+void KSnapshot::exit()
+{
+        this->reject();
+}
 #include "ksnapshot.moc"
