@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
 <class>KSnapshotBase</class>
 <widget class="QDialog">
     <property name="name">
@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>353</width>
-            <height>303</height>
+            <width>376</width>
+            <height>309</height>
         </rect>
     </property>
     <property name="minimumSize">
@@ -48,25 +48,6 @@
                 <property name="spacing">
                     <number>6</number>
                 </property>
-                <widget class="KSnapshotThumb" row="0" column="0" rowspan="4" colspan="1">
-                    <property name="name">
-                        <cstring>imageLabel</cstring>
-                    </property>
-                    <property name="minimumSize">
-                        <size>
-                            <width>200</width>
-                            <height>130</height>
-                        </size>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>Thumbnail of the current snapshot</string>
-                    </property>
-                    <property name="whatsThis" stdset="0">
-                        <string>This is a thumbnail of the current snapshot.
-
-The image can be dragged to another application or document to copy the full screenshot there. Try it with the Konqueror file manager!</string>
-                    </property>
-                </widget>
                 <widget class="QPushButton" row="0" column="1">
                     <property name="name">
                         <cstring>newButton</cstring>
@@ -92,11 +73,30 @@ If the delay is set to "No Delay" the snapshot will be taken when you click the 
                     </property>
                     <property name="sizeHint">
                         <size>
-                            <width>0</width>
+                            <width>16</width>
                             <height>20</height>
                         </size>
                     </property>
                 </spacer>
+                <widget class="KSnapshotThumb" row="0" column="0" rowspan="5" colspan="1">
+                    <property name="name">
+                        <cstring>imageLabel</cstring>
+                    </property>
+                    <property name="minimumSize">
+                        <size>
+                            <width>200</width>
+                            <height>130</height>
+                        </size>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Thumbnail of the current snapshot</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>This is a thumbnail of the current snapshot.
+
+The image can be dragged to another application or document to copy the full screenshot there. Try it with the Konqueror file manager!</string>
+                    </property>
+                </widget>
                 <widget class="QPushButton" row="2" column="1">
                     <property name="name">
                         <cstring>printButton</cstring>
@@ -110,16 +110,30 @@ If the delay is set to "No Delay" the snapshot will be taken when you click the 
                 </widget>
                 <widget class="QPushButton" row="3" column="1">
                     <property name="name">
-                        <cstring>saveButton</cstring>
+                        <cstring>saveAsButton</cstring>
                     </property>
                     <property name="text">
-                        <string>&amp;Save Snapshot...</string>
+                        <string>Save Snapshot &amp;As...</string>
                     </property>
                     <property name="default">
                         <bool>true</bool>
                     </property>
                     <property name="whatsThis" stdset="0">
-                        <string>This button saves the snapshot to the "Save As" location below.</string>
+                        <string>This button saves the snapshot to a location specified by the user.</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="4" column="1">
+                    <property name="name">
+                        <cstring>saveButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>&amp;Save Snapshot</string>
+                    </property>
+                    <property name="default">
+                        <bool>true</bool>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>This button saves the snapshot to the defualt location, then increments the filename.</string>
                     </property>
                 </widget>
             </grid>
@@ -166,11 +180,14 @@ If the delay is set to "No Delay" the snapshot will be taken when you click the 
                         <string>Snapshot delay in seconds</string>
                     </property>
                     <property name="whatsThis" stdset="0">
-                        <string>This is the number of seconds to wait after clicking the "Take a new snapshot" button before taking the snapshot.
-
+                        <string>&lt;qt&gt;
+This is the number of seconds to wait after clicking the &lt;i&gt;New Snapshot&lt;/i&gt; button before taking the snapshot.
+&lt;p&gt;
 This is very useful for getting windows, menus and other items on the screen set up just the way you want.
-
-If no delay is set, the program will wait for a mouse click before taking a snapshot.</string>
+&lt;p&gt;
+If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click before taking a snapshot.
+&lt;/p&gt;
+&lt;/qt&gt;</string>
                     </property>
                 </widget>
                 <spacer row="0" column="3">
@@ -201,7 +218,7 @@ If no delay is set, the program will wait for a mouse click before taking a snap
                         <bool>true</bool>
                     </property>
                     <property name="whatsThis" stdset="0">
-                        <string>Checking this option causes only the window that the mouse is over, when the snapshot is taken, to be captured. Any other elements, including menus, covering the window will appear as a black box in the snapshot.</string>
+                        <string>Checking this option causes only the window that the mouse is over, when the snapshot is taken, to be captured.</string>
                     </property>
                 </widget>
             </grid>
@@ -214,12 +231,12 @@ If no delay is set, the program will wait for a mouse click before taking a snap
                 <enum>Vertical</enum>
             </property>
             <property name="sizeType">
-                <enum>Expanding</enum>
+                <enum>MinimumExpanding</enum>
             </property>
             <property name="sizeHint">
                 <size>
-                    <width>0</width>
-                    <height>20</height>
+                    <width>20</width>
+                    <height>0</height>
                 </size>
             </property>
         </spacer>
@@ -294,7 +311,7 @@ If no delay is set, the program will wait for a mouse click before taking a snap
 </customwidgets>
 <images>
     <image name="image0">
-        <data format="XPM.GZ" length="4376">789c6dd6d96ee33a1206e0fb7e8aa0ebae31a863c9966de1602eb22fceeeec83b9282d5e63274e9ccd8379f75366fdc5e90c4edc82f1354b64b1484afee3d7c6ddf9c9c6af3f7ebc2e65392e37ca91bc6cfcaade66b3af7ffdfb9ffff9f1334d37d6ff1ad946faf31f3f7ef260a3dc387d9ad701f41b2e96bfb78c1494e6699934824b73b30157d1dde062ed66e2960c6ea5f9da85b77753bbff3e38578776eab99b49889fc2a5c517e3688b5fb8113f32b71a889f445b7c18bf95783c6d478776de33b75ad6cefb7017f31337f27f76e3fe1a46be741d2cde4ee26e85fea50dfbf8776e6ba7d07f966699996fa325cc6f085798af44db785bc1e2f144706ee65d7716b6051dc115c6ff88b6fbdfdd884fcded04fdddb8ad5d78ed76eaf1f260f6767a82919fecb9117f0e235f39705b3b5f47dbf80b18f3e7a11bebbdef46fd97d156cf81b993e07ecb4fbc7f19c15e0f76239f2b77dbf27f3677128c378cb6fe3a7066f909b911df82735b5f795dbbd3eca03ef406e7d85f4d37ee7f74a39ec7b0d7e32cdace6769ee26186f2bdafabf72e3bcd57086f83cdaeab7135c74f24e33781baee023733731cb2d8c7a501e1dfa933b18f3e5bedbe65b108cf3409b6e9ce7309faee6df29427f259cd97af1dc8df6133847fb66b4addf0decf5fc34e709f26dc0a8875cb871be5ab0afefb51bfbe11ef6f958be3adf6ea817b561afe7d86ded3c33e709e20f603fef13b360bd8b0aceec79472337c61f47db7e98c382e77d13ae1bc105bbf1be78593b6f793efc181deacd13388357b0d7bb6b8ef94ca36d3fe4b0a09eab68abffa11beb7305d7c87f6c2e52cb97f6a2edf96ff797799eb782dfe00af92edd689f4697a1bf3bb360ffd1399c61ffefc235f647662e52cca788b6f95eba319f146e23ff65b4cd2f81c5d6477a6e8b1789b6f63337c6efc3585f8ac678a84f89fa7178de4b4b12ab07557066966d7391e279b90ffbfa6cc2deffa31be76d65f6f1e4d38de74317f67a9c46db7a86f3205a6fb1f57a8db6f5da311729f29dc235de775f6eeccf27b38f4f68f7f1e5d48dfd3870231ee397a83725d1167f09d7387f43379e6fe1f952b44ac1f3ffcd6def2f9ac1b89f5b6e3c6fbea26dbc2337de572f6ebcef3273e5f56ebbf17b25ac47519582e7e902aef13ced98637c33dac6fb70e3fdb503b7f1febd75e379d688b6f509bf57caac14acef075ce3bcf6dcb6de7c6ef6fbe5dd8dfd3971e3fc5ec2a82f9fb931bf34daf23d81b15f38ec87b2aa6af477e3b6fce8c25ca7a8dfdc8de779789f57dabfcd8f5eccb17d106df7576ec43fc06dd4e3c48df31ad6a7aaebb4b0fd3f83bd7d37daea77ec463d13d8f3bb8f0eed127e3fd46d374517557017f6f509eb5beb5f99ad7db164d24bb8e0922bbdfeeebb0e3114ee1ff090473ce6094ff57ae4d96fd7583f737ee267bd6771b144ff25bff02b2fb5ed85dff89d3ff893bf78c59bbcc5dbbca3f1bbbca76359fffb1a77c0877ca4b13d3ee6133ee5333ee70bbee43e5ff135dff02ddff13ddbfa179ac5527b7ae006279c72935b9c719b3bfadde59c98d67f423a8f103fe2299554514d031a72974634a6094de991661adfa5393dd133dfd18243fd34af093f68f40bbdd292dee89d3ec2f5449ff4452bfd6cd296f6bf1dfb7fa41ddae516edd1be4652b80eb8afdf9b1a7da8bd1c697c0ff185c61fd3099dd259ecfb9c2ee832dc31d28cfa7445d7dffabfa15bedddfbbea37b7aa00625945253fb5f512bf4eff93fd2809b94a1ef3675a8ab356d522e2ca4d17d118d5ffcaf7f3ea54b29d67deb73bc12ad149fc94086ea918ebb92f1f7fc65a2ed53fa10bd536632d755e870264f3294e775feba0adff29785c6bfc8ab2ce54ddee5433ee54b57aca9df5a1fd994ad6ff9cf645bdb766457f6b4c77deecb811ccad17a85d7f5979e1c7fcb7f2c2772aaabf52a67728e1abdcb855c86e8be5cfd5ffde7bc23d79ae78abb227223b772a7b55985b5ed6b3663b9d7fc7bb1ff27be96076984b5d44bef3c4464a2b9f42495e6fafd8cfc6b69ebfebed5da7564bd962b5c7de9d14472490b2ea890a2c07e1ee879d9d3fd771dae6151d2bca8f453f350da24c540a387c58847f17ce94e2dc654d082b6712de2778f7ac5a498da19b6fef58e819ef7915676a4ffff77dffbeb18edffbf7ffef80b6440e337</data>
+        <data format="XPM.GZ" length="4350">789c6dd7594f23471007f0f7fd14d6d6db2aaaf58c3db647511eb831b7317794879ac30760cc61c010e5bba7dcf5af5688167664fdb66bbaababbb67cccf1f8dab93c3c68f9fdf5e16b298968d7222cf8d1fd5eb6cf6f1e75f7ffcfded7b9a3656ff9aad46fafdb76fdf078b46d9389a3fd42bf04841699e964933b830b79a7019dd0b96955b895b5a703bcd572e08eea576ff6570ae0eedd477b792103f854b8b2fc6d1163f77237e646e37113f89b6f8307e3bf1785a8b0eedbc696eb7ad9db7e01ee6476ee4ffe0c6fd158c7c69182cde4eec6e87fea50dfbf8176e6ba7d07f96669999cfa325ccaf862bcc97a36dbccf60f178cee11cde706761f16917ae30fe6b7488a7851bf14d7327417f676eb4f756eea41e2f57e6d83e83919f6cba117f04235fd9765b3b0fa36dfc398cf973edc67a6fb951ffe768ab6765ee26b8dff213ef5f4630e2b9e7463ea7ee8ee5ff60ee2618af8eb6fe3238437eb91bf1299cdbfacad3cadd5617f5a11738c7fe4adcb8ffd68d7aeec15e8fc3683b9f62ee2518ef33dafa3f75e3bc957086f86eb4d56f3db8e8e6dd56f01a5cc1bbe65e629673d8ebd18d0efdc9058cf9f2c08df9e630ce037db8719ec37c7a9a7fb708f10267b65e7cef46fb3e9ca3fd23dad6ef0cf67abe99f304f95ec3a8871cbb71be52d8d777e8b6fee412f6f958be3adf5ea817b561afe7d86ded7c67ce13c46fc37ede2766c17a17059cd9f38e466e8c3f8eb6fd700f0b9ef7095c37cd3d37de178f2be76dcf876fa343bd790267f012f67a77cc319f69b4ed872e2ca8e732daeabfe3c6fa9cc235f21f9b8bd4f2a5cd687bfedbfd659ee7ede017b842becf6eb44fa3cbd0df8559b0ffe808ceb0ff37e01afba3652e52cc87a26dbe276ecca7097790ff73b4cdef0616ac4fdf6df1c2d1d67ee8c6f80318eb4bd1180ff529513f0ecf7b694b62f5a002ceccb2662e523c2fb7605f9f0fd8fbbf75e3bc2dcd3e9ebcb9f17ce8c05e8f83685bcf701e44eb2db65e4fd1b65eebe62245be53b8c6f3ffdd8dfd3933fbf884761f5f0edcd88f951bf118bf44bde926dae24fe01ae7af76e3f9169e2f45bb143c0f5fdcf6fea23b18f773eac6f3e63ddac6db75e37df5e8c6fbae65aebcde6d37beaf84f528aa52f03c9dc3359ea79939c627d136deab1befaf75b883ef23e76e3ccfaea36d7dc2f795322b05ebfb0ad738af7db7ad371f99fd7e59b8b13f276e9cdf1318f5e54337e6d78cb67cf761ec170efba1acaa1afd9db92d3f3a36d729ea77efc6f33cbccf2beddfe6478fe6d85e45dbfd851bf1577007f5d877e3bc86f5a9ea3a2d6cffdfc1debe116df5db73a39e37b0e777191dda257c7fa83b6e8a2eaae00eeceb13d6b7d69f325b79b058fd32b170c1a55ebffaac2ccae2b9e6118f79c253bd6ef9ee3fd7587fef79c60f7acf3cc617fcc84ffcac6d8ffcc20b7ee5377ee7257ff027aff1bac66ff0269716cf5b1ab7cd3bbcabb17ddee37d3ee0433ee2633ee1019ff290cff89c2ff89229c48b66f1ac3d5df135df7093134eb9c56dcef4b3c35dee71ce393111dbfa8c784a4205955451cd1d1ad1982634a55bbad3f80eddd38c1ef882e66cf52ab5ff2b8d7ea4277aa6175ad06bb866f446efb4d4df0ffad4fed762ffb7b44e1b9cd2266dd142c75e5ddb3cd0bb3e347a477bd9d5f83ee245e3f7689f0ee830f67d44c77412ee186946033aa5e197fecfe85c7bf7be2fe892aee89a6ea84989f6bfa434f4eff9df52c509b5d0779b32ea684d13ea528f728d1e882ebfce37f6cf077422b4ea5b440ad14af1a15452ab473aee52c65ff39789b64fe955f44eb9937b5d858c5b32d377c0c32a7fee7ecd5fe61aff284ff22c2fb290577993775db1443fb53ef2219f5ff2bf93356d5b970dd9d41eb77820dbb223bbab155ed55ffab2f725ffb1eccb81aed6931cca116ab490633909d10339fd5ffdef795d869ae7923bc27226e772415d5986b51d683663b9d4fcfbb1ff190fe54aaec35aeaa577ee20f24673e94b531249a585fc2b69ebfe3ed7dae91f75ba964b5c03e9d344ba1add93bce0826c3f87f3b2a9fb6f18aeba10ba2f563f25eb1b563771a5d17531e2513c5fba538b3111cd690dd73c7ef6a95f4c8aa99de12fe77da4951de9ffffea730be7fd9fdfbffd0b690edc6c</data>
     </image>
 </images>
 <connections>
@@ -311,7 +328,7 @@ If no delay is set, the program will wait for a mouse click before taking a snap
         <slot>slotGrab()</slot>
     </connection>
     <connection>
-        <sender>saveButton</sender>
+        <sender>saveAsButton</sender>
         <signal>clicked()</signal>
         <receiver>KSnapshotBase</receiver>
         <slot>slotSaveAs()</slot>
@@ -322,11 +339,17 @@ If no delay is set, the program will wait for a mouse click before taking a snap
         <receiver>KSnapshotBase</receiver>
         <slot>slotPrint()</slot>
     </connection>
+    <connection>
+        <sender>saveButton</sender>
+        <signal>clicked()</signal>
+        <receiver>KSnapshotBase</receiver>
+        <slot>slotSave()</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>newButton</tabstop>
     <tabstop>printButton</tabstop>
-    <tabstop>saveButton</tabstop>
+    <tabstop>saveAsButton</tabstop>
     <tabstop>delaySpin</tabstop>
     <tabstop>onlyWindow</tabstop>
     <tabstop>helpButton</tabstop>
@@ -340,4 +363,9 @@ If no delay is set, the program will wait for a mouse click before taking a snap
     <slot>slotSaveAs()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>ksnapshotthumb.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+</includehints>
 </UI>

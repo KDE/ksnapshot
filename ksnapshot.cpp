@@ -113,6 +113,10 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     KAccel* accel = new KAccel(this);
     accel->insert(KStdAccel::Quit, kapp, SLOT(quit()));
     accel->insert(KStdAccel::Save, this, SLOT(slotSave()));
+//    accel->insert(KShortcut(CTRL+Key_A), this, SLOT(slotSaveAs()));
+    accel->insert( "SaveAs", i18n("Save Snapshot &As..."),
+		   i18n("Save the snapshot to the file specfied by the user."),
+		   CTRL+Key_A, this, SLOT(slotSaveAs()));
     accel->insert(KStdAccel::Print, this, SLOT(slotPrint()));
     accel->insert(KStdAccel::New, this, SLOT(slotGrab()));
 
