@@ -164,3 +164,5 @@ void RegionGrabber::drawRubber()
 
   p.end();
 }
+
+#include "regiongrabber.moc"
