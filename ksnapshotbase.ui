@@ -8,7 +8,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>346</width>
+            <width>353</width>
             <height>303</height>
         </rect>
     </property>
@@ -102,7 +102,7 @@ If the delay is set to "No Delay" the snapshot will be taken when you click the 
                         <cstring>printButton</cstring>
                     </property>
                     <property name="text">
-                        <string>&amp;Print Snapshot</string>
+                        <string>&amp;Print Snapshot...</string>
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>This button prints the snapshot.</string>
@@ -113,7 +113,7 @@ If the delay is set to "No Delay" the snapshot will be taken when you click the 
                         <cstring>saveButton</cstring>
                     </property>
                     <property name="text">
-                        <string>&amp;Save Snapshot</string>
+                        <string>&amp;Save Snapshot...</string>
                     </property>
                     <property name="default">
                         <bool>true</bool>

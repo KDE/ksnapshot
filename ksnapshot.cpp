@@ -24,6 +24,7 @@
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qclipboard.h>
+#include <kaccel.h>
 #include <klineedit.h>
 #include <knotifyclient.h>
 #include <qregexp.h>
@@ -72,6 +73,13 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
 	autoincFilename();
 	fi.setFile( filename );
     }
+
+    KAccel* accel = new KAccel(this);
+    accel->insert(KStdAccel::Quit, kapp, SLOT(quit()));
+    accel->insert(KStdAccel::Save, this, SLOT(slotSave()));
+    accel->insert(KStdAccel::Print, this, SLOT(slotSave()));
+    accel->insert(KStdAccel::New, this, SLOT(slotGrab()));
+    accel->insert(KStdAccel::Help, this, SLOT(slotHelp()));
 
     saveButton->setFocus();
 }

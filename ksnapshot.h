@@ -8,6 +8,7 @@
 #include <qpixmap.h>
 #include <qtimer.h>
 #include <dcopclient.h>
+#include <kglobalsettings.h>
 
 class KSnapshotThumb : public QLabel
 {
@@ -25,8 +26,24 @@ class KSnapshotThumb : public QLabel
     protected:
         void mousePressEvent(QMouseEvent * e)
         {
-            emit startDrag();
+            mClickPt = e->pos();
         }
+
+        void mouseMoveEvent(QMouseEvent * e)
+        {
+            if (mClickPt != QPoint(0, 0) &&
+                (e->pos() - mClickPt).manhattanLength() > KGlobalSettings::dndEventDelay())
+            {
+                emit startDrag();
+            }
+        }
+
+        void mouseReleaseEvent(QMouseEvent * e)
+        {
+            mClickPt = QPoint(0, 0);
+        }
+        
+        QPoint mClickPt;
 };
 
 class KSnapshot : public KSnapshotBase , virtual public KSnapshotIface
