@@ -176,6 +176,7 @@ void KSnapshot::slotSaveAs()
 
     dlg.setSelection( filename );
     dlg.setOperationMode( KFileDialog::Saving );
+    dlg.setMode( KFile::LocalOnly );
     dlg.setCaption( i18n("Save As") );
 
     KImageFilePreview *ip = new KImageFilePreview( &dlg );
