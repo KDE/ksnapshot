@@ -84,7 +84,7 @@ window.  The images can then be saved in a variety of formats.</para>
 
 <keywordset>
 <keyword>KDE</keyword>
-<keyword>Kapp</keyword>
+<keyword>KSnapshot</keyword>
 <keyword>kdeutils</keyword>
 <keyword>nothing</keyword>
 <keyword>nothing else</keyword>
@@ -250,7 +250,7 @@ J. Moore <email>rich@kde.org</email></para>
 <appendix id="installation">
 <title>Installation</title>
 
-<sect1 id="getting-kapp">
+<sect1 id="getting-ksnapshot">
 <title>How to obtain &ksnapshot;</title>
 
 &install.intro.documentation;
