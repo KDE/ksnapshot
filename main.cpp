@@ -11,7 +11,7 @@ static const char *description =
 int main(int argc, char **argv)
 {
   KAboutData aboutData( "ksnapshot", I18N_NOOP("KSnapshot"), 
-    KSNAPVERSION, description, KAboutData::GPL, 
+    KSNAPVERSION, description, KAboutData::License_GPL, 
     "(c) 1997-1999, Richard J. Moore");
   aboutData.addAuthor("Richard J. Moore",0, "rich@kde.org");
   KCmdLineArgs::init( argc, argv, &aboutData );
