@@ -16,17 +16,17 @@
 class RegionGrabber;
 class KSnapshotWidget;
 
-class KSnapshotThumb : public QLabel
+class KSnapshotPreview : public QLabel
 {
     Q_OBJECT
 
     public:
-        KSnapshotThumb(QWidget *parent, const char *name = 0)
+        KSnapshotPreview(QWidget *parent, const char *name = 0)
             : QLabel(parent, name)
         {
             setAlignment(AlignHCenter | AlignVCenter);
         }
-        virtual ~KSnapshotThumb() {}
+        virtual ~KSnapshotPreview() {}
 
     signals:
         void startDrag();

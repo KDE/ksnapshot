@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>KSnapshotWidget</class>
 <widget class="QWidget">
     <property name="name">
@@ -19,7 +19,7 @@
         <property name="margin">
             <number>0</number>
         </property>
-        <widget class="KSnapshotThumb" row="0" column="0" rowspan="4" colspan="3">
+        <widget class="KSnapshotPreview" row="0" column="0" rowspan="4" colspan="3">
             <property name="name">
                 <cstring>lblImage</cstring>
             </property>
@@ -29,11 +29,8 @@
                     <height>130</height>
                 </size>
             </property>
-            <property name="toolTip" stdset="0">
-                <string>Thumbnail of the current snapshot</string>
-            </property>
             <property name="whatsThis" stdset="0">
-                <string>This is a thumbnail of the current snapshot.
+                <string>This is a preview of the current snapshot.
 
 The image can be dragged to another application or document to copy the full screenshot there. Try it with the Konqueror file manager.
 
@@ -238,7 +235,7 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 </widget>
 <customwidgets>
     <customwidget>
-        <class>KSnapshotThumb</class>
+        <class>KSnapshotPreview</class>
         <header location="local">ksnapshot.h</header>
         <sizehint>
             <width>-1</width>
@@ -257,7 +254,7 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 </customwidgets>
 <images>
     <image name="image0">
-        <data format="XPM.GZ" length="3054">789cb5955b4f1e470c86eff9159fe23b54397b989d9955d58b848424249c124280aa1733b3b3e110ce9040a2fef77a5f4fa9a0f9907ad135127ab077676cbf364f17673b1babb3c5a70b9757e1ea20cdd27eb8982d0ed7c7c7b7bffff1db8f85274d33939f7afaf5e49785279b57b3345b3b3dc9133009508507fc16dc54a642302f81cd6413d357b0af6ce5e17f0f0e93c1bf39715dd54daddf536e2783ffc5c44d351978155c376d53838fc078f0fe07b09d0cfcaeb02bbc024ecdd024f0f389dbd0c656ef730d4ea66ee1a75d7036558bfc69ad70adccb7139bc618a3e76f808db146f37f0db6a6377a7e03ee4d343dfc171377a6b39dc6a37e5d27dc21be06bbaeef1c18f5100a1ddee74b70e862a7f7df299c0bbf9ad81aeb2cbecf2db8b7c9eafb38df46e188f86f8587c2e8b77847abf540ff5ce51aa7fdf80cae85b51f57854d61d45fbc6238ef5961a34ceb60e3acd3fcf7c1d679877ad13938b9c1e9f95f26f695afbdea650f6c7ce735bf37e0ce3baff55b2dec0b7f07f793e17bb88f0f3e79add74b70f2d9ab3eb6c0635ff911fc71e2beedbb1efa64e4dbdbc9c0beb053a6bdc2be30f426debed77e425f7dea875ef3437f82d453e78b3e290713504f3e064bfd8aff5239d8a0f5c53c84f6ce5f17eecabca2bec1dcf18d727041eb877e06914bf157cae2d7fc46b073aef80f0afbc287607fc7dbcaa10f3affe85f90cfe93e20560e2968fdd1bf906215b4fe98c7584d067f0077d147ed27f4119db0d6d3807d0c51cfc3fe111203631e638c29aabe318f31f5bdd1f31278ec874efb3b4c9cea50eb3cf1ba726a93f603f322d425dd572b85ad3247b009c6aade3794934baa77ec2b897649eb9bc12e44abfb6659398584fc08fd10b1460b3d12f66f8a69489acf69e1accc3d3809abbed0ef94873ae9fe82bed2385449f58dfa0e3e995efbb1a53cf483f60bfa1bc2300ceac77db32cc4acf96f17ee0a635ec4db65d5d75961ab4cd89fe2b559fb89fd9a7deeb39e87791512831ff399634e59f33b01a7c9107f587828ace70d39e701acf1398f59f347bdc66aac47d5d758b8298cfe89b719759f41ef42eda8f3867d3bdad18dda3fec5b2131b005cb0219351fe849480c0cbd8d618ca3eacb154e853bf03019187a18f1e83fe787c6f4b73df4fc2cfe9fe87fbfa1f1f7231eb3bbf8c091130f732c8b77bc171ff933efcfb5033ee4a37bf149fefad84dbef0f1bdf801f1277cca677cce177cc9577ccd5ff91bdff0ed9dff61fc777ec6cf79895ff04b5e167bc5aff90dafcc8d577bcbef7895d7789d377853f8fd23f11f788b3ff2367fe21ddee53daeb8e6666e7ccb863bb67213cb8ebddc66997be279f1f2048a9468a04c237da67d3aa043796f5efc117da1633a91774ee98ccee9822ee98aaee7c67fa56f7443b7f49d9ed1735aa217f49296e9d5fc7ce935bda115b9cd5b7a47abb446ebb4413773e3976893ded307daa28fb44d9f6847ded8a5bd9fc467d1c8237aa08aea077a3b148dccd1a744370ff4360a1fcfd3a77cfb88da7bf1ff755efeaff83f7f5df80b35ca9bcb</data>
+        <data format="PNG" length="750">89504e470d0a1a0a0000000d4948445200000016000000160806000000c4b46c3b000002b549444154789cad954148145118c77f9b7398018db7e0a1bded824542975d3aa8a734ba782bf4e02e1dca9be2215442846ed1a1ab0656ab17e952daa118046337287683b51d0fc6084abb9030034933a0b80fda9a0e3bbb6a6bb82bfde1e37b0fdef77fdffbf3deffe1791ea705701df8053c049e026da7d634417a17b808ac0145e0daa9c4c013c0fb4f31072801cff3080402ded7cc739c420657ba084545022a3496db04b224b1d6e719780cc079051fce4e1e737d1e5501ab0caa02b2d10c083ffb68ad11bb7b362a30f08833e1d5948a7a48add588852ab0fcf1c18f033455c3711d8c4d83a5d74b485712eb8ad119e904058410985b26c98524e977692257e298ebf3553aa5462ccb12d51fcf3e9bc5deb5c97cc8905dcb121f8c33333b433018ac2cf809a98f29aca2856ddb75f500356255393cc8e4fdc9632b32b90cc98524a3b74731b74d261e4c60ac19b8ae8baaaa75f5c788ffde31dc1166746c144dd10887c2843a426842c3300dfa7bfb19be33ccf2db65a423d157f4c63a1e191b217133414f6f0f752843ac3b465f6f1fd1ce28859d02fa8a5ed7f1b97f75ec941d2855f404b02c0b4a606e9ae8ab3aa5bd12918e08c56fc5c635d6dfe8442e448875c410ed024d6a38bb0e4215082130360cf4159d6c2e4b3e976f5c637bc7a6601770a403fb800afaaa4eb03588b16190cfe5e9eeea263e14c7711dd2efd3751dd7a438baa32c4b8a5b45cc6d136bc7424a49ff8d7ecc4d937c2e4f281cc2dd7541c2f8bdf1c63b4681cca70cd1ce28a1c110524a82ed41a6a7a6895e8da2afe8a4b22952d91489a1c4891a57ddcdfbbc3cee2d4e9dddd5be2c8f7b8b93b5f9a5c38e4b0e82ca9b8f5cbed594bb893681fddd3cf956581bf3be5b49cc8d174db95be1c8dc47b92ac5dc592538215e02a1aad12b8006b4fab976922651a6f2acf6abc401a0c5276ce1c8356c12bfa9fc8fe53f43d4f114fb22a6b70000000049454e44ae426082</data>
     </image>
 </images>
 <connections>
@@ -336,8 +333,5 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 <layoutfunctions spacing="KDialog::spacingHint" margin="KDialog::marginHint"/>
 <includehints>
     <includehint>ksnapshotthumb.h</includehint>
-    <includehint>kpushbutton.h</includehint>
-    <includehint>kpushbutton.h</includehint>
-    <includehint>kpushbutton.h</includehint>
 </includehints>
 </UI>

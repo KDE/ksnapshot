@@ -405,18 +405,7 @@ void KSnapshot::autoincFilename()
 
 void KSnapshot::updatePreview()
 {
-    QImage img = snapshot.convertToImage();
-    double r1 = ((double) snapshot.height() ) / snapshot.width();
-    if ( r1 * mainWidget->previewWidth()  < mainWidget->previewHeight() )
-	img = img.smoothScale( mainWidget->previewWidth(),
-        int( mainWidget->previewWidth() * r1 ));
-    else
-	img = img.smoothScale( (int) (((double)mainWidget->previewHeight()) / r1),
-        (mainWidget->previewHeight() ) );
-
-    QPixmap pm;
-    pm.convertFromImage( img );
-    mainWidget->setPreview( pm );
+    mainWidget->setPreview( snapshot );
 }
 
 void KSnapshot::grabTimerDone()
