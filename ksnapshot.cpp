@@ -377,8 +377,6 @@ void KSnapShot::timerFinishedSlot()
   uint mask;
   int rootX, rootY, winX, winY;
 
-  QApplication::beep();
-
   delete timer_;
 
   // Do raise
@@ -430,6 +428,7 @@ void KSnapShot::performGrab(bool initial)
     snapshot_= QPixmap::grabWindow(child);
   }
 
+  QApplication::beep();
   grabbing_= false;
 
   // If we're doing it lots of times...
