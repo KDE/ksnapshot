@@ -400,7 +400,7 @@ void KSnapshot::performGrab()
 
 		//Fill the masked away area with black.
 		QPainter p(&snapshot);
-		for (int pos = 0; pos < maskedAwayRects.count(); pos++)
+		for (uint pos = 0; pos < maskedAwayRects.count(); pos++)
 		    p.fillRect(maskedAwayRects[pos], Qt::black);
 		p.end();
 	    }
