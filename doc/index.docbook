@@ -58,13 +58,13 @@ V1.0//EN">
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>19/08/2000</date>
+<date>23/09/2000</date>
 <releaseinfo>1.0.0</releaseinfo>
 
 <abstract>
-<para>&kapp; is a simple applet for taking screenshots. It is capable of
-capturing images of either the whole desktop or just a single window.
-The images can then be saved in a variety of formats.</para>
+<para>&kapp; is a simple applet for taking screenshots. It is capable
+of capturing images of either the whole desktop or just a single
+window.  The images can then be saved in a variety of formats.</para>
 </abstract>
 
 <keywordset>
@@ -80,193 +80,20 @@ The images can then be saved in a variety of formats.</para>
 <chapter id="introduction">
 <title>Introduction</title>
 
-<para>&kapp; is a simple applet for taking screenshots. It is capable of
-capturing images of either the whole desktop or just a single window.
-The images can then be saved in a variety of formats.</para>
+<para>&kapp; is a simple applet for taking screenshots. It is capable
+of capturing images of either the whole desktop or just a single
+window.  The images can then be saved in a variety of formats.</para>
 
 <para>Please report any problems or feature requests to the <ulink
-url="http://lists.kde.org">KDE mailing lists</ulink>
-</para>
+url="http://lists.kde.org">KDE mailing lists</ulink></para>
 
-<para>Below is a graphic of the &kapp; application window.</para>
-
-<screenshot>
-<screeninfo>Here's a screenshot of &kapp;</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata fileref="ksnapshot_full.png" format="png">
-</imageobject>
-<imageobject>
-<imagedata fileref="ksnapshot_full.eps" format="eps">
-</imageobject>
-<textobject>
-<phrase>Full Window Screenshot of KSnapshot</phrase>
-</textobject>
-</mediaobject>
-</screenshot>
-
-<sect1 id="revhistory">
-<title>Revision History</title>
-
-<sect2 id="kapp-revhistory">
-<title>&kapp; Revision History</title>
-
-<variablelist>
-<varlistentry>
-<term>Version 0.4.1</term>
-<listitem>
-<itemizedlist>
-<listitem><para>Fixes for --enable-final.</para></listitem>
-<listitem><para>Fix for bug with "overwrite confirmation"
-dialog.</para></listitem>
-<listitem><para>Fixed bug when used with visual bell.</para></listitem>
-<listitem><para>Ported to new kfile.</para></listitem>
-</itemizedlist>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term>Version 0.4.0</term>
-<listitem>
-<itemizedlist>
-<listitem><para>Merged the changes from Kurt's 0.3.x development
-releases.</para></listitem>
-<listitem><para>Merged the changes from my 0.3.x development releases in to the
-HEAD code.</para></listitem>
-<listitem><para>Now warns before overwriting existing files.</para></listitem>
-<listitem><para>The much requested autoincrementing filename. Just put a number
-somewhere in the filename and it will be incremented.</para></listitem>
-<listitem><para>You can now ask for a number of snapshots to be taken. Each
-snapshot has a name assigned by the autoincrement. The specified delay is waited
-for between each snapshot. Note that the &kapp; window will remain hidden
-until all of the images have been captured.</para></listitem>
-<listitem><para>Automatically chooses an unused filename at start
-up.</para></listitem>
-</itemizedlist>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term>Version 0.2.7</term>
-<listitem>
-<itemizedlist>
-<listitem><para>Fixed the bug identified in version 0.2.6
-(finally).</para></listitem>
-<listitem><para>Tested with Qt 1.40 and KDE 1.0.</para></listitem>
-</itemizedlist>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term>Version 0.2.6</term>
-<listitem>
-<itemizedlist>
-<listitem><para>Added postscript/encapsulated postscript support. This code was
-written by Sven Wiegand <ulink
-url="mailto:SWiegand@tfh-berlin.de">&lt;SWiegand@tfh-berlin.de&gt;</ulink>
-Thanks Sven!</para></listitem>
-<listitem><para>I've converted the postscript code to a
-<classname>QImageIO</classname> handler so any other KDE applications that want
-to write images as PS or EPS can use it.</para></listitem>
-<listitem><para>Bugs: There is currently a reproducible bug that if you select
-the root window in `Only grab a window' mode then &kapp; exits. I
-<emphasis>am</emphasis> testing for this, but it isn't working, if anyone can
-see what's wrong please let me know. Grep the sources for THISISABUG to find the
-problem. <emphasis>This bug is now fixed.</emphasis></para></listitem>
-</itemizedlist>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term>Version 0.2.5</term>
-<listitem>
-<itemizedlist>
-<listitem><para>Updated the configure to the latest version (it was causing some
-problems).</para></listitem>
-</itemizedlist>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term>Version 0.2.4</term>
-<listitem>
-<itemizedlist>
-<listitem><para>Added an error message when saving fails</para></listitem>
-</itemizedlist>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term>Version 0.2.3</term>
-<listitem>
-<itemizedlist>
-<listitem><para>Fixed WM close of preview window</para></listitem>
-</itemizedlist>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term>Version 0.2.2</term>
-<listitem>
-<itemizedlist>
-<listitem><para>Fixed autohide bug</para></listitem>
-<listitem><para>Fixed bug with filename when changing format</para></listitem>
-</itemizedlist>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term>Version 0.2.1</term>
-<listitem>
-<itemizedlist>
-<listitem><para>Fixed a problem with writing GIF files</para></listitem>
-<listitem><para>Made GIF the default format</para></listitem>
-<listitem><para>Fixed a problem that occured when you tried to grab the &kapp;
-window when auto-hide was enabled.</para> </listitem>
-<listitem><para>Changed the way the initial filename is chosen</para></listitem>
-<listitem><para>Stopped <guibutton>Browse</guibutton> starting in the wrong
-directory</para></listitem>
-</itemizedlist>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term>Version 0.2</term>
-<listitem>
-<itemizedlist>
-<listitem><para>Added support for multiple formats</para></listitem>
-</itemizedlist>
-</listitem>
-</varlistentry>
-</variablelist>
-</sect2>
-
-<sect2 id="doc-revhistory">
-<title>&kapp; Documentation Revision History</title>
-
-<variablelist>
-<varlistentry>
-<term>Version 1.0.0</term>
-<listitem>
-<itemizedlist>
-<listitem><para>First public release of &kapp; documentation for KDE
-2.0.</para></listitem>
-<listitem><para>Large portions of this document were lifted from the &kapp;
-documentation for KDE 1.X, written by Richard J. Moore
-<email>rich@kde.org</email>.</para></listitem>
-</itemizedlist>
-</listitem>
-</varlistentry>
-</variablelist>
-</sect2>
-</sect1>
 </chapter>
 
 <chapter id="installation">
 <title>Installation</title>
 
 <sect1 id="getting-kapp">
-<title>How to obtain &kapp;</title>
+<title>How to obtain and install &kapp;</title>
 
 <para>&kapp; is part of the KDE project <ulink
 url="http://www.kde.org">http://www.kde.org</ulink>.</para> 
@@ -274,41 +101,38 @@ url="http://www.kde.org">http://www.kde.org</ulink>.</para>
 <para>&kapp; can be found in the kdegraphics package on
 <ulink url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>, the
 main ftp site of the KDE project. </para>
-</sect1>
 
-<sect1 id="requirements">
+<sect2 id="requirements">
 <title>Requirements</title>
 
 <para>A successful installation of KDE 2.0 is required to use &kapp;.</para>
 
-<para>
-All required libraries as well as &kapp; itself can be found
-on <ulink url="ftp://ftp.kde.org">The KDE FTP site</ulink> or one of it's 
-<ulink url="http://www.kde.org/mirrors.html">mirrors</ulink>.
-</para>
+<para>All required libraries as well as &kapp; itself can be found on
+<ulink url="ftp://ftp.kde.org">The KDE FTP site</ulink> or one of it's
+<ulink url="http://www.kde.org/mirrors.html">mirrors</ulink>.</para>
 
-</sect1>
+</sect2>
 
-<sect1 id="compilation-installation">
+<sect2 id="compilation-installation">
 <title>Compilation and installation</title>
 
-<para>KSnapshot may be installed from the kdegraphics package either by 
+<para>&kapp; may be installed from the kdegraphics package either by
 installing a binary RPM or by compiling the source package.</para>
 
-<sect2 id="from-rpm">
-<title>Installing from RPMs</title>
-<para>To install the kdegrahics package from a binary RPM you must be logged 
-in as root.  Assuming that the name of the RPM is filaname.rpm, do the 
-following at the command prompt:
+<sect3 id="from-rpm">
+<title>Installing from RPMs</title> <para>To install the kdegrahics
+package from a binary RPM you must be logged in as root.  Assuming
+that the name of the RPM is <filename>filename.rpm</filename>, do the
+following at the command prompt:</para>
+
 <screen width="40">
 <prompt>%</prompt> <command>rpm <option>-ivh <replaceable>filename.rpm</replaceable></option></command></screen>
-</para>
 
 <para>Should you run into problems please report them to the <ulink 
 url="http://lists.kde.org">KDE mailing lists</ulink>.</para>
-</sect2>
+</sect3>
 
-<sect2 id="from-source">
+<sect3 id="from-source">
 <title>Installing from source</title>
 
 <para>In order to compile and install &kapp on your system, type the following
@@ -327,8 +151,8 @@ it.</para>
 <para>Should you run into problems please report them to the <ulink 
 url="http://lists.kde.org">KDE mailing lists</ulink>.</para>
 
+</sect3>
 </sect2>
-
 </sect1>
 
 </chapter>
@@ -336,14 +160,14 @@ url="http://lists.kde.org">KDE mailing lists</ulink>.</para>
 <chapter id="using-ksapshot">
 <title>Using &kapp;</title>
 
-<para>
-This chapter describes the use of &kapp; for capturing 
-screen images.</para>
+<para>This chapter describes the use of &kapp; for capturing screen
+images.</para>
 
 <sect1 id="starting">
 <title>Starting &kapp;</title>
 
-<para>&kapp; may be started by one of several ways as described below.</para>
+<para>&kapp; may be started by one of several ways as described
+below.</para>
 
 <itemizedlist>
 <listitem>
@@ -357,27 +181,9 @@ prompt:</para>
 <prompt>%</prompt> <command>ksnapshot &</command>
 </screen>
 </listitem>
-<listitem>
-<para>The mini command line (invoked with <keycombo><keycap>Alt</keycap>
-<keycap>F2</keycap></keycombo>) may also be used to start &kapp;</para>
-<para>The graphic below shows the mini command line.</para>
-
-<screenshot>
-<screeninfo></screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata fileref="minicmd.png" format="png">
-</imageobject>
-<imageobject>
-<imagedata fileref="minicmd.eps" format="eps">
-</imageobject>
-<textobject>
-<phrase>Mini Command Line</phrase>
-</textobject>
-</mediaobject>
-</screenshot>
-
-</listitem>
+<listitem><para>The mini command line (invoked with
+<keycombo><keycap>Alt</keycap> <keycap>F2</keycap></keycombo>) may
+also be used to start &kapp;</para></listitem>
 </itemizedlist>
 
 </sect1>
@@ -389,168 +195,68 @@ prompt:</para>
 started, but before it displays itself on screen. This allows you to quickly 
 create full-desktop screenshot images.</para>
 
-<para>The snapshot taken by &kapp; is displayed in the preview window, 
-which is located in the upper right hand corner of the &kapp; application 
-window.  Below is an example of the preview window from a typical full-desktop 
-capture. Your preview will differ depending on what you have displayed on the 
+<para>The snapshot taken by &kapp; is displayed in the preview window,
+which is located in the upper center of the &kapp; application window.
+Below is an example of the preview window from &kapp; Your pre
+view
+will differ depending on what you have displayed on the
 desktop.</para>
 
 <mediaobject>
 <imageobject>
-<imagedata fileref="preview.png" format="png">
+<imagedata fileref="snapshot.png" format="png">
 </imageobject>
-<imageobject>
-<imagedata fileref="preview.eps" format="eps">
-</imageobject>
-<textobject>
-<phrase>&kapp; Preview Window</phrase>
+<textobject><phrase>&kapp; Preview Window</phrase>
 </textobject>
 </mediaobject>
 
-<para>By <mousebutton>left</mousebutton> clicking on the preview window, it will
-be expanded to allow a full-scale view of the contents of the screen shot. Left
-clicking on the expanded preview will shrink the window back to it's normal
-size.</para>
+<para>The snapshot displayed may be saved immediately by clicking on
+the <guibutton>Save</guibutton> button. The filename that the snapshot
+will be saved under appears in the <guilabel>Filename</guilabel> box.
+If multiple snapshots are taken, the filename is automatically
+incremented to prevent you from overwriting previous snapshots.</para>
 
-<para>The snapshot may be saved by clicking on the <guibutton>Save</guibutton>
-button. The filename that the snapshot will be  saved under appears in the
-<guilabel>Filename</guilabel> box.  If multiple snapshots are taken, the
-filename is automatically incremented to prevent you from overwriting previous
-snapshots.</para>
+<para>To take a snapshot of a single window, enable the <guilabel>Only
+grab the window containing the pointer</guilabel> and then click with
+the <mousebutton>left</mousebutton> mouse button in the window you
+wish to capture.  &kapp; will display the new snapshot in the preview
+area, at which time you can choose to save the new image (by pressing
+the <guibutton>Save</guibutton>) or to grab a new one, by pressing the
+<guibutton>Grab</guibutton> button.  This is &kapp;'s default
+behavior.</para>
+
+<para>To take a new snapshot of the entire desktop, uncheck the
+<guilabel>Only grab the window containing the pointer</guilabel>
+option.  &kapp; will now capture the entire desktop if you press
+<guibutton>Grab</guibutton>.</para>
 
 </sect1>
 
 <sect1 id="additional-features">
 <title>Additional Features</title>
 
-<para>This section describes additional features of &kapp; beyond the basic 
-screenshot capturing described in the previous section. It will be seen that 
-&kapp; can be used to generate a capture of not only the entire desktop, 
-but also of individual application windows. Any additional customization can 
-be done via your favorite graphical editor.</para>
+<sect2 id="delay">
+<title>Delay</title>
 
-<sect2 id="option-box">
-<title>Options Box</title>
-
-<para>A graphic of the &kapp; <guilabel>Options</guilabel> box is shown below
-for reference.</para>
-
-<mediaobject>
-<imageobject>
-<imagedata fileref="options.png" format="png">
-</imageobject>
-<imageobject>
-<imagedata fileref="options.eps" format="eps">
-</imageobject>
-<textobject>
-<phrase>KSnapshot Options Menu</phrase>
-</textobject>
-</mediaobject>
-
-<para>You can control which parts of the screen will appear in the snapshot
-using the check boxes in the <guilabel>Options</guilabel> group.</para>
-
-<para>The options available are as follows:</para>
-
-<variablelist>
-<varlistentry>
-<term><guilabel>Auto Raise</guilabel></term>
-<listitem><para>If this box is checked then &kapp; will bring the selected
-window to the front of the desktop before grabbing the image. This option has no
-effect if you are grabbing the whole desktop.</para> </listitem>
-</varlistentry>
-<varlistentry>
-<term><guilabel>Hide KSnapshot window</guilabel></term>
-<listitem>
-<para>If this box is checked then &kapp; will hide itself as soon as you
-press the <guibutton>Grab</guibutton> button. It will remain hidden until the
-snapshot has been taken.</para></listitem>
-</varlistentry>
-<varlistentry>
-<term><guilabel>Only grab the window containing the cursor</guilabel></term>
-<listitem><para>If this box is checked then &kapp; will grab an image of the
-window which the mouse cursor is currently pointing to, if it is not checked the
-whole desktop is grabbed.</para> </listitem>
-</varlistentry>
-</variablelist>
-</sect2>
-
-<sect2 id="delay-repeat">
-<title>Delay and Repeat</title>
-
-<para> A graphic of the &kapp; <guilabel>Delay</guilabel> and
-<guilabel>Repeat</guilabel> controls is shown below for reference.</para>
-
-
-<mediaobject>
-<imageobject>
-<imagedata fileref="delay_repeat.png" format="png">
-</imageobject>
-<imageobject>
-<imagedata fileref="delay_repeat.eps" format="eps">
-</imageobject>
-<textobject>
-<phrase>&kapp; Delay and Repeat</phrase>
-</textobject>
-</mediaobject>
-
-<variablelist>
-<varlistentry>
-<term><guilabel>Delay</guilabel></term>
-<listitem><para>The <guilabel>Delay</guilabel> box allows you to enter an
+<para>The <guilabel>Delay</guilabel> box allows you to enter an
 arbitrary time delay, in seconds, between the time that you press the
 <guibutton>Grab</guibutton> button and the time that the snapshot is
-taken.</para></listitem>
-</varlistentry>
-<varlistentry>
-<term><guilabel>Repeat</guilabel></term>
-<listitem><para>The <guilabel>Repeat</guilabel> box allows you to enter the
-number of snapshots that will be  taken when the <guibutton>Grab</guibutton> is
-pressed.  There will be a delay between each successive snapshot as defined in
-the <guilabel>Delay</guilabel> box.  Also, each successive snapshot taken is
-controlled by the items selected in the <guilabel>Options</guilabel>
-box.</para></listitem>
-</varlistentry>
-</variablelist>
+taken.</para>  
+
+<para>When a delay time has been set, you do not have to click the mouse button to capture a screenshot.  This enables you to open a drop down menu, and take a picture of it.</para>
 
 </sect2>
 
 <sect2 id="bottom-buttons">
 <title>Buttons</title>
 
-<para> A graphic of the &kapp; buttons is shown below for reference.</para>
-
-<mediaobject>
-<imageobject>
-<imagedata fileref="buttons.png" format="png">
-</imageobject>
-<imageobject>
-<imagedata fileref="buttons.eps" format="eps">
-</imageobject>
-<textobject>
-<phrase>&kapp; Buttons</phrase>
-</textobject>
-</mediaobject>
-
-<para>The buttons at the bottom of the &kapp; window perform the following
-actions.</para>
+<para>There are two further buttons located at the bottom of the
+&kapp; window.</para>
 
 <variablelist>
 <varlistentry>
 <term><guibutton>Help</guibutton</term>
 <listitem><para>Activates the online manual for &kapp;.</para></listitem>
-</varlistentry>
-
-<varlistentry>
-<term><guibutton>Save</guibutton></term>
-<listitem><para>Saves the latest snapshot.  The snapshot that will be saved is
-displayed in the preview window. </para></listitem>
-</varlistentry>
-
-<varlistentry>
-<term><guibutton>Grab</guibutton></term>
-<listitem><para>The Grab button causes &kapp; to take a picture. Say
-Cheese!</para></listitem>
 </varlistentry>
 
 <varlistentry>
@@ -572,8 +278,8 @@ Cheese!</para></listitem>
 <para>Program copyright 1997-2000 Richard J. Moore
 <email>rich@kde.org</email></para>
 
-<para>Documentation copyright 1997-2000 Richard J. Moore
-<email>rich@kde.org</email></para>
+<para>Documentation based on the original, copyright 1997-2000 Richard
+J. Moore <email>rich@kde.org</email></para>
 
 &license-links;
 
