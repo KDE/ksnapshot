@@ -1,26 +1,23 @@
 <!DOCTYPE book PUBLIC "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN">
+
 <book lang="en">
 <bookinfo>
-<title> The KSnapshot Handbook</title>
+<title>The KSnapshot Handbook</title>
 <authorgroup>
 <author>
 <firstname>Richard</firstname>
 <othername>J.</othername>
 <surname>Moore</surname>
-<affiliation><address><email><ulink url="mailto:rich@kde.org">rich@kde.org</ulink></email></address></affiliation>
+<affiliation>
+<address><email>rich@kde.org</email></address>
+</affiliation>
 </author>
 </authorgroup>
-<date>Version 0.4.0, Nov 7 1999</date>
-<releaseinfo><!-- information about this particular version --></releaseinfo>
-<revhistory>
-<revision>
-<revnumber></revnumber>
-<date></date>
-</revision>
-</revhistory>
+<date>07/11/1999</date>
+<releaseinfo>0.04.00</releaseinfo>
 <abstract>
 <para>This Handbook describes KSnapshot Version 0.4.0</para>
-<para>Handbook of KSnapshot</para><!-- Merge this with the previous paragraph; it comes from <META NAME="description" CONTENT="..."> --></abstract>
+</abstract>
 <keywordset>
 <keyword>KDE</keyword>
 <keyword>graphics</keyword>
