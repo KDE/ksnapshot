@@ -2,6 +2,7 @@
 [KDE Desktop Entry]
 Comment=An applet for taking snapshots of the desktop
 Comment[cs]=Nástroj pro vytváøení snímkù pracovní plochy
+Comment[da]=Et lille program der tager øjebliksbilleder afarbejdspladsen
 Comment[es]=Un programa para tomar instantaneas del escritorio
 Comment[fi]=Sovellus ruutukaappauksen ottamiseen
 Comment[is]=ksnapshot: Forrit til að taka myndir af skjáborðinu
@@ -14,6 +15,7 @@ Comment[sk]=Pomôcka na ukladanie obrazovky
 Comment[sv]=Ett program för att ta skärmdumpar av skrivbordet
 BinaryPattern=
 Name=Snapshot
+Name[da]=Øjebliksbillede
 Name[es]=Instantanea
 Name[fi]=Ruutukaappaaja
 Name[no]=Øyeblikksfoto
