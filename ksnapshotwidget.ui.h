@@ -31,10 +31,12 @@ void KSnapshotWidget::setPreview( const QPixmap &pm )
     QImage img = pm.convertToImage();
     double r1 = ( ( double ) pm.height() ) / pm.width();
     if ( r1 * previewWidth()  < previewHeight() )
-        img = img.smoothScale(  previewWidth(), int( previewWidth() * r1 ) );
+        img = img.smoothScale(  previewWidth(),
+				int( previewWidth() * r1 ),
+				QImage::ScaleMin );
     else
         img = img.smoothScale( ( int ) ( ( ( double )previewHeight() ) / r1 ),
-        previewHeight() );
+			       previewHeight(), QImage::ScaleMin );
 
     QToolTip::remove( lblImage );
     QToolTip::add( lblImage,
@@ -42,6 +44,7 @@ void KSnapshotWidget::setPreview( const QPixmap &pm )
         .arg( pm.width() ).arg( pm.height() ) );
 
     lblImage->setPixmap( img );
+    lblImage->adjustSize();
 }
 
 
