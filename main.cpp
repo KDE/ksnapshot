@@ -44,7 +44,6 @@ int main(int argc, char **argv)
   else
      toplevel = new KSnapshot();
 
-  app.dcopClient()->registerAs(app.name());
   app.dcopClient()->setDefaultObject( toplevel->objId() );
   toplevel->setCaption( app.makeStdCaption("") );
   toplevel->setIcon(SmallIcon("ksnapshot"));
