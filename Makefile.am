@@ -13,8 +13,8 @@ lnkdir = $(kde_appsdir)/Graphics/More
 lnk_DATA = ksnapshot.desktop
 
 install-data-local: uninstall.desktop
-	$(mkinstalldirs) $(kde_appsdir)/Graphics
-	$(INSTALL_DATA) $(srcdir)/uninstall.desktop $(kde_appsdir)/Graphics/ksnapshot.desktop
+	$(mkinstalldirs) $(DESTDIR)$(kde_appsdir)/Graphics
+	$(INSTALL_DATA) $(srcdir)/uninstall.desktop $(DESTDIR)$(kde_appsdir)/Graphics/ksnapshot.desktop
 
 KDE_ICON = ksnapshot
 
