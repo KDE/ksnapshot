@@ -323,7 +323,7 @@ void KSnapShot::grabPressedSlot()
 
 void KSnapShot::browsePressedSlot()
 {
-  QString s, t;
+  QString t;
   int p;
 
   t= filename_;
@@ -334,12 +334,18 @@ void KSnapShot::browsePressedSlot()
   else
     t= QDir::currentDirPath();
 
-  s= KFileDialog::getSaveFileName(t, 
-				  KImageIO::pattern(KImageIO::Writing) ,
-				  this);
+  KURL url = KFileDialog::getSaveURL(t,KImageIO::pattern(KImageIO::Writing),this); 
 
-  if (!(s.isNull()))
-    filenameEdit->setText(s);
+  if( url.isEmpty() )
+    return;
+
+  if( !url.isLocalFile() )
+  {
+    KMessageBox::sorry( 0L, i18n( "Only local files are supported yet." ) );
+    return;
+  }
+  
+  filenameEdit->setText(url.path());
 }
 
 void KSnapShot::startGrab()
