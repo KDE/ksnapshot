@@ -55,7 +55,11 @@ public:
   KSnapshot(QWidget *parent= 0, const char *name= 0);
   ~KSnapshot();
 
+  bool save( const QString &filename );
+
+//public slots:
   void slotSave();
+  void slotSaveAs();
   void slotGrab();
   void slotHelp();
   void slotCopy();

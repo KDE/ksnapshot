@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 {
   KAboutData aboutData( "ksnapshot", I18N_NOOP("KSnapshot"),
     KSNAPVERSION, description, KAboutData::License_GPL,
-    "(c) 1997-1999, Richard J. Moore, (c) 2000, Matthias Ettrich");
+    "(c) 1997-2002, Richard J. Moore, (c) 2000, Matthias Ettrich, (c) Aaron J. Seigo 2002");
   aboutData.addAuthor("Richard J. Moore",0, "rich@kde.org");
   aboutData.addAuthor("Matthias Ettrich",0, "ettrich@kde.org");
   aboutData.addAuthor("Aaron J. Seigo", 0, "aseigo@olympusproject.org");
