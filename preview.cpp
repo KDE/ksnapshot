@@ -1,7 +1,7 @@
 #include "preview.h"
 
 Preview::Preview()
-  : QPushButton()
+  : QPushButton(QString::null, 0)
 {
 
 }
