@@ -21,6 +21,7 @@
 #include <kimgio.h>
 #include <kfiledialog.h>
 #include <kmessagebox.h>
+#include <stdlib.h>
 
 #include "ksnapshot.h"
 
