@@ -99,4 +99,4 @@ Path=
 Type=Application
 Terminal=0
 DocPath=ksnapshot/index.html
-KDE-X-StartupNotify=true
+X-KDE-StartupNotify=true
