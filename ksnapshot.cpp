@@ -377,7 +377,7 @@ void KSnapshot::autoincFilename()
     QRegExp numSearch("[0-9]+");
 
     // Does it have a number?
-    int start = numSearch.searchRev(name);
+    int start = numSearch.search(name);
     if (start != -1) {
         // It has a number, increment it
         int len = numSearch.matchedLength();
