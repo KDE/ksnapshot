@@ -19,6 +19,7 @@
 #include <kguiitem.h>
 #include <kprinter.h>
 
+#include <qbitmap.h>
 #include <qdragobject.h>
 #include <qgroupbox.h>
 #include <qimage.h>
@@ -379,6 +380,7 @@ void KSnapshot::performGrab()
 #ifdef HAVE_X11_EXTENSIONS_SHAPE_H
 	//No XShape - no work.
 	if (haveXShape) {
+	    QBitmap mask(w, h);
 	    //As the first step, get the mask from XShape.
 	    int count, order;
 	    XRectangle* rects = XShapeGetRectangles( qt_xdisplay(), child,
@@ -402,11 +404,13 @@ void KSnapshot::performGrab()
 		QRegion maskedAway = bbox - contents;
 		QMemArray<QRect> maskedAwayRects = maskedAway.rects();
 
-		//Fill the masked away area with black.
-		QPainter p(&snapshot);
+		//Construct a bitmap mask from the rectangles
+		QPainter p(&mask);
+		p.fillRect(0, 0, w, h, Qt::color1);
 		for (uint pos = 0; pos < maskedAwayRects.count(); pos++)
-		    p.fillRect(maskedAwayRects[pos], Qt::black);
+		    p.fillRect(maskedAwayRects[pos], Qt::color0);
 		p.end();
+		snapshot.setMask(mask);
 	    }
 	}
 #endif
