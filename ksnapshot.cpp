@@ -126,15 +126,14 @@ void KSnapShot::buildGui()
   infoLayout= new QVBoxLayout();
   mainLayout->addLayout(infoLayout, 0, 0);
 
-  QString about;
-  about.sprintf(i18n(
+  QString about = i18n(
 		     "<qt><center><h1>KSnapshot</h1>"
 		     "<p>Press the `Grab' button, the window under "
 		     "the mouse cursor will be grabbed after the "
 		     "specified delay.</P>"
 		     "<p><font size=3>KSnapshot is copyright Richard Moore (rich@kde.org) "
 		     "and is released under the LGPL license.</font></p>"
-		     "<p><small>Version: %s</small></p></center></qt>"), KSNAPVERSION);
+		     "<p><small>Version: %1</small></p></center></qt>").arg(KSNAPVERSION);
   hintLabel= new QLabel(about, 
 			this);
   hintLabel->setAlignment(AlignCenter);
@@ -198,7 +197,7 @@ void KSnapShot::buildGui()
   delayLabel->setFixedHeight(delayLabel->height());
   delayLabel->setFixedWidth(filenameLabel->width());
   delayEdit= new QLineEdit(this);
-  s.sprintf("%d", delay_);
+  s.setNum(delay_);
   delayEdit->setText(s);
   delayEdit->setFixedHeight(delayLabel->height()+8);
   secondsLabel= new QLabel(i18n("seconds."), this);
@@ -216,7 +215,7 @@ void KSnapShot::buildGui()
   repeatLabel->setFixedHeight(delayLabel->height());
   repeatLabel->setFixedWidth(repeatLabel->width());
   repeatEdit= new QLineEdit(this);
-  s.sprintf("%d", repeat_+1);
+  s.setNum(repeat_+1);
   repeatEdit->setText(s);
   repeatEdit->setFixedHeight(repeatLabel->height()+8);
   repeatEdit->setMinimumWidth(25);
@@ -433,7 +432,7 @@ void KSnapShot::performGrab(bool initial)
   }
   else if (!initial) {
     QString s;
-    s.sprintf("%d", repeat_+1);
+    s.setNum(repeat_+1);
     repeatEdit->setText(s);
     updatePreview();
     saveSlot();
@@ -499,11 +498,11 @@ void KSnapShot::saveSlot()
   QString buttonLabel(i18n("Dismiss"));
 
   QString overwriteCaption(i18n("Warning: This will overwrite an existing file"));
-  QString overwriteMessage(i18n("Are you sure you want to overwrite the existing file named\n%s?"));
+  QString overwriteMessage(i18n("Are you sure you want to overwrite the existing file named\n%1?"));
   QString overwriteButtonLabel(i18n("Overwrite"));
   QString cancelButtonLabel(i18n("Cancel"));
 
-  QString saveErrorMessage(i18n("KSnapshot was unable to save the image to\n%s."));
+  QString saveErrorMessage(i18n("KSnapshot was unable to save the image to\n%1."));
 
   bool cancelled= false;
 
@@ -515,7 +514,7 @@ void KSnapShot::saveSlot()
     // Warn the user
     int choice= -1;
 
-    text.sprintf(overwriteMessage, filename_.data());
+    text = overwriteMessage.arg(filename_);
     choice= QMessageBox::warning(this, overwriteCaption, text, overwriteButtonLabel, cancelButtonLabel);
 
     // If the user chose to cancel
