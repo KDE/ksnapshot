@@ -17,10 +17,9 @@
 #include <qmsgbox.h>
 #include <qregexp.h>
 #include <qstring.h>
-#include "formats.h"
 #include <klocale.h>
-
-extern FormatManager *formatMngr;
+#include <kimgio.h>
+#include <kfiledialog.h>
 
 KSnapShot::KSnapShot(QWidget *parent, const char *name)
   : QWidget(parent, name)
@@ -37,7 +36,6 @@ KSnapShot::KSnapShot(QWidget *parent, const char *name)
 
   filename_.append("/");
 
-  format_= "GIF";
   filename_.append(i18n("snapshot"));
   filename_.append("01.gif");
 
@@ -143,12 +141,7 @@ void KSnapShot::buildGui()
   buttonsLayout= new QHBoxLayout();
   parametersLayout->addLayout(buttonsLayout);
 
-  formatBox= new QComboBox(this);
-  formatBox->insertStrList(formatMngr->formats());
-  formatBox->setCurrentItem(formatMngr->formats()->find(format_));
-  formatBox->resize(formatBox->sizeHint());
   buttonsLayout->addSpacing(filenameLabel->width()+4);
-  buttonsLayout->addWidget(formatBox, 1);
   buttonsLayout->addStretch();
   browseButton= new QPushButton(i18n("Browse..."), this);
   browseButton->setFixedHeight(filenameLabel->height()+8);
@@ -255,7 +248,6 @@ void KSnapShot::buildGui()
   connect(closeButton, SIGNAL(clicked()), this, SLOT(closeSlot()));
   connect(saveButton, SIGNAL(clicked()), this, SLOT(saveSlot()));
   connect(browseButton, SIGNAL(clicked()), this, SLOT(browsePressedSlot()));
-  connect(formatBox, SIGNAL(activated(const QString&)), this, SLOT(formatChangedSlot(const QString&)));
   connect(hideSelfCheck, SIGNAL(toggled(bool)), this, SLOT(hideSelfToggledSlot()));
   connect(autoRaiseCheck, SIGNAL(toggled(bool)), this, SLOT(autoRaiseToggledSlot()));
   connect(grabWindowCheck, SIGNAL(toggled(bool)), this, SLOT(grabWindowToggledSlot()));
@@ -274,12 +266,9 @@ void KSnapShot::grabPressedSlot()
 void KSnapShot::browsePressedSlot()
 {
   QString s, t;
-  QString f("*.");
   int p;
 
-  f.append(formatMngr->suffix(format_));
-
-  t= (const char *) filename_;
+  t= filename_;
   p= t.findRev('/');
 
   if (p != -1)
@@ -287,7 +276,9 @@ void KSnapShot::browsePressedSlot()
   else
     t= QDir::currentDirPath();
 
-  s= QFileDialog::getSaveFileName(t, f, this);
+  s= KFileDialog::getSaveFileName(t, 
+				  KImageIO::pattern(KImageIO::Writing) ,
+				  this);
 
   if (!(s.isNull()))
     filenameEdit->setText(s);
@@ -423,22 +414,6 @@ void KSnapShot::delayChangedSlot(const QString& text)
   delay_= s.toInt();
 }
 
-void KSnapShot::formatChangedSlot(const QString& format)
-{
-  QFileInfo fi(filename_);
-
-  QString s;
-
-  s= fi.dirPath();
-  s.append("/");
-  s.append(fi.baseName());
-  s.append(".");
-  s.append(formatMngr->suffix(format));
-  filenameEdit->setText(s);
-  filename_= (const char *) s;
-  format_= format;
-}
-
 void KSnapShot::helpSlot()
 {
   kapp->invokeHTMLHelp("", "");
@@ -455,7 +430,7 @@ void KSnapShot::saveSlot()
   QString caption(i18n("Error: Unable to save image"));
   QString buttonLabel(i18n("Dismiss"));
 			 
-  if (!(snapshot_.save(filename_, format_))) {
+  if (!(snapshot_.save(filename_, KImageIO::type(filename_)))) {
     warning("KSnapshot was unable to save the snapshot");
     text.sprintf(i18n("KSnapshot was unable to save the image to\n%s."),
 		 filename_.data());

@@ -1,8 +1,6 @@
 #include <kapp.h>
-#include "formats.h"
 #include "ksnapshot.h"
-
-FormatManager *formatMngr;
+#include <kimgio.h>
 
 int main(int argc, char **argv)
 {
@@ -11,7 +9,7 @@ int main(int argc, char **argv)
 
   app= new KApplication(argc, argv, "ksnapshot");
 
-  formatMngr= new FormatManager();
+  kimgioRegister();
 
   // Create top level window
   toplevel= new KSnapShot();

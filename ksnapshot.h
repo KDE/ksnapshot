@@ -39,7 +39,6 @@ public slots:
   void hideSelfToggledSlot();
   void grabWindowToggledSlot();
   void filenameChangedSlot(const QString&);
-  void formatChangedSlot(const QString&);
   void browsePressedSlot();
   void delayChangedSlot(const QString&);
   void helpSlot();
@@ -62,7 +61,6 @@ protected:
   QLabel *filenameLabel;
   QLineEdit *filenameEdit;
   QPushButton *browseButton;
-  QComboBox *formatBox;
   QHBoxLayout *filenameLayout;
   QLabel *delayLabel;
   QLineEdit *delayEdit;
@@ -99,7 +97,6 @@ private:
   int delay_;
   QTimer *timer_;
   QString filename_;
-  QString format_;
   Window child;
 };
 
