@@ -29,6 +29,7 @@
 #include <knotifyclient.h>
 #include <khelpmenu.h>
 #include <kpopupmenu.h>
+#include <kiconloader.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
 #include <qpainter.h>
@@ -79,6 +80,9 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
 
     KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
     helpButton->setPopup(helpMenu->menu());
+
+    helpButton->setIconSet( SmallIconSet( "help" ) );
+    closeButton->setIconSet( SmallIconSet( "exit" ) );
     
     KAccel* accel = new KAccel(this);
     accel->insert(KStdAccel::Quit, kapp, SLOT(quit()));
