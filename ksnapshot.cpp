@@ -499,6 +499,18 @@ void KSnapshot::performGrab()
 	    }
 	}
 
+	XWindowAttributes rootAttributes;
+	if ( XGetWindowAttributes( qt_xdisplay(), root, &rootAttributes ) ) {
+	    if ( ( x + w ) > rootAttributes.width ) {
+		// then the window is partly off the screen
+		w = rootAttributes.width - x;
+	    }
+	    if ( ( y + h ) > rootAttributes.height ) {
+		// then the window is partly off the screen
+		h = rootAttributes.height - y;
+	    }
+	}
+
 	snapshot = QPixmap::grabWindow( qt_xrootwin(), x, y, w, h );
 
 #ifdef HAVE_X11_EXTENSIONS_SHAPE_H
@@ -564,6 +576,11 @@ void KSnapshot::setTime(int newTime)
     mainWidget->setDelay(newTime);
 }
 
+int KSnapshot::timeout()
+{
+    return mainWidget->delay();
+}
+
 void KSnapshot::setURL( const QString &url )
 {
     KURL newURL = KURL::fromPathOrURL( url );
@@ -576,7 +593,12 @@ void KSnapshot::setURL( const QString &url )
 
 void KSnapshot::setGrabMode( int m )
 {
-  mainWidget->setMode( m );
+    mainWidget->setMode( m );
+}
+
+int KSnapshot::grabMode()
+{
+    return mainWidget->mode();
 }
 
 void KSnapshot::updateCaption()

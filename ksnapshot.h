@@ -98,6 +98,8 @@ private:
     void updatePreview();
     void performGrab();
     void autoincFilename();
+    int grabMode();
+    int timeout();
 
     QPixmap snapshot;
     QTimer grabTimer;
