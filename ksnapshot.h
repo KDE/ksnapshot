@@ -34,6 +34,7 @@ class KSnapshotThumb : public QLabel
             if (mClickPt != QPoint(0, 0) &&
                 (e->pos() - mClickPt).manhattanLength() > KGlobalSettings::dndEventDelay())
             {
+                mClickPt = QPoint(0, 0);
                 emit startDrag();
             }
         }
