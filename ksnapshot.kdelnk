@@ -1,7 +1,6 @@
 # KDE Config File
 [KDE Desktop Entry]
 Comment=An applet for taking snapshots of the desktop
-Comment[br]=Un arload evit luc'hskeudenniñ ar gorretaol
 Comment[ca]=Un programa per fer fotos de l'escriptori
 Comment[cs]=Nástroj pro vytváøení snímkù pracovní plochy
 Comment[da]=Et lille program der tager øjebliksbilleder af arbejdspladsen
@@ -23,7 +22,6 @@ Comment[sl]=Programèek za izdelavo posnetkov namizja
 Comment[sv]=Ett program för att ta skärmdumpar av skrivbordet
 BinaryPattern=
 Name=Snapshot
-Name[br]=PakerSkramm
 Name[ca]=Instantània
 Name[da]=Øjebliksbillede
 Name[de]=KSnapshot
