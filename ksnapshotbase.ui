@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>376</width>
-            <height>309</height>
+            <height>491</height>
         </rect>
     </property>
     <property name="minimumSize">
@@ -145,7 +145,7 @@ The image can be dragged to another application or document to copy the full scr
             <property name="title">
                 <string>Options</string>
             </property>
-            <grid>
+            <vbox>
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
@@ -155,7 +155,7 @@ The image can be dragged to another application or document to copy the full scr
                 <property name="spacing">
                     <number>6</number>
                 </property>
-                <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
+                <widget class="QLabel">
                     <property name="name">
                         <cstring>TextLabel3</cstring>
                     </property>
@@ -166,7 +166,7 @@ The image can be dragged to another application or document to copy the full scr
                         <cstring>delaySpin</cstring>
                     </property>
                 </widget>
-                <widget class="QSpinBox" row="0" column="2">
+                <widget class="QSpinBox">
                     <property name="name">
                         <cstring>delaySpin</cstring>
                     </property>
@@ -190,7 +190,7 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 &lt;/qt&gt;</string>
                     </property>
                 </widget>
-                <spacer row="0" column="3">
+                <spacer>
                     <property name="name">
                         <cstring>Spacer1</cstring>
                     </property>
@@ -202,12 +202,12 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
                     </property>
                     <property name="sizeHint">
                         <size>
-                            <width>20</width>
-                            <height>0</height>
+                            <width>128</width>
+                            <height>16</height>
                         </size>
                     </property>
                 </spacer>
-                <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="4">
+                <widget class="QCheckBox">
                     <property name="name">
                         <cstring>onlyWindow</cstring>
                     </property>
@@ -221,7 +221,21 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
                         <string>Checking this option causes only the window that the mouse is over, when the snapshot is taken, to be captured.</string>
                     </property>
                 </widget>
-            </grid>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>includeDecorations</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Include &amp;window decorations</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>When enabled, snapshot of a window will also include the window decorations</string>
+                    </property>
+                </widget>
+            </vbox>
         </widget>
         <spacer>
             <property name="name">
@@ -344,6 +358,12 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
         <signal>clicked()</signal>
         <receiver>KSnapshotBase</receiver>
         <slot>slotSave()</slot>
+    </connection>
+    <connection>
+        <sender>onlyWindow</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>includeDecorations</receiver>
+        <slot>setEnabled(bool)</slot>
     </connection>
 </connections>
 <tabstops>

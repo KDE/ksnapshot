@@ -93,6 +93,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     conf->setGroup("GENERAL");
     delaySpin->setValue(conf->readNumEntry("delay",0));
     onlyWindow->setChecked(conf->readBoolEntry("onlyWindow",true));
+    includeDecorations->setChecked(conf->readBoolEntry("includeDecorations",true));
     filename = conf->readEntry( "filename", QDir::currentDirPath()+"/"+i18n("snapshot")+"1.png" );
 
     // Make sure the name is not already being used
@@ -259,7 +260,7 @@ void KSnapshot::slotPrint()
 		neww = newh/h*w;
 	    }
 
-	    img = img.smoothScale( neww, newh, QImage::ScaleMin );
+	    img = img.smoothScale( int(neww), int(newh), QImage::ScaleMin );
 	    qApp->processEvents();
 
 	    int x = (metrics.width()-img.width())/2;
@@ -283,6 +284,7 @@ void KSnapshot::closeEvent( QCloseEvent * e )
     conf->setGroup("GENERAL");
     conf->writeEntry("delay",delaySpin->value());
     conf->writeEntry("onlyWindow",onlyWindow->isChecked());
+    conf->writeEntry("includeDecorations",includeDecorations->isChecked());
     conf->writeEntry("filename",filename);
     e->accept();
 }
@@ -339,7 +341,7 @@ void KSnapshot::updatePreview()
     QImage img = snapshot.convertToImage();
     double r1 = ((double) snapshot.height() ) / snapshot.width();
     if ( r1 * imageLabel->width()  < imageLabel->height() )
-	img = img.smoothScale( imageLabel->width(), (int) imageLabel->width() * r1 );
+	img = img.smoothScale( int( imageLabel->width()), int( imageLabel->width() * r1 ));
     else
 	img = img.smoothScale( (int) (((double)imageLabel->height()) / r1) , (imageLabel->height() ) );
 
@@ -352,6 +354,38 @@ void KSnapshot::grabTimerDone()
 {
     performGrab();
     KNotifyClient::beep(i18n("The screen has been successfully grabbed."));
+}
+
+static
+Window findRealWindow( Window w, int depth = 0 )
+{
+    if( depth > 5 )
+	return None;
+    static Atom wm_state = XInternAtom( qt_xdisplay(), "WM_STATE", False );
+    Atom type;
+    int format;
+    unsigned long nitems, after;
+    unsigned char* prop;
+    if( XGetWindowProperty( qt_xdisplay(), w, wm_state, 0, 0, False, AnyPropertyType,
+	&type, &format, &nitems, &after, &prop ) == Success ) {
+	if( prop != NULL )
+	    XFree( prop );
+	if( type != None )
+	    return w;
+    }
+    Window root, parent;
+    Window* children;
+    unsigned int nchildren;
+    Window ret = None;
+    if( XQueryTree( qt_xdisplay(), w, &root, &parent, &children, &nchildren ) != 0 ) {
+	for( unsigned int i = 0;
+	     i < nchildren && ret == None;
+	     ++i )
+	    ret = findRealWindow( children[ i ], depth + 1 );
+	if( children != NULL )
+	    XFree( children );
+    }
+    return ret;
 }
 
 void KSnapshot::performGrab()
@@ -368,12 +402,33 @@ void KSnapshot::performGrab()
 		       &rootX, &rootY, &winX, &winY,
 		      &mask);
 
+	if( !includeDecorations->isChecked()) {
+	    Window real_child = findRealWindow( child );
+	    if( real_child != None ) // test just in case
+		child = real_child;
+	}
 	int x, y;
 	unsigned int w, h;
 	unsigned int border;
 	unsigned int depth;
 	XGetGeometry( qt_xdisplay(), child, &root, &x, &y,
 		      &w, &h, &border, &depth );
+
+	Window parent;
+	Window* children;
+	unsigned int nchildren;
+	if( XQueryTree( qt_xdisplay(), child, &root, &parent,
+	    &children, &nchildren ) != 0 ) {
+	    if( children != NULL )
+		XFree( children );
+	    int newx, newy;
+	    Window dummy;
+	    if( XTranslateCoordinates( qt_xdisplay(), parent, qt_xrootwin(),
+		x, y, &newx, &newy, &dummy )) {
+		x = newx;
+		y = newy;
+	    }
+	}
 
 	snapshot = QPixmap::grabWindow( qt_xrootwin(), x, y, w, h );
 
