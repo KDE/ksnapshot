@@ -16,14 +16,17 @@ lnk_DATA = ksnapshot.kdelnk
 icondir = $(kde_icondir)
 icon_DATA = ksnapshot.xpm
 
-EXTRA_DIST = $(lnk_DATA) $(icon_DATA) mini-kpaint.xpm
+EXTRA_DIST = $(lnk_DATA) $(icon_DATA) mini-ksnapshot.xpm large-ksnapshot.xpm
 
-install-data-local: mini-ksnapshot.xpm
+install-data-local: mini-ksnapshot.xpm large-ksnapshot.xpm
 	$(mkinstalldirs) $(kde_minidir)
 	$(INSTALL_DATA) $(srcdir)/mini-ksnapshot.xpm $(kde_minidir)/ksnapshot.xpm
+	$(mkinstalldirs) $(kde_icondir)
+	$(INSTALL_DATA) $(srcdir)/large-ksnapshot.xpm $(kde_icondir)/large/ksnapshot.xpm
 
 uninstall-local:
 	-rm -f $(kde_minidir)/ksnapshot.xpm
+	-rm -f $(kde_icondir)/large/ksnapshot.xpm
 
 messages:
 	$(XGETTEXT) -C -ki18n -ktranslate -x $(includedir)/kde.pot $(ksnapshot_SOURCES) && mv messages.po ../po/ksnapshot.pot
