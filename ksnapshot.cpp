@@ -37,7 +37,7 @@ KSnapShot::KSnapShot(QWidget *parent, const char *name)
   filename_.append("/");
 
   format_= "GIF";
-  filename_.append(klocale->translate("snapshot"));
+  filename_.append(i18n("snapshot"));
   filename_.append("01.gif");
 
   previewWindow= 0;
@@ -126,7 +126,7 @@ void KSnapShot::buildGui()
   parametersLayout->addStretch();
   parametersLayout->addLayout(filenameLayout, 0);
 
-  filenameLabel= new QLabel(klocale->translate("Filename:"), this);
+  filenameLabel= new QLabel(i18n("Filename:"), this);
   filenameLabel->setAlignment(AlignCenter);
   filenameLabel->adjustSize();
   filenameLabel->setFixedHeight(filenameLabel->height());
@@ -149,7 +149,7 @@ void KSnapShot::buildGui()
   buttonsLayout->addSpacing(filenameLabel->width()+4);
   buttonsLayout->addWidget(formatBox, 1);
   buttonsLayout->addStretch();
-  browseButton= new QPushButton(klocale->translate("Browse..."), this);
+  browseButton= new QPushButton(i18n("Browse..."), this);
   browseButton->setFixedHeight(filenameLabel->height()+8);
   browseButton->setMinimumWidth(filenameLabel->width());
   buttonsLayout->addWidget(browseButton, 2);
@@ -158,7 +158,7 @@ void KSnapShot::buildGui()
   parametersLayout->addLayout(delayLayout, 0);
   parametersLayout->addStretch();
 
-  delayLabel= new QLabel(klocale->translate("Delay:"), this);
+  delayLabel= new QLabel(i18n("Delay:"), this);
   delayLabel->setAlignment(AlignCenter);
   delayLabel->adjustSize();
   delayLabel->setFixedHeight(delayLabel->height());
@@ -167,7 +167,7 @@ void KSnapShot::buildGui()
   s.sprintf("%d", delay_);
   delayEdit->setText(s);
   delayEdit->setFixedHeight(delayLabel->height()+8);
-  secondsLabel= new QLabel(klocale->translate("seconds."), this);
+  secondsLabel= new QLabel(i18n("seconds."), this);
   secondsLabel->setAlignment(AlignLeft);
   secondsLabel->setFixedHeight(delayLabel->height());
   secondsLabel->setMinimumWidth(secondsLabel->width());
@@ -183,14 +183,14 @@ void KSnapShot::buildGui()
   checkLayout= new QVBoxLayout(4);
   mainLayout->addLayout(checkLayout, 1, 1);
 
-  QGroupBox *checkGroup= new QGroupBox(klocale->translate("Options"), this);
+  QGroupBox *checkGroup= new QGroupBox(i18n("Options"), this);
 
   QVBoxLayout *optionsBox= new QVBoxLayout(checkGroup, 16, 6);
 
-  autoRaiseCheck= new QCheckBox(klocale->translate("Auto raise"), checkGroup);
-  hideSelfCheck= new QCheckBox(klocale->translate("Hide KSnapshot window"),
+  autoRaiseCheck= new QCheckBox(i18n("Auto raise"), checkGroup);
+  hideSelfCheck= new QCheckBox(i18n("Hide KSnapshot window"),
 			       checkGroup);
-  grabWindowCheck= new QCheckBox(klocale->translate("Only grab the window containing the cursor"),
+  grabWindowCheck= new QCheckBox(i18n("Only grab the window containing the cursor"),
 				 checkGroup);
 
   autoRaiseCheck->setMinimumSize(autoRaiseCheck->sizeHint());
@@ -219,10 +219,10 @@ void KSnapShot::buildGui()
   mainLayout->setColStretch(1, 2);
 
   // Buttons
-  helpButton= new QPushButton(klocale->translate("Help"), this);
-  saveButton= new QPushButton(klocale->translate("Save"), this);
-  grabButton= new QPushButton(klocale->translate("Grab"), this);
-  closeButton= new QPushButton(klocale->translate("Close"), this);
+  helpButton= new QPushButton(i18n("Help"), this);
+  saveButton= new QPushButton(i18n("Save"), this);
+  grabButton= new QPushButton(i18n("Grab"), this);
+  closeButton= new QPushButton(i18n("Close"), this);
 
   buttonLayout= new QBoxLayout(QBoxLayout::RightToLeft);
 
@@ -466,7 +466,7 @@ void KSnapShot::showPreviewSlot()
 {
   if (previewWindow == 0) {
     previewWindow= new Preview();
-    previewWindow->setCaption(klocale->translate("KSnapshot preview"));
+    previewWindow->setCaption(i18n("KSnapshot preview"));
     previewWindow->setPixmap(snapshot_);
     previewWindow->resize(previewWindow->sizeHint());
     connect(previewWindow, SIGNAL(clicked()), this, SLOT(hidePreviewSlot()));
