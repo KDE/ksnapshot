@@ -21,7 +21,7 @@ EXTRA_DIST = $(lnk_DATA) $(icon_DATA) mini-ksnapshot.xpm large-ksnapshot.xpm
 install-data-local: mini-ksnapshot.xpm large-ksnapshot.xpm
 	$(mkinstalldirs) $(kde_minidir)
 	$(INSTALL_DATA) $(srcdir)/mini-ksnapshot.xpm $(kde_minidir)/ksnapshot.xpm
-	$(mkinstalldirs) $(kde_icondir)
+	$(mkinstalldirs) $(kde_icondir)/large
 	$(INSTALL_DATA) $(srcdir)/large-ksnapshot.xpm $(kde_icondir)/large/ksnapshot.xpm
 
 uninstall-local:
@@ -30,4 +30,10 @@ uninstall-local:
 
 messages:
 	$(XGETTEXT) -C -ki18n -ktranslate -x $(includedir)/kde.pot $(ksnapshot_SOURCES) && mv messages.po ../po/ksnapshot.pot
+
+
+
+
+
+
 
