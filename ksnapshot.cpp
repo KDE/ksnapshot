@@ -200,8 +200,8 @@ void KSnapshot::updatePreview()
 
 void KSnapshot::grabTimerDone()
 {
-    QApplication::beep();
     performGrab();
+    QApplication::beep();
 }
 
 void KSnapshot::performGrab()
