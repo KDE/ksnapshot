@@ -27,10 +27,10 @@ class KSnapshotThumb : public QLabel
             setAlignment(AlignHCenter | AlignVCenter);
         }
         virtual ~KSnapshotThumb() {}
-    
+
     signals:
         void startDrag();
-    
+
     protected:
         void mousePressEvent(QMouseEvent * e)
         {
@@ -47,11 +47,11 @@ class KSnapshotThumb : public QLabel
             }
         }
 
-    void mouseReleaseEvent(QMouseEvent * /*e*/)
+        void mouseReleaseEvent(QMouseEvent * /*e*/)
         {
             mClickPt = QPoint(0, 0);
         }
-        
+
         QPoint mClickPt;
 };
 
