@@ -133,6 +133,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
 		   CTRL+Key_A, this, SLOT(slotSaveAs()));
     accel->insert(KStdAccel::Print, this, SLOT(slotPrint()));
     accel->insert(KStdAccel::New, this, SLOT(slotGrab()));
+    accel->insert(KStdAccel::Copy, this, SLOT(slotCopy()));
 
     accel->insert( "Quit2", Key_Q, this, SLOT(slotSave()));
     accel->insert( "Save2", Key_S, this, SLOT(slotSaveAs()));
