@@ -146,7 +146,7 @@ void KSnapShot::buildGui()
   formatBox= new QComboBox(this);
   formatBox->insertStrList(formatMngr->formats());
   formatBox->setCurrentItem(formatMngr->formats()->find(format_));
-  formatBox->resize(formatBox->sizeHint());
+  formatBox->setFixedSize(formatBox->sizeHint());
   buttonsLayout->addSpacing(filenameLabel->width()+4);
   buttonsLayout->addWidget(formatBox, 1);
   buttonsLayout->addStretch();
