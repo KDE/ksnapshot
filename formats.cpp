@@ -3,9 +3,17 @@
 #include "gif.h"
 #include "eps.h"
 
-static int numFormats= 5;
+static int numFormats= 6;
 
 static FormatRecord formatlist[]= {
+  {
+    "PNG",
+    FormatRecord::InternalFormat | FormatRecord::ReadFormat,
+    "^\211PNG",
+    "*.png",
+    "png",
+    0, 0,
+  }, 
   {
     "JPEG",
     FormatRecord::InternalFormat | FormatRecord::ReadFormat,
