@@ -10,7 +10,7 @@
 <affiliation><address><email><ulink url="mailto:rich@kde.org">rich@kde.org</ulink></email></address></affiliation>
 </author>
 </authorgroup>
-<date>Version 0.2.7, 13. June 1999</date>
+<date>Version 0.4.0, Nov 7 1999</date>
 <releaseinfo><!-- information about this particular version --></releaseinfo>
 <revhistory>
 <revision>
@@ -19,7 +19,7 @@
 </revision>
 </revhistory>
 <abstract>
-<para>This Handbook describes KSnapshot Version 0.2.7</para>
+<para>This Handbook describes KSnapshot Version 0.4.0</para>
 <para>Handbook of KSnapshot</para><!-- Merge this with the previous paragraph; it comes from <META NAME="description" CONTENT="..."> --></abstract>
 <keywordset>
 <keyword>KDE</keyword>
@@ -41,7 +41,7 @@ The images can then be saved in a variety of formats.</para>
 <sect1>
 <title>KSnapshot License</title>
 
-<para>KSnapshot is copyright Richard J. Moore 1997-1998 (rich@kde.org)</para>
+<para>KSnapshot is copyright Richard J. Moore 1997-1999 (rich@kde.org)</para>
 
 <para>KSnapshot is released under the terms of the LGPL. As KSnapshot
 is free, there is <emphasis>no warranty</emphasis>.</para>
@@ -122,6 +122,40 @@ the whole desktop is grabbed.</para>
 <title>What's new?</title>
 
 <para><variablelist>
+
+<varlistentry>
+<term>Version 0.4.0</term>
+<listitem>
+<para><itemizedlist>
+<listitem>
+<para>Merged the changes from Kurt's 0.3.x development releases.</para>
+</listitem>
+<listitem>
+<para>Merged the changes from my 0.3.x development releases in to the HEAD code.</para>
+</listitem>
+<listitem>
+<para>Now warns before overwriting existing files.</para>
+</listitem>
+<listitem>
+<para>The much requested autoincrementing filename. Just put a number somewhere
+in the filename and it will be incremented.
+</para>
+</listitem>
+<listitem>
+<para>You can now ask for a number of snapshots to be taken. Each snapshot has
+a name assigned by the autoincrement. The specified delay is waited for between
+each snapshot. Note that the ksnapshot window will remain hidden until all of
+the images have been captured.
+</para>
+</listitem>
+<listitem>
+<para>Automatically chooses an unused filename at start up.
+</para>
+</listitem>
+</itemizedlist>
+</para>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>Version 0.2.7</term>
 <listitem>
