@@ -489,7 +489,7 @@ void KSnapShot::repeatChangedSlot(const QString& text)
 
 void KSnapShot::helpSlot()
 {
-  kapp->invokeHTMLHelp("", "");
+  kapp->invokeHelp();
 }
 
 void KSnapShot::closeSlot()
