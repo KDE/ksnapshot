@@ -95,9 +95,9 @@ window.  The images can then be saved in a variety of formats.</para>
 <chapter id="introduction">
 <title>Introduction</title>
 
-<para>&ksnapshot; is a simple applet for taking screenshots. It is capable
+<para>&ksnapshot; is a simple application for taking screenshots. It is capable
 of capturing images of either the whole desktop or just a single
-window.  The images can then be saved in a variety of formats.</para>
+window. The images can then be saved in a variety of formats.</para>
 
 <para>Please report any problems or feature requests to the <ulink
 url="http://lists.kde.org">KDE mailing lists</ulink></para>
@@ -148,12 +148,12 @@ also be used to start &ksnapshot;</para></listitem>
 <sect1 id="taking-snapshot">
 <title>Taking A Snapshot</title>
 
-<para> &ksnapshot; grabs an image of your entire desktop immediately after it is 
-started, but before it displays itself on screen. This allows you to quickly 
+<para> &ksnapshot; grabs an image of your entire desktop immediately after it is
+started, but before it displays itself on screen. This allows you to quickly
 create full-desktop screenshot images.</para>
 
 <para>The snapshot taken by &ksnapshot; is displayed in the preview window,
-which is located in the upper center of the &ksnapshot; application window.
+which is located in the upper left of the &ksnapshot; application window.
 Below is an example of the preview window from &ksnapshot;. Your preview
 will differ depending on what you have displayed on the desktop.</para>
 
@@ -166,26 +166,34 @@ will differ depending on what you have displayed on the desktop.</para>
 </mediaobject>
 
 <para>The snapshot displayed may be saved immediately by clicking on
-the <guibutton>Save</guibutton> button. The filename that the snapshot
-will be saved under appears in the <guilabel>Filename:</guilabel> box.
-If multiple snapshots are taken, the filename is automatically
+the <guibutton>Save Snapshot</guibutton> button. </para>
+<para>When you want to safe the snapshot in a specific directory with
+a specific filename, use the <guibutton>Save Snapshot As ...</guibutton> button.
+This opens the standard &kde; save dialog, where you can choose the filename,
+directory and format your file is saved in. </para>
+<para> If multiple snapshots are taken, the filename is automatically
 incremented to prevent you from overwriting previous snapshots. You
 may however edit the filename to anything you wish, including the name
 of a previously saved snapshot. </para>
 
-<para>To take a snapshot of a single window, enable the <guilabel>Only
-grab the window containing the pointer</guilabel> and then click with
-the <mousebutton>left</mousebutton> mouse button in the window you
-wish to capture.  &ksnapshot; will display the new snapshot in the preview
+<para>To take a snapshot of a single window, enable <guilabel>Only
+grab the window containing the pointer</guilabel> and then take a
+<guibutton>New Snapshot</guibutton>. </para>
+<para>Depending on your <guilabel>Snapshot delay:</guilabel> settings you
+get either a cross as the mouse pointer or you can work with a program until
+the delay is over and a snapshot is taken.</para>
+<para>With <guilabel>No delay</guilabel>, the snapshot is taken immediately when you
+click in a window.</para>
+<para>&ksnapshot; will display the new snapshot in the preview
 area, at which time you can choose to save the new image (by pressing
-the <guibutton>Save</guibutton>) or to grab a new one, by pressing the
-<guibutton>Grab</guibutton> button.  This is &ksnapshot;'s default
-behavior.</para>
+<guibutton>Save Snapshot</guibutton> or <guibutton>Save Snapshot As ...</guibutton>)
+or to grab a new one, by pressing the
+<guibutton>New Snapshot</guibutton> button.</para>
 
 <para>To take a new snapshot of the entire desktop, uncheck the
 <guilabel>Only grab the window containing the pointer</guilabel>
 option.  &ksnapshot; will now capture the entire desktop if you press
-<guibutton>Grab</guibutton>.</para>
+<guibutton>New Snapshot</guibutton>.</para>
 
 </sect1>
 
@@ -193,18 +201,38 @@ option.  &ksnapshot; will now capture the entire desktop if you press
 <title>Additional Features</title>
 
 <sect2 id="delay">
-<title>Delay</title>
+<title>Snapshot Delay</title>
 
-<para>The <guilabel>Delay:</guilabel> box allows you to enter an
+<para>The <guilabel>Snapshot Delay:</guilabel> box allows you to enter an
 arbitrary time delay, in seconds, between the time that you press the
-<guibutton>Grab</guibutton> button and the time that the snapshot is
-taken.</para>  
+<guibutton>New Snapshot</guibutton> button and the time that the snapshot is
+taken.</para>
 
 <para>When a delay time has been set, you do not have to click the mouse
 button to capture a screenshot.  This enables you to open a drop down menu,
 and take a picture of it.</para>
 
 </sect2>
+
+<sect2 id="window-decoration">
+<title>Exclude Window decorations</title>
+
+<para><guilabel>Include window decorations</guilabel> is enabled by default.</para>
+
+<para>When you only want to capture the application itself without the surrounding
+window decoration, disable this option and take a new snapshot.</para>
+
+</sect2>
+
+<sect2 id="print-snapshot">
+<title>Print Snapshot</title>
+
+<para>When you want to print your snapshot from the preview, just click
+<guibutton>Print Snapshot</guibutton> and you get the standard KDE Print dialog, from
+where you can directly print your snapshot.</para>
+
+</sect2>
+
 
 <sect2 id="bottom-buttons">
 <title>Buttons</title>
@@ -215,12 +243,15 @@ and take a picture of it.</para>
 <variablelist>
 <varlistentry>
 <term><guibutton>Help</guibutton></term>
-<listitem><para>Activates the online manual for &ksnapshot;.</para></listitem>
+<listitem><para>Gives you a menu where you can open the
+<guimenuitem>&ksnapshot; Handbook</guimenuitem>, report a bug or
+get some more information about &kde; and &ksnapshot;.
+</para></listitem>
 </varlistentry>
 
 <varlistentry>
-<term><guibutton>Close</guibutton></term>
-<listitem><para>Closes the &ksnapshot; application.</para></listitem>
+<term><guibutton>Quit</guibutton></term>
+<listitem><para>Quits the &ksnapshot; application.</para></listitem>
 </varlistentry>
 </variablelist>
 
@@ -247,55 +278,7 @@ J. Moore <email>rich@kde.org</email></para>
 
 </chapter>
 
-<appendix id="installation">
-<title>Installation</title>
-
-<sect1 id="getting-ksnapshot">
-<title>How to obtain &ksnapshot;</title>
-
-&install.intro.documentation;
-
-</sect1>
-
-<sect1 id="requirements">
-<title>Requirements</title>
-
-<para>A successful installation of &kde; 3.0 is required to use &ksnapshot;.</para>
-
-<para>All required libraries as well as &ksnapshot; itself can be
-found on &kde-ftp; or one of it's <ulink
-url="http://www.kde.org/mirrors.html">mirrors</ulink>.</para>
-
-</sect1>
-
-<sect1 id="compilation-installation">
-<title>Compilation and Installation</title>
-
-<para>&ksnapshot; may be installed from the &package; package either by
-installing a binary RPM or by compiling the source package.</para>
-
-<sect2 id="from-rpm">
-<title>Installing from RPMs</title> <para>To install the &package;
-package from a binary RPM you must be logged in as root.  Assuming
-that the name of the RPM is <filename>filename.rpm</filename>, do the
-following at the command prompt:</para>
-
-<screen width="40"><prompt>%</prompt> <userinput><command>rpm <option>-ivh <replaceable>filename.rpm</replaceable></option></command></userinput></screen>
-
-<para>Should you run into problems please report them to the <ulink
-url="http://lists.kde.org">&kde; mailing lists</ulink>.</para>
-</sect2>
-
-<sect2 id="from-source">
-<title>Installing from source</title>
-
-&install.compile.documentation;
-
-</sect2>
-</sect1>
-</appendix>
-
-&documentation.index; 
+&documentation.index;
 </book>
 
 <!--
