@@ -20,7 +20,8 @@ public:
 
 protected:
     void reject() { close(); }
-    
+
+    virtual void closeEvent( QCloseEvent * e );
     bool eventFilter( QObject*, QEvent* );
     
 private slots:

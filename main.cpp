@@ -4,6 +4,7 @@
 #include <klocale.h>
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
+#include <kiconloader.h>
 
 static const char *description =
 	I18N_NOOP("KDE Screenshot utility");
@@ -24,7 +25,8 @@ int main(int argc, char **argv)
   // Create top level window
   KSnapshot *toplevel= new KSnapshot();
   toplevel->setCaption( app.makeStdCaption("") );
- app.setMainWidget(toplevel);
+  toplevel->setIcon(SmallIcon("ksnapshot"));
+  app.setMainWidget(toplevel);
   toplevel->show();
   return app.exec();
 }

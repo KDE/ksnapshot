@@ -12,7 +12,7 @@
             <x>0</x>
             <y>0</y>
             <width>332</width>
-            <height>333</height>
+            <height>290</height>
         </rect>
     </property>
     <property stdset="1">
@@ -118,9 +118,9 @@
                                 <name>geometry</name>
                                 <rect>
                                     <x>31</x>
-                                    <y>39</y>
+                                    <y>35</y>
                                     <width>20</width>
-                                    <height>52</height>
+                                    <height>60</height>
                                 </rect>
                             </property>
                             <property stdset="1">
@@ -278,29 +278,6 @@
                 <bool>true</bool>
             </property>
         </widget>
-        <spacer>
-            <property>
-                <name>name</name>
-                <cstring>Spacer4</cstring>
-            </property>
-            <property stdset="1">
-                <name>geometry</name>
-                <rect>
-                    <x>156</x>
-                    <y>258</y>
-                    <width>20</width>
-                    <height>24</height>
-                </rect>
-            </property>
-            <property stdset="1">
-                <name>orientation</name>
-                <enum>Vertical</enum>
-            </property>
-            <property stdset="1">
-                <name>sizeType</name>
-                <enum>Expanding</enum>
-            </property>
-        </spacer>
         <widget>
             <class>QLayoutWidget</class>
             <property stdset="1">
@@ -336,7 +313,7 @@
                         <name>geometry</name>
                         <rect>
                             <x>87</x>
-                            <y>7</y>
+                            <y>5</y>
                             <width>136</width>
                             <height>20</height>
                         </rect>

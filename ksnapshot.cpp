@@ -41,7 +41,12 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     updatePreview();
     grabber->releaseMouse();
     grabber->hide();
-    
+
+    KConfig *conf=KGlobal::config();
+    conf->setGroup("GENERAL");
+    delaySpin->setValue(conf->readNumEntry("delay",0));
+    onlyWindow->setChecked(conf->readBoolEntry("onlyWindow",true));
+
     connect( &grabTimer, SIGNAL( timeout() ), this, SLOT(  grabTimerDone() ) );
     urlRequester->setURL( QDir::currentDirPath() + "/" + i18n("snapshot") + "1.png" );
     
@@ -119,6 +124,15 @@ void KSnapshot::slotGrab()
 void KSnapshot::slotHelp()
 {
     kapp->invokeHelp();
+}
+
+void KSnapshot::closeEvent( QCloseEvent * e )
+{
+    KConfig *conf=KGlobal::config();
+    conf->setGroup("GENERAL");
+    conf->writeEntry("delay",delaySpin->value());
+    conf->writeEntry("onlyWindow",onlyWindow->isChecked());
+    e->accept();
 }
 
 bool KSnapshot::eventFilter( QObject* o, QEvent* e)
