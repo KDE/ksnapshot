@@ -1,13 +1,15 @@
 # KDE Config File
 [KDE Desktop Entry]
 Comment=An applet for taking snapshots of the desktop
+Comment[br]=Un arload evit luc'hskeudenniñ ar gorretaol
 Comment[ca]=Un programa per fer fotos de l'escriptori
 Comment[cs]=Nástroj pro vytváøení snímkù pracovní plochy
 Comment[da]=Et lille program der tager øjebliksbilleder af arbejdspladsen
-Comment[de]=Ein Werkzeug zum Anfertigen von Bildschirmfotos
+Comment[de]=Ein kleines Programm zur Aufnahme von Bildschirmfotos
 Comment[es]=Un programa para tomar instantaneas del escritorio
 Comment[fi]=Sovellus ruutukaappauksen ottamiseen
 Comment[fr]=Un utilitaire pour faire des captures d'écran du bureau
+Comment[hu]=Pillanatfelvétel a munkaasztalról/ablakokról
 Comment[is]=ksnapshot: Forrit til að taka myndir af skjáborðinu
 Comment[it]=Un'applicazione per catturare foto del desktop
 Comment[no]=Et program for å ta øyeblikksfoto av skrivebordet
@@ -21,12 +23,14 @@ Comment[sl]=Programèek za izdelavo posnetkov namizja
 Comment[sv]=Ett program för att ta skärmdumpar av skrivbordet
 BinaryPattern=
 Name=Snapshot
+Name[br]=PakerSkramm
 Name[ca]=Instantània
 Name[da]=Øjebliksbillede
-Name[de]=Schnapschuß
+Name[de]=Schnappschuß
 Name[es]=Instantanea
 Name[fi]=Ruutukaappaaja
 Name[fr]=Capture d'écran
+Name[hu]=Pillanatfelvétel
 Name[no]=Øyeblikksfoto
 Name[pl]=Zrzut ekranu
 Name[pt]=Fotografia
