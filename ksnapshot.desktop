@@ -1,8 +1,25 @@
 [Desktop Entry]
+Encoding=UTF-8
 Comment=Screen Capture Program
+Comment[da]=Skærmindfangningsprogram
+Comment[de]=Bildschirmphotos
+Comment[es]=Programa de captura de pantalla
+Comment[fi]=Ruudunkaappausohjelma
+Comment[fr]=Un logiciel de capture d'écran
+Comment[he]=תוכנית לצילום המסך
+Comment[hu]=Képernyőfelvétel-készítő program
+Comment[lt]=Ekrano kopijos programa
+Comment[lv]=Ekrāna Sagrābšanas Programma
+Comment[pt]=Programa de Captura do Ecrã
+Comment[pt_BR]=Programa de Captura do Ecrã
+Comment[sk]=Zachytenie obrazovky
+Comment[sv]=Ta en skärmdump
+Comment[ta]=¾¢¨Ã ¸¡ôÒ ¿¢Ãø
+Comment[xx]=xx
 BinaryPattern=
 Name=KSnapshot
 Name[af]=k-kiekie
+Name[fr]=kSnapShot
 Name[hu]=KSnapshot képlopó
 Name[lv]=KSnapšots
 Name[sv]=Ksnapshot
