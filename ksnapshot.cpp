@@ -118,9 +118,11 @@ bool KSnapshot::save( const QString &filename )
         }
     }
 
-    QCString type( KImageIO::type(filename).ascii() );
+    QString type( KImageIO::type(filename) );
+    if ( type == QString::null )
+	type = "PNG";
 
-    if ( snapshot.save( filename, type ) ) {
+    if ( snapshot.save( filename, type.ascii() ) ) {
 	QApplication::restoreOverrideCursor();
 	return true;
     }
@@ -128,7 +130,7 @@ bool KSnapshot::save( const QString &filename )
 	kdWarning() << "KSnapshot was unable to save the snapshot" << endl;
 
 	QApplication::restoreOverrideCursor();
-	QString caption = i18n("Error: Unable to save image");
+	QString caption = i18n("Unable to save image");
 	QString text = i18n("KSnapshot was unable to save the image to\n%1.")
 	               .arg(filename);
 	KMessageBox::error(this, text, caption);
@@ -147,7 +149,7 @@ void KSnapshot::slotSave()
 
 void KSnapshot::slotSaveAs()
 {
-    QStringList mimetypes = KImageIO::mimeTypes( KImageIO::Reading );
+    QStringList mimetypes = KImageIO::mimeTypes( KImageIO::Writing );
     KFileDialog dlg( QString::null, mimetypes.join(" "), this, "filedialog", true);
 
     dlg.setSelection( filename );
