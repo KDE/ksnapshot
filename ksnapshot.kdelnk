@@ -9,6 +9,7 @@ Comment[it]=Un'applicazione per catturare foto del desktop
 Comment[no]=Et program for Е ta Ьyeblikksfoto av skrivebordet
 Comment[pt_BR]=Um aplicativo para captura de tela
 Comment[ru]=Программа для снятия снимков с рабочего стола
+Comment[sk]=PomТcka na ukladanie obrazovky
 BinaryPattern=
 Name=Snapshot
 Name[es]=Instantanea
