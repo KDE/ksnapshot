@@ -423,6 +423,7 @@ void KSnapshot::performGrab()
     grabber->releaseMouse();
     grabber->hide();
     grabTimer.stop();
+    XGrabServer( qt_xdisplay());
     if ( mainWidget->mode() == WindowUnderCursor ) {
 	Window root;
 	Window child;
@@ -431,7 +432,8 @@ void KSnapshot::performGrab()
 	XQueryPointer( qt_xdisplay(), qt_xrootwin(), &root, &child,
 		       &rootX, &rootY, &winX, &winY,
 		      &mask);
-
+        if( child == None )
+            child = qt_xrootwin();
 	if( !mainWidget->includeDecorations()) {
 	    Window real_child = findRealWindow( child );
 	    if( real_child != None ) // test just in case
@@ -443,6 +445,8 @@ void KSnapshot::performGrab()
 	unsigned int depth;
 	XGetGeometry( qt_xdisplay(), child, &root, &x, &y,
 		      &w, &h, &border, &depth );
+        w += 2 * border;
+        h += 2 * border;
 
 	Window parent;
 	Window* children;
@@ -484,7 +488,15 @@ void KSnapshot::performGrab()
 
 		//Create the bounding box.
 		QRegion bbox(0, 0, snapshot.width(), snapshot.height());
-
+                
+                if( border > 0 ) {
+                    contents.translate( border, border );
+                    contents += QRegion( 0, 0, border, h );
+                    contents += QRegion( 0, 0, w, border );
+                    contents += QRegion( 0, h - border, w, border );
+                    contents += QRegion( w - border, 0, border, h );
+                }
+                
 		//Get the masked away area.
 		QRegion maskedAway = bbox - contents;
 		QMemArray<QRect> maskedAwayRects = maskedAway.rects();
@@ -504,6 +516,7 @@ void KSnapshot::performGrab()
     else {
 	snapshot = QPixmap::grabWindow( qt_xrootwin() );
     }
+    XUngrabServer( qt_xdisplay());
     updatePreview();
     QApplication::restoreOverrideCursor();
     modified = true;
