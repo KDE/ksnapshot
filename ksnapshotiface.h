@@ -21,6 +21,8 @@ class KSnapshotIface : virtual public DCOPObject
         virtual void slotGrab() = 0;
         /** Save an image **/
         virtual void slotSave() = 0;
+        /** Copy the snapshot to the clipboard. **/
+	virtual void slotCopy() = 0;
         /** Set the timout value **/
         virtual void setTime(int newTime) = 0;
         /** Set the URL to the file to save **/

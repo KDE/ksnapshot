@@ -19,6 +19,7 @@
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
+#include <qclipboard.h>
 #include <klineedit.h>
 #include <knotifyclient.h>
 
@@ -117,6 +118,12 @@ void KSnapshot::slotSave()
 	QApplication::restoreOverrideCursor();
 	autoincFilename();
     }
+}
+
+void KSnapshot::slotCopy()
+{
+  QClipboard *cb = QApplication::clipboard();
+  cb->setPixmap( snapshot );
 }
 
 void KSnapshot::slotGrab()

@@ -19,6 +19,7 @@ public:
   void slotSave();
   void slotGrab();
   void slotHelp();
+  void slotCopy();
   void setTime(int newTime);
   void setURL(QString newURL);
   void setGrabPointer(bool grab);
