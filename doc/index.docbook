@@ -38,7 +38,7 @@ The images can then be saved in a variety of formats.</para>
 
 <para><graphic fileref="ksnapshot.png"></graphic></para>
 
-<sect1>
+<sect1 id="ksnapshot-license">
 <title>KSnapshot License</title>
 
 <para>KSnapshot is copyright Richard J. Moore 1997-1999 (rich@kde.org)</para>
@@ -51,7 +51,7 @@ is free, there is <emphasis>no warranty</emphasis>.</para>
 <chapter id="UsingKSnapshot">
 <title>Using KSnapshot</title>
 
-<sect1>
+<sect1 id="starting-ksnapshot">
 <title>Starting KSnapshot</title>
 
 <para>Currently you can start KSnapshot either by selecting it from the
@@ -64,7 +64,7 @@ before it display's it's window. If this is what you want, you
 can simply enter a filename then press the '<emphasis remap="bf">Save</emphasis>' button.</para>
 </sect1>
 
-<sect1>
+<sect1 id="taking-a-snapshot">
 <title>Taking a snapshot</title>
 
 <para>Taking a snapshot is easy, just press the '<emphasis remap="bf">Grab</emphasis>' button and KSnapshot
@@ -73,7 +73,7 @@ in the KSnapshot window and you can see the image at it's full size
 if you left click on the preview image.</para>
 </sect1>
 
-<sect1>
+<sect1 id="saving-the-image">
 <title>Saving the image</title>
 
 <para>You can save the image you've grabbed by entering a filename then
@@ -82,7 +82,7 @@ remember long paths by pressing the '<emphasis remap="bf">Browse</emphasis>' but
 the format by selecting one from the list below the filename.</para>
 </sect1>
 
-<sect1>
+<sect1 id="controlling-what-the-snapshot-will-contain">
 <title>Controlling what the snapshot will contain</title>
 
 <para>You can control which parts of the screen will appear in the snapshot
