@@ -125,6 +125,12 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     accel->insert(KStdAccel::Print, this, SLOT(slotPrint()));
     accel->insert(KStdAccel::New, this, SLOT(slotGrab()));
 
+    accel->insert( "Quit2", Key_Q, this, SLOT(slotSave()));
+    accel->insert( "Save2", Key_S, this, SLOT(slotSaveAs()));
+    accel->insert( "Print2", Key_P, this, SLOT(slotPrint()));
+    accel->insert( "New2", Key_N, this, SLOT(slotGrab()));
+    accel->insert( "New3", Key_Space, this, SLOT(slotGrab()));
+
     setEscapeButton( User1 );
     connect( this, SIGNAL( user1Clicked() ), SLOT( reject() ) );
 
