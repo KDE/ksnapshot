@@ -1,4 +1,4 @@
-#include <kapp.h>
+#include <kapplication.h>
 #include "ksnapshot.h"
 #include <kimageio.h>
 #include <klocale.h>

@@ -14,7 +14,7 @@
 #include <kmessagebox.h>
 #include <kdebug.h>
 #include <kurlrequester.h>
-#include <kapp.h>
+#include <kapplication.h>
 #include <qimage.h>
 #include <qlabel.h>
 #include <qspinbox.h>
