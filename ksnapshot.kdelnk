@@ -1,8 +1,10 @@
 # KDE Config File
 [KDE Desktop Entry]
 Comment[C]=An applet for taking snapshots of the desktop
+Commnet[cs]=Nástroj pro vytváøení snímkù pracovní plochy
 BinaryPattern=
 Name[C]=KSnapshot
+Name[cs]=KSnapshot
 MimeType=
 Exec=ksnapshot
 TerminalOptions=
