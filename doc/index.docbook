@@ -312,7 +312,7 @@ url="http://lists.kde.org">KDE mailing lists</ulink>.</para>
 </sect1>
 </appendix>
 
-<![ %addindex; [ &kdedocindex; ]]>
+<![ %addindex; [ &documentation.index; ]]>
 </book>
 
 <!--
