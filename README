@@ -2,23 +2,28 @@
 		       =======================
 
 KSnapshot is intended to be an easy to use program for making
-screenshots. Ultimately I would like to see it bound to the 
-"Print Screen" key, as the program takes a snapshot of the desktop on
-startup (before it displays it window) this would provide a simple way
-of making snapshots.
+screenshots. I can be bound to the Print Screen" key, as the program
+takes a snapshot of the desktop on startup (before it displays it
+window), so it's a simple way of of making snapshots.
 
 Currently Implemented features:
 
-- Mini Preview image (click for full size)
+- Mini Preview image
 - Adjustable time delay.
-- Auto hides it's own windows when grabbing.
+- Auto hides it own window when grabbing.
 - Grabs desktop or specific windows
-- Load and save to various formats
-- EPS/PS output
+- Save to various formats
 - Auto increment filename
 
-Todo:
-- Grab regions
 
-Rich.
-rich@kde.org
+The original KSnapshot was implemented by Richard Moore (rich@kde.org)
+for KDE1. Shortly before KDE2 I rewrote most of it to bring it a bit
+closer to KDE2' higher standards.
+
+This version is still not good, but I wanted something that doesn't
+break translations and is still comfortable to old ksnapshot users.
+
+Use Pixie if you want more functionality.
+
+Matthias ( ettrich@kde.org)
+

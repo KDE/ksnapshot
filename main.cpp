@@ -5,24 +5,26 @@
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
 
-static const char *description = 
+static const char *description =
 	I18N_NOOP("KDE Screenshot utility");
 
 int main(int argc, char **argv)
 {
-  KAboutData aboutData( "ksnapshot", I18N_NOOP("KSnapshot"), 
-    KSNAPVERSION, description, KAboutData::License_GPL, 
-    "(c) 1997-1999, Richard J. Moore");
+  KAboutData aboutData( "ksnapshot", I18N_NOOP("KSnapshot"),
+    KSNAPVERSION, description, KAboutData::License_GPL,
+    "(c) 1997-1999, Richard J. Moore, (c) 2000, Matthias Ettrich");
   aboutData.addAuthor("Richard J. Moore",0, "rich@kde.org");
+  aboutData.addAuthor("Matthias Ettrich",0, "ettrich@kde.org");
   KCmdLineArgs::init( argc, argv, &aboutData );
-  
+
   KApplication app;
 
   KImageIO::registerFormats();
 
   // Create top level window
-  KSnapShot *toplevel= new KSnapShot();
-  app.setMainWidget(toplevel);
+  KSnapshot *toplevel= new KSnapshot();
+  toplevel->setCaption( app.makeStdCaption("") );
+ app.setMainWidget(toplevel);
   toplevel->show();
   return app.exec();
 }
