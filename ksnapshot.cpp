@@ -15,6 +15,7 @@
 #include <kdebug.h>
 #include <kurlrequester.h>
 #include <kapplication.h>
+#include <kprinter.h>
 #include <qimage.h>
 #include <qlabel.h>
 #include <qspinbox.h>
@@ -23,6 +24,9 @@
 #include <klineedit.h>
 #include <knotifyclient.h>
 #include <qregexp.h>
+#include <qpainter.h>
+#include <qpaintdevicemetrics.h>
+#include <qimage.h>
 
 #include <stdlib.h>
 
@@ -142,6 +146,23 @@ void KSnapshot::slotGrab()
 void KSnapshot::slotHelp()
 {
     kapp->invokeHelp();
+}
+
+void KSnapshot::slotPrint()
+{
+    KPrinter printer;
+    if (snapshot.width() > snapshot.height())
+        printer.setOrientation(KPrinter::Landscape);
+    else
+        printer.setOrientation(KPrinter::Portrait);
+    if (printer.setup(this))
+    {
+        QPainter painter(&printer);
+        QPaintDeviceMetrics metrics(painter.device());
+
+        QImage img = snapshot.convertToImage().smoothScale(metrics.width(), metrics.height(), QImage::ScaleMin);
+        painter.drawImage((metrics.width()-img.width())/2, (metrics.height()-img.height())/2, img);
+    }
 }
 
 void KSnapshot::closeEvent( QCloseEvent * e )

@@ -1,13 +1,10 @@
-<!DOCTYPE UI><UI>
+<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
 <class>KSnapshotBase</class>
-<widget>
-    <class>QDialog</class>
-    <property stdset="1">
-        <name>name</name>
+<widget class="QDialog">
+    <property name="name">
         <cstring>KSnapshotBase</cstring>
     </property>
-    <property stdset="1">
-        <name>geometry</name>
+    <property name="geometry">
         <rect>
             <x>0</x>
             <y>0</y>
@@ -15,135 +12,121 @@
             <height>290</height>
         </rect>
     </property>
-    <property stdset="1">
-        <name>caption</name>
+    <property name="caption">
         <string>Form2</string>
     </property>
     <vbox>
-        <property stdset="1">
-            <name>margin</name>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <property name="margin">
             <number>11</number>
         </property>
-        <property stdset="1">
-            <name>spacing</name>
+        <property name="spacing">
             <number>6</number>
         </property>
-        <widget>
-            <class>QFrame</class>
-            <property stdset="1">
-                <name>name</name>
+        <widget class="QFrame">
+            <property name="name">
                 <cstring>Frame4</cstring>
             </property>
-            <property stdset="1">
-                <name>frameShadow</name>
-                <enum>Sunken</enum>
-            </property>
-            <property stdset="1">
-                <name>frameShape</name>
+            <property name="frameShape">
                 <enum>Box</enum>
             </property>
+            <property name="frameShadow">
+                <enum>Sunken</enum>
+            </property>
             <hbox>
-                <property stdset="1">
-                    <name>margin</name>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <property name="margin">
                     <number>11</number>
                 </property>
-                <property stdset="1">
-                    <name>spacing</name>
+                <property name="spacing">
                     <number>6</number>
                 </property>
-                <widget>
-                    <class>QLabel</class>
-                    <property stdset="1">
-                        <name>name</name>
+                <widget class="QLabel">
+                    <property name="name">
                         <cstring>imageLabel</cstring>
                     </property>
-                    <property stdset="1">
-                        <name>text</name>
-                        <string>Picture</string>
-                    </property>
-                    <property stdset="1">
-                        <name>sizePolicy</name>
+                    <property name="sizePolicy">
                         <sizepolicy>
                             <hsizetype>1</hsizetype>
                             <vsizetype>1</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
                         </sizepolicy>
                     </property>
-                    <property stdset="1">
-                        <name>minimumSize</name>
+                    <property name="minimumSize">
                         <size>
                             <width>200</width>
                             <height>130</height>
                         </size>
                     </property>
-                    <property stdset="1">
-                        <name>alignment</name>
+                    <property name="text">
+                        <string>Picture</string>
+                    </property>
+                    <property name="alignment">
                         <set>AlignCenter</set>
                     </property>
-                    <property>
-                        <name>hAlign</name>
+                    <property name="hAlign" stdset="0">
                     </property>
                 </widget>
-                <widget>
-                    <class>QLayoutWidget</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>Layout8</cstring>
+                <widget class="QLayoutWidget">
+                    <property name="name">
+                        <cstring>Layout5</cstring>
                     </property>
                     <vbox>
-                        <property stdset="1">
-                            <name>margin</name>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <property name="margin">
                             <number>0</number>
                         </property>
-                        <property stdset="1">
-                            <name>spacing</name>
+                        <property name="spacing">
                             <number>6</number>
                         </property>
-                        <widget>
-                            <class>QPushButton</class>
-                            <property stdset="1">
-                                <name>name</name>
+                        <widget class="QPushButton">
+                            <property name="name">
                                 <cstring>PushButton5</cstring>
                             </property>
-                            <property stdset="1">
-                                <name>text</name>
+                            <property name="text">
                                 <string>&amp;Grab</string>
                             </property>
                         </widget>
+                        <widget class="QPushButton">
+                            <property name="name">
+                                <cstring>PushButton5_2</cstring>
+                            </property>
+                            <property name="text">
+                                <string>&amp;Print</string>
+                            </property>
+                        </widget>
                         <spacer>
-                            <property>
-                                <name>name</name>
+                            <property name="name" stdset="0">
                                 <cstring>Spacer3</cstring>
                             </property>
-                            <property stdset="1">
-                                <name>geometry</name>
-                                <rect>
-                                    <x>31</x>
-                                    <y>35</y>
-                                    <width>20</width>
-                                    <height>60</height>
-                                </rect>
-                            </property>
-                            <property stdset="1">
-                                <name>orientation</name>
+                            <property name="orientation">
                                 <enum>Vertical</enum>
                             </property>
-                            <property stdset="1">
-                                <name>sizeType</name>
+                            <property name="sizeType">
                                 <enum>Expanding</enum>
                             </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>20</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
                         </spacer>
-                        <widget>
-                            <class>QPushButton</class>
-                            <property stdset="1">
-                                <name>name</name>
+                        <widget class="QPushButton">
+                            <property name="name">
                                 <cstring>PushButton3</cstring>
                             </property>
-                            <property stdset="1">
-                                <name>text</name>
+                            <property name="text">
                                 <string>&amp;Save</string>
                             </property>
-                            <property stdset="1">
-                                <name>default</name>
+                            <property name="default">
                                 <bool>true</bool>
                             </property>
                         </widget>
@@ -151,190 +134,150 @@
                 </widget>
             </hbox>
         </widget>
-        <widget>
-            <class>QLayoutWidget</class>
-            <property stdset="1">
-                <name>name</name>
+        <widget class="QLayoutWidget">
+            <property name="name">
                 <cstring>Layout6</cstring>
             </property>
             <grid>
-                <property stdset="1">
-                    <name>margin</name>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <property name="margin">
                     <number>0</number>
                 </property>
-                <property stdset="1">
-                    <name>spacing</name>
+                <property name="spacing">
                     <number>6</number>
                 </property>
-                <widget row="0"  column="1" >
-                    <class>KURLRequester</class>
-                    <property stdset="1">
-                        <name>name</name>
+                <widget class="KURLRequester" row="0" column="1">
+                    <property name="name">
                         <cstring>urlRequester</cstring>
                     </property>
                 </widget>
-                <widget row="1"  column="0" >
-                    <class>QLabel</class>
-                    <property stdset="1">
-                        <name>name</name>
+                <widget class="QLabel" row="1" column="0">
+                    <property name="name">
                         <cstring>TextLabel3</cstring>
                     </property>
-                    <property stdset="1">
-                        <name>text</name>
+                    <property name="text">
                         <string>&amp;Delay:</string>
                     </property>
-                    <property>
-                        <name>buddy</name>
+                    <property name="buddy" stdset="0">
                         <cstring>delaySpin</cstring>
                     </property>
                 </widget>
-                <widget row="0"  column="0" >
-                    <class>QLabel</class>
-                    <property stdset="1">
-                        <name>name</name>
+                <widget class="QLabel" row="0" column="0">
+                    <property name="name">
                         <cstring>TextLabel1</cstring>
                     </property>
-                    <property stdset="1">
-                        <name>text</name>
+                    <property name="text">
                         <string>&amp;Filename:</string>
                     </property>
-                    <property>
-                        <name>buddy</name>
+                    <property name="buddy" stdset="0">
                         <cstring>urlRequester</cstring>
                     </property>
                 </widget>
-                <widget row="1"  column="1" >
-                    <class>QLayoutWidget</class>
-                    <property stdset="1">
-                        <name>name</name>
+                <widget class="QLayoutWidget" row="1" column="1">
+                    <property name="name">
                         <cstring>Layout12</cstring>
                     </property>
                     <hbox>
-                        <property stdset="1">
-                            <name>margin</name>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <property name="margin">
                             <number>0</number>
                         </property>
-                        <property stdset="1">
-                            <name>spacing</name>
+                        <property name="spacing">
                             <number>6</number>
                         </property>
-                        <widget>
-                            <class>QSpinBox</class>
-                            <property stdset="1">
-                                <name>name</name>
+                        <widget class="QSpinBox">
+                            <property name="name">
                                 <cstring>delaySpin</cstring>
                             </property>
                         </widget>
-                        <widget>
-                            <class>QLabel</class>
-                            <property stdset="1">
-                                <name>name</name>
+                        <widget class="QLabel">
+                            <property name="name">
                                 <cstring>TextLabel4</cstring>
                             </property>
-                            <property stdset="1">
-                                <name>text</name>
+                            <property name="text">
                                 <string>seconds.</string>
                             </property>
                         </widget>
                         <spacer>
-                            <property>
-                                <name>name</name>
+                            <property name="name" stdset="0">
                                 <cstring>Spacer1</cstring>
                             </property>
-                            <property stdset="1">
-                                <name>geometry</name>
-                                <rect>
-                                    <x>119</x>
-                                    <y>2</y>
-                                    <width>128</width>
-                                    <height>20</height>
-                                </rect>
-                            </property>
-                            <property stdset="1">
-                                <name>orientation</name>
+                            <property name="orientation">
                                 <enum>Horizontal</enum>
                             </property>
-                            <property stdset="1">
-                                <name>sizeType</name>
+                            <property name="sizeType">
                                 <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>20</width>
+                                    <height>20</height>
+                                </size>
                             </property>
                         </spacer>
                     </hbox>
                 </widget>
             </grid>
         </widget>
-        <widget>
-            <class>QCheckBox</class>
-            <property stdset="1">
-                <name>name</name>
+        <widget class="QCheckBox">
+            <property name="name">
                 <cstring>onlyWindow</cstring>
             </property>
-            <property stdset="1">
-                <name>text</name>
+            <property name="text">
                 <string>&amp;Only grab the window containing the pointer</string>
             </property>
-            <property stdset="1">
-                <name>checked</name>
+            <property name="checked">
                 <bool>true</bool>
             </property>
         </widget>
-        <widget>
-            <class>QLayoutWidget</class>
-            <property stdset="1">
-                <name>name</name>
+        <widget class="QLayoutWidget">
+            <property name="name">
                 <cstring>Layout5</cstring>
             </property>
             <hbox>
-                <property stdset="1">
-                    <name>margin</name>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <property name="margin">
                     <number>0</number>
                 </property>
-                <property stdset="1">
-                    <name>spacing</name>
+                <property name="spacing">
                     <number>6</number>
                 </property>
-                <widget>
-                    <class>QPushButton</class>
-                    <property stdset="1">
-                        <name>name</name>
+                <widget class="QPushButton">
+                    <property name="name">
                         <cstring>helpButton</cstring>
                     </property>
-                    <property stdset="1">
-                        <name>text</name>
+                    <property name="text">
                         <string>&amp;Help</string>
                     </property>
                 </widget>
                 <spacer>
-                    <property>
-                        <name>name</name>
+                    <property name="name" stdset="0">
                         <cstring>Spacer2</cstring>
                     </property>
-                    <property stdset="1">
-                        <name>geometry</name>
-                        <rect>
-                            <x>87</x>
-                            <y>5</y>
-                            <width>136</width>
-                            <height>20</height>
-                        </rect>
-                    </property>
-                    <property stdset="1">
-                        <name>orientation</name>
+                    <property name="orientation">
                         <enum>Horizontal</enum>
                     </property>
-                    <property stdset="1">
-                        <name>sizeType</name>
+                    <property name="sizeType">
                         <enum>Expanding</enum>
                     </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>20</width>
+                            <height>20</height>
+                        </size>
+                    </property>
                 </spacer>
-                <widget>
-                    <class>QPushButton</class>
-                    <property stdset="1">
-                        <name>name</name>
+                <widget class="QPushButton">
+                    <property name="name">
                         <cstring>closeButton</cstring>
                     </property>
-                    <property stdset="1">
-                        <name>text</name>
+                    <property name="text">
                         <string>&amp;Close</string>
                     </property>
                 </widget>
@@ -347,21 +290,23 @@
         <class>KURLRequester</class>
         <header location="global">kurlrequester.h</header>
         <sizehint>
-            <width>400</width>
-            <height>25</height>
+            <width>-1</width>
+            <height>-1</height>
         </sizehint>
         <container>0</container>
         <sizepolicy>
-            <hordata>7</hordata>
+            <hordata>5</hordata>
             <verdata>5</verdata>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
         </sizepolicy>
         <pixmap>image0</pixmap>
+        <signal>textChanged(const QString &amp;)</signal>
     </customwidget>
 </customwidgets>
 <images>
-    <image>
-        <name>image0</name>
-        <data format="XPM.GZ" length="646">789c6dd2c10ac2300c00d07bbf2234b7229d1ddec44f503c0ae2a154410f53d0ed20e2bf6bdb656dd6861dd23d9a66591b0587fd1654235ebded6f0edcd53e419d87ae7b1f4f9b8f906d0bfe012317426a70b07bdc2f3ec77f8ed6b89559061a0343d06a124cc105596482585094bc0ae599b04646c9018926491b2205e140c485cace25755c175d0a967b622ff900b8cc9c7d29af594ea722d589167f813aa852ba07d94b9dce296e883fe7bb163f23896753</data>
+    <image name="image0">
+        <data format="XPM.GZ" length="45">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade6523250004143a55a6b2e0026630c4f</data>
     </image>
 </images>
 <connections>
@@ -389,9 +334,12 @@
         <receiver>KSnapshotBase</receiver>
         <slot>slotHelp()</slot>
     </connection>
-    <slot access="public">slotGrab()</slot>
-    <slot access="public">slotHelp()</slot>
-    <slot access="public">slotSave()</slot>
+    <connection>
+        <sender>PushButton5_2</sender>
+        <signal>clicked()</signal>
+        <receiver>KSnapshotBase</receiver>
+        <slot>slotPrint()</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>PushButton5</tabstop>
@@ -401,4 +349,11 @@
     <tabstop>helpButton</tabstop>
     <tabstop>closeButton</tabstop>
 </tabstops>
+<slots>
+    <slot>slotPrint()</slot>
+    <slot>slotGrab()</slot>
+    <slot>slotHelp()</slot>
+    <slot>slotSave()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
 </UI>
