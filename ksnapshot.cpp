@@ -212,25 +212,28 @@ void KSnapshot::autoincFilename()
     QRegExp numSearch("[0-9]+");
 
     // Does it have a number?
-    int len;
     int start= numSearch.search(name, 0);
-    len = numSearch.matchedLength();
     if (start != -1) {
-	// It has a number
+        // It has a number, increment it
+        int len = numSearch.matchedLength();
 	QString numAsStr= name.mid(start, len);
-	int num= numAsStr.toInt();
-
-	// Increment the number
-	num++;
-	QString newNum;
-	newNum.setNum(num);
-	name.replace(start, len, newNum);
-
-	// Rebuild the path
-	path.append("/");
-	path.append(name);
-        filename = path;
+	name.replace(start, len, QString::number(numAsStr.toInt() + 1));
     }
+    else {
+        // no number
+        start = name.findRev('.');
+        if (start != -1) {
+            // has a . somewhere, e.g. it has an extension
+            name.insert(start, '1');
+        }
+        else {
+            // no extension, just tack it on to the end
+            name += '1';
+        }
+    }
+
+    //Rebuilt the path
+    filename = path + '/' + name;
 }
 
 void KSnapshot::updatePreview()
