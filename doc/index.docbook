@@ -1,16 +1,15 @@
 <!DOCTYPE book PUBLIC  "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN" [
-  <!ENTITY kapp "<application>KSnapshot</application>">
-  <!ENTITY kappname "&kapp;" -- this only *seems* redundant -->
+  <!ENTITY kappname "&ksnapshot;" -- this only *seems* redundant -->
   <!ENTITY % addindex "IGNORE">
-  <!ENTITY % ents PUBLIC "-//KDE//ENTITIES Application-Variable Entities 
-V1.0//EN">
+  <!ENTITY % English "INCLUDE">
+  <!ENTITY % ents PUBLIC "-//KDE//ENTITIES Documentation V1.0//EN">
   %ents;
 ]>
 
-<book lang="en">
+<book lang="&language;">
 
 <bookinfo>
-<title>The &kapp; Handbook</title>
+<title>The &ksnapshot; Handbook</title>
 
 <authorgroup>
 <author>
@@ -31,7 +30,7 @@ V1.0//EN">
 </affiliation>
 </author>
 
-<othercredit>
+<othercredit role="reviewer">
 <firstname>Lauri</firstname>
 <surname>Watts</surname>
 <affiliation>
@@ -40,12 +39,21 @@ V1.0//EN">
 <contrib>Reviewer</contrib>
 </othercredit>
 
-<othercredit>
+<othercredit role="developer">
 <firstname>Richard</firstname>
 <othername>J</othername>
 <surname>Moore</surname>
 <affiliation>
 <address><email>rich@kde.org</email></address>
+</affiliation>
+<contrib>Developer</contrib>
+</othercredit>
+
+<othercredit role="developer">
+<firstname>Matthias</firstname>
+<surname>Ettrich</surname>
+<affiliation>
+<address><email>ettrich@kde.org</email></address>
 </affiliation>
 <contrib>Developer</contrib>
 </othercredit>
@@ -56,13 +64,18 @@ V1.0//EN">
 <holder>Richard J. Moore</holder>
 </copyright>
 
+<copyright>
+<year>2000</year>
+<holder>Matthias Ettrich</holder>
+</copyright>
+
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>23/09/2000</date>
-<releaseinfo>1.0.0</releaseinfo>
+<date>12/12/2000</date>
+<releaseinfo>1.1.0</releaseinfo>
 
 <abstract>
-<para>&kapp; is a simple applet for taking screenshots. It is capable
+<para>&ksnapshot; is a simple applet for taking screenshots. It is capable
 of capturing images of either the whole desktop or just a single
 window.  The images can then be saved in a variety of formats.</para>
 </abstract>
@@ -80,7 +93,7 @@ window.  The images can then be saved in a variety of formats.</para>
 <chapter id="introduction">
 <title>Introduction</title>
 
-<para>&kapp; is a simple applet for taking screenshots. It is capable
+<para>&ksnapshot; is a simple applet for taking screenshots. It is capable
 of capturing images of either the whole desktop or just a single
 window.  The images can then be saved in a variety of formats.</para>
 
@@ -89,124 +102,64 @@ url="http://lists.kde.org">KDE mailing lists</ulink></para>
 
 </chapter>
 
-<chapter id="installation">
-<title>Installation</title>
-
-<sect1 id="getting-kapp">
-<title>How to obtain and install &kapp;</title>
-
-<para>&kapp; is part of the KDE project <ulink
-url="http://www.kde.org">http://www.kde.org</ulink>.</para> 
-
-<para>&kapp; can be found in the kdegraphics package on
-<ulink url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>, the
-main ftp site of the KDE project. </para>
-
-<sect2 id="requirements">
-<title>Requirements</title>
-
-<para>A successful installation of KDE 2.0 is required to use &kapp;.</para>
-
-<para>All required libraries as well as &kapp; itself can be found on
-<ulink url="ftp://ftp.kde.org">The KDE FTP site</ulink> or one of it's
-<ulink url="http://www.kde.org/mirrors.html">mirrors</ulink>.</para>
-
-</sect2>
-
-<sect2 id="compilation-installation">
-<title>Compilation and installation</title>
-
-<para>&kapp; may be installed from the kdegraphics package either by
-installing a binary RPM or by compiling the source package.</para>
-
-<sect3 id="from-rpm">
-<title>Installing from RPMs</title> <para>To install the kdegrahics
-package from a binary RPM you must be logged in as root.  Assuming
-that the name of the RPM is <filename>filename.rpm</filename>, do the
-following at the command prompt:</para>
-
-<screen width="40">
-<prompt>%</prompt> <command>rpm <option>-ivh <replaceable>filename.rpm</replaceable></option></command></screen>
-
-<para>Should you run into problems please report them to the <ulink 
-url="http://lists.kde.org">KDE mailing lists</ulink>.</para>
-</sect3>
-
-<sect3 id="from-source">
-<title>Installing from source</title>
-
-<para>In order to compile and install &kapp on your system, type the following
-in  the base directory of the kdegraphics distribution:</para>
-
-<screen width="40">
-<prompt>%</prompt> <command>./configure</command>
-<prompt>%</prompt> <command>make</command>
-<prompt>%</prompt> <command>make install</command>
-</screen>
-
-<para>Since &kapp; uses <application>autoconf</application> and
-<application>automake</application> you should have not trouble compiling
-it.</para>
-
-<para>Should you run into problems please report them to the <ulink 
-url="http://lists.kde.org">KDE mailing lists</ulink>.</para>
-
-</sect3>
-</sect2>
-</sect1>
-
-</chapter>
-
 <chapter id="using-ksapshot">
-<title>Using &kapp;</title>
+<title>Using &ksnapshot;</title>
 
-<para>This chapter describes the use of &kapp; for capturing screen
+<para>This chapter describes the use of &ksnapshot; for capturing screen
 images.</para>
 
 <sect1 id="starting">
-<title>Starting &kapp;</title>
+<title>Starting &ksnapshot;</title>
 
-<para>&kapp; may be started by one of several ways as described
+<para>&ksnapshot; may be started by one of several ways as described
 below.</para>
 
 <itemizedlist>
 <listitem>
-<para>You may start &kapp; by selecting it from the
-<guisubmenu>Graphics</guisubmenu>graphics> submenu of the
+<para>You may start &ksnapshot; by selecting it from the
+<guisubmenu>Graphics</guisubmenu> submenu of the
 panel.</para></listitem>
 <listitem>
-<para>You may start &kapp; by entering the following at the command
+<para>You may start &ksnapshot; by entering the following at the command
 prompt:</para>
 <screen width="40">
 <prompt>%</prompt> <command>ksnapshot &</command>
 </screen>
 </listitem>
 <listitem><para>The mini command line (invoked with
-<keycombo><keycap>Alt</keycap> <keycap>F2</keycap></keycombo>) may
-also be used to start &kapp;</para></listitem>
+<keycombo action="simul"><keycap>Alt</keycap> <keycap>F2</keycap></keycombo>) may
+also be used to start &ksnapshot;</para></listitem>
 </itemizedlist>
+
+<para>Once &ksnapshot; starts, you will see a window like the following:
+<mediaobject>
+<imageobject>
+<imagedata fileref="window.png" format="PNG">
+</imageobject>
+<textobject><phrase>&ksnapshot; Preview Window</phrase>
+</textobject>
+</mediaobject>
+</para>
 
 </sect1>
 
 <sect1 id="taking-snapshot">
 <title>Taking A Snapshot</title>
 
-<para> &kapp; grabs an image of your entire desktop immediately after it is 
+<para> &ksnapshot; grabs an image of your entire desktop immediately after it is 
 started, but before it displays itself on screen. This allows you to quickly 
 create full-desktop screenshot images.</para>
 
-<para>The snapshot taken by &kapp; is displayed in the preview window,
-which is located in the upper center of the &kapp; application window.
-Below is an example of the preview window from &kapp; Your pre
-view
-will differ depending on what you have displayed on the
-desktop.</para>
+<para>The snapshot taken by &ksnapshot; is displayed in the preview window,
+which is located in the upper center of the &ksnapshot; application window.
+Below is an example of the preview window from &ksnapshot;. Your preview
+will differ depending on what you have displayed on the desktop.</para>
 
 <mediaobject>
 <imageobject>
-<imagedata fileref="snapshot.png" format="png">
+<imagedata fileref="preview.png" format="PNG">
 </imageobject>
-<textobject><phrase>&kapp; Preview Window</phrase>
+<textobject><phrase>&ksnapshot; Preview Window</phrase>
 </textobject>
 </mediaobject>
 
@@ -214,20 +167,22 @@ desktop.</para>
 the <guibutton>Save</guibutton> button. The filename that the snapshot
 will be saved under appears in the <guilabel>Filename</guilabel> box.
 If multiple snapshots are taken, the filename is automatically
-incremented to prevent you from overwriting previous snapshots.</para>
+incremented to prevent you from overwriting previous snapshots. You
+may however edit the filename to anything you wish, including the name
+of a previously saved snapshot. </para>
 
 <para>To take a snapshot of a single window, enable the <guilabel>Only
 grab the window containing the pointer</guilabel> and then click with
 the <mousebutton>left</mousebutton> mouse button in the window you
-wish to capture.  &kapp; will display the new snapshot in the preview
+wish to capture.  &ksnapshot; will display the new snapshot in the preview
 area, at which time you can choose to save the new image (by pressing
 the <guibutton>Save</guibutton>) or to grab a new one, by pressing the
-<guibutton>Grab</guibutton> button.  This is &kapp;'s default
+<guibutton>Grab</guibutton> button.  This is &ksnapshot;'s default
 behavior.</para>
 
 <para>To take a new snapshot of the entire desktop, uncheck the
 <guilabel>Only grab the window containing the pointer</guilabel>
-option.  &kapp; will now capture the entire desktop if you press
+option.  &ksnapshot; will now capture the entire desktop if you press
 <guibutton>Grab</guibutton>.</para>
 
 </sect1>
@@ -243,7 +198,9 @@ arbitrary time delay, in seconds, between the time that you press the
 <guibutton>Grab</guibutton> button and the time that the snapshot is
 taken.</para>  
 
-<para>When a delay time has been set, you do not have to click the mouse button to capture a screenshot.  This enables you to open a drop down menu, and take a picture of it.</para>
+<para>When a delay time has been set, you do not have to click the mouse
+button to capture a screenshot.  This enables you to open a drop down menu,
+and take a picture of it.</para>
 
 </sect2>
 
@@ -251,17 +208,17 @@ taken.</para>
 <title>Buttons</title>
 
 <para>There are two further buttons located at the bottom of the
-&kapp; window.</para>
+&ksnapshot; window. There function is described below.</para>
 
 <variablelist>
 <varlistentry>
 <term><guibutton>Help</guibutton</term>
-<listitem><para>Activates the online manual for &kapp;.</para></listitem>
+<listitem><para>Activates the online manual for &ksnapshot;.</para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><guibutton>Close</guibutton></term>
-<listitem><para>Closes the &kapp; application.</para></listitem>
+<listitem><para>Closes the &ksnapshot; application.</para></listitem>
 </varlistentry>
 </variablelist>
 
@@ -273,17 +230,87 @@ taken.</para>
 
 <title>Credits and License</title>
 
-<para>&kapp;</para>
-
-<para>Program copyright 1997-2000 Richard J. Moore
-<email>rich@kde.org</email></para>
+<para>Program copyright</para>
+<itemizedlist>
+<listitem><para>1997-2000 Richard J. Moore <email>rich@kde.org</email></para></listitem>
+<listitem><para>2000 Matthias Ettrich <email>ettrich@kde.org</email></para></listitem>
+</itemizedlist>
 
 <para>Documentation based on the original, copyright 1997-2000 Richard
 J. Moore <email>rich@kde.org</email></para>
 
-&license-links;
+&underFDL;
+&underGPL;
 
 </chapter>
+
+<appendix id="installation">
+<title>Installation</title>
+
+<sect1 id="getting-kapp">
+<title>How to obtain &ksnapshot;</title>
+
+<para>&ksnapshot; is part of the KDE project <ulink
+url="http://www.kde.org">http://www.kde.org</ulink>.</para>
+
+<para>&ksnapshot; can be found in the kdegraphics package on
+<ulink url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>, the
+main ftp site of the KDE project. </para>
+
+</sect1>
+
+<sect1 id="requirements">
+<title>Requirements</title>
+
+<para>A successful installation of KDE 2.0 is required to use &ksnapshot;.</para>
+
+<para>All required libraries as well as &ksnapshot; itself can be found on
+<ulink url="ftp://ftp.kde.org">The KDE FTP site</ulink> or one of it's
+<ulink url="http://www.kde.org/mirrors.html">mirrors</ulink>.</para>
+
+</sect1>
+
+<sect1 id="compilation-installation">
+<title>Compilation and installation</title>
+
+<para>&ksnapshot; may be installed from the kdegraphics package either by
+installing a binary RPM or by compiling the source package.</para>
+
+<sect2 id="from-rpm">
+<title>Installing from RPMs</title> <para>To install the kdegrahics
+package from a binary RPM you must be logged in as root.  Assuming
+that the name of the RPM is <filename>filename.rpm</filename>, do the
+following at the command prompt:</para>
+
+<screen width="40">
+<prompt>%</prompt> <command>rpm <option>-ivh <replaceable>filename.rpm</replaceable></option></command></screen>
+
+<para>Should you run into problems please report them to the <ulink
+url="http://lists.kde.org">KDE mailing lists</ulink>.</para>
+</sect2>
+
+<sect2 id="from-source">
+<title>Installing from source</title>
+
+<para>In order to compile and install &ksnapshot; on your system, type the following
+in  the base directory of the kdegraphics distribution:</para>
+
+<screen width="40">
+<prompt>%</prompt> <command>./configure</command>
+<prompt>%</prompt> <command>make</command>
+<prompt>%</prompt> <command>make install</command>
+</screen>
+
+<para>Since &ksnapshot; uses <application>autoconf</application> and
+<application>automake</application> you should not have trouble compiling
+it.</para>
+
+<para>Should you run into problems please report them to the <ulink
+url="http://lists.kde.org">KDE mailing lists</ulink>.</para>
+
+</sect2>
+</sect1>
+</appendix>
 
 <![ %addindex; [ &kdedocindex; ]]>
 </book>
