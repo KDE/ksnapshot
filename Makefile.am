@@ -1,4 +1,3 @@
-SUBDIRS = doc
 bin_PROGRAMS= ksnapshot
 
 INCLUDES = -DKSNAPVERSION="\"0.2.7\"" $(all_includes) 
