@@ -379,8 +379,12 @@ void KSnapshot::performGrab()
 	    int count, order;
 	    XRectangle* rects = XShapeGetRectangles( qt_xdisplay(), child,
 	                                             ShapeBounding, &count, &order);
+	    //The ShapeBounding region is the outermost shape of the window;
+	    //ShapeBounding - ShapeClipping is defined to be the border.
+	    //Since the border area is part of the window, we use bounding
+	    // to limit our work region
 	    if (rects) {
-		//Create a region from the rectangles the window contents.
+		//Create a QRegion from the rectangles describing the bounding mask.
 		QRegion contents;
 		for (int pos = 0; pos < count; pos++)
 		    contents += QRegion(rects[pos].x, rects[pos].y,
@@ -390,10 +394,11 @@ void KSnapshot::performGrab()
 		//Create the bounding box.
 		QRegion bbox(0, 0, snapshot.width(), snapshot.height());
 
-		//Get the masked away are
+		//Get the masked away area.
 		QRegion maskedAway = bbox - contents;
 		QMemArray<QRect> maskedAwayRects = maskedAway.rects();
 
+		//Fill the masked away area with black.
 		QPainter p(&snapshot);
 		for (int pos = 0; pos < maskedAwayRects.count(); pos++)
 		    p.fillRect(maskedAwayRects[pos], Qt::black);
