@@ -1,11 +1,13 @@
 # KDE Config File
 [KDE Desktop Entry]
-Comment[C]=An applet for taking snapshots of the desktop
+Comment=An applet for taking snapshots of the desktop
+Comment[no]=Et program for å ta øyeblikksfoto av skrivebordet
 Comment[cs]=Nástroj pro vytváøení snímkù pracovní plochy
 Comment[fi]=Sovellus ruutukaappauksen ottamiseen
 BinaryPattern=
-Name[C]=KSnapshot
-Name[cs]=KSnapshot
+Name=Snapshot
+Name[no]=Øyeblikksfoto
+Name[cs]=Snapshot
 MimeType=
 Exec=ksnapshot
 TerminalOptions=
