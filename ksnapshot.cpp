@@ -14,6 +14,7 @@
 #include <qfiledlg.h>
 #include <qwmatrix.h>
 #include <qpainter.h>
+#include <stdlib.h>
 #include <qmsgbox.h>
 #include <qregexp.h>
 #include <qstring.h>
