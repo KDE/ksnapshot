@@ -1,0 +1,259 @@
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN">
+<book lang="en">
+<bookinfo>
+<title> The KSnapshot Handbook</title>
+<authorgroup>
+<author>
+<firstname>Richard</firstname>
+<othername>J.</othername>
+<surname>Moore</surname>
+<affiliation><address><email><ulink url="mailto:rich@kde.org">rich@kde.org</ulink></email></address></affiliation>
+</author>
+</authorgroup>
+<date>Version 0.2.7, 13. June 1999</date>
+<releaseinfo><!-- information about this particular version --></releaseinfo>
+<revhistory>
+<revision>
+<revnumber></revnumber>
+<date></date>
+</revision>
+</revhistory>
+<abstract>
+<para>This Handbook describes KSnapshot Version 0.2.7</para>
+<para>Handbook of KSnapshot</para><!-- Merge this with the previous paragraph; it comes from <META NAME="description" CONTENT="..."> --></abstract>
+<keywordset>
+<keyword>KDE</keyword>
+<keyword>graphics</keyword>
+<keyword>snapshot</keyword>
+<keyword>screenshot</keyword>
+</keywordset>
+</bookinfo>
+
+<chapter id="Introduction">
+<title>Introduction</title>
+
+<para>KSnapshot is a simple applet for taking screenshots. It is capable of
+capturing images of either the whole desktop or just a single window.
+The images can then be saved in a variety of formats.</para>
+
+<para><graphic fileref="ksnapshot.png"></graphic></para>
+
+<sect1>
+<title>KSnapshot License</title>
+
+<para>KSnapshot is copyright Richard J. Moore 1997-1998 (rich@kde.org)</para>
+
+<para>KSnapshot is released under the terms of the LGPL. As KSnapshot
+is free, there is <emphasis>no warranty</emphasis>.</para>
+</sect1>
+</chapter>
+
+<chapter id="UsingKSnapshot">
+<title>Using KSnapshot</title>
+
+<sect1>
+<title>Starting KSnapshot</title>
+
+<para>Currently you can start KSnapshot either by selecting it from the
+'Graphics' menu of kpanel or by typing <literal remap="tt">ksnapshot</literal> at the
+command line. Kwm's mini command line (invoked with <emphasis remap="bf">Alt-F2</emphasis>) is
+useful for this.</para>
+
+<para>When KSnapshot is first executed it captures an image of the desktop
+before it display's it's window. If this is what you want, you
+can simply enter a filename then press the '<emphasis remap="bf">Save</emphasis>' button.</para>
+</sect1>
+
+<sect1>
+<title>Taking a snapshot</title>
+
+<para>Taking a snapshot is easy, just press the '<emphasis remap="bf">Grab</emphasis>' button and KSnapshot
+will capture an image. A small preview of the captured image is shown
+in the KSnapshot window and you can see the image at it's full size
+if you left click on the preview image.</para>
+</sect1>
+
+<sect1>
+<title>Saving the image</title>
+
+<para>You can save the image you've grabbed by entering a filename then
+pressing the '<emphasis remap="bf">Save</emphasis>' button. You can set the filename without having to
+remember long paths by pressing the '<emphasis remap="bf">Browse</emphasis>' button. You can specify
+the format by selecting one from the list below the filename.</para>
+</sect1>
+
+<sect1>
+<title>Controlling what the snapshot will contain</title>
+
+<para>You can control which parts of the screen will appear in the snapshot
+using the check boxes in the '<emphasis remap="bf">Options</emphasis>' group. The options available are
+as follows:
+<variablelist>
+<varlistentry>
+<term>Auto Raise</term>
+<listitem>
+<para>If this box is checked then KSnapshot will bring the selected window
+to the front of the desktop before grabbing the image. This option has
+no effect if you are grabbing the whole desktop.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>Hide KSnapshot window</term>
+<listitem>
+<para>If this box is checked then KSnapshot will hide itself as soon as you
+press the 'Grab' button. It will remain hidden until the snapshot has
+been taken.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>Only grab the window containing the cursor</term>
+<listitem>
+<para>If this box is checked then KSnapshot will grab an image of the window
+which the mouse cursor is currently pointing to, if it is not checked
+the whole desktop is grabbed.</para>
+</listitem>
+</varlistentry>
+</variablelist>
+</para>
+</sect1>
+</chapter>
+
+<chapter id="Whatsnew">
+<title>What's new?</title>
+
+<para><variablelist>
+<varlistentry>
+<term>Version 0.2.7</term>
+<listitem>
+<para><itemizedlist>
+<listitem>
+<para>Fixed the bug identified in version 0.2.6 (finally).</para>
+</listitem>
+<listitem>
+<para>Tested with Qt 1.40 and KDE 1.0.</para>
+</listitem>
+</itemizedlist>
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>Version 0.2.6</term>
+<listitem>
+<para><itemizedlist>
+<listitem>
+<para>Added postscript/encapsulated postscript support. This code was 
+written by Sven Wiegand
+<ulink url="mailto:SWiegand@tfh-berlin.de">&lt;SWiegand@tfh-berlin.de&gt;</ulink>
+Thanks Sven!</para>
+</listitem>
+<listitem>
+<para>I've converted the postscript code to a QImageIO handler so any
+other KDE applications that want to write images as PS or EPS can use it.
+</para>
+</listitem>
+<listitem>
+<para>Bugs
+There is currently a reproducible bug that if you select the root
+window in `Only grab a window' mode then ksnapshot exits. I *am* testing
+for this, but it isn't working, if anyone can see what's wrong please let
+me know. Grep the sources for THISISABUG to find the problem. This bug is
+now fixed.</para>
+</listitem>
+</itemizedlist>
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>Version 0.2.5</term>
+<listitem>
+<para><itemizedlist>
+<listitem>
+<para>Updated the configure to the latest version (it was causing some
+problems).</para>
+</listitem>
+</itemizedlist>
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>Version 0.2.4</term>
+<listitem>
+<para><itemizedlist>
+<listitem>
+<para>Added an error message when saving fails</para>
+</listitem>
+</itemizedlist>
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>Version 0.2.3</term>
+<listitem>
+<para><itemizedlist>
+<listitem>
+<para>Fixed WM close of preview window</para>
+</listitem>
+</itemizedlist>
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>Version 0.2.2</term>
+<listitem>
+<para><itemizedlist>
+<listitem>
+<para>Fixed autohide bug</para>
+</listitem>
+<listitem>
+<para>Fixed bug with filename when changing format</para>
+</listitem>
+</itemizedlist>
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>Version 0.2.1</term>
+<listitem>
+<para><itemizedlist>
+<listitem>
+<para>Fixed a problem with writing GIF files</para>
+</listitem>
+<listitem>
+<para>Made GIF the default format</para>
+</listitem>
+<listitem>
+<para>Fixed a problem that occured when you tried to grab the KSnapshot window 
+when auto-hide was enabled.</para>
+</listitem>
+<listitem>
+<para>Changed the way the initial filename is chosen</para>
+</listitem>
+<listitem>
+<para>Stopped 'Browse' starting in the wrong directory</para>
+</listitem>
+</itemizedlist>
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>Version 0.2</term>
+<listitem>
+<para><itemizedlist>
+<listitem>
+<para>Added support for multiple formats</para>
+</listitem>
+</itemizedlist>
+</para>
+</listitem>
+</varlistentry>
+</variablelist>
+</para>
+</chapter>
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->
