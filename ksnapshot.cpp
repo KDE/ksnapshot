@@ -63,7 +63,7 @@
 KSnapshot::KSnapshot(QWidget *parent, const char *name)
   : DCOPObject("interface"), 
     KDialogBase(parent, name, true, QString::null, Help|User1, User1, 
-    true, KGuiItem( i18n( "&Quit" ), "exit" ) )
+    true, KStdGuiItem::quit() )
 {
     grabber = new QWidget( 0, 0, WStyle_Customize | WX11BypassWM );
     grabber->move( -1000, -1000 );
