@@ -25,5 +25,5 @@ uninstall-local:
 	-rm -f $(kde_minidir)/ksnapshot.xpm
 
 messages:
-	$(XGETTEXT) -C -ki18n -ktranslate -x $(includedir)/kde.pot $(ksnapshot_SOURCES) && mv messages.po ../po/ksnapshot.pot
+	$(XGETTEXT) -C -ktranslate -ki18n -x $(includedir)/kde.pot $(ksnapshot_SOURCES) && mv messages.po ../po/ksnapshot.pot
 
