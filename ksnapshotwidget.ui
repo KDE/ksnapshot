@@ -57,7 +57,7 @@ The image can be dragged to another application or document to copy the full scr
                 <cstring>btnSave</cstring>
             </property>
             <property name="text">
-                <string>&amp;Save...</string>
+                <string>&amp;Save As...</string>
             </property>
             <property name="iconSet">
                 <iconset>"filesave"</iconset>
