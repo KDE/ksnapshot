@@ -38,10 +38,10 @@ public slots:
   void autoRaiseToggledSlot();
   void hideSelfToggledSlot();
   void grabWindowToggledSlot();
-  void filenameChangedSlot(const char *);
-  void formatChangedSlot(const char *);
+  void filenameChangedSlot(const QString&);
+  void formatChangedSlot(const QString&);
   void browsePressedSlot();
-  void delayChangedSlot(const char *text);
+  void delayChangedSlot(const QString&);
   void helpSlot();
   void closeSlot();
   void showPreviewSlot();

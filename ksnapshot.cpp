@@ -254,12 +254,12 @@ void KSnapShot::buildGui()
   connect(closeButton, SIGNAL(clicked()), this, SLOT(closeSlot()));
   connect(saveButton, SIGNAL(clicked()), this, SLOT(saveSlot()));
   connect(browseButton, SIGNAL(clicked()), this, SLOT(browsePressedSlot()));
-  connect(formatBox, SIGNAL(activated(const char *)), this, SLOT(formatChangedSlot(const char *)));
+  connect(formatBox, SIGNAL(activated(const QString&)), this, SLOT(formatChangedSlot(const QString&)));
   connect(hideSelfCheck, SIGNAL(toggled(bool)), this, SLOT(hideSelfToggledSlot()));
   connect(autoRaiseCheck, SIGNAL(toggled(bool)), this, SLOT(autoRaiseToggledSlot()));
   connect(grabWindowCheck, SIGNAL(toggled(bool)), this, SLOT(grabWindowToggledSlot()));
-  connect(delayEdit, SIGNAL(textChanged(const char *)), this, SLOT(delayChangedSlot(const char *)));
-  connect(filenameEdit, SIGNAL(textChanged(const char *)), this, SLOT(filenameChangedSlot(const char *)));
+  connect(delayEdit, SIGNAL(textChanged(const QString&)), this, SLOT(delayChangedSlot(const QString&)));
+  connect(filenameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(filenameChangedSlot(const QString&)));
   connect(previewButton, SIGNAL(clicked()), this, SLOT(showPreviewSlot()));
 }
 
@@ -410,19 +410,19 @@ void KSnapShot::grabWindowToggledSlot()
   grabDesktop_= !grabDesktop_;
 }
 
-void KSnapShot::filenameChangedSlot(const char *text)
+void KSnapShot::filenameChangedSlot(const QString& text)
 {
   filename_= text;
 }
 
-void KSnapShot::delayChangedSlot(const char *text)
+void KSnapShot::delayChangedSlot(const QString& text)
 {
   QString s;
   s= text;
   delay_= s.toInt();
 }
 
-void KSnapShot::formatChangedSlot(const char *format)
+void KSnapShot::formatChangedSlot(const QString& format)
 {
   QFileInfo fi(filename_);
 
