@@ -57,7 +57,7 @@ protected:
   QHBoxLayout *titleLayout;
   QLabel *hintLabel;
   QVBoxLayout *infoLayout;
-  KButton *previewButton;
+  QToolButton *previewButton;
   QLabel *filenameLabel;
   QLineEdit *filenameEdit;
   QPushButton *browseButton;

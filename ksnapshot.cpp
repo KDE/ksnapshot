@@ -108,7 +108,7 @@ void KSnapShot::buildGui()
   // -------
   // |  |  |
   // -------
-  previewButton= new KButton(this);
+  previewButton= new QToolButton(this);
   // Grab the root window to go inside
   performGrab();
 
