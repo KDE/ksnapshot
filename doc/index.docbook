@@ -1,10 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.1-Based Variant V1.0//EN" "dtd/kdex.dtd" [
   <!ENTITY kappname "&ksnapshot;">
+  <!ENTITY package "kdegraphics">
   <!ENTITY % addindex "IGNORE">
   <!ENTITY % English "INCLUDE" > <!-- change language only here -->
-  
-  
 ]>
 
 <book lang="&language;">
@@ -35,7 +34,7 @@
 <firstname>Lauri</firstname>
 <surname>Watts</surname>
 <affiliation>
-<address><email>vampyr@atconnex.net</email></address>
+<address><email>lauri@kde.org</email></address>
 </affiliation>
 <contrib>Reviewer</contrib>
 </othercredit>
@@ -130,7 +129,7 @@ prompt:</para>
 </screen>
 </listitem>
 <listitem><para>The mini command line (invoked with
-<keycombo action="simul"><keycap>Alt</keycap> <keycap>F2</keycap></keycombo>) may
+<keycombo action="simul">&Alt;<keycap>F2</keycap></keycombo>) may
 also be used to start &ksnapshot;</para></listitem>
 </itemizedlist>
 
@@ -254,63 +253,43 @@ J. Moore <email>rich@kde.org</email></para>
 <sect1 id="getting-kapp">
 <title>How to obtain &ksnapshot;</title>
 
-<para>&ksnapshot; is part of the KDE project <ulink
-url="http://www.kde.org">http://www.kde.org</ulink>.</para>
-
-<para>&ksnapshot; can be found in the kdegraphics package on
-<ulink url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>, the
-main ftp site of the KDE project. </para>
+&install.intro.documentation;
 
 </sect1>
 
 <sect1 id="requirements">
 <title>Requirements</title>
 
-<para>A successful installation of KDE 2.0 is required to use &ksnapshot;.</para>
+<para>A successful installation of &kde; 3.0 is required to use &ksnapshot;.</para>
 
-<para>All required libraries as well as &ksnapshot; itself can be found on
-<ulink url="ftp://ftp.kde.org">The KDE FTP site</ulink> or one of it's
-<ulink url="http://www.kde.org/mirrors.html">mirrors</ulink>.</para>
+<para>All required libraries as well as &ksnapshot; itself can be
+found on &kde-ftp; or one of it's <ulink
+url="http://www.kde.org/mirrors.html">mirrors</ulink>.</para>
 
 </sect1>
 
 <sect1 id="compilation-installation">
 <title>Compilation and Installation</title>
 
-<para>&ksnapshot; may be installed from the kdegraphics package either by
+<para>&ksnapshot; may be installed from the &package; package either by
 installing a binary RPM or by compiling the source package.</para>
 
 <sect2 id="from-rpm">
-<title>Installing from RPMs</title> <para>To install the kdegrahics
+<title>Installing from RPMs</title> <para>To install the &package;
 package from a binary RPM you must be logged in as root.  Assuming
 that the name of the RPM is <filename>filename.rpm</filename>, do the
 following at the command prompt:</para>
 
-<screen width="40">
-<prompt>%</prompt> <command>rpm <option>-ivh <replaceable>filename.rpm</replaceable></option></command></screen>
+<screen width="40"><prompt>%</prompt> <userinput><command>rpm <option>-ivh <replaceable>filename.rpm</replaceable></option></command></userinput></screen>
 
 <para>Should you run into problems please report them to the <ulink
-url="http://lists.kde.org">KDE mailing lists</ulink>.</para>
+url="http://lists.kde.org">&kde; mailing lists</ulink>.</para>
 </sect2>
 
 <sect2 id="from-source">
 <title>Installing from source</title>
 
-<para>In order to compile and install &ksnapshot; on your system, type the following
-in  the base directory of the kdegraphics distribution:</para>
-
-<screen width="40">
-<prompt>%</prompt> <command>./configure</command>
-<prompt>%</prompt> <command>make</command>
-<prompt>%</prompt> <command>make install</command>
-</screen>
-
-<para>Since &ksnapshot; uses <application>autoconf</application> and
-<application>automake</application> you should not have trouble compiling
-it.</para>
-
-<para>Should you run into problems please report them to the <ulink
-url="http://lists.kde.org">KDE mailing lists</ulink>.</para>
+&install.compile.documentation;
 
 </sect2>
 </sect1>
