@@ -66,7 +66,7 @@ The image can be dragged to another application or document to copy the full scr
                 <iconset>"filesave"</iconset>
             </property>
             <property name="whatsThis" stdset="0">
-                <string>Click this button to save the current snapshot. To quickly save the snapshot without showing the file dialog, press Control+Shift+S. The filename is automatically incremented after each save.</string>
+                <string>Click this button to save the current snapshot. To quickly save the snapshot without showing the file dialog, press Ctrl+Shift+S. The filename is automatically incremented after each save.</string>
             </property>
         </widget>
         <spacer row="1" column="3">
