@@ -1,0 +1,24 @@
+		       KSnapshot Release Notes
+		       =======================
+
+KSnapshot is intended to be an easy to use program for making
+screenshots. Ultimately I would like to see it bound to the 
+"Print Screen" key, as the program takes a snapshot of the desktop on
+startup (before it displays it window) this would provide a simple way
+of making snapshots.
+
+Currently Implemented features:
+
+- Mini Preview image (click for full size)
+- Adjustable time delay.
+- Auto hides it's own windows when grabbing.
+- Grabs desktop or specific windows
+- Load and save to various formats
+- New! EPS/PS output
+
+Todo:
+- Auto increment filename
+- Grab regions
+
+Rich.
+rich@kde.org

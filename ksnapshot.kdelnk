@@ -1,0 +1,12 @@
+# KDE Config File
+[KDE Desktop Entry]
+Comment[C]=An applet for taking snapshots of the desktop
+BinaryPattern=
+Name[C]=KSnapshot
+MimeType=
+Exec=ksnapshot
+TerminalOptions=
+Icon=ksnapshot.xpm
+Path=
+Type=Application
+Terminal=0

@@ -1,0 +1,89 @@
+<HTML>
+<HEAD>
+<TITLE>KSnapshot Release Notes</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<H1>KSnapshot Release Notes</H1>
+<HR>
+<P>
+
+<UL>
+<LI><B>Version 0.2.7</B><BR>
+<UL>
+<LI>Fixed the bug identified in version 0.2.6 (finally).
+<LI>Tested with Qt 1.40 and KDE 1.0.
+</UL>
+</UL>
+
+<UL>
+<LI><B>Version 0.2.6</B><BR>
+<UL>
+<LI>Added postscript/encapsulated postscript support. This code was 
+written by Sven Wiegand
+&lt;<A HREF="mailto:SWiegand@tfh-berlin.de">SWiegand@tfh-berlin.de</A>&gt;
+Thanks Sven!
+<LI>I've converted the postscript code to a QImageIO handler so any
+other KDE applications that want to write images as PS or EPS can use it.
+<BR>
+<LI><B>Bugs</B><BR>
+There is currently a reproducible bug that if you select the root
+window in `Only grab a window' mode then ksnapshot exits. I *am* testing
+for this, but it isn't working, if anyone can see what's wrong please let
+me know. Grep the sources for THISISABUG to find the problem. [This bug is
+now fixed].
+</UL>
+</UL>
+
+<UL>
+<LI><B>Version 0.2.5</B><BR>
+<UL>
+<LI>Updated the configure to the latest version (it was causing some
+problems).
+</UL>
+</UL>
+
+
+<UL>
+<LI><B>Version 0.2.4</B><BR>
+<UL>
+<LI>Added an error message when saving fails
+</UL>
+</UL>
+
+<UL>
+<LI><B>Version 0.2.3</B><BR>
+<UL>
+<LI>Fixed WM close of preview window
+</UL>
+</UL>
+
+<UL>
+<LI><B>Version 0.2.2</B><BR>
+<UL>
+<LI>Fixed autohide bug
+<LI>Fixed bug with filename when changing format
+</UL>
+</UL>
+
+<UL>
+<LI><B>Version 0.2.1</B><BR>
+<UL>
+<LI>Fixed a problem with writing GIF files
+<LI>Made GIF the default format
+<LI>Fixed a problem that occured when you tried to grab the KSnapshot window 
+when auto-hide was enabled.
+<LI>Changed the way the initial filename is chosen
+<LI>Stopped 'Browse' starting in the wrong directory
+</UL>
+</UL>
+
+<UL>
+<LI><B>Version 0.2</B><BR>
+<UL>
+<LI>Added support for multiple formats
+</UL>
+</UL>
+
+</P>
+</BODY>
+</HTML>
