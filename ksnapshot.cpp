@@ -122,7 +122,7 @@ bool KSnapshot::save( const QString &filename )
     }
 
     QString type( KImageIO::type(filename) );
-    if ( type == QString::null )
+    if ( type.isNull() )
 	type = "PNG";
 
     if ( snapshot.save( filename, type.ascii() ) ) {
