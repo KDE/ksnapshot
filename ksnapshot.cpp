@@ -521,7 +521,7 @@ void KSnapShot::saveSlot()
     int choice= -1;
 
     text = overwriteMessage.arg(filename_);
-    choice= QMessageBox::warning(this, overwriteCaption, text, overwriteButtonLabel, cancelButtonLabel);
+    choice= KMessageBox::warning(this, text, overwriteCaption, overwriteButtonLabel, cancelButtonLabel);
 
     // If the user chose to cancel
     if (choice != 0)
