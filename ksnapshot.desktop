@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 GenericName=Screen Capture Program
-GenericName[af]=skerm vang program
+GenericName[af]=Skerm Vang Program
 GenericName[ar]=برنامج تصوير الشاشة
 GenericName[bg]=Предпазител на екрана
 GenericName[bs]=Program za "hvatanje" slike
@@ -47,7 +47,7 @@ GenericName[zh_TW]=畫面擷取程式
 GenericName[zu]=Iprogremu Yokubamba Isikrini
 BinaryPattern=
 Name=KSnapshot
-Name[af]=k-kiekie
+Name[af]=K-kiekie
 Name[bg]=KМоменталнаСнимка 
 Name[eo]=Ekranfotilo
 Name[fr]=KSnapShot
