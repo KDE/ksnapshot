@@ -5,7 +5,7 @@ INCLUDES = -DKSNAPVERSION="\"0.4.0\"" $(all_includes)
 ksnapshot_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 ksnapshot_LDADD = $(LIB_KIMGIO) $(LIB_KFILE)
 
-ksnapshot_SOURCES = eps.cpp main.cpp ksnapshot.cpp preview.cpp
+ksnapshot_SOURCES = main.cpp ksnapshot.cpp preview.cpp
 
 ksnapshot_METASOURCES = USE_AUTOMOC
 
