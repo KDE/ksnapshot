@@ -21,6 +21,8 @@
 #include <kimageio.h>
 #include <kfiledialog.h>
 #include <kmessagebox.h>
+#include <kdebug.h>
+
 #include <stdlib.h>
 
 #include "ksnapshot.h"
@@ -529,8 +531,8 @@ void KSnapShot::saveSlot()
   
   if (!cancelled) {
     // Cannot save (permissions error?)
-    if (!(snapshot_.save(filename_, KImageIO::type(filename_)))) {
-      warning("KSnapshot was unable to save the snapshot");
+    if (!(snapshot_.save(filename_, KImageIO::type(filename_).ascii()))) {
+      kdWarning() << "KSnapshot was unable to save the snapshot" << endl;
       QString caption = i18n("Error: Unable to save image");
       QString text = i18n("KSnapshot was unable to save the image to\n%1.")
 	.arg(filename_);
