@@ -60,7 +60,7 @@ class KSnapshot : public KDialogBase, virtual public KSnapshotIface
   Q_OBJECT
 
 public:
-  KSnapshot(QWidget *parent= 0, const char *name= 0);
+  KSnapshot(QWidget *parent= 0, const char *name= 0, bool grabCurrent=false);
   ~KSnapshot();
 
   enum CaptureMode { FullScreen=0, WindowUnderCursor=1, Region=2 };

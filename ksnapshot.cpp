@@ -60,7 +60,7 @@
 
 #define kApp KApplication::kApplication()
 
-KSnapshot::KSnapshot(QWidget *parent, const char *name)
+KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
   : DCOPObject("interface"), 
     KDialogBase(parent, name, true, QString::null, Help|User1, User1, 
     true, KStdGuiItem::quit() )
@@ -88,7 +88,15 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
 
     grabber->show();
     grabber->grabMouse( waitCursor );
-    snapshot = QPixmap::grabWindow( qt_xrootwin() );
+
+    if ( !grabCurrent )
+	snapshot = QPixmap::grabWindow( qt_xrootwin() );
+    else {
+	mainWidget->setMode( WindowUnderCursor );
+	mainWidget->setIncludeDecorations( true );
+	performGrab();
+    }
+
     updatePreview();
     grabber->releaseMouse();
     grabber->hide();
