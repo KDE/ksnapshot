@@ -14,10 +14,10 @@ Currently Implemented features:
 - Auto hides it's own windows when grabbing.
 - Grabs desktop or specific windows
 - Load and save to various formats
-- New! EPS/PS output
+- EPS/PS output
+- Auto increment filename
 
 Todo:
-- Auto increment filename
 - Grab regions
 
 Rich.

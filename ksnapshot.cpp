@@ -1,7 +1,7 @@
 /*
  * KSnapshot
  *
- * (c) Richard J. Moore 1997-1998
+ * (c) Richard J. Moore 1997-1999
  *
  * Released under the LGPL see file LICENSE for details.
  */
@@ -11,6 +11,7 @@
 #include <qcombo.h>
 #include <qradiobt.h>
 #include <qfiledlg.h>
+#include <qmsgbox.h>
 #include <qpainter.h>
 #include <qregexp.h>
 #include <qstring.h>
@@ -30,10 +31,11 @@ KSnapShot::KSnapShot(QWidget *parent, const char *name)
   grabbing_= false;
   hideSelf_= true;
   autoRaise_= true;
-  grabDesktop_= false;
-  grabWindow_= true;
-  delay_= 1;
+  grabDesktop_= true;
+  grabWindow_= false;
+  delay_= 0;
   timer_= 0;
+  repeat_= 0;
   filename_= QDir::currentDirPath();
 
   filename_.append("/");
@@ -41,15 +43,57 @@ KSnapShot::KSnapShot(QWidget *parent, const char *name)
   filename_.append(i18n("snapshot"));
   filename_.append("01.png");
 
+  // Make sure the name is not already being used
+  QFileInfo fi(filename_);
+
+  while(fi.exists()) {
+    autoincFilename();
+    fi.setFile(filename_);
+  }
+
   previewWindow= 0;
   buildGui();
-  resize(480, 300);
+
+  delayEdit->setText("2");
+
+  resize(400, 300);
 }
 
 KSnapShot::~KSnapShot()
 {
   if (previewWindow != 0)
     previewWindow->close();
+}
+
+void KSnapShot::autoincFilename()
+{
+  // Extract the filename from the path
+  QFileInfo fi(filename_);
+  QString path= fi.dirPath();
+  QString name= fi.fileName();
+
+  // If the name contains a number then increment it
+  QRegExp numSearch("[0-9]+");
+
+  // Does it have a number?
+  int len;
+  int start= numSearch.match(name, 0, &len);
+  if (start != -1) {
+    // It has a number
+    QString numAsStr= name.mid(start, len);
+    int num= numAsStr.toInt();
+
+    // Increment the number
+    num++;
+    QString newNum;
+    newNum.setNum(num);
+    name.replace(start, len, newNum);
+
+    // Rebuild the path
+    path.append("/");
+    path.append(name);
+    filename_= path;
+  }
 }
 
 void KSnapShot::resizeEvent(QResizeEvent *)
@@ -80,23 +124,16 @@ void KSnapShot::buildGui()
   // -------
   infoLayout= new QVBoxLayout();
   mainLayout->addLayout(infoLayout, 0, 0);
-  titleLayout= new QHBoxLayout();
-  infoLayout->addLayout(titleLayout);
-
-  titleLabel= new QLabel("KSnapshot", this);
-  titleLabel->setFont(titleFont);
-  titleLabel->setAlignment(AlignCenter);
-  titleLabel->adjustSize();
-  titleLabel->setMinimumSize(titleLabel->size());
-  titleLayout->addWidget(titleLabel);
 
   QString about;
   about.sprintf(i18n(
-		     "Press the `Grab' button, then click\n"
-		     "on a window to grab it.\n\n"
-		     "KSnapshot is copyright Richard Moore (rich@kde.org)\n"
-		     "and is released under LGPL\n\n"
-		     "Version: %s"), KSNAPVERSION);
+		     "<qt><center><h1>KSnapshot</h1>"
+		     "<p>Press the `Grab' button, the window under "
+		     "the mouse cursor will be grabbed after the "
+		     "specified delay.</P>"
+		     "<p><font size=3>KSnapshot is copyright Richard Moore (rich@kde.org) "
+		     "and is released under the LGPL license.</font></p>"
+		     "<p><small>Version: %s</small></p></center></qt>"), KSNAPVERSION);
   hintLabel= new QLabel(about, 
 			this);
   hintLabel->setAlignment(AlignCenter);
@@ -112,7 +149,7 @@ void KSnapShot::buildGui()
   // -------
   previewButton= new QToolButton(this);
   // Grab the root window to go inside
-  performGrab();
+  performGrab( true );
 
   mainLayout->addWidget(previewButton, 0, 1);
 
@@ -170,6 +207,26 @@ void KSnapShot::buildGui()
   delayLayout->addWidget(delayLabel);
   delayLayout->addWidget(delayEdit, 2);
   delayLayout->addWidget(secondsLabel, 4);
+
+  // start test
+  repeatLabel= new QLabel(i18n("Repeat:"), this);
+  repeatLabel->setAlignment(AlignCenter);
+  repeatLabel->adjustSize();
+  repeatLabel->setFixedHeight(delayLabel->height());
+  repeatLabel->setFixedWidth(repeatLabel->width());
+  repeatEdit= new QLineEdit(this);
+  s.sprintf("%d", repeat_+1);
+  repeatEdit->setText(s);
+  repeatEdit->setFixedHeight(repeatLabel->height()+8);
+  repeatEdit->setMinimumWidth(25);
+  timesLabel= new QLabel(i18n("times."), this);
+  timesLabel->setAlignment(AlignLeft);
+  timesLabel->setFixedHeight(repeatLabel->height());
+  timesLabel->setMinimumWidth(timesLabel->width());
+  delayLayout->addWidget(repeatLabel);
+  delayLayout->addWidget(repeatEdit, 4);
+  delayLayout->addWidget(timesLabel, 4);
+  // end test
     
   // -------
   // |  |  |
@@ -186,7 +243,7 @@ void KSnapShot::buildGui()
   autoRaiseCheck= new QCheckBox(i18n("Auto raise"), checkGroup);
   hideSelfCheck= new QCheckBox(i18n("Hide KSnapshot window"),
 			       checkGroup);
-  grabWindowCheck= new QCheckBox(i18n("Only grab the window containing the cursor"),
+  grabWindowCheck= new QCheckBox(i18n("Only grab the window containing the pointer"),
 				 checkGroup);
 
   autoRaiseCheck->setMinimumSize(autoRaiseCheck->sizeHint());
@@ -221,11 +278,6 @@ void KSnapShot::buildGui()
   closeButton= new QPushButton(i18n("Close"), this);
 
   buttonLayout= new QBoxLayout(QBoxLayout::RightToLeft);
-
-  QFrame *frame= new QFrame();
-  frame->setFrameStyle(QFrame::HLine | QFrame::Sunken);
-  frame->setFixedHeight(4);
-  topLevelLayout->addWidget(frame);
   topLevelLayout->addLayout(buttonLayout, 0);
 
   closeButton->resize(closeButton->sizeHint());
@@ -253,8 +305,12 @@ void KSnapShot::buildGui()
   connect(hideSelfCheck, SIGNAL(toggled(bool)), this, SLOT(hideSelfToggledSlot()));
   connect(autoRaiseCheck, SIGNAL(toggled(bool)), this, SLOT(autoRaiseToggledSlot()));
   connect(grabWindowCheck, SIGNAL(toggled(bool)), this, SLOT(grabWindowToggledSlot()));
-  connect(delayEdit, SIGNAL(textChanged(const QString&)), this, SLOT(delayChangedSlot(const QString&)));
-  connect(filenameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(filenameChangedSlot(const QString&)));
+  connect(delayEdit, SIGNAL(textChanged(const QString&)),
+	  this, SLOT(delayChangedSlot(const QString&)));
+  connect(repeatEdit, SIGNAL(textChanged(const QString &)),
+	  this, SLOT(repeatChangedSlot(const QString&)));
+  connect(filenameEdit, SIGNAL(textChanged(const QString&)), 
+	  this, SLOT(filenameChangedSlot(const QString&)));
   connect(previewButton, SIGNAL(clicked()), this, SLOT(showPreviewSlot()));
 }
 
@@ -337,14 +393,12 @@ void KSnapShot::timerFinishedSlot()
   }
   else {
     performGrab();
-    show();
   }
 }
 
 void KSnapShot::internalTimerSlot()
 {
     performGrab();
-    show();
 }
 
 void KSnapShot::updatePreview()
@@ -358,7 +412,7 @@ void KSnapShot::updatePreview()
   previewButton->setPixmap(preview);
 }
 
-void KSnapShot::performGrab()
+void KSnapShot::performGrab(bool initial)
 {
   if (grabDesktop_ || (child == qt_xrootwin()) || (child == 0)) {
     snapshot_= QPixmap::grabWindow(QApplication::desktop()->winId());
@@ -367,8 +421,26 @@ void KSnapShot::performGrab()
     snapshot_= QPixmap::grabWindow(child);
   }
 
-  updatePreview();
   grabbing_= false;
+
+  // If we're doing it lots of times...
+  if (repeat_ > 0) {
+    repeat_--; 
+ 
+    saveSlot();
+    startGrab();
+  }
+  else if (!initial) {
+    QString s;
+    s.sprintf("%d", repeat_+1);
+    repeatEdit->setText(s);
+    updatePreview();
+    saveSlot();
+    if (hidden) {
+      show();
+      hidden= false;
+    }
+  }
 }
 
 void KSnapShot::autoRaiseToggledSlot()
@@ -399,6 +471,16 @@ void KSnapShot::delayChangedSlot(const QString& text)
   delay_= s.toInt();
 }
 
+void KSnapShot::repeatChangedSlot(const QString& text)
+{
+  QString s;
+  s= text;
+  repeat_= s.toInt() - 1;
+  if (repeat_ < 0) {
+    repeat_= 0;
+  }
+}
+
 void KSnapShot::helpSlot()
 {
   kapp->invokeHTMLHelp("", "");
@@ -411,12 +493,48 @@ void KSnapShot::closeSlot()
 
 void KSnapShot::saveSlot()
 {
-  if (!(snapshot_.save(filename_, KImageIO::type(filename_)))) {
-    warning("KSnapshot was unable to save the snapshot");
-    QString caption = i18n("Error: Unable to save image");
-    QString text = i18n("KSnapshot was unable to save the image to\n%1.")
-		 .arg(filename_);
-    KMessageBox::error(this, text, caption);
+  QString text;
+  QString caption(i18n("Error: Unable to save image"));
+  QString buttonLabel(i18n("Dismiss"));
+
+  QString overwriteCaption(i18n("Warning: This will overwrite an existing file"));
+  QString overwriteMessage(i18n("Are you sure you want to overwrite the existing file named\n%s?"));
+  QString overwriteButtonLabel(i18n("Overwrite"));
+  QString cancelButtonLabel(i18n("Cancel"));
+
+  QString saveErrorMessage(i18n("KSnapshot was unable to save the image to\n%s."));
+
+  bool cancelled= false;
+
+  // Test to see if save will overwrite an existing file
+  QFileInfo *filenameInfo= (QFileInfo *) new QFileInfo(filename_);
+  CHECK_PTR(filenameInfo);
+
+  if (filenameInfo->exists()) {
+    // Warn the user
+    int choice= -1;
+
+    text.sprintf(overwriteMessage, filename_.data());
+    choice= QMessageBox::warning(this, overwriteCaption, text, overwriteButtonLabel, cancelButtonLabel);
+
+    // If the user chose to cancel
+    if (choice != 0)
+      cancelled= true;
+  }
+  
+  if (!cancelled) {
+    // Cannot save (permissions error?)
+    if (!(snapshot_.save(filename_, KImageIO::type(filename_)))) {
+      warning("KSnapshot was unable to save the snapshot");
+      QString caption = i18n("Error: Unable to save image");
+      QString text = i18n("KSnapshot was unable to save the image to\n%1.")
+	.arg(filename_);
+      KMessageBox::error(this, text, caption);
+    }
+    else if (autoincFilename_) {
+      autoincFilename();
+      filenameEdit->setText(filename_);
+    }
   }
 }
 

@@ -29,8 +29,9 @@ public:
   ~KSnapShot();
 
   void startGrab();
-  void performGrab();
+  void performGrab( bool initial=false );
   void resizeEvent(QResizeEvent *);
+  void autoincFilename();
 
 signals:
   void doneGrab();
@@ -43,6 +44,7 @@ public slots:
   void filenameChangedSlot(const QString&);
   void browsePressedSlot();
   void delayChangedSlot(const QString&);
+  void repeatChangedSlot(const QString&);
   void helpSlot();
   void closeSlot();
   void showPreviewSlot();
@@ -54,9 +56,7 @@ protected slots:
 
 protected:
   // The widgets
-  QLabel *titleLabel;
   QLabel *logoLabel;
-  QHBoxLayout *titleLayout;
   QLabel *hintLabel;
   QVBoxLayout *infoLayout;
   QToolButton *previewButton;
@@ -82,6 +82,12 @@ protected:
   QPushButton *closeButton;
   Preview *previewWindow;
 
+  QLabel *repeatLabel;
+  QLineEdit *repeatEdit;
+  QLabel *timesLabel;
+  int repeat_;
+  bool hidden;
+
   void buildGui();
   void updatePreview();
 
@@ -95,6 +101,7 @@ private:
   bool autoRaise_;
   bool grabWindow_;
   bool grabDesktop_;
+  bool autoincFilename_;
   QPixmap snapshot_;
   int delay_;
   QTimer *timer_;
