@@ -30,7 +30,6 @@
 #include <qregexp.h>
 #include <qpainter.h>
 #include <qpaintdevicemetrics.h>
-#include <qimage.h>
 #include <qwhatsthis.h>
 
 #include <stdlib.h>
