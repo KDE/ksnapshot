@@ -81,8 +81,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2005-02-02</date>
-<releaseinfo>1.02.00</releaseinfo>
+<date>2005-04-01</date>
+<releaseinfo>1.02.02</releaseinfo>
 
 <abstract>
 <para>&ksnapshot; is a simple applet for taking screenshots. It is capable
@@ -174,7 +174,9 @@ will differ depending on what you have displayed on the desktop.</para>
 </mediaobject>
 
 <para>The snapshot can be saved by clicking on
-the <guibutton>Save As...</guibutton> button. If multiple snapshots are taken, the
+the <guibutton>Save As...</guibutton> button. This opens the standard &kde; save dialog,
+where you can choose the filename, the folder location, and the format that your snapshot
+will be saved in. If multiple snapshots are taken, the
 filename is automatically incremented to prevent you from overwriting previous
 snapshots. You may however edit the filename to anything you wish, including the name
 of a previously saved snapshot. </para>
@@ -245,7 +247,7 @@ window decoration, disable this option and take a new snapshot.</para>
 <title>Print</title>
 
 <para>When you want to print your snapshot from the preview, just click
-<guibutton>Print...</guibutton> and you get the standard KDE Print dialog, from
+<guibutton>Print...</guibutton> and you get the standard &kde; Print dialog, from
 where you can directly print your snapshot.</para>
 
 </sect2>
@@ -285,7 +287,7 @@ chapter explains the various &DCOP; calls that you can use, and
 provides some examples of how you can use them.</para>
 
 <para>As with all DCOP calls, you need to specify the application
-you want to interace with, and the particular interface. With &ksnapshot;
+you want to interface with, and the particular interface. With &ksnapshot;
 you need to identify which particular application, which is
 <literal>ksnapshot-</literal> followed by the process number.</para>
 
@@ -332,8 +334,8 @@ GUI, you can both obtain the current status of that setting,
 and modify the setting, using &DCOP;.
 </para>
 
-<para>You can obtain the current capture mode using the
-<literal>grabMode</literal> call, as shown below:
+<para>You can obtain the current capture mode using 
+<literal>grabMode</literal>, as shown below:
 <screen width="60">
 <prompt>$</prompt> <command>dcop ksnapshot-23151 interface grabMode</command>
 </screen>
@@ -342,24 +344,24 @@ This will return <computeroutput>0</computeroutput> for full-screen capture,
 for region capture.
 </para>
 
-<para>You can set the capture mode using the <literal>setGrabMode</literal>,
-which requires an argument to identify the mode required (as for the <literal>grabMode</literal>
-call). So you can set window capture mode (<command>1</command>), using:
+<para>You can set the capture mode using <literal>setGrabMode</literal>,
+which requires an argument to identify the mode required (as for <literal>grabMode</literal>).
+So you can set window capture mode (<command>1</command>), using:
 <screen width="60">
 <prompt>$</prompt> <command>dcop ksnapshot-23151 interface setGrabMode 1</command>
 </screen>
 </para>
 
 <para>You can obtain the current timeout setting (the <guilabel>Snapshot delay:</guilabel>
-GUI item) using the <literal>timeout</literal> call, as shown below:
+GUI item) using <literal>timeout</literal>, as shown below:
 <screen width="60">
 <prompt>$</prompt> <command>dcop ksnapshot-23151 interface timeout</command>
 </screen>
-This will return the timeout setting in seconds, or zero if there is no delay (click on
-capture).
+This will return the timeout setting in seconds, or zero if there is no delay
+(capture on click).
 </para>
 
-<para>You can set the timeout using the <literal>setTime</literal>,
+<para>You can set the timeout using <literal>setTime</literal>,
 which requires an argument to identify the timeout duration. So you can
 set a delay of 4 seconds using:
 <screen width="60">
@@ -367,8 +369,8 @@ set a delay of 4 seconds using:
 </screen>
 </para>
 
-<para>You can obtain the path that the snapshot will be saved to using the 
-<literal>url</literal> call, as shown below:
+<para>You can obtain the path that the snapshot will be saved to using 
+<literal>url</literal>, as shown below:
 <screen width="60">
 <prompt>$</prompt> <command>dcop ksnapshot-23151 interface url</command>
 </screen>
@@ -376,9 +378,9 @@ This will return the filename, as a URL (eg as
 <computeroutput>file:///home/bradh/test2.png</computeroutput>).
 </para>
 
-<para>You can set the path using the <literal>setURL</literal> command,
+<para>You can set the path using <literal>setURL</literal>,
 which requires a string argument to identify the new path. So you can
-set the path to <literal>file:///home/bradh/snapshot4.jpg</literal>
+set the path to <literal>file:///home/bradh/snapshot.jpg</literal>
 using:
 <screen width="60">
 <prompt>$</prompt> <command>dcop ksnapshot-23151 interface setURL file:///home/bradh/snapshot.jpg</command>
@@ -391,8 +393,8 @@ using:
 <title>Taking Screenshots with &DCOP;</title>
 
 <para>
-The key to taking screenshots with &DCOP; is use of the <literal>slotGrab</literal>
-command, as shown below:
+The key to taking screenshots with &DCOP; is use of <literal>slotGrab</literal>,
+as shown below:
 <screen width="60">
 <prompt>$</prompt> <command>dcop ksnapshot-23151 interface slotGrab</command>
 </screen>
@@ -402,8 +404,8 @@ command, as shown below:
 This will take a snapshot using the current snapshot mode and timeout settings
 (as described above). If you want to save the snapshot image, there are a
 number of calls you can use. If you just want to save the image to the current
-path (as returned by <literal>url</literal>) or changed by
-<literal>setURL</literal>), you can call <literal>slotSave</literal>, as shown
+path (as returned by <literal>url</literal> or changed by
+<literal>setURL</literal>), you can use <literal>slotSave</literal>, as shown
 below:
 <screen width="60">
 <prompt>$</prompt> <command>dcop ksnapshot-23151 interface slotSave</command>
@@ -432,7 +434,7 @@ or not.
 
 <para>
 In addition to saving the snapshot, you can also copy it to the clipboard, using 
-the <literal>slotCopy</literal> command, as shown below:
+<literal>slotCopy</literal>, as shown below:
 <screen width="60">
 <prompt>$</prompt> <command>dcop ksnapshot-23151 interface slotCopy</command>
 </screen>
@@ -440,7 +442,7 @@ the <literal>slotCopy</literal> command, as shown below:
 
 <para>
 If you need to select a window that may not be under the mouse cursor, you
-can use the <literal>slotMovePointer</literal> call, passing the x position
+can use <literal>slotMovePointer</literal>, passing the x position
 (in screen pixels) and the y position (also in screen pixels) as arguments.
 So to move the mouse to the top left hand corner of the screen (0,0), you
 can do the following:
@@ -455,7 +457,7 @@ can do the following:
 
 <para>
 You can print the current screenshot (which may or may not have been saved)
-using the <literal>printSlot</literal> command, as shown below:
+using <literal>printSlot</literal>, as shown below:
 <screen width="60">
 <prompt>$</prompt> <command>dcop ksnapshot-23151 interface slotPrint</command>
 </screen>
@@ -472,8 +474,8 @@ user interaction.
 <title>&DCOP; Application control</title>
 
 <para>
-You can cause &ksnapshot; to exit by using the <literal>exit</literal>
-command, as shown below.
+You can cause &ksnapshot; to exit by using <literal>exit</literal>,
+as shown below.
 <screen width="60">
 <prompt>$</prompt> <command>dcop ksnapshot-23151 interface exit</command>
 </screen>
