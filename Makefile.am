@@ -20,7 +20,7 @@ EXTRA_DIST = $(lnk_DATA) $(icon_DATA) mini-kpaint.xpm
 
 install-data-local: mini-ksnapshot.xpm
 	$(mkinstalldirs) $(kde_minidir)
-	$(INSTALL_DATA) mini-ksnapshot.xpm $(kde_minidir)/ksnapshot.xpm
+	$(INSTALL_DATA) $(srcdir)/mini-ksnapshot.xpm $(kde_minidir)/ksnapshot.xpm
 
 uninstall-local:
 	-rm -f $(kde_minidir)/ksnapshot.xpm
