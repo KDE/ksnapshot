@@ -27,6 +27,7 @@
 #include <qlayout.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
+#include <qcombobox.h>
 #include <qclipboard.h>
 
 #include <kaccel.h>
@@ -48,7 +49,7 @@
 #include <stdlib.h>
 
 #include "ksnapshot.h"
-#include "ksnapshotbase.h"
+#include "regiongrabber.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -64,8 +65,7 @@
 #define kApp KApplication::kApplication()
 
 KSnapshot::KSnapshot(QWidget *parent, const char *name)
-  : KSnapshotBase(parent, name)
-  , DCOPObject("interface")
+  : DCOPObject("interface"), KSnapshotBase(parent, name)
 {
     imageLabel->setAlignment(AlignHCenter | AlignVCenter);
     connect(imageLabel, SIGNAL(startDrag()), this, SLOT(slotDragSnapshot()));
@@ -92,7 +92,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     KConfig *conf=KGlobal::config();
     conf->setGroup("GENERAL");
     delaySpin->setValue(conf->readNumEntry("delay",0));
-    onlyWindow->setChecked(conf->readBoolEntry("onlyWindow",true));
+    mode->setCurrentItem( conf->readNumEntry( "mode", 0 ) );
     includeDecorations->setChecked(conf->readBoolEntry("includeDecorations",true));
     filename = conf->readPathEntry( "filename", QDir::currentDirPath()+"/"+i18n("snapshot")+"1.png" );
 
@@ -121,6 +121,8 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
 		   CTRL+Key_A, this, SLOT(slotSaveAs()));
     accel->insert(KStdAccel::Print, this, SLOT(slotPrint()));
     accel->insert(KStdAccel::New, this, SLOT(slotGrab()));
+
+    slotModeChanged( mode->currentItem() );
 
     saveButton->setFocus();
 }
@@ -212,11 +214,20 @@ void KSnapshot::slotDragSnapshot()
 void KSnapshot::slotGrab()
 {
     hide();
-    if ( delaySpin->value() )
-	grabTimer.start( delaySpin->value() * 1000, true );
-    else {
-	grabber->show();
-	grabber->grabMouse( crossCursor );
+    if ( mode->currentItem() == Region )
+    {
+        rgnGrab = new RegionGrabber();
+        connect( rgnGrab, SIGNAL( regionGrabbed( const QPixmap & ) ),
+            SLOT( slotRegionGrabbed( const QPixmap & ) ) );
+    }
+    else
+    {
+        if ( delaySpin->value() )
+            grabTimer.start( delaySpin->value() * 1000, true );
+        else {
+            grabber->show();
+            grabber->grabMouse( crossCursor );
+        }
     }
 }
 
@@ -279,12 +290,27 @@ void KSnapshot::slotPrint()
     qApp->processEvents();
 }
 
+void KSnapshot::slotRegionGrabbed( const QPixmap &pix )
+{
+  if ( !pix.isNull() )
+  {
+    snapshot = pix;
+    updatePreview();
+    modified = true;
+    updateCaption();
+  }
+
+  delete rgnGrab;
+  QApplication::restoreOverrideCursor();
+  show();
+}
+
 void KSnapshot::closeEvent( QCloseEvent * e )
 {
     KConfig *conf=KGlobal::config();
     conf->setGroup("GENERAL");
     conf->writeEntry("delay",delaySpin->value());
-    conf->writeEntry("onlyWindow",onlyWindow->isChecked());
+    conf->writeEntry("mode",mode->currentItem());
     conf->writeEntry("includeDecorations",includeDecorations->isChecked());
     conf->writePathEntry("filename",filename);
     e->accept();
@@ -394,7 +420,7 @@ void KSnapshot::performGrab()
     grabber->releaseMouse();
     grabber->hide();
     grabTimer.stop();
-    if ( onlyWindow->isChecked() ) {
+    if ( mode->currentItem() == WindowUnderCursor ) {
 	Window root;
 	Window child;
 	uint mask;
@@ -495,15 +521,16 @@ void KSnapshot::setURL( const QString &url )
     updateCaption();
 }
 
+void KSnapshot::setGrabMode( int m )
+{
+  mode->setCurrentItem( m );
+  slotModeChanged( m );
+}
+
 void KSnapshot::updateCaption()
 {
     QFileInfo fi( filename );
     setCaption( kApp->makeStdCaption( fi.fileName(), true, modified ) );
-}
-
-void KSnapshot::setGrabPointer(bool grab)
-{
-    onlyWindow->setChecked( grab );
 }
 
 void KSnapshot::slotMovePointer(int x, int y)

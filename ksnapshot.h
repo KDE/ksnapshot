@@ -10,6 +10,8 @@
 #include <dcopclient.h>
 #include <kglobalsettings.h>
 
+class RegionGrabber;
+
 class KSnapshotThumb : public QLabel
 {
     Q_OBJECT
@@ -55,6 +57,8 @@ public:
   KSnapshot(QWidget *parent= 0, const char *name= 0);
   ~KSnapshot();
 
+  enum CaptureMode { FullScreen=0, WindowUnderCursor=1, Region=2 };
+
   bool save( const QString &filename );
   QString url() const { return filename; }
 
@@ -68,7 +72,7 @@ public:
 
   void setTime(int newTime);
   void setURL(const QString &newURL);
-  void setGrabPointer(bool grab);
+  void setGrabMode( int m );
 
 protected:
     void reject() { close(); }
@@ -80,6 +84,7 @@ private slots:
     void grabTimerDone();
     void slotDragSnapshot();
     void updateCaption();
+    void slotRegionGrabbed( const QPixmap & );
 
 private:
     void updatePreview();
@@ -89,6 +94,7 @@ private:
     QPixmap snapshot;
     QTimer grabTimer;
     QWidget* grabber;
+    RegionGrabber *rgnGrab;
     QString filename;
     bool modified;
     bool haveXShape;
