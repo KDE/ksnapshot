@@ -1,9 +1,9 @@
-<!DOCTYPE book PUBLIC  "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN" [
+<?xml version="1.0" ?><!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.1-Based Variant V1.0//EN" "dtd/kdex.dtd" [
   <!ENTITY kappname "&ksnapshot;">
   <!ENTITY % addindex "IGNORE">
-  <!ENTITY % English "INCLUDE" -- change language only here -->
-  <!ENTITY % ents PUBLIC "-//KDE//ENTITIES Documentation V1.0//EN">
-  %ents;
+  <!ENTITY % English "INCLUDE" > <!-- change language only here -->
+  
+  
 ]>
 
 <book lang="&language;">
@@ -136,7 +136,7 @@ also be used to start &ksnapshot;</para></listitem>
 <para>Once &ksnapshot; starts, you will see a window like the following:
 <mediaobject>
 <imageobject>
-<imagedata fileref="window.png" format="PNG">
+<imagedata fileref="window.png" format="PNG"/>
 </imageobject>
 <textobject><phrase>&ksnapshot; Preview Window</phrase>
 </textobject>
@@ -159,7 +159,7 @@ will differ depending on what you have displayed on the desktop.</para>
 
 <mediaobject>
 <imageobject>
-<imagedata fileref="preview.png" format="PNG">
+<imagedata fileref="preview.png" format="PNG"/>
 </imageobject>
 <textobject><phrase>&ksnapshot; Preview Window</phrase>
 </textobject>
@@ -315,7 +315,7 @@ url="http://lists.kde.org">KDE mailing lists</ulink>.</para>
 </sect1>
 </appendix>
 
-<![ %addindex; [ &documentation.index; ]]>
+&documentation.index; 
 </book>
 
 <!--
@@ -324,6 +324,7 @@ sgml-minimize-attributes: nil
 sgml-general-insert-case: lower
 End:
 -->
+
 
 
 
