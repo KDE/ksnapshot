@@ -111,7 +111,6 @@ bool KSnapshot::save( const QString &filename )
         const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" ).arg(filename);
         if (KMessageBox::Yes != KMessageBox::warningYesNoCancel( this, text, title ) ) 
         {
-            QApplication::restoreOverrideCursor();
             return false;
         }
     }
@@ -207,23 +206,36 @@ void KSnapshot::slotPrint()
         QPainter painter(&printer);
         QPaintDeviceMetrics metrics(painter.device());
 
-	int w = snapshot.width();
-	int h = snapshot.height();
+	float w = snapshot.width();
+	float dw = w - metrics.width();
+	float h = snapshot.height();
+	float dh = h - metrics.height();
 	bool scale = false;
-	if ( w > metrics.width() )
-	    scale = true;
-	else if ( h > metrics.height() )
+
+	if ( (dw > 0.0) || (dh > 0.0) )
 	    scale = true;
 
 	if ( scale ) {
+
 	    QImage img = snapshot.convertToImage();
 	    qApp->processEvents();
 
-	    img = img.smoothScale( metrics.width(), metrics.height(), QImage::ScaleMin );
+	    float newh, neww;
+	    if ( dw > dh ) {
+		neww = w-dw;
+		newh = neww/w*h;
+	    }
+	    else {
+		newh = h-dh;
+		neww = newh/h*w;
+	    }
+
+	    img = img.smoothScale( neww, newh, QImage::ScaleMin );
 	    qApp->processEvents();
 
 	    int x = (metrics.width()-img.width())/2;
 	    int y = (metrics.height()-img.height())/2;
+
 	    painter.drawImage( x, y, img);
 	}
 	else {
@@ -340,6 +352,7 @@ void KSnapshot::performGrab()
 	snapshot = QPixmap::grabWindow( qt_xrootwin() );
     }
     updatePreview();
+    QApplication::restoreOverrideCursor();
     show();
 }
 
