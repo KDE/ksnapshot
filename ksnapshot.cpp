@@ -19,6 +19,7 @@
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
+#include <klineedit.h>
 
 #include <stdlib.h>
 
@@ -30,11 +31,11 @@
 KSnapshot::KSnapshot(QWidget *parent, const char *name)
   : KSnapshotBase(parent, name)
 {
-    
+
     grabber = new QWidget( 0, 0, WStyle_Customize | WX11BypassWM );
     grabber->move( -1000, -1000 );
     grabber->installEventFilter( this );
-    
+
     grabber->show();
     grabber->grabMouse( waitCursor );
     snapshot = QPixmap::grabWindow( qt_xrootwin() );
@@ -49,13 +50,18 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
 
     connect( &grabTimer, SIGNAL( timeout() ), this, SLOT(  grabTimerDone() ) );
     urlRequester->setURL( QDir::currentDirPath() + "/" + i18n("snapshot") + "1.png" );
-    
+
     // Make sure the name is not already being used
     QFileInfo fi( urlRequester->url());
     while(fi.exists()) {
 	autoincFilename();
 	fi.setFile( urlRequester->url() );
     }
+
+    setTabOrder( PushButton3, urlRequester->lineEdit() );
+    setTabOrder( urlRequester->lineEdit(), urlRequester->button() );
+    setTabOrder( urlRequester->button(), delaySpin );
+    urlRequester->lineEdit()->setFocus();
 }
 
 KSnapshot::~KSnapshot()
@@ -186,13 +192,13 @@ void KSnapshot::updatePreview()
 	img = img.smoothScale( imageLabel->width(), (int) imageLabel->width() * r1 );
     else
 	img = img.smoothScale( (int) (((double)imageLabel->height()) / r1) , (imageLabel->height() ) );
-    
+
     QPixmap pm;
     pm.convertFromImage( img );
     imageLabel->setPixmap( pm );
 }
 
-void KSnapshot::grabTimerDone() 
+void KSnapshot::grabTimerDone()
 {
     QApplication::beep();
     performGrab();
