@@ -1,12 +1,14 @@
 # KDE Config File
 [KDE Desktop Entry]
 Comment=An applet for taking snapshots of the desktop
+Comment[pt_BR]=Um aplicativo para captura de tela
 Comment[es]=Un programa para tomar instantaneas del escritorio
 Comment[no]=Et program for å ta øyeblikksfoto av skrivebordet
 Comment[cs]=Nástroj pro vytváøení snímkù pracovní plochy
 Comment[fi]=Sovellus ruutukaappauksen ottamiseen
 BinaryPattern=
 Name=Snapshot
+Name[pt_BR]=Captura de tela
 Name[es]=Instantanea
 Name[no]=Øyeblikksfoto
 Name[cs]=Snapshot
