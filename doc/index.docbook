@@ -167,10 +167,10 @@ will differ depending on what you have displayed on the desktop.</para>
 
 <para>The snapshot displayed may be saved immediately by clicking on
 the <guibutton>Save Snapshot</guibutton> button. </para>
-<para>When you want to safe the snapshot in a specific directory with
+<para>When you want to safe the snapshot in a specific folder with
 a specific filename, use the <guibutton>Save Snapshot As ...</guibutton> button.
 This opens the standard &kde; save dialog, where you can choose the filename,
-directory and format your file is saved in. </para>
+folder and format your file is saved in. </para>
 <para> If multiple snapshots are taken, the filename is automatically
 incremented to prevent you from overwriting previous snapshots. You
 may however edit the filename to anything you wish, including the name
