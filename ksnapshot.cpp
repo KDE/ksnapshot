@@ -52,6 +52,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
 
     connect( &grabTimer, SIGNAL( timeout() ), this, SLOT(  grabTimerDone() ) );
     urlRequester->setURL( QDir::currentDirPath() + "/" + i18n("snapshot") + "1.png" );
+    urlRequester->fileDialog()->setKeepLocation(true);
 
     // Make sure the name is not already being used
     QFileInfo fi( urlRequester->url());
