@@ -7,7 +7,7 @@ ksnapshot_LDADD = $(LIB_KSYCOCA) $(LIB_KFILE) -lkdeprint
 
 ksnapshot_SOURCES = ksnapshotiface.skel main.cpp ksnapshot.cpp ksnapshotbase.ui
 
-ksnapshot_METASOURCES = USE_AUTOMOC
+ksnapshot_METASOURCES = AUTO
 
 lnkdir = $(kde_appsdir)/Graphics/More
 lnk_DATA = ksnapshot.desktop
@@ -22,6 +22,4 @@ EXTRA_DIST = $(lnk_DATA)
 
 messages: rc.cpp
 	$(XGETTEXT) rc.cpp *.cpp -o $(podir)/ksnapshot.pot
-
-main.cpp: ksnapshotbase.h
 
