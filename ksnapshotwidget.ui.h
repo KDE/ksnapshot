@@ -128,7 +128,6 @@ void KSnapshotWidget::init()
     if (!KGlobalSettings::showIconsOnPushButtons())
     {
 	btnNew->setIconSet(QIconSet());
-	btnSave->setIconSet(QIconSet());
 	btnSaveAs->setIconSet(QIconSet());
 	btnPrint->setIconSet(QIconSet());
     }

@@ -29,10 +29,10 @@
 #include <knotifyclient.h>
 #include <khelpmenu.h>
 #include <kpopupmenu.h>
+#include <kpushbutton.h>
 #include <kstartupinfo.h>
 
 #include <qcursor.h>
-#include <qpushbutton.h>
 #include <qregexp.h>
 #include <qpainter.h>
 #include <qpaintdevicemetrics.h>
@@ -60,7 +60,7 @@
 KSnapshot::KSnapshot(QWidget *parent, const char *name)
   : DCOPObject("interface"), 
     KDialogBase(parent, name, true, QString::null, Help|User1, User1, 
-    false, KGuiItem( i18n( "&Quit" ), "exit" ) )
+    true, KGuiItem( i18n( "&Quit" ), "exit" ) )
 {
     grabber = new QWidget( 0, 0, WStyle_Customize | WX11BypassWM );
     grabber->move( -1000, -1000 );
@@ -76,12 +76,10 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
 
     QVBox *vbox = makeVBoxMainWidget();
     mainWidget = new KSnapshotWidget( vbox, "mainWidget" );
-    vbox->setStretchFactor( new QWidget( vbox, "spacer" ), 10 );
 
     connect(mainWidget, SIGNAL(startImageDrag()), SLOT(slotDragSnapshot()));
 
     connect( mainWidget, SIGNAL( newClicked() ), SLOT( slotGrab() ) );
-    connect( mainWidget, SIGNAL( saveClicked() ), SLOT( slotSave() ) );
     connect( mainWidget, SIGNAL( saveAsClicked() ), SLOT( slotSaveAs() ) );
     connect( mainWidget, SIGNAL( printClicked() ), SLOT( slotPrint() ) );
 
@@ -116,7 +114,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
 
     KAccel* accel = new KAccel(this);
     accel->insert(KStdAccel::Quit, kapp, SLOT(quit()));
-    accel->insert(KStdAccel::Save, this, SLOT(slotSave()));
+    accel->insert(KStdAccel::Save, this, SLOT(slotSaveAs()));
 //    accel->insert(KShortcut(CTRL+Key_A), this, SLOT(slotSaveAs()));
     accel->insert( "SaveAs", i18n("Save Snapshot &As..."),
 		   i18n("Save the snapshot to the file specfied by the user."),
@@ -126,6 +124,8 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
 
     setEscapeButton( User1 );
     connect( this, SIGNAL( user1Clicked() ), SLOT( reject() ) );
+
+    mainWidget->btnNew->setFocus();
 }
 
 KSnapshot::~KSnapshot()
@@ -166,10 +166,8 @@ bool KSnapshot::save( const QString &filename )
 
 void KSnapshot::slotSave()
 {
-    if ( save(filename) ) {
-	modified = false;
-	autoincFilename();
-    }
+    // must keep this slot around for DCOP compat
+    slotSaveAs();
 }
 
 void KSnapshot::slotSaveAs()
