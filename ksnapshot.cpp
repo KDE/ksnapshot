@@ -51,6 +51,13 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+
+#include <config.h>
+
+#ifdef HAVE_X11_EXTENSIONS_SHAPE_H
+#include <X11/extensions/shape.h>
+#endif
+
 #include <kglobal.h>
 
 #define kApp KApplication::kApplication()
@@ -67,6 +74,12 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     grabber->installEventFilter( this );
 
     KStartupInfo::appStarted();
+
+#ifdef HAVE_X11_EXTENSIONS_SHAPE_H
+    int tmp1, tmp2;
+    //Check whether the extension is available
+    haveXShape = XShapeQueryExtension( qt_xdisplay(), &tmp1, &tmp2 );
+#endif
 
     grabber->show();
     grabber->grabMouse( waitCursor );
@@ -192,7 +205,7 @@ void KSnapshot::slotDragSnapshot()
 void KSnapshot::slotGrab()
 {
     hide();
-    if ( delaySpin->value() ) 
+    if ( delaySpin->value() )
 	grabTimer.start( delaySpin->value() * 1000, true );
     else {
 	grabber->show();
@@ -358,7 +371,37 @@ void KSnapshot::performGrab()
 		      &w, &h, &border, &depth );
 
 	snapshot = QPixmap::grabWindow( qt_xrootwin(), x, y, w, h );
-    } 
+
+#ifdef HAVE_X11_EXTENSIONS_SHAPE_H
+	//No XShape - no work.
+	if (haveXShape) {
+	    //As the first step, get the mask from XShape.
+	    int count, order;
+	    XRectangle* rects = XShapeGetRectangles( qt_xdisplay(), child,
+	                                             ShapeBounding, &count, &order);
+	    if (rects) {
+		//Create a region from the rectangles the window contents.
+		QRegion contents;
+		for (int pos = 0; pos < count; pos++)
+		    contents += QRegion(rects[pos].x, rects[pos].y,
+		                        rects[pos].width, rects[pos].height);
+		XFree(rects);
+
+		//Create the bounding box.
+		QRegion bbox(0, 0, snapshot.width(), snapshot.height());
+
+		//Get the masked away are
+		QRegion maskedAway = bbox - contents;
+		QMemArray<QRect> maskedAwayRects = maskedAway.rects();
+
+		QPainter p(&snapshot);
+		for (int pos = 0; pos < maskedAwayRects.count(); pos++)
+		    p.fillRect(maskedAwayRects[pos], Qt::black);
+		p.end();
+	    }
+	}
+#endif
+    }
     else {
 	snapshot = QPixmap::grabWindow( qt_xrootwin() );
     }

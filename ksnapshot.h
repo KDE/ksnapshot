@@ -91,6 +91,7 @@ private:
     QWidget* grabber;
     QString filename;
     bool modified;
+    bool haveXShape;
 };
 
 #endif // KSNAPSHOT_H
