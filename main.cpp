@@ -6,7 +6,7 @@
 #include <kaboutdata.h>
 #include <kiconloader.h>
 
-static const char *description =
+static const char description[] =
 	I18N_NOOP("KDE Screenshot Utility");
 
 int main(int argc, char **argv)
