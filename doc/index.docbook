@@ -7,10 +7,10 @@ V1.0//EN">
   %ents;
 ]>
 
-<book lang="en">
+<book lang="fr">
 
 <bookinfo>
-<title>The &kapp; Handbook</title>
+<title>Le manuel de &kapp;</title>
 
 <authorgroup>
 <author>
@@ -37,7 +37,7 @@ V1.0//EN">
 <affiliation>
 <address><email>vampyr@atconnex.net</email></address>
 </affiliation>
-<contrib>Reviewer</contrib>
+<contrib>Relecteur&nbsp;</contrib>
 </othercredit>
 
 <othercredit>
@@ -47,7 +47,16 @@ V1.0//EN">
 <affiliation>
 <address><email>rich@kde.org</email></address>
 </affiliation>
-<contrib>Developer</contrib>
+<contrib>Developpeur&nbsp;</contrib>
+</othercredit>
+
+<othercredit>
+<firstname>Gérard</firstname>
+<surname>Delafond</surname>
+<affiliation>
+<address><email>g.delafond@medsyn.fr</email></address>
+</affiliation>
+<contrib>Traduction française&nbsp;</contrib>
 </othercredit>
 </authorgroup>
 
@@ -62,17 +71,18 @@ V1.0//EN">
 <releaseinfo>1.0.0</releaseinfo>
 
 <abstract>
-<para>&kapp; is a simple applet for taking screenshots. It is capable
-of capturing images of either the whole desktop or just a single
-window.  The images can then be saved in a variety of formats.</para>
+<para>&kapp; est un programme tout simple permettant de prendre des
+captures d'écran. Il est capable de capturer la totalité de l'écran ou juste
+une fenêtre. Les images peuvent être enregistrées dans divers formats.</para>
 </abstract>
 
 <keywordset>
 <keyword>KDE</keyword>
 <keyword>Kapp</keyword>
 <keyword>kdeutils</keyword>
-<keyword>nothing</keyword>
-<keyword>nothing else</keyword>
+<keyword>snapshot</keyword>
+<keyword>screenshot</keyword>
+<keyword>capture</keyword>
 </keywordset>
 
 </bookinfo>
@@ -80,12 +90,13 @@ window.  The images can then be saved in a variety of formats.</para>
 <chapter id="introduction">
 <title>Introduction</title>
 
-<para>&kapp; is a simple applet for taking screenshots. It is capable
-of capturing images of either the whole desktop or just a single
-window.  The images can then be saved in a variety of formats.</para>
+<para>&kapp; est un programme tout simple permettant de prendre des
+captures d'écran. Il est capable de capturer la totalité de l'écran ou juste
+une fenêtre. Les images peuvent être enregistrées dans divers formats.</para>
 
-<para>Please report any problems or feature requests to the <ulink
-url="http://lists.kde.org">KDE mailing lists</ulink></para>
+<para>Veuillez rapporter les bogues ou tout problème, ou tout souhait 
+d'amélioration à la liste de diffusion <ulink
+url="http://lists.kde.org"></ulink></para>
 
 </chapter>
 
@@ -93,50 +104,53 @@ url="http://lists.kde.org">KDE mailing lists</ulink></para>
 <title>Installation</title>
 
 <sect1 id="getting-kapp">
-<title>How to obtain and install &kapp;</title>
+<title>Comment obtenir et installer &kapp;</title>
 
-<para>&kapp; is part of the KDE project <ulink
+<para>&kapp; fait partie du projet KDE <ulink
 url="http://www.kde.org">http://www.kde.org</ulink>.</para> 
 
-<para>&kapp; can be found in the kdegraphics package on
-<ulink url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>, the
-main ftp site of the KDE project. </para>
+<para>&kapp; se trouve dans le paquetage kdegraphics à
+<ulink url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>, 
+le site ftp du projet KDE. </para>
 
 <sect2 id="requirements">
-<title>Requirements</title>
+<title>Environnement nécessaire</title>
 
-<para>A successful installation of KDE 2.0 is required to use &kapp;.</para>
+<para>Vous avez besoin de KDE 2.0 pour utiliser &kapp;.</para>
 
-<para>All required libraries as well as &kapp; itself can be found on
-<ulink url="ftp://ftp.kde.org">The KDE FTP site</ulink> or one of it's
-<ulink url="http://www.kde.org/mirrors.html">mirrors</ulink>.</para>
+<para>Toutes les bibliothèques requises aussi bien que &kapp; 
+lui-même se trouvent au
+<ulink url="ftp://ftp.kde.org">site FTP de KDE</ulink> ou un de ses 
+<ulink url="http://www.kde.org/mirrors.html">miroirs</ulink>.</para>
 
 </sect2>
 
 <sect2 id="compilation-installation">
-<title>Compilation and installation</title>
+<title>Compilation et installation</title>
 
-<para>&kapp; may be installed from the kdegraphics package either by
-installing a binary RPM or by compiling the source package.</para>
+<para>&kapp; peut être installé à partir du paquetage kdegraphics 
+soit sous forme binaire RPM, soit en compilant le paquetage source.</para>
 
 <sect3 id="from-rpm">
-<title>Installing from RPMs</title> <para>To install the kdegrahics
-package from a binary RPM you must be logged in as root.  Assuming
-that the name of the RPM is <filename>filename.rpm</filename>, do the
-following at the command prompt:</para>
+<title>Installation à partir des RPM</title> <para>Pour installer le paquetage
+kdegrahics à partir d'un binaire RPM, vous devez être logué en tant que 
+root. En supposant que le nom du RPM est <filename>nom_du_fichier.rpm</filename>, 
+saisissez la commande suivante à l'invite&nbsp;:</para>
 
 <screen width="40">
-<prompt>%</prompt> <command>rpm <option>-ivh <replaceable>filename.rpm</replaceable></option></command></screen>
+<prompt>%</prompt> <command>rpm <option>-ivh <replaceable>nom_du_fichier.rpm</replaceable></option></command></screen>
 
-<para>Should you run into problems please report them to the <ulink 
-url="http://lists.kde.org">KDE mailing lists</ulink>.</para>
+<para>Au cas où vous rencontreriez des problèmes, veuillez les 
+rapporter aux <ulink 
+url="http://lists.kde.org">listes de discussion de KDE</ulink>.</para>
 </sect3>
 
 <sect3 id="from-source">
-<title>Installing from source</title>
+<title>Installation à partir du source</title>
 
-<para>In order to compile and install &kapp on your system, type the following
-in  the base directory of the kdegraphics distribution:</para>
+<para>Pour compiler et installer &kapp sur votre système, saisissez
+ la commande suivante dans le répertoire de vase de la distribution de
+kdegraphics&nbsp;:</para>
 
 <screen width="40">
 <prompt>%</prompt> <command>./configure</command>
@@ -144,12 +158,13 @@ in  the base directory of the kdegraphics distribution:</para>
 <prompt>%</prompt> <command>make install</command>
 </screen>
 
-<para>Since &kapp; uses <application>autoconf</application> and
-<application>automake</application> you should have not trouble compiling
-it.</para>
+<para>Du fait que &kapp; utilise <application>autoconf</application> et
+<application>automake</application>, vous ne devriez pas avoir de souci 
+en le compilant.</para>
 
-<para>Should you run into problems please report them to the <ulink 
-url="http://lists.kde.org">KDE mailing lists</ulink>.</para>
+<para>Au cas où vous rencontreriez des problèmes, veuillez les 
+rapporter aux <ulink 
+url="http://lists.kde.org">listes de discussion de KDE</ulink>.</para>
 
 </sect3>
 </sect2>
@@ -158,110 +173,113 @@ url="http://lists.kde.org">KDE mailing lists</ulink>.</para>
 </chapter>
 
 <chapter id="using-ksapshot">
-<title>Using &kapp;</title>
+<title>Utilisation de &kapp;</title>
 
-<para>This chapter describes the use of &kapp; for capturing screen
-images.</para>
+<para>Ce chapitre décrit l'utilisation de &kapp; pour capturer des 
+copies d'écran.</para>
 
 <sect1 id="starting">
-<title>Starting &kapp;</title>
+<title>Démarrer &kapp;</title>
 
-<para>&kapp; may be started by one of several ways as described
-below.</para>
+<para>&kapp; peut être démarré des différentes manières 
+décrites ci-dessous.</para>
 
 <itemizedlist>
 <listitem>
-<para>You may start &kapp; by selecting it from the
-<guisubmenu>Graphics</guisubmenu>graphics> submenu of the
-panel.</para></listitem>
+<para>Vous pouvez démarrer &kapp; en le sélectionnant dans le sous-menu 
+<guisubmenu>Graphisme</guisubmenu> du tableau de bord.</para></listitem>
 <listitem>
-<para>You may start &kapp; by entering the following at the command
-prompt:</para>
+<para>Vous pouvez aussi démarrer &kapp; en saississant la commande suivante 
+à l'invite&nbsp;:</para>
 <screen width="40">
 <prompt>%</prompt> <command>ksnapshot &</command>
 </screen>
 </listitem>
-<listitem><para>The mini command line (invoked with
-<keycombo><keycap>Alt</keycap> <keycap>F2</keycap></keycombo>) may
-also be used to start &kapp;</para></listitem>
+<listitem><para>La mini-ligne de commande (lancée par
+<keycombo><keycap>Alt</keycap> <keycap>F2</keycap></keycombo>) peut aussi
+servir à démarrer &kapp;</para></listitem>
 </itemizedlist>
 
 </sect1>
 
 <sect1 id="taking-snapshot">
-<title>Taking A Snapshot</title>
+<title>Prendre une capture d'écran</title>
 
-<para> &kapp; grabs an image of your entire desktop immediately after it is 
-started, but before it displays itself on screen. This allows you to quickly 
-create full-desktop screenshot images.</para>
+<para> &kapp; fait une capture de la totalité de votre bureau
+ juste après son lancement, mais avant d'apparaître à l'écran. 
+Ceci vous permet de créer rapidement une capture de l'écran entier.</para>
 
-<para>The snapshot taken by &kapp; is displayed in the preview window,
-which is located in the upper center of the &kapp; application window.
-Below is an example of the preview window from &kapp; Your pre
-view
-will differ depending on what you have displayed on the
-desktop.</para>
+<para>La capture d'écran faite par &kapp; est affichée dans la fenêtre 
+de prévisualisation située en haut de la fenêtre de l'application &kapp;.
+Ci-dessous, un exemple de la fenêtre de prévisualisation de &kapp;.
+Votre prévisualisation sera différente selon de ce qui est
+affiché sur votre bureau.</para>
 
 <mediaobject>
 <imageobject>
 <imagedata fileref="snapshot.png" format="png">
 </imageobject>
-<textobject><phrase>&kapp; Preview Window</phrase>
+<textobject><phrase>Fenêtre de prévisualisation de &kapp;</phrase>
 </textobject>
 </mediaobject>
 
-<para>The snapshot displayed may be saved immediately by clicking on
-the <guibutton>Save</guibutton> button. The filename that the snapshot
-will be saved under appears in the <guilabel>Filename</guilabel> box.
-If multiple snapshots are taken, the filename is automatically
-incremented to prevent you from overwriting previous snapshots.</para>
+<para>La capture d'écran affichée peut être enregistrée immédiatement 
+en cliquant sur le bouton <guibutton>Enregistrer</guibutton>. 
+Le nom sous lequel le fichier sera enregistré apparaît dans la boîte 
+ <guilabel>Nom du fichier</guilabel>.
+Si vous prenez plusieurs captures d'écran à la file, le nom de fichier est 
+automatiquement incrémenté pour vous éviter d'écraser les captures 
+précédentes.</para>
 
-<para>To take a snapshot of a single window, enable the <guilabel>Only
-grab the window containing the pointer</guilabel> and then click with
-the <mousebutton>left</mousebutton> mouse button in the window you
-wish to capture.  &kapp; will display the new snapshot in the preview
-area, at which time you can choose to save the new image (by pressing
-the <guibutton>Save</guibutton>) or to grab a new one, by pressing the
-<guibutton>Grab</guibutton> button.  This is &kapp;'s default
-behavior.</para>
+<para>Pour prendre une capture d'une seule fenêtre, cochez la case 
+<guilabel>Capturer seulement la fenêtre contenant le curseur</guilabel> 
+et cliquez avec le bouton <mousebutton>gauche</mousebutton> de la souris 
+sur le bouton <guibutton>Capturer</guibutton>, puis cliquez sur la fenêtre que 
+vous voulez capturer. &kapp; affichera la 
+nouvelle capture d'écran dans la zone de prévisualisation. À ce moment, vous 
+pouvez choisir d'enregister l'image en cliquant sur le bouton 
+<guibutton>Enregistrer</guibutton> ou de faire une nouvelle capture en 
+cliquant à nouveau sur le bouton <guibutton>Capturer</guibutton>. 
+Ceci est le comportement par défaut de &kapp;.</para>
 
-<para>To take a new snapshot of the entire desktop, uncheck the
-<guilabel>Only grab the window containing the pointer</guilabel>
-option.  &kapp; will now capture the entire desktop if you press
-<guibutton>Grab</guibutton>.</para>
+<para>Pour prendre une nouvelle capture du bureau entier, décochez la 
+case <guilabel>Capturer seulement la fenêtre contenant le curseur</guilabel>. 
+&kapp; capturera maintenant le bureau entier si vous cliquez sur 
+<guibutton>Capturer</guibutton>.</para>
 
 </sect1>
 
 <sect1 id="additional-features">
-<title>Additional Features</title>
+<title>Autres fonctionnalités</title>
 
 <sect2 id="delay">
-<title>Delay</title>
+<title>Délai</title>
 
-<para>The <guilabel>Delay</guilabel> box allows you to enter an
-arbitrary time delay, in seconds, between the time that you press the
-<guibutton>Grab</guibutton> button and the time that the snapshot is
-taken.</para>  
+<para>La boîte <guilabel>Délai</guilabel> vous permet de saisir
+un délai en secondes entre le moment où vous cliquez sur le bouton 
+<guibutton>Enregistrer</guibutton> et le moment où la capture est prise.</para>  
 
-<para>When a delay time has been set, you do not have to click the mouse button to capture a screenshot.  This enables you to open a drop down menu, and take a picture of it.</para>
+<para>Quand un délai a été fixé, vous n'avez pas besoin de cliquer sur le 
+bouton de la souris pour faire la capture. Ceci vous permet d'ouvrir des 
+menus déroulants et d'en prendre un instantané.</para>
 
 </sect2>
 
 <sect2 id="bottom-buttons">
-<title>Buttons</title>
+<title>Boutons</title>
 
-<para>There are two further buttons located at the bottom of the
-&kapp; window.</para>
+<para>Il y a deux autres boutons situés au bas de la fenêtre de 
+&kapp;.</para>
 
 <variablelist>
 <varlistentry>
-<term><guibutton>Help</guibutton</term>
-<listitem><para>Activates the online manual for &kapp;.</para></listitem>
+<term><guibutton>Aide</guibutton</term>
+<listitem><para>Ouvre le manuel en ligne de &kapp;.</para></listitem>
 </varlistentry>
 
 <varlistentry>
-<term><guibutton>Close</guibutton></term>
-<listitem><para>Closes the &kapp; application.</para></listitem>
+<term><guibutton>Fermer</guibutton></term>
+<listitem><para>Ferme l'application &kapp;.</para></listitem>
 </varlistentry>
 </variablelist>
 
@@ -271,15 +289,18 @@ taken.</para>
 
 <chapter id="credits">
 
-<title>Credits and License</title>
+<title>Remerciements et licence</title>
 
 <para>&kapp;</para>
 
 <para>Program copyright 1997-2000 Richard J. Moore
 <email>rich@kde.org</email></para>
 
-<para>Documentation based on the original, copyright 1997-2000 Richard
+<para>Documentation basée sur l'original, copyright 1997-2000 Richard
 J. Moore <email>rich@kde.org</email></para>
+
+<para>Traduction française par Gérard Delafond
+<email>g.delafond@medsyn.fr</email></para>
 
 &license-links;
 
