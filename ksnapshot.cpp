@@ -103,22 +103,37 @@ KSnapshot::~KSnapshot()
 void KSnapshot::slotSave()
 {
     QString saveTo = KFileDialog::getSaveFileName(filename, QString::null, this);
-    if (!saveTo.isNull())
+
+    if (saveTo.isNull())
     {
-        
-        if ( !(snapshot.save(saveTo, KImageIO::type(filename).ascii() ) ) ) 
+        QApplication::restoreOverrideCursor();
+        return;
+    }
+
+    if (QFileInfo(saveTo).exists())
+    {
+        const QString title = i18n( "File Exists" );
+        const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" ).arg(saveTo);
+        if (KMessageBox::Yes != KMessageBox::warningYesNoCancel( this, text, title ) ) 
         {
             QApplication::restoreOverrideCursor();
-            kdWarning() << "KSnapshot was unable to save the snapshot" << endl;
-            QString caption = i18n("Error: Unable to save image");
-            QString text = i18n("KSnapshot was unable to save the image to\n%1.")
-                               .arg(filename);
-            KMessageBox::error(this, text, caption);
+            return;
         }
-        QApplication::restoreOverrideCursor();
-        filename = saveTo;
-        autoincFilename();
     }
+       
+    if ( !(snapshot.save(saveTo, KImageIO::type(saveTo).ascii() ) ) ) 
+    {
+        QApplication::restoreOverrideCursor();
+        kdWarning() << "KSnapshot was unable to save the snapshot" << endl;
+        QString caption = i18n("Error: Unable to save image");
+        QString text = i18n("<qt>KSnapshot was unable to save the image to:\n<b>%1<b></qt>")
+                           .arg(saveTo);
+        KMessageBox::error(this, text, caption);
+    }
+
+    QApplication::restoreOverrideCursor();
+    filename = saveTo;
+    autoincFilename();
 
     return;
 }
