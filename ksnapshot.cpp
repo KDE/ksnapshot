@@ -89,12 +89,14 @@ void KSnapShot::buildGui()
   titleLabel->setMinimumSize(titleLabel->size());
   titleLayout->addWidget(titleLabel);
 
-  hintLabel= new QLabel(klocale->translate(
-			"Press the `Grab' button, then click\n"
-			"on a window to grab it.\n\n"
-			"KSnapshot is copyright Richard Moore (rich@kde.org)\n"
-			"and is released under LGPL\n\n"
-			"Version: " KSNAPVERSION),
+  QString about;
+  about.sprintf(i18n(
+		     "Press the `Grab' button, then click\n"
+		     "on a window to grab it.\n\n"
+		     "KSnapshot is copyright Richard Moore (rich@kde.org)\n"
+		     "and is released under LGPL\n\n"
+		     "Version: "), KSNAPVERSION);
+  hintLabel= new QLabel(about, 
 			this);
   hintLabel->setAlignment(AlignCenter);
   hintLabel->adjustSize();
