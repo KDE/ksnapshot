@@ -15,6 +15,7 @@
 #include <kmessagebox.h>
 #include <kdebug.h>
 #include <kapplication.h>
+#include <kguiitem.h>
 #include <kprinter.h>
 #include <qdragobject.h>
 #include <qgroupbox.h>
@@ -30,6 +31,7 @@
 #include <khelpmenu.h>
 #include <kpopupmenu.h>
 #include <kiconloader.h>
+#include <kpushbutton.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
 #include <qpainter.h>
@@ -81,8 +83,8 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
     helpButton->setPopup(helpMenu->menu());
 
-    helpButton->setIconSet( SmallIconSet( "help" ) );
-    closeButton->setIconSet( SmallIconSet( "exit" ) );
+    helpButton->setGuiItem (KGuiItem(i18n("&Help"), "help" ) );
+    closeButton->setGuiItem (KGuiItem(i18n("&Quit"), "exit" ) );
     
     KAccel* accel = new KAccel(this);
     accel->insert(KStdAccel::Quit, kapp, SLOT(quit()));
@@ -102,6 +104,7 @@ void KSnapshot::slotSave()
     QString saveTo = KFileDialog::getSaveFileName(filename, QString::null, this);
     if (!saveTo.isNull())
     {
+        
         if ( !(snapshot.save(saveTo, KImageIO::type(filename).ascii() ) ) ) 
         {
             QApplication::restoreOverrideCursor();

@@ -237,7 +237,7 @@ If no delay is set, the program will wait for a mouse click before taking a snap
                 <property name="spacing">
                     <number>6</number>
                 </property>
-                <widget class="QPushButton">
+                <widget class="KPushButton">
                     <property name="name">
                         <cstring>helpButton</cstring>
                     </property>
@@ -262,7 +262,7 @@ If no delay is set, the program will wait for a mouse click before taking a snap
                         </size>
                     </property>
                 </spacer>
-                <widget class="QPushButton">
+                <widget class="KPushButton">
                     <property name="name">
                         <cstring>closeButton</cstring>
                     </property>
