@@ -56,19 +56,19 @@ public:
   ~KSnapshot();
 
   bool save( const QString &filename );
+  QString url() const { return filename; }
 
-//public slots:
+  void slotGrab();
   void slotSave();
   void slotSaveAs();
-  void slotGrab();
-  void slotHelp();
   void slotCopy();
   void slotPrint();
-  void setTime(int newTime);
-  void setURL(QString newURL);
-  void setGrabPointer(bool grab);
   void slotMovePointer( int x, int y );
   void exit();
+
+  void setTime(int newTime);
+  void setURL(const QString &newURL);
+  void setGrabPointer(bool grab);
 
 protected:
     void reject() { close(); }
@@ -79,17 +79,18 @@ protected:
 private slots:
     void grabTimerDone();
     void slotDragSnapshot();
+    void updateCaption();
 
 private:
-    
     void updatePreview();
     void performGrab();
-
     void autoincFilename();
+
     QPixmap snapshot;
     QTimer grabTimer;
     QWidget* grabber;
     QString filename;
+    bool modified;
 };
 
 #endif // KSNAPSHOT_H

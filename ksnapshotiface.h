@@ -17,16 +17,21 @@ class KSnapshotIface : virtual public DCOPObject
 {
         K_DCOP
         k_dcop:
+	virtual QString url() const = 0;
         /** Grab an image **/
         virtual void slotGrab() = 0;
-        /** Save an image **/
+	/** Prints the image. */
+	virtual void slotPrint() = 0;
+        /** Saves the image **/
         virtual void slotSave() = 0;
+        /** Saves image as **/
+        virtual void slotSaveAs() = 0;
         /** Copy the snapshot to the clipboard. **/
 	virtual void slotCopy() = 0;
         /** Set the timout value **/
         virtual void setTime(int newTime) = 0;
         /** Set the URL to the file to save **/
-        virtual void setURL(QString newURL) = 0;
+        virtual void setURL(const QString &newURL) = 0;
         /** Set the ability to grab the entire screen or just the window
                 containing the mouse **/
         virtual void setGrabPointer(bool grab) = 0;
@@ -34,6 +39,7 @@ class KSnapshotIface : virtual public DCOPObject
 	virtual void slotMovePointer( int x, int y ) = 0;
         /** Exit KSnapshot **/
 	virtual void exit() = 0;
+        virtual bool save(const QString &filename) = 0;
 };
 
 #endif

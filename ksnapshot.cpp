@@ -52,6 +52,8 @@
 #include <X11/Xatom.h>
 #include <kglobal.h>
 
+#define kApp KApplication::kApplication()
+
 KSnapshot::KSnapshot(QWidget *parent, const char *name)
   : KSnapshotBase(parent, name)
   , DCOPObject("interface")
@@ -84,6 +86,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     }
 
     connect( &grabTimer, SIGNAL( timeout() ), this, SLOT(  grabTimerDone() ) );
+    QTimer::singleShot( 0, this, SLOT( updateCaption() ) );
 
     KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
     helpButton->setPopup(helpMenu->menu());
@@ -136,8 +139,10 @@ bool KSnapshot::save( const QString &filename )
 
 void KSnapshot::slotSave()
 {
-    if ( save(filename) )
+    if ( save(filename) ) {
+	modified = false;
 	autoincFilename();
+    }
 }
 
 void KSnapshot::slotSaveAs()
@@ -161,6 +166,7 @@ void KSnapshot::slotSaveAs()
 
     if ( save(name) ) {
 	filename = name;
+	modified = false;
 	autoincFilename();
     }
 }
@@ -301,8 +307,8 @@ void KSnapshot::autoincFilename()
         }
     }
 
-    //Rebuilt the path
-    filename = path + '/' + name;
+    //Rebuilt the path 
+    setURL( path + '/' + name );
 }
 
 void KSnapshot::updatePreview()
@@ -353,6 +359,8 @@ void KSnapshot::performGrab()
     }
     updatePreview();
     QApplication::restoreOverrideCursor();
+    modified = true;
+    updateCaption();
     show();
 }
 
@@ -361,9 +369,19 @@ void KSnapshot::setTime(int newTime)
     delaySpin->setValue(newTime);
 }
 
-void KSnapshot::setURL(QString newURL)
+void KSnapshot::setURL( const QString &url )
 {
-    filename = newURL;
+    if ( url == filename )
+	return;
+
+    filename = url;
+    updateCaption();
+}
+
+void KSnapshot::updateCaption()
+{
+    QFileInfo fi( filename );
+    setCaption( kApp->makeStdCaption( fi.fileName(), true, modified ) );
 }
 
 void KSnapshot::setGrabPointer(bool grab)
