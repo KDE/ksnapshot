@@ -1,3 +1,3 @@
+doc_DATA = index.html ksnapshot.gif
+docdir = $(kde_htmldir)/en/ksnapshot
 
-# add here all the languages, you have docu for
-SUBDIRS = en cs
