@@ -16,8 +16,11 @@
 #include <kurlrequester.h>
 #include <kapplication.h>
 #include <kprinter.h>
+#include <qdragobject.h>
+#include <qgroupbox.h>
 #include <qimage.h>
 #include <qlabel.h>
+#include <qlayout.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qclipboard.h>
@@ -27,6 +30,7 @@
 #include <qpainter.h>
 #include <qpaintdevicemetrics.h>
 #include <qimage.h>
+#include <qwhatsthis.h>
 
 #include <stdlib.h>
 
@@ -40,7 +44,9 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
   : KSnapshotBase(parent, name)
   , DCOPObject("interface")
 {
-
+    imageLabel->setAlignment(AlignHCenter | AlignVCenter);
+    connect(imageLabel, SIGNAL(startDrag()), this, SLOT(slotDragSnapshot()));
+ 
     grabber = new QWidget( 0, 0, WStyle_Customize | WX11BypassWM );
     grabber->move( -1000, -1000 );
     grabber->installEventFilter( this );
@@ -58,72 +64,42 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     onlyWindow->setChecked(conf->readBoolEntry("onlyWindow",true));
 
     connect( &grabTimer, SIGNAL( timeout() ), this, SLOT(  grabTimerDone() ) );
-    urlRequester->setURL( QDir::currentDirPath() + "/" + i18n("snapshot") + "1.png" );
-    urlRequester->fileDialog()->setKeepLocation(true);
+    filename =  QDir::currentDirPath() + "/" + i18n("snapshot") + "1.png";
 
     // Make sure the name is not already being used
-    QFileInfo fi( urlRequester->url());
+    QFileInfo fi( filename );
     while(fi.exists()) {
 	autoincFilename();
-	fi.setFile( urlRequester->url() );
+	fi.setFile( filename );
     }
 
-    setTabOrder( PushButton3, urlRequester->lineEdit() );
-    setTabOrder( urlRequester->lineEdit(), urlRequester->button() );
-    setTabOrder( urlRequester->button(), delaySpin );
-    urlRequester->lineEdit()->setFocus();
+    saveButton->setFocus();
 }
 
 KSnapshot::~KSnapshot()
 {
 }
 
-
 void KSnapshot::slotSave()
 {
-    QString text;
-    QString caption(i18n("Error: Unable to save image"));
-    QString buttonLabel(i18n("Dismiss"));
-
-    QString overwriteCaption(i18n("Warning: This will overwrite an existing file"));
-    QString overwriteMessage(i18n("Are you sure you want to overwrite the existing file named\n%1?"));
-    QString overwriteButtonLabel(i18n("Overwrite"));
-    QString cancelButtonLabel(i18n("Cancel"));
-
-    QString saveErrorMessage(i18n("KSnapshot was unable to save the image to\n%1."));
-
-    bool cancelled = false;
-
-    QString filename = urlRequester->url();
-    // Test to see if save will overwrite an existing file
-    QFileInfo filenameInfo(filename);
-
-    if (filenameInfo.exists()) {
-	// Warn the user
-	int choice= -1;
-
-	text = overwriteMessage.arg(filename);
-	choice= KMessageBox::warningYesNo(this, text, overwriteCaption, overwriteButtonLabel, cancelButtonLabel);
-
-	// If the user chose to cancel
-	if (choice != KMessageBox::Yes)
-	    cancelled= true;
+    QString saveTo = KFileDialog::getSaveFileName(filename, QString::null, this);
+    if (!saveTo.isNull())
+    {
+        if ( !(snapshot.save(saveTo, KImageIO::type(filename).ascii() ) ) ) 
+        {
+            QApplication::restoreOverrideCursor();
+            kdWarning() << "KSnapshot was unable to save the snapshot" << endl;
+            QString caption = i18n("Error: Unable to save image");
+            QString text = i18n("KSnapshot was unable to save the image to\n%1.")
+                               .arg(filename);
+            KMessageBox::error(this, text, caption);
+        }
+        QApplication::restoreOverrideCursor();
+        filename = saveTo;
+        autoincFilename();
     }
 
-    if (!cancelled) {
-	QApplication::setOverrideCursor( waitCursor );
-	// Cannot save (permissions error?)
-	if ( !(snapshot.save(filename, KImageIO::type(filename).ascii() ) ) ) {
-	    QApplication::restoreOverrideCursor();
-	    kdWarning() << "KSnapshot was unable to save the snapshot" << endl;
-	    QString caption = i18n("Error: Unable to save image");
-	    QString text = i18n("KSnapshot was unable to save the image to\n%1.")
-			   .arg(filename);
-	    KMessageBox::error(this, text, caption);
-	}
-	QApplication::restoreOverrideCursor();
-	autoincFilename();
-    }
+    return;
 }
 
 void KSnapshot::slotCopy()
@@ -132,12 +108,19 @@ void KSnapshot::slotCopy()
   cb->setPixmap( snapshot );
 }
 
+void KSnapshot::slotDragSnapshot()
+{
+    QDragObject *drobj = new QImageDrag(snapshot.convertToImage(), this);
+    drobj->setPixmap(imageLabel->pixmap()->convertToImage());
+    drobj->dragCopy();
+}
+
 void KSnapshot::slotGrab()
 {
     hide();
-    if ( delaySpin->value() ) {
+    if ( delaySpin->value() ) 
 	grabTimer.start( delaySpin->value() * 1000, true );
-    } else {
+    else {
 	grabber->show();
 	grabber->grabMouse( crossCursor );
     }
@@ -155,6 +138,7 @@ void KSnapshot::slotPrint()
         printer.setOrientation(KPrinter::Landscape);
     else
         printer.setOrientation(KPrinter::Portrait);
+
     if (printer.setup(this))
     {
         QPainter painter(&printer);
@@ -189,7 +173,7 @@ bool KSnapshot::eventFilter( QObject* o, QEvent* e)
 void KSnapshot::autoincFilename()
 {
     // Extract the filename from the path
-    QFileInfo fi( urlRequester->url() );
+    QFileInfo fi( filename );
     QString path= fi.dirPath();
     QString name= fi.fileName();
 
@@ -214,7 +198,7 @@ void KSnapshot::autoincFilename()
 	// Rebuild the path
 	path.append("/");
 	path.append(name);
-	urlRequester->setURL( path );
+        filename = path;
     }
 }
 
@@ -252,7 +236,8 @@ void KSnapshot::performGrab()
 		       &rootX, &rootY, &winX, &winY,
 		      &mask);
 	snapshot = QPixmap::grabWindow( child );
-    } else {
+    } 
+    else {
 	snapshot = QPixmap::grabWindow( qt_xrootwin() );
     }
     updatePreview();
@@ -261,21 +246,21 @@ void KSnapshot::performGrab()
 
 void KSnapshot::setTime(int newTime)
 {
-        delaySpin->setValue(newTime);
+    delaySpin->setValue(newTime);
 }
 
 void KSnapshot::setURL(QString newURL)
 {
-        urlRequester->setURL( newURL );
+    filename = newURL;
 }
 
 void KSnapshot::setGrabPointer(bool grab)
 {
-        onlyWindow->setChecked( grab );
+    onlyWindow->setChecked( grab );
 }
 
 void KSnapshot::exit()
 {
-        this->reject();
+    this->reject();
 }
 #include "ksnapshot.moc"

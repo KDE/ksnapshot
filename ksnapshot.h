@@ -4,9 +4,30 @@
 #define KSNAPSHOT_H
 #include "ksnapshotbase.h"
 #include "ksnapshotiface.h"
+#include <qlabel.h>
 #include <qpixmap.h>
 #include <qtimer.h>
 #include <dcopclient.h>
+
+class KSnapshotThumb : public QLabel
+{
+    Q_OBJECT
+
+    public:
+        KSnapshotThumb(QWidget *parent, const char *name = 0)
+            : QLabel(parent, name)
+        {}
+        virtual ~KSnapshotThumb() {}
+    
+    signals:
+        void startDrag();
+    
+    protected:
+        void mousePressEvent(QMouseEvent * e)
+        {
+            emit startDrag();
+        }
+};
 
 class KSnapshot : public KSnapshotBase , virtual public KSnapshotIface
 {
@@ -25,6 +46,7 @@ public:
   void setURL(QString newURL);
   void setGrabPointer(bool grab);
   void exit();
+
 protected:
     void reject() { close(); }
 
@@ -33,6 +55,7 @@ protected:
     
 private slots:
     void grabTimerDone();
+    void slotDragSnapshot();
 
 private:
     
@@ -43,6 +66,7 @@ private:
     QPixmap snapshot;
     QTimer grabTimer;
     QWidget* grabber;
+    QString filename;
 };
 
 #endif // KSNAPSHOT_H
