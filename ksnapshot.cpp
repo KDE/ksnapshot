@@ -61,9 +61,9 @@
 #define kApp KApplication::kApplication()
 
 KSnapshot::KSnapshot(QWidget *parent, const char *name)
-  : DCOPObject("interface"), 
-    KDialogBase(parent, name, true, QString::null, Help|User1, User1, 
-    true, KGuiItem( i18n( "&Quit" ), "exit" ) )
+  : DCOPObject("interface"),
+    KDialogBase(parent, name, true, QString::null, Help|User1, User1,
+    true, KStdGuiItem::quit() )
 {
     grabber = new QWidget( 0, 0, WStyle_Customize | WX11BypassWM );
     grabber->move( -1000, -1000 );
@@ -152,7 +152,7 @@ bool KSnapshot::save( const KURL& url )
     if ( KIO::NetAccess::exists( url, false, this ) ) {
         const QString title = i18n( "File Exists" );
         const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" ).arg(url.prettyURL());
-        if (KMessageBox::Yes != KMessageBox::warningYesNoCancel( this, text, title ) ) 
+        if (KMessageBox::Yes != KMessageBox::warningYesNoCancel( this, text, title ) )
         {
             return false;
         }
@@ -389,7 +389,7 @@ void KSnapshot::autoincFilename()
         }
     }
 
-    //Rebuild the path 
+    //Rebuild the path
     KURL newURL = filename;
     newURL.setFileName( name );
     setURL( newURL.url() );
@@ -519,7 +519,7 @@ void KSnapshot::performGrab()
 
 		//Create the bounding box.
 		QRegion bbox(0, 0, snapshot.width(), snapshot.height());
-                
+
                 if( border > 0 ) {
                     contents.translate( border, border );
                     contents += QRegion( 0, 0, border, h );
@@ -527,7 +527,7 @@ void KSnapshot::performGrab()
                     contents += QRegion( 0, h - border, w, border );
                     contents += QRegion( w - border, 0, border, h );
                 }
-                
+
 		//Get the masked away area.
 		QRegion maskedAway = bbox - contents;
 		QMemArray<QRect> maskedAwayRects = maskedAway.rects();
