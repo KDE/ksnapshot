@@ -17,7 +17,7 @@ KDE_ICON = ksnapshot
 EXTRA_DIST = $(lnk_DATA)
 
 messages: rc.cpp
-	$(XGETTEXT) rc.cpp $(ksnapshot_SOURCES) -o $(podir)/ksnapshot.pot
+	$(XGETTEXT) rc.cpp *.cpp -o $(podir)/ksnapshot.pot
 
 main.cpp: ksnapshotbase.h
 
