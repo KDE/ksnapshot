@@ -20,6 +20,7 @@
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <klineedit.h>
+#include <knotifyclient.h>
 
 #include <stdlib.h>
 
@@ -201,7 +202,7 @@ void KSnapshot::updatePreview()
 void KSnapshot::grabTimerDone()
 {
     performGrab();
-    QApplication::beep();
+    KNotifyClient::beep(i18n("The screen has been successfully grabbed."));
 }
 
 void KSnapshot::performGrab()
