@@ -9,16 +9,11 @@ ksnapshot_SOURCES = ksnapshotiface.skel main.cpp ksnapshot.cpp ksnapshotbase.ui
 
 ksnapshot_METASOURCES = AUTO
 
-lnkdir = $(kde_appsdir)/Graphics/More
-lnk_DATA = ksnapshot.desktop
-
-install-data-local: uninstall.desktop
-	$(mkinstalldirs) $(DESTDIR)$(kde_appsdir)/Graphics
-	$(INSTALL_DATA) $(srcdir)/uninstall.desktop $(DESTDIR)$(kde_appsdir)/Graphics/ksnapshot.desktop
+xdg_apps_DATA = ksnapshot.desktop
 
 KDE_ICON = ksnapshot
 
-EXTRA_DIST = $(lnk_DATA)
+EXTRA_DIST = $(xdg_apps_DATA)
 
 messages: rc.cpp
 	$(XGETTEXT) rc.cpp *.cpp -o $(podir)/ksnapshot.pot
