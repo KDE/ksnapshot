@@ -1,12 +1,12 @@
 bin_PROGRAMS= ksnapshot
 
-INCLUDES = -DKSNAPVERSION="\"0.6\"" $(all_includes)
+INCLUDES = -DKSNAPVERSION="\"0.7\"" $(all_includes)
 
 ksnapshot_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 ksnapshot_LDADD = $(LIB_KSYCOCA) $(LIB_KFILE) -lkdeprint
 
 ksnapshot_SOURCES = ksnapshotiface.skel main.cpp ksnapshot.cpp \
-    regiongrabber.cpp ksnapshotbase.ui
+    regiongrabber.cpp ksnapshotwidget.ui
 
 ksnapshot_METASOURCES = AUTO
 

@@ -2,15 +2,18 @@
 
 #ifndef KSNAPSHOT_H
 #define KSNAPSHOT_H
-#include "ksnapshotbase.h"
 #include "ksnapshotiface.h"
+
 #include <qlabel.h>
 #include <qpixmap.h>
 #include <qtimer.h>
+
 #include <dcopclient.h>
 #include <kglobalsettings.h>
+#include <kdialogbase.h>
 
 class RegionGrabber;
+class KSnapshotWidget;
 
 class KSnapshotThumb : public QLabel
 {
@@ -19,7 +22,9 @@ class KSnapshotThumb : public QLabel
     public:
         KSnapshotThumb(QWidget *parent, const char *name = 0)
             : QLabel(parent, name)
-        {}
+        {
+            setAlignment(AlignHCenter | AlignVCenter);
+        }
         virtual ~KSnapshotThumb() {}
     
     signals:
@@ -49,7 +54,7 @@ class KSnapshotThumb : public QLabel
         QPoint mClickPt;
 };
 
-class KSnapshot : public KSnapshotBase , virtual public KSnapshotIface
+class KSnapshot : public KDialogBase, virtual public KSnapshotIface
 {
   Q_OBJECT
 
@@ -62,17 +67,18 @@ public:
   bool save( const QString &filename );
   QString url() const { return filename; }
 
+protected slots:
   void slotGrab();
   void slotSave();
   void slotSaveAs();
   void slotCopy();
   void slotPrint();
   void slotMovePointer( int x, int y );
-  void exit();
 
   void setTime(int newTime);
   void setURL(const QString &newURL);
   void setGrabMode( int m );
+  void exit();
 
 protected:
     void reject() { close(); }
@@ -94,6 +100,7 @@ private:
     QPixmap snapshot;
     QTimer grabTimer;
     QWidget* grabber;
+    KSnapshotWidget *mainWidget;
     RegionGrabber *rgnGrab;
     QString filename;
     bool modified;

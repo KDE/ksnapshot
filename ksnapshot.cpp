@@ -4,6 +4,7 @@
  * (c) Richard J. Moore 1997-2002
  * (c) Matthias Ettrich 2000
  * (c) Aaron J. Seigo 2002
+ * (c) Nadeem Hasan 2003
  *
  * Released under the LGPL see file LICENSE for details.
  */
@@ -16,27 +17,18 @@
 #include <kmessagebox.h>
 #include <kdebug.h>
 #include <kapplication.h>
-#include <kguiitem.h>
 #include <kprinter.h>
 
 #include <qbitmap.h>
 #include <qdragobject.h>
-#include <qgroupbox.h>
 #include <qimage.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qspinbox.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
 #include <qclipboard.h>
+#include <qvbox.h>
 
 #include <kaccel.h>
-#include <klineedit.h>
 #include <knotifyclient.h>
 #include <khelpmenu.h>
 #include <kpopupmenu.h>
-#include <kiconloader.h>
-#include <kpushbutton.h>
 #include <kstartupinfo.h>
 
 #include <qcursor.h>
@@ -50,6 +42,7 @@
 
 #include "ksnapshot.h"
 #include "regiongrabber.h"
+#include "ksnapshotwidget.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -65,11 +58,10 @@
 #define kApp KApplication::kApplication()
 
 KSnapshot::KSnapshot(QWidget *parent, const char *name)
-  : DCOPObject("interface"), KSnapshotBase(parent, name)
+  : DCOPObject("interface"), 
+    KDialogBase(parent, name, true, QString::null, Help|User1, User1, 
+    false, KGuiItem( i18n( "&Quit" ), "exit" ) )
 {
-    imageLabel->setAlignment(AlignHCenter | AlignVCenter);
-    connect(imageLabel, SIGNAL(startDrag()), this, SLOT(slotDragSnapshot()));
-
     grabber = new QWidget( 0, 0, WStyle_Customize | WX11BypassWM );
     grabber->move( -1000, -1000 );
     grabber->installEventFilter( this );
@@ -82,6 +74,17 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     haveXShape = XShapeQueryExtension( qt_xdisplay(), &tmp1, &tmp2 );
 #endif
 
+    QVBox *vbox = makeVBoxMainWidget();
+    mainWidget = new KSnapshotWidget( vbox, "mainWidget" );
+    vbox->setStretchFactor( new QWidget( vbox, "spacer" ), 10 );
+
+    connect(mainWidget, SIGNAL(startImageDrag()), SLOT(slotDragSnapshot()));
+
+    connect( mainWidget, SIGNAL( newClicked() ), SLOT( slotGrab() ) );
+    connect( mainWidget, SIGNAL( saveClicked() ), SLOT( slotSave() ) );
+    connect( mainWidget, SIGNAL( saveAsClicked() ), SLOT( slotSaveAs() ) );
+    connect( mainWidget, SIGNAL( printClicked() ), SLOT( slotPrint() ) );
+
     grabber->show();
     grabber->grabMouse( waitCursor );
     snapshot = QPixmap::grabWindow( qt_xrootwin() );
@@ -91,9 +94,9 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
 
     KConfig *conf=KGlobal::config();
     conf->setGroup("GENERAL");
-    delaySpin->setValue(conf->readNumEntry("delay",0));
-    mode->setCurrentItem( conf->readNumEntry( "mode", 0 ) );
-    includeDecorations->setChecked(conf->readBoolEntry("includeDecorations",true));
+    mainWidget->setDelay(conf->readNumEntry("delay",0));
+    mainWidget->setMode( conf->readNumEntry( "mode", 0 ) );
+    mainWidget->setIncludeDecorations(conf->readBoolEntry("includeDecorations",true));
     filename = conf->readPathEntry( "filename", QDir::currentDirPath()+"/"+i18n("snapshot")+"1.png" );
 
     // Make sure the name is not already being used
@@ -107,10 +110,9 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     QTimer::singleShot( 0, this, SLOT( updateCaption() ) );
 
     KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
-    helpButton->setPopup(helpMenu->menu());
 
-    helpButton->setGuiItem (KGuiItem(i18n("&Help"), "help" ) );
-    closeButton->setGuiItem (KGuiItem(i18n("&Quit"), "exit" ) );
+    QPushButton *helpButton = actionButton( Help );
+    helpButton->setPopup(helpMenu->menu());
 
     KAccel* accel = new KAccel(this);
     accel->insert(KStdAccel::Quit, kapp, SLOT(quit()));
@@ -122,9 +124,8 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     accel->insert(KStdAccel::Print, this, SLOT(slotPrint()));
     accel->insert(KStdAccel::New, this, SLOT(slotGrab()));
 
-    slotModeChanged( mode->currentItem() );
-
-    saveButton->setFocus();
+    setEscapeButton( User1 );
+    connect( this, SIGNAL( user1Clicked() ), SLOT( reject() ) );
 }
 
 KSnapshot::~KSnapshot()
@@ -207,14 +208,14 @@ void KSnapshot::slotCopy()
 void KSnapshot::slotDragSnapshot()
 {
     QDragObject *drobj = new QImageDrag(snapshot.convertToImage(), this);
-    drobj->setPixmap(imageLabel->pixmap()->convertToImage());
+    drobj->setPixmap(mainWidget->preview());
     drobj->dragCopy();
 }
 
 void KSnapshot::slotGrab()
 {
     hide();
-    if ( mode->currentItem() == Region )
+    if ( mainWidget->mode() == Region )
     {
         rgnGrab = new RegionGrabber();
         connect( rgnGrab, SIGNAL( regionGrabbed( const QPixmap & ) ),
@@ -222,8 +223,8 @@ void KSnapshot::slotGrab()
     }
     else
     {
-        if ( delaySpin->value() )
-            grabTimer.start( delaySpin->value() * 1000, true );
+        if ( mainWidget->delay() )
+            grabTimer.start( mainWidget->delay() * 1000, true );
         else {
             grabber->show();
             grabber->grabMouse( crossCursor );
@@ -309,9 +310,9 @@ void KSnapshot::closeEvent( QCloseEvent * e )
 {
     KConfig *conf=KGlobal::config();
     conf->setGroup("GENERAL");
-    conf->writeEntry("delay",delaySpin->value());
-    conf->writeEntry("mode",mode->currentItem());
-    conf->writeEntry("includeDecorations",includeDecorations->isChecked());
+    conf->writeEntry("delay",mainWidget->delay());
+    conf->writeEntry("mode",mainWidget->mode());
+    conf->writeEntry("includeDecorations",mainWidget->includeDecorations());
     conf->writePathEntry("filename",filename);
     e->accept();
 }
@@ -367,14 +368,16 @@ void KSnapshot::updatePreview()
 {
     QImage img = snapshot.convertToImage();
     double r1 = ((double) snapshot.height() ) / snapshot.width();
-    if ( r1 * imageLabel->width()  < imageLabel->height() )
-	img = img.smoothScale( int( imageLabel->width()), int( imageLabel->width() * r1 ));
+    if ( r1 * mainWidget->previewWidth()  < mainWidget->previewHeight() )
+	img = img.smoothScale( mainWidget->previewWidth(),
+        int( mainWidget->previewWidth() * r1 ));
     else
-	img = img.smoothScale( (int) (((double)imageLabel->height()) / r1) , (imageLabel->height() ) );
+	img = img.smoothScale( (int) (((double)mainWidget->previewHeight()) / r1),
+        (mainWidget->previewHeight() ) );
 
     QPixmap pm;
     pm.convertFromImage( img );
-    imageLabel->setPixmap( pm );
+    mainWidget->setPreview( pm );
 }
 
 void KSnapshot::grabTimerDone()
@@ -420,7 +423,7 @@ void KSnapshot::performGrab()
     grabber->releaseMouse();
     grabber->hide();
     grabTimer.stop();
-    if ( mode->currentItem() == WindowUnderCursor ) {
+    if ( mainWidget->mode() == WindowUnderCursor ) {
 	Window root;
 	Window child;
 	uint mask;
@@ -429,7 +432,7 @@ void KSnapshot::performGrab()
 		       &rootX, &rootY, &winX, &winY,
 		      &mask);
 
-	if( !includeDecorations->isChecked()) {
+	if( !mainWidget->includeDecorations()) {
 	    Window real_child = findRealWindow( child );
 	    if( real_child != None ) // test just in case
 		child = real_child;
@@ -492,6 +495,7 @@ void KSnapshot::performGrab()
 		for (uint pos = 0; pos < maskedAwayRects.count(); pos++)
 		    p.fillRect(maskedAwayRects[pos], Qt::color0);
 		p.end();
+
 		snapshot.setMask(mask);
 	    }
 	}
@@ -509,7 +513,7 @@ void KSnapshot::performGrab()
 
 void KSnapshot::setTime(int newTime)
 {
-    delaySpin->setValue(newTime);
+    mainWidget->setDelay(newTime);
 }
 
 void KSnapshot::setURL( const QString &url )
@@ -523,8 +527,7 @@ void KSnapshot::setURL( const QString &url )
 
 void KSnapshot::setGrabMode( int m )
 {
-  mode->setCurrentItem( m );
-  slotModeChanged( m );
+  mainWidget->setMode( m );
 }
 
 void KSnapshot::updateCaption()
@@ -540,6 +543,6 @@ void KSnapshot::slotMovePointer(int x, int y)
 
 void KSnapshot::exit()
 {
-    this->reject();
+    reject();
 }
 #include "ksnapshot.moc"
