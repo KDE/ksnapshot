@@ -12,6 +12,9 @@
             <height>244</height>
         </rect>
     </property>
+    <property name="caption">
+        <string>KSnapshotWidget</string>
+    </property>
     <grid>
         <property name="name">
             <cstring>unnamed</cstring>
@@ -44,8 +47,11 @@ You can also copy the image to the clipboard by pressing Ctrl+C.</string>
             <property name="text">
                 <string>&amp;New Snapshot</string>
             </property>
+            <property name="accel">
+                <string>Alt+N</string>
+            </property>
             <property name="iconSet">
-                <iconset>"filenew"</iconset>
+                <iconset>"ksnapshot", 32</iconset>
             </property>
             <property name="whatsThis" stdset="0">
                 <string>Click this button to take a new snapshot.</string>
@@ -254,7 +260,7 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 </customwidgets>
 <images>
     <image name="image0">
-        <data format="PNG" length="750">89504e470d0a1a0a0000000d4948445200000016000000160806000000c4b46c3b000002b549444154789cad954148145118c77f9b7398018db7e0a1bded824542975d3aa8a734ba782bf4e02e1dca9be2215442846ed1a1ab0656ab17e952daa118046337287683b51d0fc6084abb9030034933a0b80fda9a0e3bbb6a6bb82bfde1e37b0fdef77fdffbf3deffe1791ea705701df8053c049e026da7d634417a17b808ac0145e0daa9c4c013c0fb4f31072801cff3080402ded7cc739c420657ba084545022a3496db04b224b1d6e719780cc079051fce4e1e737d1e5501ab0caa02b2d10c083ffb68ad11bb7b362a30f08833e1d5948a7a48add588852ab0fcf1c18f033455c3711d8c4d83a5d74b485712eb8ad119e904058410985b26c98524e977692257e298ebf3553aa5462ccb12d51fcf3e9bc5deb5c97cc8905dcb121f8c33333b433018ac2cf809a98f29aca2856ddb75f500356255393cc8e4fdc9632b32b90cc98524a3b74731b74d261e4c60ac19b8ae8baaaa75f5c788ffde31dc1166746c144dd10887c2843a426842c3300dfa7bfb19be33ccf2db65a423d157f4c63a1e191b217133414f6f0f752843ac3b465f6f1fd1ce28859d02fa8a5ed7f1b97f75ec941d2855f404b02c0b4a606e9ae8ab3aa5bd12918e08c56fc5c635d6dfe8442e448875c410ed024d6a38bb0e4215082130360cf4159d6c2e4b3e976f5c637bc7a6601770a403fb800afaaa4eb03588b16190cfe5e9eeea263e14c7711dd2efd3751dd7a438baa32c4b8a5b45cc6d136bc7424a49ff8d7ecc4d937c2e4f281cc2dd7541c2f8bdf1c63b4681cca70cd1ce28a1c110524a82ed41a6a7a6895e8da2afe8a4b22952d91489a1c4891a57ddcdfbbc3cee2d4e9dddd5be2c8f7b8b93b5f9a5c38e4b0e82ca9b8f5cbed594bb893681fddd3cf956581bf3be5b49cc8d174db95be1c8dc47b92ac5dc592538215e02a1aad12b8006b4fab976922651a6f2acf6abc401a0c5276ce1c8356c12bfa9fc8fe53f43d4f114fb22a6b70000000049454e44ae426082</data>
+        <data format="PNG" length="782">89504e470d0a1a0a0000000d4948445200000016000000160806000000c4b46c3b000002d549444154789cad954f48147114c73fbb33b6399a075b313d581ddc352f42170f0929eab5407031e8929d942824c2e82a1da29b8740c9bd04057ad134a514bd186ee36e4276709dda560d5977d7249d7567ffcc4e07dd45626577a32fbcdfccfbfd980fef3de6bd1f866190cb805640079e02c3c0b99cdf1400ed066a0137e0079a7382811780f19f6c08104d86616032998cb5c561c27e1789d86fcca285427446b2a2c754b6569ddc7a064099983e0cfb5d6c7e7192320a620220086002927a66ab34034ec47e9332e0f6f3c2c100a34fce62a0a5dde20cf864fae17018b148448da8ac7e59656a6a8abdbd3d9aae35515d5d8d2449149714b3b1b98173c4c9fcdc3c95f60eb6bebe4e23c40cf8a4464646d809ede05a72217f92e9747432383888f5bc15004dd358fcb8c8867f83e04e306b0659c1fdfdfd9977b368c6e3f130fc7298bb77eee25df7323030c08a6785dddd5d2449ca1f0c60b3d9e8e9ed412c12a9b05660b7db292b2b43595768bede4cf79d6e26de4eb0bfbfcfccbb99fcc03df77ab879e326edaded2492092c672cc4e231cc8299783c4e6363236dad6dd8ec367c3e5f56b0391b581004f4948e1a51319b8f60a15088c3c343144561766e9603f5804b172f110e85f32fc5f4e434d6722bb5b5b558cbad08824020184092244a4a4a58f3ae313e39cecae715963dcb59c15923defeb94d281c425555a2d1285a5463617e81d1b151bc5e2f6ed94d3010c4e1705067abcb1facc535946f0abe1f3e7c7e1ff1449c96961614af82dbe3a6e6720d8140005dd7e9ededcdbf14a228227f92a9bf528fa3d3412412a1ea42157d0ffb68b8dac0fb0fef9197656459a6abab2b2b383ddd8ca5b1fbc69bc7ff3ed55c630f8c578f32be2d13b11e533171d4f395f68eec519c228b5481faebfb11f2ef526cad3a49ea60a09decf9bc641c2fa954662b992ec550ae540bb031a02a3de845a018283d7e9edaea399404a2809a069b00e1182870ca6f9887521cdd8fc93f3ef0c4ca5ba36f940000000049454e44ae426082</data>
     </image>
 </images>
 <connections>
@@ -332,6 +338,9 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 <layoutdefaults spacing="6" margin="11"/>
 <layoutfunctions spacing="KDialog::spacingHint" margin="KDialog::marginHint"/>
 <includehints>
-    <includehint>ksnapshotthumb.h</includehint>
+    <includehint>ksnapshotpreview.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
 </includehints>
 </UI>
