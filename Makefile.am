@@ -12,17 +12,9 @@ ksnapshot_METASOURCES = USE_AUTOMOC
 lnkdir = $(kde_appsdir)/Graphics
 lnk_DATA = ksnapshot.desktop
 
-icondir = $(kde_icondir)
-icon_DATA = ksnapshot.xpm
+KDE_ICON = ksnapshot
 
-EXTRA_DIST = $(lnk_DATA) $(icon_DATA) mini-kpaint.xpm
-
-install-data-local: mini-ksnapshot.xpm
-	$(mkinstalldirs) $(kde_minidir)
-	$(INSTALL_DATA) $(srcdir)/mini-ksnapshot.xpm $(kde_minidir)/ksnapshot.xpm
-
-uninstall-local:
-	-rm -f $(kde_minidir)/ksnapshot.xpm
+EXTRA_DIST = $(lnk_DATA) 
 
 messages:
 	$(XGETTEXT) -C -ktranslate -ki18n -x $(includedir)/kde.pot $(ksnapshot_SOURCES) && mv messages.po ../po/ksnapshot.pot
