@@ -95,7 +95,7 @@ void KSnapShot::buildGui()
 		     "on a window to grab it.\n\n"
 		     "KSnapshot is copyright Richard Moore (rich@kde.org)\n"
 		     "and is released under LGPL\n\n"
-		     "Version: "), KSNAPVERSION);
+		     "Version: %s"), KSNAPVERSION);
   hintLabel= new QLabel(about, 
 			this);
   hintLabel->setAlignment(AlignCenter);
@@ -130,7 +130,7 @@ void KSnapShot::buildGui()
   filenameLabel->setAlignment(AlignCenter);
   filenameLabel->adjustSize();
   filenameLabel->setFixedHeight(filenameLabel->height());
-  filenameLabel->setFixedWidth(filenameLabel->width());
+  filenameLabel->setFixedWidth(filenameLabel->width() * 1.5);
   filenameEdit= new QLineEdit(this);
   filenameEdit->setText(filename_);
   filenameEdit->setFixedHeight(filenameLabel->height()+8);
