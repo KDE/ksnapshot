@@ -46,7 +46,6 @@ int main(int argc, char **argv)
 
   app.dcopClient()->setDefaultObject( toplevel->objId() );
   toplevel->setCaption( app.makeStdCaption("") );
-  toplevel->setIcon(SmallIcon("ksnapshot"));
   app.setMainWidget(toplevel);
   toplevel->show();
   return app.exec();
