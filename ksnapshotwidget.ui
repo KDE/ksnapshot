@@ -68,7 +68,7 @@ You can also copy the image to the clipboard by pressing Ctrl+C.</string>
                 <iconset>"filesave"</iconset>
             </property>
             <property name="whatsThis" stdset="0">
-                <string>Click this button to save the current snapshot. To quickly save the snapshot without showing the file dialog, press Ctrl+Shift+S. The filename is automatically incremented after each save.</string>
+                <string>Click this button to save the current snapshot. To quickly save the snapshot without showing the file dialog, press Ctrl+Shift+S. The file name is automatically incremented after each save.</string>
             </property>
         </widget>
         <spacer row="1" column="3">
