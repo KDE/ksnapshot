@@ -1,6 +1,6 @@
 #include <kapp.h>
 #include "ksnapshot.h"
-#include <kimgio.h>
+#include <kimageio.h>
 #include <klocale.h>
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
@@ -18,7 +18,7 @@ int main(int argc, char **argv)
   
   KApplication app;
 
-  kimgioRegister();
+  KImageIO::registerFormats();
 
   // Create top level window
   KSnapShot *toplevel= new KSnapShot();

@@ -3,7 +3,7 @@ bin_PROGRAMS= ksnapshot
 INCLUDES = -DKSNAPVERSION="\"0.4.0\"" $(all_includes) 
 
 ksnapshot_LDFLAGS = $(all_libraries) $(KDE_RPATH)
-ksnapshot_LDADD = $(LIB_KIMGIO) $(LIB_KFILE)
+ksnapshot_LDADD = $(LIB_KSYCOCA) $(LIB_KFILE)
 
 ksnapshot_SOURCES = main.cpp ksnapshot.cpp preview.cpp
 

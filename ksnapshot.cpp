@@ -18,7 +18,7 @@
 #include <qtoolbutton.h>
 
 #include <klocale.h>
-#include <kimgio.h>
+#include <kimageio.h>
 #include <kfiledialog.h>
 #include <kmessagebox.h>
 #include <stdlib.h>
