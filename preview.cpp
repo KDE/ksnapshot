@@ -15,3 +15,4 @@ void Preview::closeEvent(QCloseEvent *)
 {
   emit clicked();
 }
+#include "preview.moc"
