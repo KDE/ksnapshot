@@ -1,4 +1,4 @@
-#include <qimage.h>
+#include <kimgio.h>
 #include "formats.h"
 #include "gif.h"
 #include "eps.h"
@@ -6,6 +6,14 @@
 static int numFormats= 5;
 
 static FormatRecord formatlist[]= {
+  {
+    "JPEG",
+    FormatRecord::InternalFormat | FormatRecord::ReadFormat,
+    "^\377\330\377\340",
+    "*.jpeg *.jpg",
+    "jpg",
+    0, 0,
+  }, 
   {
     "GIF",
     FormatRecord::WriteFormat,
@@ -86,6 +94,8 @@ void FormatManager::init(FormatRecord formatlist[])
 				 0, 
 				 rec->read_format, rec->write_format);
    }
+   // Register the ones implemented by kimgio (tiff, jpeg, png, ...)
+   kimgioRegister();
 }
 	  
 QStrList *FormatManager::formats(void)

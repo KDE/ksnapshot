@@ -4,7 +4,7 @@ bin_PROGRAMS= ksnapshot
 INCLUDES = -DKSNAPVERSION="\"0.2.7\"" $(all_includes) 
 
 ksnapshot_LDFLAGS = $(all_libraries) $(KDE_RPATH)
-ksnapshot_LDADD = -lkdeui -lkdecore -lqt -lXext -lX11 
+ksnapshot_LDADD = $(LIB_KIMGIO) $(LIB_KDEUI)
 
 ksnapshot_SOURCES = eps.cpp gif.cpp main.cpp formats.cpp ksnapshot.cpp preview.cpp
 
