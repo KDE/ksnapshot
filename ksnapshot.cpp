@@ -177,7 +177,8 @@ void KSnapshot::autoincFilename()
 
     // Does it have a number?
     int len;
-    int start= numSearch.match(name, 0, &len);
+    int start= numSearch.search(name, 0);
+    len = numSearch.matchedLength();
     if (start != -1) {
 	// It has a number
 	QString numAsStr= name.mid(start, len);
