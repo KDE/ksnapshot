@@ -3,7 +3,7 @@
 #ifndef PREVIEW_H
 #define PREVIEW_H
 
-#include <qpushbt.h>
+#include <qpushbutton.h>
 
 class Preview : public QPushButton {
   Q_OBJECT

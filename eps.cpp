@@ -1,12 +1,12 @@
 #include <qimage.h>
-#include <qdstream.h>
-#include <qtstream.h>
+#include <qdatastream.h>
+#include <qtextstream.h>
 #include <qdir.h>
 #include <qfile.h>
 #include <qpainter.h>
 #include <time.h>
 #include <qprinter.h>
-#include <qpdevmet.h>
+#include <qpaintdevicemetrics.h>
 #include <qstring.h>
 #include "eps.h"
 

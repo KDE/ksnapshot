@@ -9,12 +9,12 @@
 #include <qwidget.h>
 #include <qpixmap.h>
 #include <qimage.h>
-#include <qpushbt.h>
+#include <qpushbutton.h>
 #include <qlabel.h>
-#include <qlined.h>
+#include <qlineedit.h>
 #include <qtimer.h>
 #include <qlayout.h>
-#include <qchkbox.h>
+#include <qcheckbox.h>
 #include <kbutton.h>
 #include "preview.h"
 
