@@ -81,7 +81,7 @@ If the delay is set to "No Delay" the snapshot will be taken when you click the 
                         </size>
                     </property>
                 </spacer>
-                <widget class="QPushButton" row="2" column="1">
+                <widget class="QPushButton" row="4" column="1">
                     <property name="name">
                         <cstring>printButton</cstring>
                     </property>
@@ -106,7 +106,7 @@ If the delay is set to "No Delay" the snapshot will be taken when you click the 
                         <string>This button saves the snapshot to a location specified by the user.</string>
                     </property>
                 </widget>
-                <widget class="QPushButton" row="4" column="1">
+                <widget class="QPushButton" row="2" column="1">
                     <property name="name">
                         <cstring>saveButton</cstring>
                     </property>
