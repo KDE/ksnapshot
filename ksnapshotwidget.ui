@@ -9,8 +9,11 @@
             <x>0</x>
             <y>0</y>
             <width>353</width>
-            <height>237</height>
+            <height>239</height>
         </rect>
+    </property>
+    <property name="caption">
+        <string>KSnapshotWidget</string>
     </property>
     <grid>
         <property name="name">
@@ -48,16 +51,22 @@ The image can be dragged to another application or document to copy the full scr
             <property name="iconSet">
                 <iconset>"filenew"</iconset>
             </property>
+            <property name="whatsThis" stdset="0">
+                <string>Click this button to take a new snapshot.</string>
+            </property>
         </widget>
         <widget class="KPushButton" row="2" column="3">
             <property name="name">
                 <cstring>btnSaveAs</cstring>
             </property>
             <property name="text">
-                <string>&amp;Save As...</string>
+                <string>&amp;Save...</string>
             </property>
             <property name="iconSet">
                 <iconset>"filesaveas"</iconset>
+            </property>
+            <property name="whatsThis" stdset="0">
+                <string>Click this button to save the current snapshot. To quickly save the snapshot without showing the file dialog, press Control+Shift+S. The filename is automatically incremented after each save.</string>
             </property>
         </widget>
         <spacer row="1" column="3">
@@ -86,6 +95,9 @@ The image can be dragged to another application or document to copy the full scr
             </property>
             <property name="iconSet">
                 <iconset>"fileprint"</iconset>
+            </property>
+            <property name="whatsThis" stdset="0">
+                <string>Click this button to print the current screenshot.</string>
             </property>
         </widget>
         <widget class="Line" row="4" column="0" rowspan="1" colspan="4">
@@ -197,6 +209,13 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
             </item>
             <property name="name">
                 <cstring>comboMode</cstring>
+            </property>
+            <property name="whatsThis" stdset="0">
+                <string>&lt;qt&gt;Using this menu, you can select from the three following snapshot modes:
+&lt;p&gt;
+&lt;b&gt;Full Screen&lt;/b&gt; - captures the entire desktop.&lt;br&gt;
+&lt;b&gt;Window Under Cursor&lt;/b&gt; - captures only the window (or menu) that is under the mouse cursor when the snapshot is taken.&lt;br&gt;
+&lt;b&gt;Region&lt;/b&gt; - captures only the region of the desktop that you specify. When taking a new snapshot in this mode you will be able to select any area of the screen by clicking and dragging the mouse.&lt;/p&gt;&lt;/qt&gt;</string>
             </property>
         </widget>
         <spacer row="8" column="1">

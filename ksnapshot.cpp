@@ -114,6 +114,9 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
 
     KAccel* accel = new KAccel(this);
     accel->insert(KStdAccel::Quit, kapp, SLOT(quit()));
+    accel->insert( "QuickSave", i18n("Quick Save Snapshot &As..."),
+		   i18n("Save the snapshot to the file specfied by the user without showing the file dialog."),
+		   CTRL+SHIFT+Key_S, this, SLOT(slotSave()));
     accel->insert(KStdAccel::Save, this, SLOT(slotSaveAs()));
 //    accel->insert(KShortcut(CTRL+Key_A), this, SLOT(slotSaveAs()));
     accel->insert( "SaveAs", i18n("Save Snapshot &As..."),
@@ -166,8 +169,10 @@ bool KSnapshot::save( const QString &filename )
 
 void KSnapshot::slotSave()
 {
-    // must keep this slot around for DCOP compat
-    slotSaveAs();
+    if ( save(filename) ) {
+        modified = false;
+        autoincFilename();
+    }
 }
 
 void KSnapshot::slotSaveAs()
@@ -184,23 +189,23 @@ void KSnapshot::slotSaveAs()
     dlg.setPreviewWidget( ip );
 
     if ( !dlg.exec() )
-	return;
+        return;
 
     QString name = dlg.selectedFile();
     if ( name.isNull() )
-	return;
+        return;
 
     if ( save(name) ) {
-	filename = name;
-	modified = false;
-	autoincFilename();
+        filename = name;
+        modified = false;
+        autoincFilename();
     }
 }
 
 void KSnapshot::slotCopy()
 {
-  QClipboard *cb = QApplication::clipboard();
-  cb->setPixmap( snapshot );
+    QClipboard *cb = QApplication::clipboard();
+    cb->setPixmap( snapshot );
 }
 
 void KSnapshot::slotDragSnapshot()
