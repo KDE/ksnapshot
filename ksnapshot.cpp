@@ -1,7 +1,7 @@
 /*
  * KSnapshot
  *
- * (c) Richard J. Moore 1997-1999
+ * (c) Richard J. Moore 1997-2000
  *
  * Released under the LGPL see file LICENSE for details.
  */
@@ -164,12 +164,13 @@ void KSnapShot::buildGui()
   parametersLayout->addStretch();
   parametersLayout->addLayout(filenameLayout, 0);
 
-  filenameLabel= new QLabel(i18n("Filename:"), this);
+  filenameLabel= new QLabel(i18n("&Filename:"), this);
   filenameLabel->setAlignment(AlignCenter);
   filenameLabel->adjustSize();
   filenameLabel->setFixedHeight(filenameLabel->height());
   filenameLabel->setFixedWidth(filenameLabel->width() * 1.5);
   filenameEdit= new QLineEdit(this);
+  filenameLabel->setBuddy( filenameEdit );
   filenameEdit->setText(filename_);
   filenameEdit->setFixedHeight(filenameLabel->height()+8);
   filenameEdit->setMinimumWidth(70);
@@ -182,7 +183,7 @@ void KSnapShot::buildGui()
 
   buttonsLayout->addSpacing(filenameLabel->width()+4);
   buttonsLayout->addStretch();
-  browseButton= new QPushButton(i18n("Browse..."), this);
+  browseButton= new QPushButton(i18n("&Browse..."), this);
   browseButton->setFixedHeight(filenameLabel->height()+8);
   browseButton->setMinimumWidth(filenameLabel->width());
   buttonsLayout->addWidget(browseButton, 2);
@@ -191,12 +192,13 @@ void KSnapShot::buildGui()
   parametersLayout->addLayout(delayLayout, 0);
   parametersLayout->addStretch();
 
-  delayLabel= new QLabel(i18n("Delay:"), this);
+  delayLabel= new QLabel(i18n("&Delay:"), this);
   delayLabel->setAlignment(AlignCenter);
   delayLabel->adjustSize();
   delayLabel->setFixedHeight(delayLabel->height());
   delayLabel->setFixedWidth(filenameLabel->width());
   delayEdit= new QLineEdit(this);
+  delayLabel->setBuddy( delayEdit );
   s.setNum(delay_);
   delayEdit->setText(s);
   delayEdit->setFixedHeight(delayLabel->height()+8);
@@ -209,12 +211,13 @@ void KSnapShot::buildGui()
   delayLayout->addWidget(secondsLabel, 4);
 
   // start test
-  repeatLabel= new QLabel(i18n("Repeat:"), this);
+  repeatLabel= new QLabel(i18n("&Repeat:"), this);
   repeatLabel->setAlignment(AlignCenter);
   repeatLabel->adjustSize();
   repeatLabel->setFixedHeight(delayLabel->height());
   repeatLabel->setFixedWidth(repeatLabel->width());
   repeatEdit= new QLineEdit(this);
+  repeatLabel->setBuddy( repeatEdit );
   s.setNum(repeat_+1);
   repeatEdit->setText(s);
   repeatEdit->setFixedHeight(repeatLabel->height()+8);
@@ -236,14 +239,14 @@ void KSnapShot::buildGui()
   checkLayout= new QVBoxLayout(4);
   mainLayout->addLayout(checkLayout, 1, 1);
 
-  QGroupBox *checkGroup= new QGroupBox(i18n("Options"), this);
+  QGroupBox *checkGroup= new QGroupBox(i18n("&Options"), this);
 
   QVBoxLayout *optionsBox= new QVBoxLayout(checkGroup, 16, 6);
 
-  autoRaiseCheck= new QCheckBox(i18n("Auto raise"), checkGroup);
-  hideSelfCheck= new QCheckBox(i18n("Hide KSnapshot window"),
+  autoRaiseCheck= new QCheckBox(i18n("&Auto raise"), checkGroup);
+  hideSelfCheck= new QCheckBox(i18n("Hide KSnapshot &window"),
 			       checkGroup);
-  grabWindowCheck= new QCheckBox(i18n("Only grab the window containing the pointer"),
+  grabWindowCheck= new QCheckBox(i18n("&Only grab the window containing the pointer"),
 				 checkGroup);
 
   autoRaiseCheck->setMinimumSize(autoRaiseCheck->sizeHint());
@@ -272,10 +275,10 @@ void KSnapShot::buildGui()
   mainLayout->setColStretch(1, 2);
 
   // Buttons
-  helpButton= new QPushButton(i18n("Help"), this);
-  saveButton= new QPushButton(i18n("Save"), this);
-  grabButton= new QPushButton(i18n("Grab"), this);
-  closeButton= new QPushButton(i18n("Close"), this);
+  helpButton= new QPushButton(i18n("&Help"), this);
+  saveButton= new QPushButton(i18n("&Save"), this);
+  grabButton= new QPushButton(i18n("&Grab"), this);
+  closeButton= new QPushButton(i18n("&Close"), this);
 
   buttonLayout= new QBoxLayout(QBoxLayout::RightToLeft);
   topLevelLayout->addLayout(buttonLayout, 0);
@@ -442,10 +445,7 @@ void KSnapShot::performGrab(bool initial)
     repeatEdit->setText(s);
     updatePreview();
     saveSlot();
-    if (hidden) {
-      show();
-      hidden= false;
-    }
+    show();
   }
 }
 
