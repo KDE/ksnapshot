@@ -5,6 +5,11 @@
 
 static int numFormats= 5;
 
+  // Constants for flags
+const unsigned int FormatRecord::InternalFormat= 1;
+const unsigned int FormatRecord::ReadFormat= 2;
+const unsigned int FormatRecord::WriteFormat= 4;
+
 static FormatRecord formatlist[]= {
   {
     "JPEG",
@@ -56,7 +61,7 @@ static FormatRecord formatlist[]= {
   },
   {
     "PNM",
-    0,
+    0, 0,
     "*.pbm *.pgm *.ppm",
     "ppm",
     0, 0

@@ -14,16 +14,16 @@ class FormatRecord {
 public:
   const char *formatName;
   unsigned int flags; // Internal? / Read? / Write?
-  char *magic; // NULL for formats kpaint should not register
-  char *glob;
-  char *suffix; // Default suffix for this type
+  const char *magic; // NULL for formats kpaint should not register
+  const char *glob;
+  const char *suffix; // Default suffix for this type
   image_io_handler read_format; // NULL for internal formats
   image_io_handler write_format; // NULL for internal formats
 
   // Constants for flags
-  const unsigned int InternalFormat= 1;
-  const unsigned int ReadFormat= 2;
-  const unsigned int WriteFormat= 4;
+    static const unsigned int InternalFormat;
+    static const unsigned int ReadFormat;
+    static const unsigned int WriteFormat;
 };
 
 class FormatManager {

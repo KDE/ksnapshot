@@ -11,7 +11,7 @@ Preview::~Preview()
 
 }
 
-void Preview::closeEvent(QCloseEvent *e)
+void Preview::closeEvent(QCloseEvent *)
 {
   emit clicked();
 }
