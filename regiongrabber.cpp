@@ -20,6 +20,7 @@
 #include "regiongrabber.h"
 
 #include <qpainter.h>
+#include <qpalette.h>
 #include <qstyle.h>
 #include <qtimer.h>
 
@@ -32,6 +33,13 @@ SizeTip::SizeTip( QWidget *parent, const char *name )
   setMargin( 2 );
   setIndent( 0 );
   setFrameStyle( QFrame::Plain | QFrame::Box );
+
+  QColorGroup cg(  Qt::black, QColor( 255,255,220 ),
+      QColor( 96,96,96 ), Qt::black, Qt::black,
+      Qt::black, QColor( 255,255,220 ) );
+  QPalette pal(  cg, cg, cg );
+
+  setPalette( pal );
 }
 
 void SizeTip::setTip( const QRect &rect )
