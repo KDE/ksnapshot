@@ -17,6 +17,9 @@
 #include <qcheckbox.h>
 #include "preview.h"
 
+class QToolButton;
+
+
 class KSnapShot : public QWidget
 {
   Q_OBJECT

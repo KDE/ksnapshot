@@ -20,6 +20,7 @@
 #include <klocale.h>
 #include <kimgio.h>
 #include <kfiledialog.h>
+#include <qtoolbutton.h>
 
 KSnapShot::KSnapShot(QWidget *parent, const char *name)
   : QWidget(parent, name)
