@@ -229,7 +229,7 @@ void KSnapshot::slotPrint()
 
     qApp->processEvents();
 
-    if (printer.setup(this, i18n("Print screenshot")))
+    if (printer.setup(this, i18n("Print Screenshot")))
     {
 	qApp->processEvents();
 
