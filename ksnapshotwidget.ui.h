@@ -87,12 +87,6 @@ void KSnapshotWidget::slotSaveClicked()
 }
 
 
-void KSnapshotWidget::slotSaveAsClicked()
-{
-    emit saveAsClicked();
-}
-
-
 void KSnapshotWidget::slotPrintClicked()
 {
     emit printClicked();
@@ -122,13 +116,3 @@ int KSnapshotWidget::previewHeight()
     return lblImage->height();
 }
 
-
-void KSnapshotWidget::init()
-{
-    if (!KGlobalSettings::showIconsOnPushButtons())
-    {
-	btnNew->setIconSet(QIconSet());
-	btnSaveAs->setIconSet(QIconSet());
-	btnPrint->setIconSet(QIconSet());
-    }
-}

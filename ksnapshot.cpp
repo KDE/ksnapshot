@@ -80,7 +80,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
     connect(mainWidget, SIGNAL(startImageDrag()), SLOT(slotDragSnapshot()));
 
     connect( mainWidget, SIGNAL( newClicked() ), SLOT( slotGrab() ) );
-    connect( mainWidget, SIGNAL( saveAsClicked() ), SLOT( slotSaveAs() ) );
+    connect( mainWidget, SIGNAL( saveClicked() ), SLOT( slotSaveAs() ) );
     connect( mainWidget, SIGNAL( printClicked() ), SLOT( slotPrint() ) );
 
     grabber->show();

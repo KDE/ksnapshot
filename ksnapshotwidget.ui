@@ -57,13 +57,13 @@ The image can be dragged to another application or document to copy the full scr
         </widget>
         <widget class="KPushButton" row="2" column="3">
             <property name="name">
-                <cstring>btnSaveAs</cstring>
+                <cstring>btnSave</cstring>
             </property>
             <property name="text">
                 <string>&amp;Save...</string>
             </property>
             <property name="iconSet">
-                <iconset>"filesaveas"</iconset>
+                <iconset>"filesave"</iconset>
             </property>
             <property name="whatsThis" stdset="0">
                 <string>Click this button to save the current snapshot. To quickly save the snapshot without showing the file dialog, press Control+Shift+S. The filename is automatically incremented after each save.</string>
@@ -281,10 +281,10 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
         <slot>slotPrintClicked()</slot>
     </connection>
     <connection>
-        <sender>btnSaveAs</sender>
+        <sender>btnSave</sender>
         <signal>clicked()</signal>
         <receiver>KSnapshotWidget</receiver>
-        <slot>slotSaveAsClicked()</slot>
+        <slot>slotSaveClicked()</slot>
     </connection>
     <connection>
         <sender>lblImage</sender>
@@ -295,7 +295,7 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 </connections>
 <tabstops>
     <tabstop>btnNew</tabstop>
-    <tabstop>btnSaveAs</tabstop>
+    <tabstop>btnSave</tabstop>
     <tabstop>btnPrint</tabstop>
     <tabstop>comboMode</tabstop>
     <tabstop>spinDelay</tabstop>
@@ -310,7 +310,6 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 <signals>
     <signal>newClicked()</signal>
     <signal>saveClicked()</signal>
-    <signal>saveAsClicked()</signal>
     <signal>printClicked()</signal>
     <signal>startImageDrag()</signal>
 </signals>
@@ -318,7 +317,6 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
     <slot access="protected" specifier="non virtual">slotModeChanged( int mode )</slot>
     <slot access="protected" specifier="non virtual">slotNewClicked()</slot>
     <slot access="protected" specifier="non virtual">slotSaveClicked()</slot>
-    <slot access="protected" specifier="non virtual">slotSaveAsClicked()</slot>
     <slot access="protected" specifier="non virtual">slotPrintClicked()</slot>
     <slot access="protected" specifier="non virtual">slotStartDrag()</slot>
     <slot specifier="non virtual" returnType="int">previewWidth()</slot>
@@ -333,7 +331,6 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
     <function specifier="non virtual" returnType="bool">includeDecorations()</function>
     <function specifier="non virtual" returnType="int">mode()</function>
     <function specifier="non virtual" returnType="QPixmap">preview()</function>
-    <function access="protected" specifier="non virtual">init()</function>
 </functions>
 <pixmapfunction>SmallIconSet</pixmapfunction>
 <layoutdefaults spacing="6" margin="11"/>
