@@ -253,20 +253,19 @@ void KSnapshot::slotDragSnapshot()
 void KSnapshot::slotGrab()
 {
     hide();
-    if ( mainWidget->mode() == Region )
-    {
-        rgnGrab = new RegionGrabber();
-        connect( rgnGrab, SIGNAL( regionGrabbed( const QPixmap & ) ),
-            SLOT( slotRegionGrabbed( const QPixmap & ) ) );
-    }
-    else
-    {
-        if ( mainWidget->delay() )
-            grabTimer.start( mainWidget->delay() * 1000, true );
-        else {
-            grabber->show();
-            grabber->grabMouse( crossCursor );
-        }
+
+    if ( mainWidget->delay() )
+	grabTimer.start( mainWidget->delay() * 1000, true );
+    else {
+	if ( mainWidget->mode() == Region ) {
+	    rgnGrab = new RegionGrabber();
+	    connect( rgnGrab, SIGNAL( regionGrabbed( const QPixmap & ) ),
+		     SLOT( slotRegionGrabbed( const QPixmap & ) ) );
+	}
+	else {
+	    grabber->show();
+	    grabber->grabMouse( crossCursor );
+	}
     }
 }
 
@@ -422,7 +421,14 @@ void KSnapshot::updatePreview()
 
 void KSnapshot::grabTimerDone()
 {
-    performGrab();
+    if ( mainWidget->mode() == Region ) {
+        rgnGrab = new RegionGrabber();
+        connect( rgnGrab, SIGNAL( regionGrabbed( const QPixmap & ) ),
+            SLOT( slotRegionGrabbed( const QPixmap & ) ) );
+    }
+    else {
+	performGrab();
+    }
     KNotifyClient::beep(i18n("The screen has been successfully grabbed."));
 }
 

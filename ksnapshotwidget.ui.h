@@ -13,18 +13,12 @@ void KSnapshotWidget::slotModeChanged( int mode )
     switch ( mode )
     {
     case 0:
-	lblDelay->setEnabled(true);
-	spinDelay->setEnabled(true);
 	cbIncludeDecorations->setEnabled(false);
 	break;
     case 1:
-	lblDelay->setEnabled(true);
-	spinDelay->setEnabled(true);
 	cbIncludeDecorations->setEnabled(true);
 	break;
     case 2:
-	lblDelay->setEnabled(false);
-	spinDelay->setEnabled(false);
 	cbIncludeDecorations->setEnabled(false);
     default:
 	break;
