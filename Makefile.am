@@ -17,5 +17,5 @@ KDE_ICON = ksnapshot
 EXTRA_DIST = $(lnk_DATA) 
 
 messages:
-	$(XGETTEXT) -C -ktranslate -ki18n -x $(includedir)/kde.pot $(ksnapshot_SOURCES) && mv messages.po ../po/ksnapshot.pot
+	$(XGETTEXT) -C -ktranslate -ki18n -x $(includedir)/kde.pot $(ksnapshot_SOURCES) && mv messages.po $(podir)/ksnapshot.pot
 
