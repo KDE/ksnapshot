@@ -1,6 +1,6 @@
 bin_PROGRAMS= ksnapshot
 
-INCLUDES = -DKSNAPVERSION="\"0.2.7\"" $(all_includes) 
+INCLUDES = -DKSNAPVERSION="\"0.3.0\"" $(all_includes) 
 
 ksnapshot_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 ksnapshot_LDADD = $(LIB_KIMGIO) $(LIB_KFILE)

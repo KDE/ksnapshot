@@ -11,7 +11,6 @@
 #include <qcombo.h>
 #include <qradiobt.h>
 #include <qfiledlg.h>
-#include <qwmatrix.h>
 #include <qpainter.h>
 #include <qregexp.h>
 #include <qstring.h>
@@ -31,16 +30,16 @@ KSnapShot::KSnapShot(QWidget *parent, const char *name)
   grabbing_= false;
   hideSelf_= true;
   autoRaise_= true;
-  grabDesktop_= true;
-  grabWindow_= false;
-  delay_= 0;
+  grabDesktop_= false;
+  grabWindow_= true;
+  delay_= 1;
   timer_= 0;
   filename_= QDir::currentDirPath();
 
   filename_.append("/");
 
   filename_.append(i18n("snapshot"));
-  filename_.append("01.gif");
+  filename_.append("01.png");
 
   previewWindow= 0;
   buildGui();
@@ -350,30 +349,13 @@ void KSnapShot::internalTimerSlot()
 
 void KSnapShot::updatePreview()
 {
-  QPixmap *preview;
-  QPainter p;
-  QWMatrix matrix;
-  double xf, yf;
-  int w, h;
+  int w= previewButton->width();
+  int h= previewButton->height();
 
-  w= previewButton->width()-10;
-  h= previewButton->height()-10;
+  QPixmap preview;
+  preview = snapshot_.convertToImage().smoothScale(w,h);  
 
-  matrix.reset();
-
-  xf= ((double) w / snapshot_.width());
-  yf= ((double) h / snapshot_.height());
-  matrix.scale(xf, yf);
-
-  preview= new QPixmap(w, h);
-
-  p.begin(preview);
-  p.setWorldMatrix(matrix);
-  p.drawPixmap(5, 5, snapshot_);
-  p.end();
-
-  previewButton->setPixmap(*preview);
-  delete preview;
+  previewButton->setPixmap(preview);
 }
 
 void KSnapShot::performGrab()
