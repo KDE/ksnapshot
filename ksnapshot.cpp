@@ -22,6 +22,7 @@
 #include <qclipboard.h>
 #include <klineedit.h>
 #include <knotifyclient.h>
+#include <qregexp.h>
 
 #include <stdlib.h>
 
