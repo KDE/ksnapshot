@@ -146,7 +146,7 @@ If the delay is set to "No Delay" the snapshot will be taken when you click the 
                         <cstring>TextLabel3</cstring>
                     </property>
                     <property name="text">
-                        <string>Snapshot &amp;Delay</string>
+                        <string>Snapshot &amp;delay:</string>
                     </property>
                     <property name="buddy" stdset="0">
                         <cstring>delaySpin</cstring>
