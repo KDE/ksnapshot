@@ -19,7 +19,6 @@
 
 #include "regiongrabber.h"
 
-#include <qlayout.h>
 #include <qpainter.h>
 #include <qstyle.h>
 #include <qtimer.h>
@@ -64,14 +63,10 @@ void SizeTip::positionTip( const QRect &rect )
 }
 
 RegionGrabber::RegionGrabber()
-  : QWidget( 0, 0, WStyle_Customize | WX11BypassWM ),
-    mouseDown( false ), label( 0L ), sizeTip( 0L )
+  : QLabel( 0, 0, WStyle_Customize | WX11BypassWM ),
+    mouseDown( false ), sizeTip( 0L )
 {
   sizeTip = new SizeTip( ( QWidget * )0L );
-
-  QVBoxLayout *layout = new QVBoxLayout( this, 0, 0 );
-  label = new QLabel( this );
-  layout->addWidget( label );
 
   tipTimer = new QTimer( this );
   connect( tipTimer, SIGNAL( timeout() ), SLOT( updateSizeTip() ) );
@@ -87,7 +82,7 @@ RegionGrabber::~RegionGrabber()
 void RegionGrabber::initGrabber()
 {
   pixmap = QPixmap::grabWindow( qt_xrootwin() );
-  label->setPixmap( pixmap );
+  setPixmap( pixmap );
 
   showFullScreen();
 
@@ -155,7 +150,7 @@ void RegionGrabber::updateSizeTip()
 void RegionGrabber::drawRubber()
 {
   QPainter p;
-  p.begin( label );
+  p.begin( this );
   p.setRasterOp( NotROP );
   p.setPen( QPen( color0, 1 ) );
   p.setBrush( NoBrush );

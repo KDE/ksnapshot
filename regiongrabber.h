@@ -35,7 +35,7 @@ class SizeTip : public QLabel
   void positionTip( const QRect &rect );
 };
 
-class RegionGrabber : public QWidget
+class RegionGrabber : public QLabel
 {
   Q_OBJECT
 
@@ -62,7 +62,6 @@ class RegionGrabber : public QWidget
     QRect grabRect;
     QPixmap pixmap;
 
-    QLabel *label;
     SizeTip *sizeTip;
     QTimer *tipTimer;
 };
