@@ -72,7 +72,7 @@ The image can be dragged to another application or document to copy the full scr
                         <cstring>newButton</cstring>
                     </property>
                     <property name="text">
-                        <string>&amp;New snapshot</string>
+                        <string>&amp;New Snapshot</string>
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>This button creates a snapshot image of the screen.
