@@ -30,6 +30,7 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#include <kglobal.h>
 
 KSnapshot::KSnapshot(QWidget *parent, const char *name)
   : KSnapshotBase(parent, name)
