@@ -10,7 +10,7 @@ ksnapshot_SOURCES = eps.cpp gif.cpp main.cpp formats.cpp ksnapshot.cpp preview.c
 ksnapshot_METASOURCES = USE_AUTOMOC
 
 lnkdir = $(kde_appsdir)/Graphics
-lnk_DATA = ksnapshot.kdelnk
+lnk_DATA = ksnapshot.desktop
 
 icondir = $(kde_icondir)
 icon_DATA = ksnapshot.xpm
