@@ -4,8 +4,6 @@
 #define KSNAPSHOT_H
 
 #include <kapp.h>
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
 #include <qwidget.h>
 #include <qpixmap.h>
 #include <qimage.h>
@@ -106,7 +104,7 @@ private:
   int delay_;
   QTimer *timer_;
   QString filename_;
-  Window child;
+  WId child;
 };
 
 #endif // KSNAPSHOT_H

@@ -27,6 +27,9 @@
 
 #include "ksnapshot.h"
 
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+
 KSnapShot::KSnapShot(QWidget *parent, const char *name)
   : QWidget(parent, name)
 {
@@ -385,7 +388,7 @@ void KSnapShot::timerFinishedSlot()
   display= QApplication::desktop()->x11Display();
   root= DefaultRootWindow(display);
 
-  XQueryPointer(display, root, &root, &child, 
+  XQueryPointer(display, root, &root, (Window *) &child, 
 		&rootX, &rootY, &winX, &winY,
 		&mask);
 
@@ -525,7 +528,7 @@ void KSnapShot::saveSlot()
     choice= KMessageBox::warningYesNo(this, text, overwriteCaption, overwriteButtonLabel, cancelButtonLabel);
 
     // If the user chose to cancel
-    if (choice != 0)
+    if (choice != KMessageBox::Yes)
       cancelled= true;
   }
   
