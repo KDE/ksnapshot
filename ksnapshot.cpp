@@ -1,7 +1,7 @@
 /*
  * KSnapshot
  *
- * (c) Richard J. Moore 1997-2000
+ * (c) Richard J. Moore 1997-2002
  * (c) Matthias Ettrich 2000
  * (c) Aaron J. Seigo 2002
  *
@@ -32,6 +32,7 @@
 #include <kpopupmenu.h>
 #include <kiconloader.h>
 #include <kpushbutton.h>
+#include <qcursor.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
 #include <qpainter.h>
@@ -272,6 +273,11 @@ void KSnapshot::setURL(QString newURL)
 void KSnapshot::setGrabPointer(bool grab)
 {
     onlyWindow->setChecked( grab );
+}
+
+void KSnapshot::slotMovePointer(int x, int y)
+{
+    QCursor::setPos( x, y );
 }
 
 void KSnapshot::exit()

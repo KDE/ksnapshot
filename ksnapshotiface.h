@@ -30,6 +30,8 @@ class KSnapshotIface : virtual public DCOPObject
         /** Set the ability to grab the entire screen or just the window
                 containing the mouse **/
         virtual void setGrabPointer(bool grab) = 0;
+	/** Move the mouse pointer. */
+	virtual void slotMovePointer( int x, int y ) = 0;
         /** Exit KSnapshot **/
 	virtual void exit() = 0;
 };

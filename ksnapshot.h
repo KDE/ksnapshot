@@ -39,7 +39,7 @@ class KSnapshotThumb : public QLabel
             }
         }
 
-        void mouseReleaseEvent(QMouseEvent * e)
+    void mouseReleaseEvent(QMouseEvent * /*e*/)
         {
             mClickPt = QPoint(0, 0);
         }
@@ -63,6 +63,7 @@ public:
   void setTime(int newTime);
   void setURL(QString newURL);
   void setGrabPointer(bool grab);
+  void slotMovePointer( int x, int y );
   void exit();
 
 protected:
