@@ -35,7 +35,7 @@ class SizeTip : public QLabel
   void positionTip( const QRect &rect );
 };
 
-class RegionGrabber : public QLabel
+class RegionGrabber : public QWidget
 {
   Q_OBJECT
 
