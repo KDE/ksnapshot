@@ -7,20 +7,22 @@
  */
 
 #include <qdir.h>
-#include "ksnapshot.h"
 #include <qbttngrp.h>
 #include <qcombo.h>
 #include <qradiobt.h>
 #include <qfiledlg.h>
 #include <qwmatrix.h>
 #include <qpainter.h>
-#include <qmsgbox.h>
 #include <qregexp.h>
 #include <qstring.h>
+#include <qtoolbutton.h>
+
 #include <klocale.h>
 #include <kimgio.h>
 #include <kfiledialog.h>
-#include <qtoolbutton.h>
+#include <kmessagebox.h>
+
+#include "ksnapshot.h"
 
 KSnapShot::KSnapShot(QWidget *parent, const char *name)
   : QWidget(parent, name)
@@ -427,15 +429,12 @@ void KSnapShot::closeSlot()
 
 void KSnapShot::saveSlot()
 {
-  QString text;
-  QString caption(i18n("Error: Unable to save image"));
-  QString buttonLabel(i18n("Dismiss"));
-			 
   if (!(snapshot_.save(filename_, KImageIO::type(filename_)))) {
     warning("KSnapshot was unable to save the snapshot");
-    text.sprintf(i18n("KSnapshot was unable to save the image to\n%s."),
-		 filename_.data());
-    QMessageBox::warning(this, caption, text, buttonLabel);
+    QString caption = i18n("Error: Unable to save image");
+    QString text = i18n("KSnapshot was unable to save the image to\n%1.")
+		 .arg(filename_);
+    KMessageBox::error(this, text, caption);
   }
 }
 
