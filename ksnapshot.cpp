@@ -35,6 +35,7 @@
 #include <kpopupmenu.h>
 #include <kiconloader.h>
 #include <kpushbutton.h>
+#include <kstartupinfo.h>
 
 #include <qcursor.h>
 #include <qpushbutton.h>
@@ -60,10 +61,12 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
 {
     imageLabel->setAlignment(AlignHCenter | AlignVCenter);
     connect(imageLabel, SIGNAL(startDrag()), this, SLOT(slotDragSnapshot()));
- 
+
     grabber = new QWidget( 0, 0, WStyle_Customize | WX11BypassWM );
     grabber->move( -1000, -1000 );
     grabber->installEventFilter( this );
+
+    KStartupInfo::appStarted();
 
     grabber->show();
     grabber->grabMouse( waitCursor );
@@ -93,7 +96,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
 
     helpButton->setGuiItem (KGuiItem(i18n("&Help"), "help" ) );
     closeButton->setGuiItem (KGuiItem(i18n("&Quit"), "exit" ) );
-    
+
     KAccel* accel = new KAccel(this);
     accel->insert(KStdAccel::Quit, kapp, SLOT(quit()));
     accel->insert(KStdAccel::Save, this, SLOT(slotSave()));
