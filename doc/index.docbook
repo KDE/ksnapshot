@@ -123,7 +123,7 @@ panel.</para></listitem>
 <para>You may start &ksnapshot; by entering the following at the command
 prompt:</para>
 <screen width="40">
-<prompt>%</prompt> <command>ksnapshot &</command>
+<prompt>%</prompt> <command>ksnapshot &amp;</command>
 </screen>
 </listitem>
 <listitem><para>The mini command line (invoked with
@@ -212,7 +212,7 @@ and take a picture of it.</para>
 
 <variablelist>
 <varlistentry>
-<term><guibutton>Help</guibutton</term>
+<term><guibutton>Help</guibutton></term>
 <listitem><para>Activates the online manual for &ksnapshot;.</para></listitem>
 </varlistentry>
 
