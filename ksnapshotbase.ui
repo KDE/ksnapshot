@@ -317,12 +317,6 @@ If no delay is set, the program will wait for a mouse click before taking a snap
         <slot>slotSave()</slot>
     </connection>
     <connection>
-        <sender>helpButton</sender>
-        <signal>clicked()</signal>
-        <receiver>KSnapshotBase</receiver>
-        <slot>slotHelp()</slot>
-    </connection>
-    <connection>
         <sender>printButton</sender>
         <signal>clicked()</signal>
         <receiver>KSnapshotBase</receiver>
@@ -339,9 +333,8 @@ If no delay is set, the program will wait for a mouse click before taking a snap
     <tabstop>closeButton</tabstop>
 </tabstops>
 <slots>
-    <slot>slotPrint()</slot>
     <slot>slotGrab()</slot>
-    <slot>slotHelp()</slot>
+    <slot>slotPrint()</slot>
     <slot>slotSave()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>

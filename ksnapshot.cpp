@@ -3,6 +3,7 @@
  *
  * (c) Richard J. Moore 1997-2000
  * (c) Matthias Ettrich 2000
+ * (c) Aaron J. Seigo 2002
  *
  * Released under the LGPL see file LICENSE for details.
  */
@@ -13,7 +14,6 @@
 #include <kfiledialog.h>
 #include <kmessagebox.h>
 #include <kdebug.h>
-#include <kurlrequester.h>
 #include <kapplication.h>
 #include <kprinter.h>
 #include <qdragobject.h>
@@ -27,6 +27,9 @@
 #include <kaccel.h>
 #include <klineedit.h>
 #include <knotifyclient.h>
+#include <khelpmenu.h>
+#include <kpopupmenu.h>
+#include <qpushbutton.h>
 #include <qregexp.h>
 #include <qpainter.h>
 #include <qpaintdevicemetrics.h>
@@ -35,6 +38,7 @@
 #include <stdlib.h>
 
 #include "ksnapshot.h"
+#include "ksnapshotbase.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -73,12 +77,14 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name)
 	fi.setFile( filename );
     }
 
+    KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
+    helpButton->setPopup(helpMenu->menu());
+    
     KAccel* accel = new KAccel(this);
     accel->insert(KStdAccel::Quit, kapp, SLOT(quit()));
     accel->insert(KStdAccel::Save, this, SLOT(slotSave()));
     accel->insert(KStdAccel::Print, this, SLOT(slotSave()));
     accel->insert(KStdAccel::New, this, SLOT(slotGrab()));
-    accel->insert(KStdAccel::Help, this, SLOT(slotHelp()));
 
     saveButton->setFocus();
 }
@@ -131,11 +137,6 @@ void KSnapshot::slotGrab()
 	grabber->show();
 	grabber->grabMouse( crossCursor );
     }
-}
-
-void KSnapshot::slotHelp()
-{
-    kapp->invokeHelp();
 }
 
 void KSnapshot::slotPrint()
