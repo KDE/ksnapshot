@@ -9,7 +9,7 @@ ksnapshot_SOURCES = eps.cpp main.cpp ksnapshot.cpp preview.cpp
 
 ksnapshot_METASOURCES = USE_AUTOMOC
 
-lnkdir = $(kde_appsdir)/Graphics
+lnkdir = $(kde_appsdir)/Programs/Graphics
 lnk_DATA = ksnapshot.desktop
 
 KDE_ICON = ksnapshot
