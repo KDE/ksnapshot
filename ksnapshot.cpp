@@ -18,6 +18,7 @@
 #include <qregexp.h>
 #include <qstring.h>
 #include "formats.h"
+#include <klocale.h>
 
 extern FormatManager *formatMngr;
 
