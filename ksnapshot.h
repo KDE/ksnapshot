@@ -15,7 +15,6 @@
 #include <qtimer.h>
 #include <qlayout.h>
 #include <qcheckbox.h>
-#include <kbutton.h>
 #include "preview.h"
 
 class KSnapShot : public QWidget
