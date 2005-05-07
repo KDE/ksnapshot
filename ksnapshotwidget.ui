@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>880</width>
-            <height>626</height>
+            <width>356</width>
+            <height>226</height>
         </rect>
     </property>
     <grid>
@@ -155,23 +155,6 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 &lt;b&gt;Region&lt;/b&gt; - captures only the region of the desktop that you specify. When taking a new snapshot in this mode you will be able to select any area of the screen by clicking and dragging the mouse.&lt;/p&gt;&lt;/qt&gt;</string>
             </property>
         </widget>
-        <spacer row="0" column="0">
-            <property name="name">
-                <cstring>spacer4</cstring>
-            </property>
-            <property name="orientation">
-                <enum>Vertical</enum>
-            </property>
-            <property name="sizeType">
-                <enum>Expanding</enum>
-            </property>
-            <property name="sizeHint">
-                <size>
-                    <width>20</width>
-                    <height>1</height>
-                </size>
-            </property>
-        </spacer>
         <widget class="QLayoutWidget" row="0" column="3">
             <property name="name">
                 <cstring>layout1</cstring>
@@ -264,7 +247,7 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 </customwidgets>
 <images>
     <image name="image0">
-        <data format="PNG" length="730">89504e470d0a1a0a0000000d4948445200000016000000160806000000c4b46c3b000002a149444154388db595df4b536118c73f3bdbecf8036c4e41f2c6695022045e486e90b721e4ba126f1a0966627f4108512004a197fd0586588220980a9a068be63abaa884cc1f6d30a7e29cfb216dceb39d9d2e2cf3c74997e417de97972fbc9fe77d1e789e57e772b9384d369b4d3deab95c2edd497784b3404ff20f460650fff732fc0ee0f5bc241298252dc710f4174e4be4908cb9661439cefa7c0fb71eee79fbe0486096b5af3d644e4e50537a3de880b4f2c7db07a7e51819156e77fe3b1860b4bb1095d871f0c1f4239108068381f84e9cc58545c6c7c78946a3d45dafa3b4b414511411f34456d756e9eded65706090924a076bdf9e1f071fd4c0c000c15010f7b49bc93793b4de6ba5abab0bd3451300bbbbbb783e7a08ac04d858dfd0cc4013dcdedebe7f368a462449a2ff553fcd4dcdf87c3eba7bba71bbdcf8fd7e8a8a8ab20703d4d6d6d2f1a00383d180b9c84c85a58282fc027c3e1ff537ea71dc71303a36caf6f6367d2ffab203773eeaa4e1660336ab8db49226c798839c9211f402b22c53535383cd6ac35261c1eff76b82353b4fafd7a3a80a899d048220904aa588842324779278bd5e9cef9cc41371ca2e9511de0a675f8ae1a161cc2633e5e5e5980a4d0882c06678133157243f2f9f85a50526a62698fb32c78c674613acf962dfb28fd05688443c41329944de95997e3fcdc8e8088b4b8bb85d6e42c110f6463b5557aab207c77ec458febe8c3fe067657585542a85d566c5bbecc5fdc18de5b285603088925168b9db927d294451c4e9745275b50a7ba39dc44e8292e212daeeb7517dad9aa9b7534833129224d1d4d4a409de9f6e9fc61eabaf9f9d7d9a7d1e7ba20e3dd5986e8a1c47c75ecf97543ab45ff117e5e416138f7af790474bb13edf435a0195d8a19ecf46eaaf2d9339609ed7a03ff56b3aabce0dfc13238259bff00a6d890000000049454e44ae426082</data>
+        <data format="PNG" length="660">89504e470d0a1a0a0000000d4948445200000016000000160806000000c4b46c3b0000025b49444154789cb595bf4b1b6118c73f962bbc070e115af006210107f52fa8b18b071dbb445ca48bb8199c544a8b53b153092e3ad9d8ad53c962390a2da6507227441207e10296be190a774330070af74202760889899e3f22f50bc7ddfb72efe7799eef7bcf7b0305bbc06d9a4a4e9d5f9e2bd885819bd63cba0ff4a6f9eec800e7fffbd2da01fed81ff1a48d52014213b715d22b3d060d853cdce1d587d65407ec491b79b8d31fb02d0d2ea7d2012b15007422f6ab2f6f04a0ae82bbcb3f3939416882e02ca07454c2dab5086a01c9e749e2237174a1230605524ab29fb2e47fe431c652c8a3cf57c1ddca6e67f16b3ef62f1be7c0616e768ecdad4d8686860008c31067df415625beef475610095e7dbddaf3865db4d9dade223d9fc6adb8acbd5ba37c502608028488dee84830407c344e7a298daee90c3f1d263196400c0adc631773da64617e81dcd71caaaeb0be5977032f2e2d32f37206f385090de0319dbb528ae4641273da647c7c1c599591e06b3b2f24243c0d5b830678358ff03444fe9658df2dc2d390443c81eff5e1b1b56b613c3198189d20168b213481e77b88b868d95171c9ede6281f96b18bf6ddc1fe5f1fafe6513fabb7364783bdfc1efaa08e5b7129154b4c3e9b24359ba21ed4717e3a77b3423515eeb18bac4a6455a29a0a73da445624a56209236eb43eb326a497d29119477bac4179bf8c936f65a2ce14c6b0c1f2ea32ebefd7498c24b08b362b6f57709cabd9f65aa1c72e464d088280cc4686cc462672615b6d1b841ebb06dc50085a3d6f8ca56e845d96d06304f56a34f8e264533d3ddf979a5dcf0f75d0dffa6bbaaf1e0cfc0ff3922877348d5d5a0000000049454e44ae426082</data>
     </image>
 </images>
 <connections>
