@@ -85,17 +85,18 @@ protected:
     void reject() { close(); }
 
     virtual void closeEvent( QCloseEvent * e );
+    void resizeEvent(QResizeEvent*);
     bool eventFilter( QObject*, QEvent* );
     
 private slots:
     void grabTimerDone();
     void slotDragSnapshot();
     void updateCaption();
+    void updatePreview();
     void slotRegionGrabbed( const QPixmap & );
 
 private:
     bool save( const KURL& url );
-    void updatePreview();
     void performGrab();
     void autoincFilename();
     int grabMode();
@@ -103,6 +104,7 @@ private:
 
     QPixmap snapshot;
     QTimer grabTimer;
+    QTimer updateTimer;
     QWidget* grabber;
     KURL filename;
     KSnapshotWidget *mainWidget;

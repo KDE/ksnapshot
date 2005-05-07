@@ -114,6 +114,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
     }
 
     connect( &grabTimer, SIGNAL( timeout() ), this, SLOT(  grabTimerDone() ) );
+    connect( &updateTimer, SIGNAL( timeout() ), this, SLOT(  updatePreview() ) );
     QTimer::singleShot( 0, this, SLOT( updateCaption() ) );
 
     KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
@@ -149,6 +150,14 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
 
 KSnapshot::~KSnapshot()
 {
+}
+
+void KSnapshot::resizeEvent( QResizeEvent *event)
+{
+	if( !updateTimer.isActive() )
+		updateTimer.start(200, true);
+	else	
+		updateTimer.changeInterval(200);
 }
 
 bool KSnapshot::save( const QString &filename )
