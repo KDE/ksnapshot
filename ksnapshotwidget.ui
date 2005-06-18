@@ -144,6 +144,11 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
                     <string>Region</string>
                 </property>
             </item>
+            <item>
+                <property name="text">
+                    <string>Section of Window</string>
+                </property>
+            </item>
             <property name="name">
                 <cstring>comboMode</cstring>
             </property>
@@ -152,7 +157,8 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 &lt;p&gt;
 &lt;b&gt;Full Screen&lt;/b&gt; - captures the entire desktop.&lt;br&gt;
 &lt;b&gt;Window Under Cursor&lt;/b&gt; - captures only the window (or menu) that is under the mouse cursor when the snapshot is taken.&lt;br&gt;
-&lt;b&gt;Region&lt;/b&gt; - captures only the region of the desktop that you specify. When taking a new snapshot in this mode you will be able to select any area of the screen by clicking and dragging the mouse.&lt;/p&gt;&lt;/qt&gt;</string>
+&lt;b&gt;Region&lt;/b&gt; - captures only the region of the desktop that you specify. When taking a new snapshot in this mode you will be able to select any area of the screen by clicking and dragging the mouse.&lt;/p&gt;&lt;/qt&gt;
+&lt;b&gt;Section of Window&lt;/b&gt; - captures only a section of the window. When taking a new snapshot in this mode you will be able to select any child window by moving the mouse over it.&lt;/p&gt;&lt;/qt&gt;</string>
             </property>
         </widget>
         <widget class="QLayoutWidget" row="0" column="3">
@@ -206,6 +212,20 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>Click this button to save the current snapshot. To quickly save the snapshot without showing the file dialog, press Ctrl+Shift+S. The filename is automatically incremented after each save.</string>
+                    </property>
+                </widget>
+                <widget class="KPushButton">
+                    <property name="name">
+                        <cstring>btnCopy</cstring>
+                    </property>
+                    <property name="text">
+                        <string>&amp;Copy to Clipboard</string>
+                    </property>
+                    <property name="iconSet">
+                        <iconset>"editcopy"</iconset>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>Click this button to copy the current snapshot to the clipboard.</string>
                     </property>
                 </widget>
                 <widget class="KPushButton">
@@ -276,6 +296,12 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
         <slot>slotSaveClicked()</slot>
     </connection>
     <connection>
+        <sender>btnCopy</sender>
+        <signal>clicked()</signal>
+        <receiver>KSnapshotWidget</receiver>
+        <slot>slotCopyClicked()</slot>
+    </connection>
+    <connection>
         <sender>lblImage</sender>
         <signal>startDrag()</signal>
         <receiver>KSnapshotWidget</receiver>
@@ -285,6 +311,7 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 <tabstops>
     <tabstop>btnNew</tabstop>
     <tabstop>btnSave</tabstop>
+    <tabstop>btnCopy</tabstop>
     <tabstop>btnPrint</tabstop>
     <tabstop>comboMode</tabstop>
     <tabstop>spinDelay</tabstop>
@@ -299,6 +326,7 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 <signals>
     <signal>newClicked()</signal>
     <signal>saveClicked()</signal>
+    <signal>copyClicked()</signal>
     <signal>printClicked()</signal>
     <signal>startImageDrag()</signal>
 </signals>
@@ -306,6 +334,7 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
     <slot access="protected" specifier="non virtual">slotModeChanged( int mode )</slot>
     <slot access="protected" specifier="non virtual">slotNewClicked()</slot>
     <slot access="protected" specifier="non virtual">slotSaveClicked()</slot>
+    <slot access="protected" specifier="non virtual">slotCopyClicked()</slot>
     <slot access="protected" specifier="non virtual">slotPrintClicked()</slot>
     <slot access="protected" specifier="non virtual">slotStartDrag()</slot>
     <slot specifier="non virtual" returnType="int">previewWidth()</slot>

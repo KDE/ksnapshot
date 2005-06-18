@@ -5,6 +5,7 @@
  * (c) Matthias Ettrich 2000
  * (c) Aaron J. Seigo 2002
  * (c) Nadeem Hasan 2003
+ * (c) Bernd Brandstetter 2004
  *
  * Released under the LGPL see file LICENSE for details.
  */
@@ -45,16 +46,13 @@
 
 #include "ksnapshot.h"
 #include "regiongrabber.h"
+#include "windowgrabber.h"
 #include "ksnapshotwidget.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
 #include <config.h>
-
-#ifdef HAVE_X11_EXTENSIONS_SHAPE_H
-#include <X11/extensions/shape.h>
-#endif
 
 #include <kglobal.h>
 
@@ -71,12 +69,6 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
 
     KStartupInfo::appStarted();
 
-#ifdef HAVE_X11_EXTENSIONS_SHAPE_H
-    int tmp1, tmp2;
-    //Check whether the extension is available
-    haveXShape = XShapeQueryExtension( qt_xdisplay(), &tmp1, &tmp2 );
-#endif
-
     QVBox *vbox = makeVBoxMainWidget();
     mainWidget = new KSnapshotWidget( vbox, "mainWidget" );
 
@@ -85,6 +77,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
     connect( mainWidget, SIGNAL( newClicked() ), SLOT( slotGrab() ) );
     connect( mainWidget, SIGNAL( saveClicked() ), SLOT( slotSaveAs() ) );
     connect( mainWidget, SIGNAL( printClicked() ), SLOT( slotPrint() ) );
+    connect( mainWidget, SIGNAL( copyClicked() ), SLOT( slotCopy() ) );
 
     grabber->show();
     grabber->grabMouse( waitCursor );
@@ -352,6 +345,20 @@ void KSnapshot::slotRegionGrabbed( const QPixmap &pix )
   show();
 }
 
+void KSnapshot::slotWindowGrabbed( const QPixmap &pix )
+{
+    if ( !pix.isNull() )
+    {
+        snapshot = pix;
+        updatePreview();
+        modified = true;
+        updateCaption();
+    }
+
+    QApplication::restoreOverrideCursor();
+    show();
+}
+
 void KSnapshot::closeEvent( QCloseEvent * e )
 {
     KConfig *conf=KGlobal::config();
@@ -430,149 +437,23 @@ void KSnapshot::grabTimerDone()
     KNotifyClient::beep(i18n("The screen has been successfully grabbed."));
 }
 
-static
-Window findRealWindow( Window w, int depth = 0 )
-{
-    if( depth > 5 )
-	return None;
-    static Atom wm_state = XInternAtom( qt_xdisplay(), "WM_STATE", False );
-    Atom type;
-    int format;
-    unsigned long nitems, after;
-    unsigned char* prop;
-    if( XGetWindowProperty( qt_xdisplay(), w, wm_state, 0, 0, False, AnyPropertyType,
-	&type, &format, &nitems, &after, &prop ) == Success ) {
-	if( prop != NULL )
-	    XFree( prop );
-	if( type != None )
-	    return w;
-    }
-    Window root, parent;
-    Window* children;
-    unsigned int nchildren;
-    Window ret = None;
-    if( XQueryTree( qt_xdisplay(), w, &root, &parent, &children, &nchildren ) != 0 ) {
-	for( unsigned int i = 0;
-	     i < nchildren && ret == None;
-	     ++i )
-	    ret = findRealWindow( children[ i ], depth + 1 );
-	if( children != NULL )
-	    XFree( children );
-    }
-    return ret;
-}
-
 void KSnapshot::performGrab()
 {
     grabber->releaseMouse();
     grabber->hide();
     grabTimer.stop();
-    XGrabServer( qt_xdisplay());
-    if ( mainWidget->mode() == WindowUnderCursor ) {
-	Window root;
-	Window child;
-	uint mask;
-	int rootX, rootY, winX, winY;
-	XQueryPointer( qt_xdisplay(), qt_xrootwin(), &root, &child,
-		       &rootX, &rootY, &winX, &winY,
-		      &mask);
-        if( child == None )
-            child = qt_xrootwin();
-	if( !mainWidget->includeDecorations()) {
-	    Window real_child = findRealWindow( child );
-	    if( real_child != None ) // test just in case
-		child = real_child;
+    if ( mainWidget->mode() == ChildWindow ) {
+	WindowGrabber wndGrab;
+	connect( &wndGrab, SIGNAL( windowGrabbed( const QPixmap & ) ),
+	    SLOT( slotWindowGrabbed( const QPixmap & ) ) );
+	wndGrab.exec();
 	}
-	int x, y;
-	unsigned int w, h;
-	unsigned int border;
-	unsigned int depth;
-	XGetGeometry( qt_xdisplay(), child, &root, &x, &y,
-		      &w, &h, &border, &depth );
-        w += 2 * border;
-        h += 2 * border;
-
-	Window parent;
-	Window* children;
-	unsigned int nchildren;
-	if( XQueryTree( qt_xdisplay(), child, &root, &parent,
-	    &children, &nchildren ) != 0 ) {
-	    if( children != NULL )
-		XFree( children );
-	    int newx, newy;
-	    Window dummy;
-	    if( XTranslateCoordinates( qt_xdisplay(), parent, qt_xrootwin(),
-		x, y, &newx, &newy, &dummy )) {
-		x = newx;
-		y = newy;
-	    }
-	}
-
-	XWindowAttributes rootAttributes;
-	if ( XGetWindowAttributes( qt_xdisplay(), root, &rootAttributes ) ) {
-	    if ( ( x + w ) > rootAttributes.width ) {
-		// then the window is partly off the screen
-		w = rootAttributes.width - x;
-	    }
-	    if ( ( y + h ) > rootAttributes.height ) {
-		// then the window is partly off the screen
-		h = rootAttributes.height - y;
-	    }
-	}
-
-	snapshot = QPixmap::grabWindow( qt_xrootwin(), x, y, w, h );
-
-#ifdef HAVE_X11_EXTENSIONS_SHAPE_H
-	//No XShape - no work.
-	if (haveXShape) {
-	    QBitmap mask(w, h);
-	    //As the first step, get the mask from XShape.
-	    int count, order;
-	    XRectangle* rects = XShapeGetRectangles( qt_xdisplay(), child,
-	                                             ShapeBounding, &count, &order);
-	    //The ShapeBounding region is the outermost shape of the window;
-	    //ShapeBounding - ShapeClipping is defined to be the border.
-	    //Since the border area is part of the window, we use bounding
-	    // to limit our work region
-	    if (rects) {
-		//Create a QRegion from the rectangles describing the bounding mask.
-		QRegion contents;
-		for (int pos = 0; pos < count; pos++)
-		    contents += QRegion(rects[pos].x, rects[pos].y,
-		                        rects[pos].width, rects[pos].height);
-		XFree(rects);
-
-		//Create the bounding box.
-		QRegion bbox(0, 0, snapshot.width(), snapshot.height());
-                
-                if( border > 0 ) {
-                    contents.translate( border, border );
-                    contents += QRegion( 0, 0, border, h );
-                    contents += QRegion( 0, 0, w, border );
-                    contents += QRegion( 0, h - border, w, border );
-                    contents += QRegion( w - border, 0, border, h );
-                }
-                
-		//Get the masked away area.
-		QRegion maskedAway = bbox - contents;
-		QMemArray<QRect> maskedAwayRects = maskedAway.rects();
-
-		//Construct a bitmap mask from the rectangles
-		QPainter p(&mask);
-		p.fillRect(0, 0, w, h, Qt::color1);
-		for (uint pos = 0; pos < maskedAwayRects.count(); pos++)
-		    p.fillRect(maskedAwayRects[pos], Qt::color0);
-		p.end();
-
-		snapshot.setMask(mask);
-	    }
-	}
-#endif
+    else if ( mainWidget->mode() == WindowUnderCursor ) {
+	snapshot = WindowGrabber::grabCurrent( mainWidget->includeDecorations() );
     }
     else {
 	snapshot = QPixmap::grabWindow( qt_xrootwin() );
     }
-    XUngrabServer( qt_xdisplay());
     updatePreview();
     QApplication::restoreOverrideCursor();
     modified = true;

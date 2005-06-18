@@ -20,6 +20,10 @@ void KSnapshotWidget::slotModeChanged( int mode )
 	break;
     case 2:
 	cbIncludeDecorations->setEnabled(false);
+	break;
+    case 3:
+	cbIncludeDecorations->setEnabled(false);
+	break;
     default:
 	break;
     }
@@ -126,3 +130,7 @@ int KSnapshotWidget::previewHeight()
     return lblImage->height();
 }
 
+void KSnapshotWidget::slotCopyClicked()
+{
+    emit copyClicked();
+}

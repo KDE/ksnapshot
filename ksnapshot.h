@@ -63,7 +63,7 @@ public:
   KSnapshot(QWidget *parent= 0, const char *name= 0, bool grabCurrent=false);
   ~KSnapshot();
 
-  enum CaptureMode { FullScreen=0, WindowUnderCursor=1, Region=2 };
+  enum CaptureMode { FullScreen=0, WindowUnderCursor=1, Region=2, ChildWindow=3 };
 
   bool save( const QString &filename );
   QString url() const { return filename.url(); }
@@ -94,6 +94,7 @@ private slots:
     void updateCaption();
     void updatePreview();
     void slotRegionGrabbed( const QPixmap & );
+    void slotWindowGrabbed( const QPixmap & );
 
 private:
     bool save( const KURL& url );
@@ -110,7 +111,6 @@ private:
     KSnapshotWidget *mainWidget;
     RegionGrabber *rgnGrab;
     bool modified;
-    bool haveXShape;
 };
 
 #endif // KSNAPSHOT_H

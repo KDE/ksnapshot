@@ -19,6 +19,7 @@
 
 #include "regiongrabber.h"
 
+#include <qapplication.h>
 #include <qpainter.h>
 #include <qpalette.h>
 #include <qstyle.h>
@@ -90,7 +91,7 @@ void RegionGrabber::initGrabber()
 
   showFullScreen();
 
-  grabMouse( crossCursor );
+  QApplication::setOverrideCursor( crossCursor );
 }
 
 void RegionGrabber::mousePressEvent( QMouseEvent *e )
@@ -127,7 +128,7 @@ void RegionGrabber::mouseReleaseEvent( QMouseEvent *e )
   QPixmap region = QPixmap::grabWindow( winId(), grabRect.x(), grabRect.y(),
       grabRect.width(), grabRect.height() );
 
-  releaseMouse();
+  QApplication::restoreOverrideCursor();
 
   emit regionGrabbed( region );
 }
@@ -136,7 +137,7 @@ void RegionGrabber::keyPressEvent( QKeyEvent *e )
 {
   if ( e->key() == Key_Escape )
   {
-    releaseMouse();
+    QApplication::restoreOverrideCursor();
     emit regionGrabbed( QPixmap() );
   }
   else

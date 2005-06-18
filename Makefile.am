@@ -6,7 +6,7 @@ ksnapshot_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 ksnapshot_LDADD = $(LIB_KDEPRINT)
 
 ksnapshot_SOURCES = ksnapshotiface.skel main.cpp ksnapshot.cpp \
-    regiongrabber.cpp ksnapshotwidget.ui
+    regiongrabber.cpp windowgrabber.cpp ksnapshotwidget.ui
 
 ksnapshot_METASOURCES = AUTO
 
