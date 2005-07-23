@@ -163,7 +163,7 @@ bool KSnapshot::save( const KURL& url )
     if ( KIO::NetAccess::exists( url, false, this ) ) {
         const QString title = i18n( "File Exists" );
         const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" ).arg(url.prettyURL());
-        if (KMessageBox::Yes != KMessageBox::warningYesNoCancel( this, text, title ) ) 
+        if (KMessageBox::Continue != KMessageBox::warningContinueCancel( this, text, title, i18n("Overwrite") ) ) 
         {
             return false;
         }
