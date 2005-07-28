@@ -7,6 +7,11 @@
 #include <qlabel.h>
 #include <qpixmap.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QResizeEvent>
+#include <QEvent>
+#include <QCloseEvent>
 
 #include <dcopclient.h>
 #include <kglobalsettings.h>
@@ -24,7 +29,7 @@ class KSnapshotPreview : public QLabel
         KSnapshotPreview(QWidget *parent, const char *name = 0)
             : QLabel(parent, name)
         {
-            setAlignment(AlignHCenter | AlignVCenter);
+            setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
         }
         virtual ~KSnapshotPreview() {}
 

@@ -25,16 +25,25 @@
 #include <qstyle.h>
 #include <qtimer.h>
 #include <qtooltip.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QMouseEvent>
+#include <QLabel>
+#include <Q3Frame>
+#include <QKeyEvent>
+
+#include <QX11Info>
+#include <QRubberBand>
 
 #include <kglobalsettings.h>
 
 SizeTip::SizeTip( QWidget *parent, const char *name )
-    : QLabel( parent, name, WStyle_Customize | WX11BypassWM |
-      WStyle_StaysOnTop | WStyle_NoBorder | WStyle_Tool )
+    : QLabel( parent, name, Qt::WStyle_Customize | Qt::WX11BypassWM |
+      Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::WStyle_Tool )
 {
   setMargin( 2 );
   setIndent( 0 );
-  setFrameStyle( QFrame::Plain | QFrame::Box );
+  setFrameStyle( Q3Frame::Plain | Q3Frame::Box );
 
   setPalette( QToolTip::palette() );
 }
@@ -72,6 +81,7 @@ RegionGrabber::RegionGrabber()
     mouseDown( false ), sizeTip( 0L )
 {
   sizeTip = new SizeTip( ( QWidget * )0L );
+  band    = new QRubberBand( QRubberBand::Rectangle, this );
 
   tipTimer = new QTimer( this );
   connect( tipTimer, SIGNAL( timeout() ), SLOT( updateSizeTip() ) );
@@ -86,20 +96,22 @@ RegionGrabber::~RegionGrabber()
 
 void RegionGrabber::initGrabber()
 {
-  pixmap = QPixmap::grabWindow( qt_xrootwin() );
+  pixmap = QPixmap::grabWindow( QX11Info::appRootWindow() );
   setPaletteBackgroundPixmap( pixmap );
 
   showFullScreen();
 
-  QApplication::setOverrideCursor( crossCursor );
+  QApplication::setOverrideCursor( Qt::crossCursor );
 }
 
 void RegionGrabber::mousePressEvent( QMouseEvent *e )
 {
-  if ( e->button() == LeftButton )
+  if ( e->button() == Qt::LeftButton )
   {
     mouseDown = true;
     grabRect = QRect( e->pos(), e->pos() );
+    band->setGeometry( grabRect );
+    band->show();
   }
 }
 
@@ -110,16 +122,15 @@ void RegionGrabber::mouseMoveEvent( QMouseEvent *e )
     sizeTip->hide();
     tipTimer->start( 250, true );
 
-    drawRubber();
     grabRect.setBottomRight( e->pos() );
-    drawRubber();
+    band->setGeometry( grabRect );
   }
 }
 
 void RegionGrabber::mouseReleaseEvent( QMouseEvent *e )
 {
   mouseDown = false;
-  drawRubber();
+  band->hide();
   sizeTip->hide();
 
   grabRect.setBottomRight( e->pos() );
@@ -135,7 +146,7 @@ void RegionGrabber::mouseReleaseEvent( QMouseEvent *e )
 
 void RegionGrabber::keyPressEvent( QKeyEvent *e )
 {
-  if ( e->key() == Key_Escape )
+  if ( e->key() == Qt::Key_Escape )
   {
     QApplication::restoreOverrideCursor();
     emit regionGrabbed( QPixmap() );
@@ -150,20 +161,6 @@ void RegionGrabber::updateSizeTip()
 
   sizeTip->setTip( rect );
   sizeTip->show();
-}
-
-void RegionGrabber::drawRubber()
-{
-  QPainter p;
-  p.begin( this );
-  p.setRasterOp( NotROP );
-  p.setPen( QPen( color0, 1 ) );
-  p.setBrush( NoBrush );
-
-  style().drawPrimitive( QStyle::PE_FocusRect, &p, grabRect, colorGroup(),
-      QStyle::Style_Default, QStyleOption( colorGroup().base() ) );
-
-  p.end();
 }
 
 #include "regiongrabber.moc"

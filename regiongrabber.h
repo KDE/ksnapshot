@@ -22,8 +22,12 @@
 
 #include <qlabel.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QKeyEvent>
 
 class QTimer;
+class QRubberBand;
 
 class SizeTip : public QLabel
 {
@@ -56,14 +60,13 @@ class RegionGrabber : public QWidget
     void mouseMoveEvent( QMouseEvent *e );
     void keyPressEvent( QKeyEvent *e );
 
-    void drawRubber();
-
     bool mouseDown;
     QRect grabRect;
     QPixmap pixmap;
 
     SizeTip *sizeTip;
     QTimer *tipTimer;
+    QRubberBand *band;
 };
 
 #endif // REGIONGRABBER_H

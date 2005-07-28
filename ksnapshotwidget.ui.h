@@ -1,3 +1,5 @@
+//Added by qt3to4:
+#include <QPixmap>
 /****************************************************************************
 ** ui.h extension file, included from the uic-generated form implementation.
 **
@@ -37,17 +39,16 @@ void KSnapshotWidget::setPreview( const QPixmap &pm )
     if ( r1 * previewWidth()  < previewHeight() )
         img = img.smoothScale(  previewWidth(),
 				int( previewWidth() * r1 ),
-				QImage::ScaleMin );
+				Qt::KeepAspectRatio );
     else
         img = img.smoothScale( ( int ) ( ( ( double )previewHeight() ) / r1 ),
-			       previewHeight(), QImage::ScaleMin );
+			       previewHeight(), Qt::KeepAspectRatio );
 
-    QToolTip::remove( lblImage );
-    QToolTip::add( lblImage,
+    lblImage->setToolTip(
         QString( "Preview of the snapshot image (%1 x %2)" )
         .arg( pm.width() ).arg( pm.height() ) );
 
-    lblImage->setPixmap( img );
+    lblImage->setPixmap( QPixmap( img ) );
     lblImage->adjustSize();
 }
 
