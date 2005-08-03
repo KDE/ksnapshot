@@ -24,10 +24,16 @@
 #include <ktempfile.h>
 
 #include <qbitmap.h>
-#include <qdragobject.h>
+#include <q3dragobject.h>
 #include <qimage.h>
 #include <qclipboard.h>
-#include <qvbox.h>
+#include <q3vbox.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QCloseEvent>
+#include <QEvent>
+#include <QResizeEvent>
+#include <QMouseEvent>
 
 #include <kaccel.h>
 #include <knotifyclient.h>
@@ -39,8 +45,8 @@
 #include <qcursor.h>
 #include <qregexp.h>
 #include <qpainter.h>
-#include <qpaintdevicemetrics.h>
-#include <qwhatsthis.h>
+#include <q3paintdevicemetrics.h>
+#include <q3whatsthis.h>
 
 #include <stdlib.h>
 
@@ -55,6 +61,7 @@
 #include <config.h>
 
 #include <kglobal.h>
+#include <QX11Info>
 
 #define kApp KApplication::kApplication()
 
@@ -69,7 +76,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
 
     KStartupInfo::appStarted();
 
-    QVBox *vbox = makeVBoxMainWidget();
+    Q3VBox *vbox = makeVBoxMainWidget();
     mainWidget = new KSnapshotWidget( vbox, "mainWidget" );
 
     connect(mainWidget, SIGNAL(startImageDrag()), SLOT(slotDragSnapshot()));
@@ -83,7 +90,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
     grabber->grabMouse( waitCursor );
 
     if ( !grabCurrent )
-	snapshot = QPixmap::grabWindow( qt_xrootwin() );
+	snapshot = QPixmap::grabWindow( QX11Info::appRootWindow() );
     else {
 	mainWidget->setMode( WindowUnderCursor );
 	mainWidget->setIncludeDecorations( true );
@@ -247,7 +254,7 @@ void KSnapshot::slotCopy()
 
 void KSnapshot::slotDragSnapshot()
 {
-    QDragObject *drobj = new QImageDrag(snapshot.convertToImage(), this);
+    Q3DragObject *drobj = new Q3ImageDrag(snapshot.convertToImage(), this);
     drobj->setPixmap(mainWidget->preview());
     drobj->dragCopy();
 }
@@ -286,7 +293,7 @@ void KSnapshot::slotPrint()
 	qApp->processEvents();
 
         QPainter painter(&printer);
-        QPaintDeviceMetrics metrics(painter.device());
+        Q3PaintDeviceMetrics metrics(painter.device());
 
 	float w = snapshot.width();
 	float dw = w - metrics.width();
@@ -378,7 +385,7 @@ bool KSnapshot::eventFilter( QObject* o, QEvent* e)
 	QMouseEvent* me = (QMouseEvent*) e;
 	if ( QWidget::mouseGrabber() != grabber )
 	    return false;
-	if ( me->button() == LeftButton )
+	if ( me->button() == Qt::LeftButton )
 	    performGrab();
     }
     return false;
@@ -452,7 +459,7 @@ void KSnapshot::performGrab()
 	snapshot = WindowGrabber::grabCurrent( mainWidget->includeDecorations() );
     }
     else {
-	snapshot = QPixmap::grabWindow( qt_xrootwin() );
+	snapshot = QPixmap::grabWindow( QX11Info::appRootWindow() );
     }
     updatePreview();
     QApplication::restoreOverrideCursor();

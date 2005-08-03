@@ -22,6 +22,9 @@
 
 #include <qdialog.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QWheelEvent>
 #include <vector>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
