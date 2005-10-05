@@ -38,7 +38,7 @@
 #include <kaccel.h>
 #include <knotifyclient.h>
 #include <khelpmenu.h>
-#include <kpopupmenu.h>
+#include <kmenu.h>
 #include <kpushbutton.h>
 #include <kstartupinfo.h>
 
@@ -76,7 +76,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
 
     KStartupInfo::appStarted();
 
-    Q3VBox *vbox = makeVBoxMainWidget();
+    KVBox *vbox = makeVBoxMainWidget();
     mainWidget = new KSnapshotWidget( vbox, "mainWidget" );
 
     connect(mainWidget, SIGNAL(startImageDrag()), SLOT(slotDragSnapshot()));
