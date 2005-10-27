@@ -101,7 +101,7 @@ void RegionGrabber::initGrabber()
 
   showFullScreen();
 
-  QApplication::setOverrideCursor( Qt::crossCursor );
+  QApplication::setOverrideCursor( Qt::CrossCursor );
 }
 
 void RegionGrabber::mousePressEvent( QMouseEvent *e )
