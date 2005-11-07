@@ -106,7 +106,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
     mainWidget->setDelay(conf->readNumEntry("delay",0));
     mainWidget->setMode( conf->readNumEntry( "mode", 0 ) );
     mainWidget->setIncludeDecorations(conf->readBoolEntry("includeDecorations",true));
-    filename = KURL::fromPathOrURL( conf->readPathEntry( "filename", QDir::currentDirPath()+"/"+i18n("snapshot")+"1.png" ));
+    filename = KURL::fromPathOrURL( conf->readPathEntry( "filename", QDir::currentPath()+"/"+i18n("snapshot")+"1.png" ));
 
     // Make sure the name is not already being used
     while(KIO::NetAccess::exists( filename, false, this )) {
@@ -157,7 +157,7 @@ void KSnapshot::resizeEvent( QResizeEvent *event)
 	if( !updateTimer.isActive() )
 		updateTimer.start(200, true);
 	else	
-		updateTimer.changeInterval(200);
+		updateTimer.start(200);
 }
 
 bool KSnapshot::save( const QString &filename )
