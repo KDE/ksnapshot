@@ -45,7 +45,6 @@
 #include <qcursor.h>
 #include <qregexp.h>
 #include <qpainter.h>
-#include <q3paintdevicemetrics.h>
 #include <q3whatsthis.h>
 
 #include <stdlib.h>
@@ -293,12 +292,11 @@ void KSnapshot::slotPrint()
 	qApp->processEvents();
 
         QPainter painter(&printer);
-        Q3PaintDeviceMetrics metrics(painter.device());
 
 	float w = snapshot.width();
-	float dw = w - metrics.width();
+	float dw = w - painter.width();
 	float h = snapshot.height();
-	float dh = h - metrics.height();
+	float dh = h - painter.height();
 	bool scale = false;
 
 	if ( (dw > 0.0) || (dh > 0.0) )
@@ -322,14 +320,14 @@ void KSnapshot::slotPrint()
 	    img = img.smoothScale( int(neww), int(newh), QImage::ScaleMin );
 	    qApp->processEvents();
 
-	    int x = (metrics.width()-img.width())/2;
-	    int y = (metrics.height()-img.height())/2;
+	    int x = (painter.width()-img.width())/2;
+	    int y = (painter.height()-img.height())/2;
 
 	    painter.drawImage( x, y, img);
 	}
 	else {
-	    int x = (metrics.width()-snapshot.width())/2;
-	    int y = (metrics.height()-snapshot.height())/2;
+	    int x = (painter.width()-snapshot.width())/2;
+	    int y = (painter.height()-snapshot.height())/2;
 	    painter.drawPixmap( x, y, snapshot );
 	}
     }
