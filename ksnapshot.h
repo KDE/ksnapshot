@@ -26,8 +26,8 @@ class KSnapshotPreview : public QLabel
     Q_OBJECT
 
     public:
-        KSnapshotPreview(QWidget *parent, const char *name = 0)
-            : QLabel(parent, name)
+        KSnapshotPreview(QWidget *parent)
+            : QLabel(parent)
         {
             setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
         }

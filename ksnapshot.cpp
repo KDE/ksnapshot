@@ -24,10 +24,8 @@
 #include <ktempfile.h>
 
 #include <qbitmap.h>
-#include <q3dragobject.h>
 #include <qimage.h>
 #include <qclipboard.h>
-#include <q3vbox.h>
 //Added by qt3to4:
 #include <QPixmap>
 #include <QCloseEvent>
@@ -41,18 +39,18 @@
 #include <kmenu.h>
 #include <kpushbutton.h>
 #include <kstartupinfo.h>
+#include <kvbox.h>
 
 #include <qcursor.h>
 #include <qregexp.h>
 #include <qpainter.h>
-#include <q3whatsthis.h>
 
 #include <stdlib.h>
 
 #include "ksnapshot.h"
+#include "ksnapshotwidget.h"
 #include "regiongrabber.h"
 #include "windowgrabber.h"
-#include "ksnapshotwidget.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -69,7 +67,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
     KDialogBase(parent, name, true, QString::null, Help|User1, User1, 
     true, KStdGuiItem::quit() )
 {
-    grabber = new QWidget( 0, 0, WStyle_Customize | WX11BypassWM );
+    grabber = new QWidget( 0, Qt::WStyle_Customize | Qt::WX11BypassWM );
     grabber->move( -1000, -1000 );
     grabber->installEventFilter( this );
 
@@ -86,7 +84,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
     connect( mainWidget, SIGNAL( copyClicked() ), SLOT( slotCopy() ) );
 
     grabber->show();
-    grabber->grabMouse( waitCursor );
+    grabber->grabMouse( Qt::waitCursor );
 
     if ( !grabCurrent )
 	snapshot = QPixmap::grabWindow( QX11Info::appRootWindow() );
@@ -119,27 +117,27 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
     KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
 
     QPushButton *helpButton = actionButton( Help );
-    helpButton->setPopup(helpMenu->menu());
+    helpButton->setMenu(helpMenu->menu());
 
     KAccel* accel = new KAccel(this);
     accel->insert(KStdAccel::Quit, kapp, SLOT(quit()));
     accel->insert( "QuickSave", i18n("Quick Save Snapshot &As..."),
 		   i18n("Save the snapshot to the file specified by the user without showing the file dialog."),
-		   CTRL+SHIFT+Key_S, this, SLOT(slotSave()));
+		   Qt::CTRL+Qt::SHIFT+Qt::Key_S, this, SLOT(slotSave()));
     accel->insert(KStdAccel::Save, this, SLOT(slotSaveAs()));
 //    accel->insert(KShortcut(CTRL+Key_A), this, SLOT(slotSaveAs()));
     accel->insert( "SaveAs", i18n("Save Snapshot &As..."),
 		   i18n("Save the snapshot to the file specified by the user."),
-		   CTRL+Key_A, this, SLOT(slotSaveAs()));
+		   Qt::CTRL+Qt::Key_A, this, SLOT(slotSaveAs()));
     accel->insert(KStdAccel::Print, this, SLOT(slotPrint()));
     accel->insert(KStdAccel::New, this, SLOT(slotGrab()));
     accel->insert(KStdAccel::Copy, this, SLOT(slotCopy()));
 
-    accel->insert( "Quit2", Key_Q, this, SLOT(slotSave()));
-    accel->insert( "Save2", Key_S, this, SLOT(slotSaveAs()));
-    accel->insert( "Print2", Key_P, this, SLOT(slotPrint()));
-    accel->insert( "New2", Key_N, this, SLOT(slotGrab()));
-    accel->insert( "New3", Key_Space, this, SLOT(slotGrab()));
+    accel->insert( "Quit2", Qt::Key_Q, this, SLOT(slotSave()));
+    accel->insert( "Save2", Qt::Key_S, this, SLOT(slotSaveAs()));
+    accel->insert( "Print2", Qt::Key_P, this, SLOT(slotPrint()));
+    accel->insert( "New2", Qt::Key_N, this, SLOT(slotGrab()));
+    accel->insert( "New3", Qt::Key_Space, this, SLOT(slotGrab()));
 
     setEscapeButton( User1 );
     connect( this, SIGNAL( user1Clicked() ), SLOT( reject() ) );
@@ -151,12 +149,10 @@ KSnapshot::~KSnapshot()
 {
 }
 
-void KSnapshot::resizeEvent( QResizeEvent *event)
+void KSnapshot::resizeEvent( QResizeEvent * )
 {
-	if( !updateTimer.isActive() )
-		updateTimer.start(200, true);
-	else	
-		updateTimer.start(200);
+	updateTimer.setSingleShot( !updateTimer.isActive() );
+	updateTimer.start( 200 );
 }
 
 bool KSnapshot::save( const QString &filename )
@@ -184,7 +180,7 @@ bool KSnapshot::save( const KURL& url )
     if ( url.isLocalFile() ) {
 	KSaveFile saveFile( url.path() );
 	if ( saveFile.status() == 0 ) {
-	    if ( snapshot.save( saveFile.file(), type.latin1() ) )
+	    if ( snapshot.save( saveFile.file(), type.toLatin1() ) )
 		ok = saveFile.close();
 	}
     }
@@ -192,7 +188,7 @@ bool KSnapshot::save( const KURL& url )
 	KTempFile tmpFile;
         tmpFile.setAutoDelete( true );
 	if ( tmpFile.status() == 0 ) {
-	    if ( snapshot.save( tmpFile.file(), type.latin1() ) ) {
+	    if ( snapshot.save( tmpFile.file(), type.toLatin1() ) ) {
 		if ( tmpFile.close() )
 		    ok = KIO::NetAccess::upload( tmpFile.name(), url, this );
 	    }
@@ -253,17 +249,22 @@ void KSnapshot::slotCopy()
 
 void KSnapshot::slotDragSnapshot()
 {
-    Q3DragObject *drobj = new Q3ImageDrag(snapshot.convertToImage(), this);
-    drobj->setPixmap(mainWidget->preview());
-    drobj->dragCopy();
+    QDrag *drag = new QDrag(this);
+
+    drag->setMimeData(new QMimeData);
+    drag->mimeData()->setImageData(snapshot);
+    drag->setPixmap(mainWidget->preview());
+    drag->start();
 }
 
 void KSnapshot::slotGrab()
 {
     hide();
 
-    if ( mainWidget->delay() )
-	grabTimer.start( mainWidget->delay() * 1000, true );
+    if ( mainWidget->delay() ) {
+        grabTimer.setSingleShot( true );
+	grabTimer.start( mainWidget->delay() * 1000 );
+    }
     else {
 	if ( mainWidget->mode() == Region ) {
 	    rgnGrab = new RegionGrabber();
@@ -272,7 +273,7 @@ void KSnapshot::slotGrab()
 	}
 	else {
 	    grabber->show();
-	    grabber->grabMouse( crossCursor );
+	    grabber->grabMouse( Qt::crossCursor );
 	}
     }
 }
@@ -294,9 +295,9 @@ void KSnapshot::slotPrint()
         QPainter painter(&printer);
 
 	float w = snapshot.width();
-	float dw = w - painter.width();
+	float dw = w - printer.width();
 	float h = snapshot.height();
-	float dh = h - painter.height();
+	float dh = h - printer.height();
 	bool scale = false;
 
 	if ( (dw > 0.0) || (dh > 0.0) )
@@ -304,7 +305,7 @@ void KSnapshot::slotPrint()
 
 	if ( scale ) {
 
-	    QImage img = snapshot.convertToImage();
+	    QImage img = snapshot.toImage();
 	    qApp->processEvents();
 
 	    float newh, neww;
@@ -317,17 +318,17 @@ void KSnapshot::slotPrint()
 		neww = newh/h*w;
 	    }
 
-	    img = img.smoothScale( int(neww), int(newh), QImage::ScaleMin );
+	    img = img.scaled( int(neww), int(newh), Qt::KeepAspectRatio, Qt::SmoothTransformation );
 	    qApp->processEvents();
 
-	    int x = (painter.width()-img.width())/2;
-	    int y = (painter.height()-img.height())/2;
+	    int x = (printer.width()-img.width())/2;
+	    int y = (printer.height()-img.height())/2;
 
 	    painter.drawImage( x, y, img);
 	}
 	else {
-	    int x = (painter.width()-snapshot.width())/2;
-	    int y = (painter.height()-snapshot.height())/2;
+	    int x = (printer.width()-snapshot.width())/2;
+	    int y = (printer.height()-snapshot.height())/2;
 	    painter.drawPixmap( x, y, snapshot );
 	}
     }
@@ -398,7 +399,7 @@ void KSnapshot::autoincFilename()
     QRegExp numSearch("[0-9]+");
 
     // Does it have a number?
-    int start = numSearch.search(name);
+    int start = numSearch.indexIn(name);
     if (start != -1) {
         // It has a number, increment it
         int len = numSearch.matchedLength();
@@ -407,7 +408,7 @@ void KSnapshot::autoincFilename()
     }
     else {
         // no number
-        start = name.findRev('.');
+        start = name.lastIndexOf('.');
         if (start != -1) {
             // has a . somewhere, e.g. it has an extension
             name.insert(start, '1');

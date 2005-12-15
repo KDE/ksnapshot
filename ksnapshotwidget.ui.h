@@ -34,21 +34,14 @@ void KSnapshotWidget::slotModeChanged( int mode )
 
 void KSnapshotWidget::setPreview( const QPixmap &pm )
 {
-    QImage img = pm.convertToImage();
-    double r1 = ( ( double ) pm.height() ) / pm.width();
-    if ( r1 * previewWidth()  < previewHeight() )
-        img = img.smoothScale(  previewWidth(),
-				int( previewWidth() * r1 ),
-				Qt::KeepAspectRatio );
-    else
-        img = img.smoothScale( ( int ) ( ( ( double )previewHeight() ) / r1 ),
-			       previewHeight(), Qt::KeepAspectRatio );
+    QPixmap pmScaled = pm.scaled( previewWidth(), previewHeight(),
+		             Qt::KeepAspectRatio, Qt::SmoothTransformation );
 
     lblImage->setToolTip(
-        QString( "Preview of the snapshot image (%1 x %2)" )
+        i18n( "Preview of the snapshot image (%1 x %2)" )
         .arg( pm.width() ).arg( pm.height() ) );
 
-    lblImage->setPixmap( QPixmap( img ) );
+    lblImage->setPixmap( pmScaled );
     lblImage->adjustSize();
 }
 
@@ -67,7 +60,7 @@ void KSnapshotWidget::setIncludeDecorations( bool b )
 
 void KSnapshotWidget::setMode( int mode )
 {
-    comboMode->setCurrentItem(mode);
+    comboMode->setCurrentIndex(mode);
     slotModeChanged(mode);
 }
 
@@ -86,7 +79,7 @@ bool KSnapshotWidget::includeDecorations()
 
 int KSnapshotWidget::mode()
 {
-    return comboMode->currentItem();
+    return comboMode->currentIndex();
 }
 
 

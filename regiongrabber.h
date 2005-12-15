@@ -32,7 +32,7 @@ class QRubberBand;
 class SizeTip : public QLabel
 {
   public:
-    SizeTip( QWidget *parent, const char *name=0 );
+    SizeTip( QWidget *parent );
     ~SizeTip() {}
 
   void setTip( const QRect &rect );

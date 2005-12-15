@@ -47,9 +47,9 @@ protected:
     void mouseReleaseEvent( QMouseEvent * );
     void mouseMoveEvent( QMouseEvent * );
     void wheelEvent( QWheelEvent * );
+    void paintEvent( QPaintEvent * );
 
 private:
-    void drawBorder();
     void increaseScope( const QPoint & );
     void decreaseScope( const QPoint & );
     int windowIndex( const QPoint & ) const;

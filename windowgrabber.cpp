@@ -20,13 +20,14 @@
 #include "windowgrabber.h"
 #include <qbitmap.h>
 #include <qpainter.h>
-#include <q3ptrlist.h>
 //Added by qt3to4:
 #include <QPixmap>
 #include <QMouseEvent>
+#include <QVector>
 #include <QWheelEvent>
-#include <Q3MemArray>
 #include <algorithm>
+
+#include <kdebug.h>
 
 #include <config.h>
 
@@ -174,12 +175,12 @@ QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border )
 
 	    //Get the masked away area.
 	    QRegion maskedAway = bbox - contents;
-	    Q3MemArray<QRect> maskedAwayRects = maskedAway.rects();
+	    QVector<QRect> maskedAwayRects = maskedAway.rects();
 
 	    //Construct a bitmap mask from the rectangles
 	    QPainter p(&mask);
 	    p.fillRect(0, 0, w, h, Qt::color1);
-	    for (uint pos = 0; pos < maskedAwayRects.count(); pos++)
+	    for (int pos = 0; pos < maskedAwayRects.count(); pos++)
 		    p.fillRect(maskedAwayRects[pos], Qt::color0);
 	    p.end();
 
@@ -192,8 +193,8 @@ QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border )
 }
 
 WindowGrabber::WindowGrabber()
-: QDialog( 0, 0, true, Qt::WStyle_Customize  | Qt::WStyle_NoBorder |
-                       Qt::WStyle_StaysOnTop | Qt::WX11BypassWM ),
+: QDialog( 0, Qt::WShowModal | Qt::WStyle_Customize | Qt::WStyle_NoBorder |
+              Qt::WStyle_StaysOnTop | Qt::WX11BypassWM ),
   current( -1 ), yPos( -1 )
 {
     Window root;
@@ -206,7 +207,9 @@ WindowGrabber::WindowGrabber()
     getWindowsRecursive( windows, child );
     XUngrabServer( QX11Info::display() );
 
-    setPaletteBackgroundPixmap( pm );
+    QPalette p = palette();
+    p.setBrush( backgroundRole(), QBrush( pm ) );
+    setPalette( p );
     setFixedSize( pm.size() );
     setMouseTracking( true );
     setGeometry( x, y, w, h );
@@ -249,15 +252,10 @@ void WindowGrabber::mousePressEvent( QMouseEvent *e )
     if ( e->button() == Qt::RightButton )
 	yPos = e->globalY();
     else {
-	QPixmap pm;
-	if ( current ) {
-	    QRect r( windows[ current ] );
-	    int w = r.width();
-	    int h = r.height();
-	    pm.resize( w, h );
-	    copyBlt( &pm, 0, 0, paletteBackgroundPixmap(), r.x(), r.y(), w, h );
-	}
-	emit windowGrabbed( pm );
+        if ( current )
+	    emit windowGrabbed( palette().brush( backgroundRole() ).texture().copy( windows[ current ] ) );
+        else 
+            emit windowGrabbed( QPixmap() );
         accept();
     }
 }
@@ -277,7 +275,7 @@ void WindowGrabber::mouseMoveEvent( QMouseEvent *e )
 	int w = windowIndex( e->pos() );
 	if ( w != -1 && w != current ) {
 	    current = w;
-	    drawBorder();
+            repaint();
 	}
     }
     else {
@@ -314,7 +312,7 @@ void WindowGrabber::increaseScope( const QPoint &pos )
 	    break;
 	}
     }
-    drawBorder();
+    repaint();
 }
 
 // Decreases the scope to the next-smaller window containing the mosue pointer.
@@ -328,7 +326,7 @@ void WindowGrabber::decreaseScope( const QPoint &pos )
 	    break;
 	}
     }
-    drawBorder();
+    repaint();
 }
 
 // Searches and returns the index of the first (=smallest) window
@@ -343,15 +341,13 @@ int WindowGrabber::windowIndex( const QPoint &pos ) const
 }
 
 // Draws a border around the (child) window currently containing the pointer
-void WindowGrabber::drawBorder()
+void WindowGrabber::paintEvent( QPaintEvent * )
 {
-    repaint();
-
     if ( current >= 0 ) {
 	QPainter p;
 	p.begin( this );
 	p.setPen( QPen( Qt::red, 3 ) );
-	p.drawRect( windows[ current ] );
+	p.drawRect( windows[ current ].adjusted( 0, 0, -1, -1 ) );
 	p.end();
     }
 }

@@ -46,7 +46,6 @@ int main(int argc, char **argv)
 
   app.dcopClient()->setDefaultObject( toplevel->objId() );
   toplevel->setCaption( app.makeStdCaption("") );
-  app.setMainWidget(toplevel);
   toplevel->show();
   return app.exec();
 }

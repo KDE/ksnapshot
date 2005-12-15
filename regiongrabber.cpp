@@ -29,7 +29,7 @@
 #include <QPixmap>
 #include <QMouseEvent>
 #include <QLabel>
-#include <Q3Frame>
+#include <QFrame>
 #include <QKeyEvent>
 
 #include <QX11Info>
@@ -37,13 +37,13 @@
 
 #include <kglobalsettings.h>
 
-SizeTip::SizeTip( QWidget *parent, const char *name )
-    : QLabel( parent, name, Qt::WStyle_Customize | Qt::WX11BypassWM |
+SizeTip::SizeTip( QWidget *parent )
+    : QLabel( parent, Qt::WStyle_Customize | Qt::WX11BypassWM |
       Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::WStyle_Tool )
 {
   setMargin( 2 );
   setIndent( 0 );
-  setFrameStyle( Q3Frame::Plain | Q3Frame::Box );
+  setFrameStyle( QFrame::Plain | QFrame::Box );
 
   setPalette( QToolTip::palette() );
 }
@@ -77,13 +77,15 @@ void SizeTip::positionTip( const QRect &rect )
 }
 
 RegionGrabber::RegionGrabber()
-  : QWidget( 0, 0 ),
+  : QWidget( 0 ),
     mouseDown( false ), sizeTip( 0L )
 {
   sizeTip = new SizeTip( ( QWidget * )0L );
   band    = new QRubberBand( QRubberBand::Rectangle, this );
 
   tipTimer = new QTimer( this );
+  tipTimer->setInterval( 250 );
+  tipTimer->setSingleShot( true );
   connect( tipTimer, SIGNAL( timeout() ), SLOT( updateSizeTip() ) );
 
   QTimer::singleShot( 200, this, SLOT( initGrabber() ) );
@@ -97,7 +99,9 @@ RegionGrabber::~RegionGrabber()
 void RegionGrabber::initGrabber()
 {
   pixmap = QPixmap::grabWindow( QX11Info::appRootWindow() );
-  setPaletteBackgroundPixmap( pixmap );
+  QPalette p = palette();
+  p.setBrush( backgroundRole(), QBrush( pixmap ) );
+  setPalette( p );
 
   showFullScreen();
 
@@ -120,10 +124,10 @@ void RegionGrabber::mouseMoveEvent( QMouseEvent *e )
   if ( mouseDown )
   {
     sizeTip->hide();
-    tipTimer->start( 250, true );
+    tipTimer->start();
 
     grabRect.setBottomRight( e->pos() );
-    band->setGeometry( grabRect );
+    band->setGeometry( grabRect.normalized() );
   }
 }
 
@@ -134,7 +138,7 @@ void RegionGrabber::mouseReleaseEvent( QMouseEvent *e )
   sizeTip->hide();
 
   grabRect.setBottomRight( e->pos() );
-  grabRect = grabRect.normalize();
+  grabRect = grabRect.normalized();
 
   QPixmap region = QPixmap::grabWindow( winId(), grabRect.x(), grabRect.y(),
       grabRect.width(), grabRect.height() );
@@ -157,9 +161,7 @@ void RegionGrabber::keyPressEvent( QKeyEvent *e )
 
 void RegionGrabber::updateSizeTip()
 {
-  QRect rect = grabRect.normalize();
-
-  sizeTip->setTip( rect );
+  sizeTip->setTip( grabRect.normalized() );
   sizeTip->show();
 }
 
