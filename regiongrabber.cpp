@@ -89,6 +89,14 @@ void RegionGrabber::initGrabber()
   pixmap = QPixmap::grabWindow( qt_xrootwin() );
   setPaletteBackgroundPixmap( pixmap );
 
+  QDesktopWidget desktopWidget;
+  QRect desktopSize;
+  if ( desktopWidget.isVirtualDesktop() )
+    desktopSize = desktopWidget.geometry();
+  else
+    desktopSize = desktopWidget.screenGeometry( qt_xrootwin() );
+
+  setGeometry( desktopSize );
   showFullScreen();
 
   QApplication::setOverrideCursor( crossCursor );
