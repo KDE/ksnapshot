@@ -372,7 +372,7 @@ set a delay of 4 seconds using:
 <para>You can obtain the path that the snapshot will be saved to using 
 <literal>url</literal>, as shown below:
 <screen width="60">
-<prompt>$</prompt> <command>dcop ksnapshot-23151 interface url</command>
+<prompt>$</prompt><command>dcop ksnapshot-23151 interface url</command>
 </screen>
 This will return the filename, as a URL (eg as 
 <computeroutput>file:///home/bradh/test2.png</computeroutput>).
