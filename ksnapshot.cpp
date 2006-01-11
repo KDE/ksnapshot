@@ -10,7 +10,6 @@
  * Released under the LGPL see file LICENSE for details.
  */
 
-
 #include <klocale.h>
 #include <kimageio.h>
 #include <kfiledialog.h>
@@ -102,7 +101,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
     conf->setGroup("GENERAL");
     mainWidget->setDelay(conf->readNumEntry("delay",0));
     mainWidget->setMode( conf->readNumEntry( "mode", 0 ) );
-    mainWidget->setIncludeDecorations(conf->readBoolEntry("includeDecorations",true));
+    mainWidget->setIncludeDecorations(conf->readEntry("includeDecorations",true));
     filename = KURL::fromPathOrURL( conf->readPathEntry( "filename", QDir::currentPath()+"/"+i18n("snapshot")+"1.png" ));
 
     // Make sure the name is not already being used
