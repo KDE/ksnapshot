@@ -34,7 +34,6 @@ int main(int argc, char **argv)
 
   KApplication app;
 
-  KImageIO::registerFormats();
 
   // Create top level window
   KSnapshot *toplevel;
