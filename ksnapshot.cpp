@@ -102,7 +102,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
     mainWidget->setDelay(conf->readNumEntry("delay",0));
     mainWidget->setMode( conf->readNumEntry( "mode", 0 ) );
     mainWidget->setIncludeDecorations(conf->readEntry("includeDecorations",true));
-    filename = KURL::fromPathOrURL( conf->readPathEntry( "filename", QDir::currentPath()+"/"+i18n("snapshot")+"1.png" ));
+    filename = KUrl::fromPathOrURL( conf->readPathEntry( "filename", QDir::currentPath()+"/"+i18n("snapshot")+"1.png" ));
 
     // Make sure the name is not already being used
     while(KIO::NetAccess::exists( filename, false, this )) {
@@ -156,10 +156,10 @@ void KSnapshot::resizeEvent( QResizeEvent * )
 
 bool KSnapshot::save( const QString &filename )
 {
-    return save( KURL::fromPathOrURL( filename ));
+    return save( KUrl::fromPathOrURL( filename ));
 }
 
-bool KSnapshot::save( const KURL& url )
+bool KSnapshot::save( const KUrl& url )
 {
     if ( KIO::NetAccess::exists( url, false, this ) ) {
         const QString title = i18n( "File Exists" );
@@ -229,7 +229,7 @@ void KSnapshot::slotSaveAs()
     if ( !dlg.exec() )
         return;
 
-    KURL url = dlg.selectedURL();
+    KUrl url = dlg.selectedURL();
     if ( !url.isValid() )
         return;
 
@@ -371,7 +371,7 @@ void KSnapshot::closeEvent( QCloseEvent * e )
     conf->writeEntry("delay",mainWidget->delay());
     conf->writeEntry("mode",mainWidget->mode());
     conf->writeEntry("includeDecorations",mainWidget->includeDecorations());
-    KURL url = filename;
+    KUrl url = filename;
     url.setPass( QString::null );
     conf->writePathEntry("filename",url.url());
     e->accept();
@@ -419,7 +419,7 @@ void KSnapshot::autoincFilename()
     }
 
     //Rebuild the path 
-    KURL newURL = filename;
+    KUrl newURL = filename;
     newURL.setFileName( name );
     setURL( newURL.url() );
 }
@@ -478,7 +478,7 @@ int KSnapshot::timeout()
 
 void KSnapshot::setURL( const QString &url )
 {
-    KURL newURL = KURL::fromPathOrURL( url );
+    KUrl newURL = KUrl::fromPathOrURL( url );
     if ( newURL == filename )
 	return;
 

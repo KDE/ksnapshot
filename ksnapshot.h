@@ -102,7 +102,7 @@ private slots:
     void slotWindowGrabbed( const QPixmap & );
 
 private:
-    bool save( const KURL& url );
+    bool save( const KUrl& url );
     void performGrab();
     void autoincFilename();
     int grabMode();
@@ -112,7 +112,7 @@ private:
     QTimer grabTimer;
     QTimer updateTimer;
     QWidget* grabber;
-    KURL filename;
+    KUrl filename;
     KSnapshotWidget *mainWidget;
     RegionGrabber *rgnGrab;
     bool modified;
