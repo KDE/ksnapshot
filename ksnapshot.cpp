@@ -196,7 +196,7 @@ bool KSnapshot::save( const KUrl& url )
 
     QApplication::restoreOverrideCursor();
     if ( !ok ) {
-	kdWarning() << "KSnapshot was unable to save the snapshot" << endl;
+	kWarning() << "KSnapshot was unable to save the snapshot" << endl;
 
 	QString caption = i18n("Unable to save image");
 	QString text = i18n("KSnapshot was unable to save the image to\n%1.")
