@@ -1,8 +1,10 @@
 [Desktop Entry]
 Encoding=UTF-8
 GenericName=Screen Capture Program
+GenericName[fr]=Logiciel de capture d'écran
 GenericName[x-test]=xxScreen Capture Programxx
 Name=KSnapshot
+Name[fr]=KSnapShot
 Name[x-test]=xxKSnapshotxx
 MimeType=
 Exec=ksnapshot -caption "%c"
