@@ -1,0 +1,59 @@
+kde4_header()
+
+include_directories( ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}  )
+
+
+########### next target ###############
+
+set(ksnapshot_SRCS 
+   main.cpp 
+   ksnapshot.cpp 
+   regiongrabber.cpp 
+   windowgrabber.cpp )
+
+kde4_automoc(${ksnapshot_SRCS})
+
+kde4_add_ui_files(ksnapshot_SRCS ksnapshotwidget.ui )
+
+kde4_add_dcop_skels(ksnapshot_SRCS ksnapshotiface.h )
+
+kde4_add_executable(ksnapshot ${ksnapshot_SRCS})
+
+target_link_libraries(ksnapshot  ${QT_AND_KDECORE_LIBS} kdeprint )
+
+install_targets(/bin ksnapshot )
+
+
+########### install files ###############
+
+install_files( ${XDG_APPS_DIR} FILES ksnapshot.desktop )
+
+kde4_install_icons( ${ICON_INSTALL_DIR}  hicolor )
+
+kde4_footer()
+
+
+
+#original Makefile.am contents follow:
+
+#bin_PROGRAMS= ksnapshot
+#
+#INCLUDES = -DKSNAPVERSION="\"0.7\"" $(all_includes)
+#
+#ksnapshot_LDFLAGS = $(all_libraries) $(KDE_RPATH)
+#ksnapshot_LDADD = $(LIB_KDEPRINT)
+#
+#ksnapshot_SOURCES = ksnapshotiface.skel main.cpp ksnapshot.cpp \
+#    regiongrabber.cpp windowgrabber.cpp ksnapshotwidget.ui
+#
+#ksnapshot_METASOURCES = AUTO
+#
+#xdg_apps_DATA = ksnapshot.desktop
+#
+#KDE_ICON = ksnapshot
+#
+#EXTRA_DIST = $(xdg_apps_DATA)
+#
+#messages: rc.cpp
+#	$(XGETTEXT) rc.cpp *.cpp -o $(podir)/ksnapshot.pot
+#
