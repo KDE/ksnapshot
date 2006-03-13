@@ -5,6 +5,8 @@ include_directories( ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${CMAKE_CURRENT_SOURCE_D
 
 ########### next target ###############
 
+ADD_DEFINITIONS(-DKSNAPVERSION=\"\\"0.7\\"\")
+
 set(ksnapshot_SRCS 
    main.cpp 
    ksnapshot.cpp 
@@ -13,7 +15,7 @@ set(ksnapshot_SRCS
 
 kde4_automoc(${ksnapshot_SRCS})
 
-kde4_add_ui_files(ksnapshot_SRCS ksnapshotwidget.ui )
+kde4_add_ui3_files(ksnapshot_SRCS ksnapshotwidget.ui )
 
 kde4_add_dcop_skels(ksnapshot_SRCS ksnapshotiface.h )
 

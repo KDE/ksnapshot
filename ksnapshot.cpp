@@ -218,7 +218,7 @@ void KSnapshot::slotSave()
 void KSnapshot::slotSaveAs()
 {
     QStringList mimetypes = KImageIO::mimeTypes( KImageIO::Writing );
-    KFileDialog dlg( filename.url(), mimetypes.join(" "), this, "filedialog", true);
+    KFileDialog dlg( filename.url(), mimetypes.join(" "), this);
 
     dlg.setOperationMode( KFileDialog::Saving );
     dlg.setCaption( i18n("Save As") );
