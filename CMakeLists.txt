@@ -22,7 +22,7 @@ kde4_add_dcop_skels(ksnapshot_SRCS ksnapshotiface.h )
 
 kde4_add_executable(ksnapshot ${ksnapshot_SRCS})
 
-target_link_libraries(ksnapshot  ${QT_AND_KDECORE_LIBS} kdeprint )
+target_link_libraries(ksnapshot  ${KDE4_KDECORE_LIBS} kdeprint )
 
 install_targets(/bin ksnapshot )
 
