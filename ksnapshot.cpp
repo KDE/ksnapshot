@@ -163,7 +163,7 @@ bool KSnapshot::save( const KUrl& url )
 {
     if ( KIO::NetAccess::exists( url, false, this ) ) {
         const QString title = i18n( "File Exists" );
-        const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" ).arg(url.prettyURL());
+        const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" , url.prettyURL());
         if (KMessageBox::Continue != KMessageBox::warningContinueCancel( this, text, title, i18n("Overwrite") ) ) 
         {
             return false;
@@ -199,8 +199,8 @@ bool KSnapshot::save( const KUrl& url )
 	kWarning() << "KSnapshot was unable to save the snapshot" << endl;
 
 	QString caption = i18n("Unable to save image");
-	QString text = i18n("KSnapshot was unable to save the image to\n%1.")
-	               .arg(url.prettyURL());
+	QString text = i18n("KSnapshot was unable to save the image to\n%1.",
+	                url.prettyURL());
 	KMessageBox::error(this, text, caption);
     }
 

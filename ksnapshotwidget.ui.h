@@ -38,8 +38,8 @@ void KSnapshotWidget::setPreview( const QPixmap &pm )
 		             Qt::KeepAspectRatio, Qt::SmoothTransformation );
 
     lblImage->setToolTip(
-        i18n( "Preview of the snapshot image (%1 x %2)" )
-        .arg( pm.width() ).arg( pm.height() ) );
+        i18n( "Preview of the snapshot image (%1 x %2)" ,
+          pm.width(), pm.height() ) );
 
     lblImage->setPixmap( pmScaled );
     lblImage->adjustSize();
