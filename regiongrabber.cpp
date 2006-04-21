@@ -38,8 +38,8 @@
 #include <kglobalsettings.h>
 
 SizeTip::SizeTip( QWidget *parent )
-    : QLabel( parent, Qt::WStyle_Customize | Qt::WX11BypassWM |
-      Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::WStyle_Tool )
+    : QLabel( parent, Qt::X11BypassWindowManagerHint |
+      Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool )
 {
   setMargin( 2 );
   setIndent( 0 );

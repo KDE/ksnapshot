@@ -39,7 +39,7 @@ int main(int argc, char **argv)
   KSnapshot *toplevel;
 
   if ( args->isSet( "current" ) )
-     toplevel = new KSnapshot( 0, 0, true );
+     toplevel = new KSnapshot( 0, true );
   else
      toplevel = new KSnapshot();
 

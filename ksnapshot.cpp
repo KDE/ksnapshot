@@ -26,7 +26,7 @@
 #include <qimage.h>
 #include <qclipboard.h>
 #include <kstdaccel.h>
-//Added by qt3to4:
+#include <QImageWriter>
 #include <QPixmap>
 #include <QCloseEvent>
 #include <QEvent>
@@ -34,7 +34,7 @@
 #include <QMouseEvent>
 
 
-#include <knotifyclient.h>
+#include <knotification.h>
 #include <khelpmenu.h>
 #include <kmenu.h>
 #include <kpushbutton.h>
@@ -62,18 +62,24 @@
 
 #define kApp KApplication::kApplication()
 
-KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
+KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
   : DCOPObject("interface"), 
-    KDialogBase(parent, name, true, QString::null, Help|User1, User1, 
-    true, KStdGuiItem::quit() )
+    KDialog(parent)
 {
+    setModal( true );
+    enableButtonSeparator( true );
+    setDefaultButton( User1 );
+    setButtonMask( Help|User1, KStdGuiItem::quit() );
     grabber = new QWidget( 0, Qt::WStyle_Customize | Qt::WX11BypassWM );
     grabber->move( -1000, -1000 );
     grabber->installEventFilter( this );
 
     KStartupInfo::appStarted();
 
-    KVBox *vbox = makeVBoxMainWidget();
+    KVBox *vbox = new KVBox( this );
+    vbox->setSpacing( spacingHint() );
+    setMainWidget( vbox );
+
     mainWidget = new KSnapshotWidget( vbox, "mainWidget" );
 
     connect(mainWidget, SIGNAL(startImageDrag()), SLOT(slotDragSnapshot()));
@@ -94,14 +100,13 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
 	performGrab();
     }
 
-    updatePreview();
     grabber->releaseMouse();
     grabber->hide();
 
     KConfig *conf=KGlobal::config();
     conf->setGroup("GENERAL");
-    mainWidget->setDelay(conf->readNumEntry("delay",0));
-    mainWidget->setMode( conf->readNumEntry( "mode", 0 ) );
+    mainWidget->setDelay( conf->readEntry("delay", 0) );
+    mainWidget->setMode( conf->readEntry("mode", 0) );
     mainWidget->setIncludeDecorations(conf->readEntry("includeDecorations",true));
     filename = KUrl::fromPathOrURL( conf->readPathEntry( "filename", QDir::currentPath()+"/"+i18n("snapshot")+"1.png" ));
 
@@ -119,6 +124,8 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
     QPushButton *helpButton = actionButton( Help );
     helpButton->setMenu(helpMenu->menu());
 
+#warning Porting needed
+#if 0
     KAccel* accel = new KAccel(this);
     accel->insert(KStdAccel::Quit, kapp, SLOT(quit()));
     accel->insert( "QuickSave", i18n("Quick Save Snapshot &As..."),
@@ -138,6 +145,7 @@ KSnapshot::KSnapshot(QWidget *parent, const char *name, bool grabCurrent)
     accel->insert( "Print2", Qt::Key_P, this, SLOT(slotPrint()));
     accel->insert( "New2", Qt::Key_N, this, SLOT(slotGrab()));
     accel->insert( "New3", Qt::Key_Space, this, SLOT(slotGrab()));
+#endif
 
     setEscapeButton( User1 );
     connect( this, SIGNAL( user1Clicked() ), SLOT( reject() ) );
@@ -171,16 +179,18 @@ bool KSnapshot::save( const KUrl& url )
         }
     }
 
-    QString type( KImageIO::type(url.path()) );
-    if ( type.isNull() )
-	type = "PNG";
+    QByteArray type = "PNG";
+    QString mime = KMimeType::findByURL( url.fileName(), 0, url.isLocalFile(), true )->name();
+    QStringList types = KImageIO::typeForMime(mime);
+    if ( !types.isEmpty() )
+        type = types.first().toLatin1();
 
     bool ok = false;
 
     if ( url.isLocalFile() ) {
 	KSaveFile saveFile( url.path() );
 	if ( saveFile.status() == 0 ) {
-	    if ( snapshot.save( saveFile.file(), type.toLatin1() ) )
+	    if ( snapshot.save( saveFile.file(), type ) )
 		ok = saveFile.close();
 	}
     }
@@ -188,7 +198,7 @@ bool KSnapshot::save( const KUrl& url )
 	KTempFile tmpFile;
         tmpFile.setAutoDelete( true );
 	if ( tmpFile.status() == 0 ) {
-	    if ( snapshot.save( tmpFile.file(), type.toLatin1() ) ) {
+	    if ( snapshot.save( tmpFile.file(), type ) ) {
 		if ( tmpFile.close() )
 		    ok = KIO::NetAccess::upload( tmpFile.name(), url, this );
 	    }
@@ -440,7 +450,7 @@ void KSnapshot::grabTimerDone()
     else {
 	performGrab();
     }
-    KNotifyClient::beep(i18n("The screen has been successfully grabbed."));
+    KNotification::beep(i18n("The screen has been successfully grabbed."));
 }
 
 void KSnapshot::performGrab()
@@ -499,7 +509,8 @@ int KSnapshot::grabMode()
 
 void KSnapshot::updateCaption()
 {
-    setCaption( kApp->makeStdCaption( filename.fileName(), true, modified ) );
+    setCaption( KInstance::makeStdCaption( filename.fileName(),
+                KInstance::ModifiedCaption | KInstance::AppNameCaption) );
 }
 
 void KSnapshot::slotMovePointer(int x, int y)

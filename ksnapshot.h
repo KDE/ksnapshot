@@ -60,12 +60,12 @@ class KSnapshotPreview : public QLabel
         QPoint mClickPt;
 };
 
-class KSnapshot : public KDialogBase, virtual public KSnapshotIface
+class KSnapshot : public KDialog, virtual public KSnapshotIface
 {
   Q_OBJECT
 
 public:
-  KSnapshot(QWidget *parent= 0, const char *name= 0, bool grabCurrent=false);
+  KSnapshot(QWidget *parent= 0, bool grabCurrent=false);
   ~KSnapshot();
 
   enum CaptureMode { FullScreen=0, WindowUnderCursor=1, Region=2, ChildWindow=3 };
