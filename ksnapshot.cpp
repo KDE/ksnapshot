@@ -40,6 +40,7 @@
 #include <kpushbutton.h>
 #include <kstartupinfo.h>
 #include <kvbox.h>
+#include <kinstance.h>
 
 #include <qcursor.h>
 #include <qregexp.h>
@@ -509,8 +510,10 @@ int KSnapshot::grabMode()
 
 void KSnapshot::updateCaption()
 {
+	KInstance::CaptionFlags flags = KInstance::ModifiedCaption;
+	flags |= KInstance::AppNameCaption;
     setCaption( KInstance::makeStdCaption( filename.fileName(),
-                KInstance::ModifiedCaption | KInstance::AppNameCaption) );
+                flags) );
 }
 
 void KSnapshot::slotMovePointer(int x, int y)
