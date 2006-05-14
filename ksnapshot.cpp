@@ -160,8 +160,8 @@ KSnapshot::~KSnapshot()
 
 void KSnapshot::resizeEvent( QResizeEvent * )
 {
-	updateTimer.setSingleShot( !updateTimer.isActive() );
-	updateTimer.start( 200 );
+    updateTimer.setSingleShot( true );
+    updateTimer.start( 200 );
 }
 
 bool KSnapshot::save( const QString &filename )
