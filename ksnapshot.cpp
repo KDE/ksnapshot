@@ -109,7 +109,7 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
     mainWidget->setDelay( conf->readEntry("delay", 0) );
     mainWidget->setMode( conf->readEntry("mode", 0) );
     mainWidget->setIncludeDecorations(conf->readEntry("includeDecorations",true));
-    filename = KUrl::fromPathOrURL( conf->readPathEntry( "filename", QDir::currentPath()+"/"+i18n("snapshot")+"1.png" ));
+    filename = KUrl::fromPathOrUrl( conf->readPathEntry( "filename", QDir::currentPath()+"/"+i18n("snapshot")+"1.png" ));
 
     // Make sure the name is not already being used
     while(KIO::NetAccess::exists( filename, false, this )) {
@@ -166,14 +166,14 @@ void KSnapshot::resizeEvent( QResizeEvent * )
 
 bool KSnapshot::save( const QString &filename )
 {
-    return save( KUrl::fromPathOrURL( filename ));
+    return save( KUrl::fromPathOrUrl( filename ));
 }
 
 bool KSnapshot::save( const KUrl& url )
 {
     if ( KIO::NetAccess::exists( url, false, this ) ) {
         const QString title = i18n( "File Exists" );
-        const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" , url.prettyURL());
+        const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" , url.prettyUrl());
         if (KMessageBox::Continue != KMessageBox::warningContinueCancel( this, text, title, i18n("Overwrite") ) ) 
         {
             return false;
@@ -212,7 +212,7 @@ bool KSnapshot::save( const KUrl& url )
 
 	QString caption = i18n("Unable to save image");
 	QString text = i18n("KSnapshot was unable to save the image to\n%1.",
-	                url.prettyURL());
+	                url.prettyUrl());
 	KMessageBox::error(this, text, caption);
     }
 
@@ -490,7 +490,7 @@ int KSnapshot::timeout()
 
 void KSnapshot::setURL( const QString &url )
 {
-    KUrl newURL = KUrl::fromPathOrURL( url );
+    KUrl newURL = KUrl::fromPathOrUrl( url );
     if ( newURL == filename )
 	return;
 
