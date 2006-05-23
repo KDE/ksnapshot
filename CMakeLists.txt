@@ -1,5 +1,5 @@
 project(ksnapshot)
-
+configure_file (config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnapshot.h )
 
 
 
