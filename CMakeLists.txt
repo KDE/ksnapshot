@@ -7,7 +7,7 @@ configure_file (config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksna
 
 ADD_DEFINITIONS(-DKSNAPVERSION=\"\\"0.7\\"\")
 
-set(ksnapshot_SRCS 
+set(ksnapshot_SRCS ksnapshotadaptor.cpp 
    main.cpp 
    ksnapshot.cpp 
    regiongrabber.cpp 
@@ -16,8 +16,6 @@ set(ksnapshot_SRCS
 kde4_automoc(${ksnapshot_SRCS})
 
 kde4_add_ui3_files(ksnapshot_SRCS ksnapshotwidget.ui )
-
-kde4_add_dcop_skels(ksnapshot_SRCS ksnapshotiface.h )
 
 kde4_add_executable(ksnapshot ${ksnapshot_SRCS})
 

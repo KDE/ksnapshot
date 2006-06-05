@@ -4,7 +4,8 @@
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
 #include <kiconloader.h>
-
+#include "ksnapshotadaptor.h"
+#include <dbus/qdbus.h>
 #include "ksnapshot.h"
 
 static const char description[] =
@@ -43,7 +44,8 @@ int main(int argc, char **argv)
   else
      toplevel = new KSnapshot();
 
-  app.dcopClient()->setDefaultObject( toplevel->objId() );
+  new KsnapshotAdaptor(toplevel);
+  QDBus::sessionBus().registerObject("/KSnapshot", toplevel);
   toplevel->setCaption( app.makeStdCaption("") );
   toplevel->show();
   return app.exec();

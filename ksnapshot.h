@@ -2,7 +2,6 @@
 
 #ifndef KSNAPSHOT_H
 #define KSNAPSHOT_H
-#include "ksnapshotiface.h"
 
 #include <qlabel.h>
 #include <qpixmap.h>
@@ -13,7 +12,6 @@
 #include <QEvent>
 #include <QCloseEvent>
 
-#include <dcopclient.h>
 #include <kglobalsettings.h>
 #include <kdialogbase.h>
 #include <kurl.h>
@@ -60,7 +58,7 @@ class KSnapshotPreview : public QLabel
         QPoint mClickPt;
 };
 
-class KSnapshot : public KDialog, virtual public KSnapshotIface
+class KSnapshot : public KDialog
 {
   Q_OBJECT
 

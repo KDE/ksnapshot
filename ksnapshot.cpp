@@ -64,8 +64,7 @@
 #define kApp KApplication::kApplication()
 
 KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
-  : DCOPObject("interface"), 
-    KDialog(parent)
+  : KDialog(parent)
 {
     setModal( true );
     enableButtonSeparator( true );
