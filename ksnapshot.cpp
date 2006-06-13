@@ -69,7 +69,8 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
     setModal( true );
     enableButtonSeparator( true );
     setDefaultButton( User1 );
-    setButtonMask( Help|User1, KStdGuiItem::quit() );
+    setButtons(Help|User1);
+    setButtonGuiItem( User1, KStdGuiItem::quit() );
     grabber = new QWidget( 0, Qt::WStyle_Customize | Qt::WX11BypassWM );
     grabber->move( -1000, -1000 );
     grabber->installEventFilter( this );
@@ -120,10 +121,11 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
     QTimer::singleShot( 0, this, SLOT( updateCaption() ) );
 
     KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
-
+#warning "kde4 port it
+#if 0
     QPushButton *helpButton = actionButton( Help );
     helpButton->setMenu(helpMenu->menu());
-
+#endif
 #warning Porting needed
 #if 0
     KAccel* accel = new KAccel(this);
@@ -173,7 +175,7 @@ bool KSnapshot::save( const KUrl& url )
     if ( KIO::NetAccess::exists( url, false, this ) ) {
         const QString title = i18n( "File Exists" );
         const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" , url.prettyUrl());
-        if (KMessageBox::Continue != KMessageBox::warningContinueCancel( this, text, title, i18n("Overwrite") ) ) 
+        if (KMessageBox::Continue != KMessageBox::warningContinueCancel( this, text, title, i18n("Overwrite") ) )
         {
             return false;
         }
@@ -429,7 +431,7 @@ void KSnapshot::autoincFilename()
         }
     }
 
-    //Rebuild the path 
+    //Rebuild the path
     KUrl newURL = filename;
     newURL.setFileName( name );
     setURL( newURL.url() );

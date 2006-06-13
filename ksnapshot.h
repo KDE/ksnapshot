@@ -13,7 +13,7 @@
 #include <QCloseEvent>
 
 #include <kglobalsettings.h>
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <kurl.h>
 
 class RegionGrabber;
@@ -90,7 +90,7 @@ protected:
     virtual void closeEvent( QCloseEvent * e );
     void resizeEvent(QResizeEvent*);
     bool eventFilter( QObject*, QEvent* );
-    
+
 private slots:
     void grabTimerDone();
     void slotDragSnapshot();
