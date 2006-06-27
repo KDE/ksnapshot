@@ -77,7 +77,8 @@ void SizeTip::positionTip( const QRect &rect )
 }
 
 RegionGrabber::RegionGrabber()
-  : QWidget( 0 ),
+  : QWidget( 0, Qt::X11BypassWindowManagerHint |
+      Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool ),
     mouseDown( false ), sizeTip( 0L )
 {
   sizeTip = new SizeTip( ( QWidget * )0L );
