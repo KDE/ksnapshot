@@ -68,7 +68,7 @@ void SizeTip::positionTip( const QRect &rect )
 }
 
 RegionGrabber::RegionGrabber()
-  : QWidget( 0, 0 ),
+  : QWidget( 0, 0, WStyle_Customize | WX11BypassWM ),
     mouseDown( false ), sizeTip( 0L )
 {
   sizeTip = new SizeTip( ( QWidget * )0L );
