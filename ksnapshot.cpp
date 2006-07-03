@@ -416,7 +416,9 @@ void KSnapshot::autoincFilename()
         // It has a number, increment it
         int len = numSearch.matchedLength();
 	QString numAsStr= name.mid(start, len);
-	name.replace(start, len, QString::number(numAsStr.toInt() + 1));
+	QString number = QString::number(numAsStr.toInt() + 1);
+	number = number.rightJustify( len, '0');
+	name.replace(start, len, number );
     }
     else {
         // no number
