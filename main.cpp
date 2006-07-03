@@ -5,7 +5,7 @@
 #include <kaboutdata.h>
 #include <kiconloader.h>
 #include "ksnapshotadaptor.h"
-#include <dbus/qdbus.h>
+#include <QtDBus>
 #include "ksnapshot.h"
 
 static const char description[] =

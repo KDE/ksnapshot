@@ -7,11 +7,13 @@ configure_file (config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksna
 
 ADD_DEFINITIONS(-DKSNAPVERSION=\"\\"0.7\\"\")
 
-set(ksnapshot_SRCS ksnapshotadaptor.cpp 
+set(ksnapshot_SRCS 
    main.cpp 
    ksnapshot.cpp 
    regiongrabber.cpp 
    windowgrabber.cpp )
+
+qt4_add_dbus_adaptors(ksnapshot_SRCS org.kde.ksnapshot.xml)
 
 kde4_automoc(${ksnapshot_SRCS})
 
