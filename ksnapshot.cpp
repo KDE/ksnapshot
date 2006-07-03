@@ -67,7 +67,7 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
   : KDialog(parent)
 {
     setModal( true );
-    enableButtonSeparator( true );
+    showButtonSeparator( true );
     setDefaultButton( User1 );
     setButtons(Help|User1);
     setButtonGuiItem( User1, KStdGuiItem::quit() );
