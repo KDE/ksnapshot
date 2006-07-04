@@ -13,7 +13,7 @@ set(ksnapshot_SRCS
    regiongrabber.cpp 
    windowgrabber.cpp )
 
-qt4_add_dbus_adaptors(ksnapshot_SRCS org.kde.ksnapshot.xml)
+qt4_add_dbus_adaptor(ksnapshot_SRCS org.kde.ksnapshot.xml ksnapshot.h KSnapshot)
 
 kde4_automoc(${ksnapshot_SRCS})
 

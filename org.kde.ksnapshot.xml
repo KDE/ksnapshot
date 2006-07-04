@@ -10,7 +10,7 @@
 		</method>
         <method name="save">
             <arg type="b" direction="out"/>
-			<arg name="filename" type="b" direction="in"/>
+			<arg name="filename" type="s" direction="in"/>
         </method>
 		<method name="slotSaveAs"/>
 		<method name="slotCopy"/>

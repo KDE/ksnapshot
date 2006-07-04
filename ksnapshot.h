@@ -71,7 +71,7 @@ public:
   bool save( const QString &filename );
   QString url() const { return filename.url(); }
 
-protected slots:
+public slots:
   void slotGrab();
   void slotSave();
   void slotSaveAs();
@@ -99,12 +99,13 @@ private slots:
     void slotRegionGrabbed( const QPixmap & );
     void slotWindowGrabbed( const QPixmap & );
 
+public:
+	int grabMode();
+	int timeout();
 private:
     bool save( const KUrl& url );
     void performGrab();
     void autoincFilename();
-    int grabMode();
-    int timeout();
 
     QPixmap snapshot;
     QTimer grabTimer;
