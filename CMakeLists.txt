@@ -28,7 +28,7 @@ install_targets(/bin ksnapshot )
 
 ########### install files ###############
 
-install_files( ${XDG_APPS_DIR} FILES ksnapshot.desktop )
+install( FILES ksnapshot.desktop  DESTINATION  ${XDG_APPS_DIR} )
 
 kde4_install_icons( ${ICON_INSTALL_DIR}  hicolor )
 
