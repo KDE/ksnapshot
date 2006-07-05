@@ -17,7 +17,7 @@
 <othername>J.</othername>
 <surname>Moore</surname>
 <affiliation>
-<address><email>rich@kde.org</email></address>
+<address>&Richard.J.Moore.mail;</address>
 </affiliation>
 </author>
 
@@ -26,7 +26,7 @@
 <othername>L.</othername>
 <surname>McCormick</surname>
 <affiliation>
-<address><email>c0029131@airmail.net</email></address>
+<address>&Robert.L.McCormick.mail;</address>
 </affiliation>
 </author>
 
@@ -34,7 +34,7 @@
 <firstname>Brad</firstname>
 <surname>Hards</surname>
 <affiliation>
-<address><email>bradh@frogmouth.net</email></address>
+<address>&Brad.Hards.mail;</address>
 </affiliation>
 </author>
 
@@ -42,7 +42,7 @@
 <firstname>Lauri</firstname>
 <surname>Watts</surname>
 <affiliation>
-<address><email>lauri@kde.org</email></address>
+<address>&Lauri.Watts.mail;</address>
 </affiliation>
 <contrib>Reviewer</contrib>
 </othercredit>
@@ -52,7 +52,7 @@
 <othername>J</othername>
 <surname>Moore</surname>
 <affiliation>
-<address><email>rich@kde.org</email></address>
+<address>&Richard.J.Moore.mail;</address>
 </affiliation>
 <contrib>Developer</contrib>
 </othercredit>
@@ -61,7 +61,7 @@
 <firstname>Matthias</firstname>
 <surname>Ettrich</surname>
 <affiliation>
-<address><email>ettrich@kde.org</email></address>
+<address>&Matthias.Ettrich.mail;</address>
 </affiliation>
 <contrib>Developer</contrib>
 </othercredit>
@@ -71,22 +71,22 @@
 
 <copyright>
 <year>1997-2000</year>
-<holder>Richard J. Moore</holder>
+<holder>&Richard.J.Moore;</holder>
 </copyright>
 
 <copyright>
 <year>2000</year>
-<holder>Matthias Ettrich</holder>
+<holder>&Matthias.Ettrich;</holder>
 </copyright>
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2005-04-01</date>
-<releaseinfo>1.02.02</releaseinfo>
+<date>2006-07-05</date>
+<releaseinfo>0.7</releaseinfo>
 
 <abstract>
 <para>&ksnapshot; is a simple applet for taking screenshots. It is capable
-of capturing images of the whole desktop, a single window or a selected
+of capturing images of the whole desktop, a single window, a section of a window or a selected
 region.  The images can then be saved in a variety of formats.</para>
 </abstract>
 
@@ -104,11 +104,11 @@ region.  The images can then be saved in a variety of formats.</para>
 <title>Introduction</title>
 
 <para>&ksnapshot; is a simple applet for taking screenshots. It is capable
-of capturing images of the whole desktop, a single window or a selected
+of capturing images of the whole desktop, a single window a section of a window or a selected
 region.  The images can then be saved in a variety of formats.</para>
 
 <para>Please report any problems or feature requests to the <ulink
-url="http://bugs.kde.org/wizard.cgi">KDE Bug Tracking System</ulink></para>
+url="http://bugs.kde.org/wizard.cgi">&kde; Bug Tracking System</ulink></para>
 
 </chapter>
 
@@ -126,9 +126,10 @@ below.</para>
 
 <itemizedlist>
 <listitem>
-<para>You may start &ksnapshot; by selecting it from the
-<guisubmenu>Graphics</guisubmenu> submenu of the
-panel.</para></listitem>
+<para>You may start &ksnapshot; by selecting it from the <menuchoice>
+<guimenu>K-Menu</guimenu><guisubmenu>Graphics</guisubmenu>
+<guimenuitem>&ksnapshot; (Screen Capture Program)</guimenuitem></menuchoice>.
+</para></listitem>
 <listitem>
 <para>You may start &ksnapshot; by entering the following at the command
 prompt:</para>
@@ -191,7 +192,7 @@ or a standard mouse cursor which you can use to work with a program until
 the delay is over and a snapshot is taken.</para>
 
 <para>With <guilabel>No delay</guilabel>, the snapshot is taken immediately when you
-click in a window.</para>
+click into a window.</para>
 
 <para>&ksnapshot; will display the new snapshot in the preview
 area, at which time you can choose to save the new image (by pressing
@@ -200,19 +201,26 @@ or to grab a new one, by pressing the
 <guibutton>New Snapshot</guibutton> button.</para>
 
 <para>To take a new snapshot of the entire desktop, select the
-<guilabel>Full Screen</guilabel> combo box entry (next to the 
-<guilabel>Capture mode:</guilabel> label), and then click on the 
+<guilabel>Full Screen</guilabel> combo box entry and then click on the 
 <guibutton>New Snapshot</guibutton> button.
 &ksnapshot; will now capture the entire desktop if you press
 <guibutton>New Snapshot</guibutton>.</para>
 
 <para>Similarly, to take a snapshot of a region, select the 
-<guilabel>Region</guilabel> combo box entry (next to the 
-<guilabel>Capture mode:</guilabel> label) and set the 
+<guilabel>Region</guilabel> combo box entry and set the 
 <guilabel>Snapshot delay</guilabel> to <guilabel>No delay</guilabel>,
 and then click on the <guibutton>New Snapshot</guibutton> button. The
 mouse cursor will then change into a cross, and you can then use the 
 mouse to select the region you want to capture. </para>
+
+<para>To take a new snapshot of a section of a window, select the
+<guilabel>Section of Window</guilabel> combo box entry and then click on the 
+<guibutton>New Snapshot</guibutton> button. With <guilabel>No delay</guilabel>
+you get a cross as the mouse pointer and you have to click once with the &LMB; into 
+the window. The section of the window under the mouse cursor is now highlighted 
+with a red border. Move the mouse to the wanted section and click the &LMB; 
+to capture the screenshot.
+</para>
 
 </sect1>
 
@@ -249,7 +257,14 @@ window decoration, disable this option and take a new snapshot.</para>
 <para>When you want to print your snapshot from the preview, just click
 <guibutton>Print...</guibutton> and you get the standard &kde; Print dialog, from
 where you can directly print your snapshot.</para>
+</sect2>
 
+<sect2 id="copy-snapshot">
+<title>Copy to Clipboard</title>
+
+<para>When you want to edit your snapshot in a graphics application without saving 
+the snapshot, just click <guibutton>Copy to Clipboard</guibutton> and insert the image 
+into a viewer or graphics application.</para>
 </sect2>
 
 
@@ -264,7 +279,8 @@ where you can directly print your snapshot.</para>
 <term><guibutton>Help</guibutton></term>
 <listitem><para>Gives you a menu where you can open the
 <guimenuitem>&ksnapshot; Handbook</guimenuitem>, report a bug or
-get some more information about &kde; and &ksnapshot;.
+get some more information <guimenuitem>About &ksnapshot;</guimenuitem>
+and <guimenuitem>About &kde;</guimenuitem>.
 </para></listitem>
 </varlistentry>
 
@@ -286,7 +302,7 @@ get some more information about &kde; and &ksnapshot;.
 chapter explains the various &DCOP; calls that you can use, and 
 provides some examples of how you can use them.</para>
 
-<para>As with all DCOP calls, you need to specify the application
+<para>As with all &DCOP; calls, you need to specify the application
 you want to interface with, and the particular interface. With &ksnapshot;
 you need to identify which particular application, which is
 <literal>ksnapshot-</literal> followed by the process number.</para>
@@ -330,7 +346,7 @@ In the examples following, the process is always
 <title>&DCOP; Access to Settings</title>
 
 <para>For each of the settings that you can control with the
-GUI, you can both obtain the current status of that setting,
+&GUI;, you can both obtain the current status of that setting,
 and modify the setting, using &DCOP;.
 </para>
 
@@ -374,7 +390,7 @@ set a delay of 4 seconds using:
 <screen width="60">
 <prompt>$</prompt><command>dcop ksnapshot-23151 interface url</command>
 </screen>
-This will return the filename, as a URL (eg as 
+This will return the filename, as a &URL; (eg as 
 <computeroutput>file:///home/bradh/test2.png</computeroutput>).
 </para>
 
@@ -420,7 +436,7 @@ save dialog.</para>
 <para>
 If you want to save the image to a different name (or path) without
 changing the path with <literal>setURL</literal>, you can use
-<literal>save</literal>, providing the URL to save to as an argument. So if you
+<literal>save</literal>, providing the &URL; to save to as an argument. So if you
 want to save the snapshot to <filename>file:///tmp/tempshot.png</filename>, you
 can do the following:
 <screen width="60">
@@ -491,12 +507,12 @@ as shown below.
 
 <para>Program copyright</para>
 <itemizedlist>
-<listitem><para>1997-2000 Richard J. Moore <email>rich@kde.org</email></para></listitem>
-<listitem><para>2000 Matthias Ettrich <email>ettrich@kde.org</email></para></listitem>
+<listitem><para>1997-2000 &Richard.J.Moore; &Richard.J.Moore.mail;</para></listitem>
+<listitem><para>2000 &Matthias.Ettrich; &Matthias.Ettrich.mail;</para></listitem>
 </itemizedlist>
 
-<para>Documentation based on the original, copyright 1997-2000 Richard
-J. Moore <email>rich@kde.org</email></para>
+<para>Documentation based on the original, copyright 1997-2000 &Richard.J.Moore;
+&Richard.J.Moore.mail;</para>
 <!-- TRANS:CREDIT_FOR_TRANSLATORS -->
 
 &underFDL;
