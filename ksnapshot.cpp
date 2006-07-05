@@ -242,7 +242,7 @@ void KSnapshot::slotSaveAs()
     if ( !dlg.exec() )
         return;
 
-    KUrl url = dlg.selectedURL();
+    KUrl url = dlg.selectedUrl();
     if ( !url.isValid() )
         return;
 
