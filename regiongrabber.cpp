@@ -19,19 +19,9 @@
 
 #include "regiongrabber.h"
 
-#include <qapplication.h>
-#include <qpainter.h>
-#include <qpalette.h>
-#include <qstyle.h>
-#include <qtimer.h>
-#include <qtooltip.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QMouseEvent>
-#include <QLabel>
-#include <QFrame>
-#include <QKeyEvent>
-
+#include <QApplication>
+#include <QTimer>
+#include <QToolTip>
 #include <QX11Info>
 #include <QRubberBand>
 

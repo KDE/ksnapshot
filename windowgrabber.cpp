@@ -17,19 +17,16 @@
   Boston, MA 02110-1301, USA.
 */
 
-#include "windowgrabber.h"
-#include <qbitmap.h>
-#include <qpainter.h>
-//Added by qt3to4:
+#include <algorithm>
+#include <config.h>
+
+#include <QBitmap>
+#include <QPainter>
 #include <QPixmap>
 #include <QMouseEvent>
-#include <QVector>
 #include <QWheelEvent>
-#include <algorithm>
 
-#include <kdebug.h>
-
-#include <config.h>
+#include "windowgrabber.h"
 
 #include <config-ksnapshot.h>
 #ifdef HAVE_X11_EXTENSIONS_SHAPE_H

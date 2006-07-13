@@ -10,43 +10,26 @@
  * Released under the LGPL see file LICENSE for details.
  */
 
+#include <QClipboard>
+#include <QPainter>
+
 #include <klocale.h>
 #include <kimageio.h>
 #include <kfiledialog.h>
 #include <kimagefilepreview.h>
 #include <kmessagebox.h>
-#include <kdebug.h>
 #include <kapplication.h>
 #include <kprinter.h>
 #include <kio/netaccess.h>
 #include <ksavefile.h>
 #include <ktempfile.h>
-
-#include <qbitmap.h>
-#include <qimage.h>
-#include <qclipboard.h>
-#include <kstdaccel.h>
-#include <QImageWriter>
-#include <QPixmap>
-#include <QCloseEvent>
-#include <QEvent>
-#include <QResizeEvent>
-#include <QMouseEvent>
-
-
 #include <knotification.h>
 #include <khelpmenu.h>
 #include <kmenu.h>
-#include <kpushbutton.h>
 #include <kstartupinfo.h>
 #include <kvbox.h>
 #include <kinstance.h>
-
-#include <qcursor.h>
-#include <qregexp.h>
-#include <qpainter.h>
-
-#include <stdlib.h>
+#include <kglobal.h>
 
 #include "ksnapshot.h"
 #include "ksnapshotwidget.h"
@@ -55,13 +38,6 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
-
-#include <config.h>
-
-#include <kglobal.h>
-#include <QX11Info>
-
-#define kApp KApplication::kApplication()
 
 KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
   : KDialog(parent)
@@ -83,8 +59,7 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
 
     mainWidget = new KSnapshotWidget( vbox, "mainWidget" );
 
-    connect(mainWidget, SIGNAL(startImageDrag()), SLOT(slotDragSnapshot()));
-
+    connect( mainWidget, SIGNAL( startImageDrag() ), SLOT( slotDragSnapshot() ) );
     connect( mainWidget, SIGNAL( newClicked() ), SLOT( slotGrab() ) );
     connect( mainWidget, SIGNAL( saveClicked() ), SLOT( slotSaveAs() ) );
     connect( mainWidget, SIGNAL( printClicked() ), SLOT( slotPrint() ) );
@@ -109,7 +84,7 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
     mainWidget->setDelay( conf->readEntry("delay", 0) );
     mainWidget->setMode( conf->readEntry("mode", 0) );
     mainWidget->setIncludeDecorations(conf->readEntry("includeDecorations",true));
-    filename = KUrl::fromPathOrUrl( conf->readPathEntry( "filename", QDir::currentPath()+"/"+i18n("snapshot")+"1.png" ));
+    filename = KUrl( conf->readPathEntry( "filename", QDir::currentPath()+"/"+i18n("snapshot")+"1.png" ));
 
     // Make sure the name is not already being used
     while(KIO::NetAccess::exists( filename, false, this )) {
@@ -121,11 +96,7 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
     QTimer::singleShot( 0, this, SLOT( updateCaption() ) );
 
     KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
-#warning "kde4 port it
-#if 0
-    QPushButton *helpButton = actionButton( Help );
-    helpButton->setMenu(helpMenu->menu());
-#endif
+    setButtonMenu( Help, helpMenu->menu() );
 #warning Porting needed
 #if 0
     KAccel* accel = new KAccel(this);
@@ -157,6 +128,8 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
 
 KSnapshot::~KSnapshot()
 {
+    delete grabber;
+    delete mainWidget;
 }
 
 void KSnapshot::resizeEvent( QResizeEvent * )
@@ -167,7 +140,7 @@ void KSnapshot::resizeEvent( QResizeEvent * )
 
 bool KSnapshot::save( const QString &filename )
 {
-    return save( KUrl::fromPathOrUrl( filename ));
+    return save( KUrl( filename ));
 }
 
 bool KSnapshot::save( const KUrl& url )
@@ -493,7 +466,7 @@ int KSnapshot::timeout()
 
 void KSnapshot::setURL( const QString &url )
 {
-    KUrl newURL = KUrl::fromPathOrUrl( url );
+    KUrl newURL = KUrl( url );
     if ( newURL == filename )
 	return;
 
@@ -528,4 +501,5 @@ void KSnapshot::exit()
 {
     reject();
 }
+
 #include "ksnapshot.moc"

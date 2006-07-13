@@ -20,14 +20,8 @@
 #ifndef WINDOWGRABBER_H
 #define WINDOWGRABBER_H
 
-#include <qdialog.h>
-#include <qpixmap.h>
-//Added by qt3to4:
-#include <QMouseEvent>
-#include <QWheelEvent>
+#include <QDialog>
 #include <vector>
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
 
 class WindowGrabber : public QDialog
 {
@@ -57,6 +51,5 @@ private:
     int current;
     int yPos;
 };
-
 
 #endif // WINDOWGRABBER_H

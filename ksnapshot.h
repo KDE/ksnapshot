@@ -3,14 +3,10 @@
 #ifndef KSNAPSHOT_H
 #define KSNAPSHOT_H
 
-#include <qlabel.h>
-#include <qpixmap.h>
-#include <qtimer.h>
-//Added by qt3to4:
+#include <QLabel>
+#include <QTimer>
 #include <QMouseEvent>
-#include <QResizeEvent>
-#include <QEvent>
-#include <QCloseEvent>
+#include <QPixmap>
 
 #include <kglobalsettings.h>
 #include <kdialog.h>
@@ -118,4 +114,3 @@ private:
 };
 
 #endif // KSNAPSHOT_H
-
