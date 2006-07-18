@@ -12,6 +12,7 @@
 
 #include <QClipboard>
 #include <QPainter>
+#include <QShortcut>
 
 #include <klocale.h>
 #include <kimageio.h>
@@ -22,6 +23,7 @@
 #include <kprinter.h>
 #include <kio/netaccess.h>
 #include <ksavefile.h>
+#include <kstdaccel.h>
 #include <ktempfile.h>
 #include <knotification.h>
 #include <khelpmenu.h>
@@ -97,28 +99,30 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
 
     KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
     setButtonMenu( Help, helpMenu->menu() );
-#warning Porting needed
 #if 0
-    KAccel* accel = new KAccel(this);
-    accel->insert(KStdAccel::Quit, kapp, SLOT(quit()));
     accel->insert( "QuickSave", i18n("Quick Save Snapshot &As..."),
 		   i18n("Save the snapshot to the file specified by the user without showing the file dialog."),
 		   Qt::CTRL+Qt::SHIFT+Qt::Key_S, this, SLOT(slotSave()));
-    accel->insert(KStdAccel::Save, this, SLOT(slotSaveAs()));
-//    accel->insert(KShortcut(CTRL+Key_A), this, SLOT(slotSaveAs()));
     accel->insert( "SaveAs", i18n("Save Snapshot &As..."),
 		   i18n("Save the snapshot to the file specified by the user."),
 		   Qt::CTRL+Qt::Key_A, this, SLOT(slotSaveAs()));
-    accel->insert(KStdAccel::Print, this, SLOT(slotPrint()));
-    accel->insert(KStdAccel::New, this, SLOT(slotGrab()));
-    accel->insert(KStdAccel::Copy, this, SLOT(slotCopy()));
 
-    accel->insert( "Quit2", Qt::Key_Q, this, SLOT(slotSave()));
-    accel->insert( "Save2", Qt::Key_S, this, SLOT(slotSaveAs()));
-    accel->insert( "Print2", Qt::Key_P, this, SLOT(slotPrint()));
-    accel->insert( "New2", Qt::Key_N, this, SLOT(slotGrab()));
-    accel->insert( "New3", Qt::Key_Space, this, SLOT(slotGrab()));
 #endif
+    new QShortcut( KStdAccel::shortcut( KStdAccel::Quit ), this, SLOT(reject()));
+
+    new QShortcut( Qt::Key_Q, this, SLOT(slotSave()));
+
+    new QShortcut( KStdAccel::shortcut( KStdAccel::Copy ), mainWidget->btnCopy, SLOT(animateClick()));
+
+    new QShortcut( KStdAccel::shortcut( KStdAccel::Save ), mainWidget->btnSave, SLOT(animateClick()));
+    new QShortcut( Qt::Key_S, mainWidget->btnSave, SLOT(animateClick()));
+
+    new QShortcut( KStdAccel::shortcut( KStdAccel::Print ), mainWidget->btnPrint, SLOT(animateClick()));
+    new QShortcut( Qt::Key_P, mainWidget->btnPrint, SLOT(animateClick()));
+
+    new QShortcut( KStdAccel::shortcut( KStdAccel::New ), mainWidget->btnNew, SLOT(animateClick()) );
+    new QShortcut( Qt::Key_N, mainWidget->btnNew, SLOT(animateClick()) );
+    new QShortcut( Qt::Key_Space, mainWidget->btnNew, SLOT(animateClick()) );
 
     setEscapeButton( User1 );
     connect( this, SIGNAL( user1Clicked() ), SLOT( reject() ) );
@@ -390,7 +394,7 @@ void KSnapshot::autoincFilename()
         int len = numSearch.matchedLength();
 	QString numAsStr= name.mid(start, len);
 	QString number = QString::number(numAsStr.toInt() + 1);
-	number = number.rightJustify( len, '0');
+	number = number.rightJustified( len, '0');
 	name.replace(start, len, number );
     }
     else {

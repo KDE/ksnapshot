@@ -33,7 +33,8 @@ class KSnapshotPreview : public QLabel
     protected:
         void mousePressEvent(QMouseEvent * e)
         {
-            mClickPt = e->pos();
+            if ( e->button() == Qt::LeftButton )
+                mClickPt = e->pos();
         }
 
         void mouseMoveEvent(QMouseEvent * e)
