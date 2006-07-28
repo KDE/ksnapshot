@@ -191,10 +191,10 @@ QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border )
 }
 
 WindowGrabber::WindowGrabber()
-: QDialog( 0, Qt::WShowModal | Qt::WStyle_Customize | Qt::WStyle_NoBorder |
-              Qt::WStyle_StaysOnTop | Qt::WX11BypassWM ),
+: QDialog( 0, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint ),
   current( -1 ), yPos( -1 )
 {
+    setWindowModality( Qt::WindowModal );
     Window root;
     int y, x;
     uint w, h, border, depth;
