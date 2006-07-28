@@ -86,7 +86,7 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
     mainWidget->setDelay( conf->readEntry("delay", 0) );
     mainWidget->setMode( conf->readEntry("mode", 0) );
     mainWidget->setIncludeDecorations(conf->readEntry("includeDecorations",true));
-    filename = KUrl( conf->readPathEntry( "filename", QDir::currentPath()+"/"+i18n("snapshot")+"1.png" ));
+    filename = KUrl( conf->readPathEntry( "filename", QDir::currentPath()+'/'+i18n("snapshot")+"1.png" ));
 
     // Make sure the name is not already being used
     while(KIO::NetAccess::exists( filename, false, this )) {

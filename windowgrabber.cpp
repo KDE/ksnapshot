@@ -313,7 +313,7 @@ void WindowGrabber::increaseScope( const QPoint &pos )
     repaint();
 }
 
-// Decreases the scope to the next-smaller window containing the mosue pointer.
+// Decreases the scope to the next-smaller window containing the mouse pointer.
 // This method is activated by either rotating the mouse wheel backwards or by
 // dragging the mouse backwards while keeping the right mouse button pressed.
 void WindowGrabber::decreaseScope( const QPoint &pos )
