@@ -26,4 +26,4 @@ install(TARGETS ksnapshot DESTINATION ${BIN_INSTALL_DIR})
 
 install(FILES ksnapshot.desktop DESTINATION ${XDG_APPS_DIR})
 
-kde4_install_icons(${ICON_INSTALL_DIR} hicolor)
+kde4_install_icons(${ICON_INSTALL_DIR} )
