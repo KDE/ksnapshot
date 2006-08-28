@@ -4,8 +4,12 @@
 #define KSNAPSHOT_H
 #include "ksnapshotiface.h"
 
+#include <qbitmap.h>
+#include <qcursor.h>
 #include <qlabel.h>
+#include <qpainter.h>
 #include <qpixmap.h>
+#include <qstyle.h>
 #include <qtimer.h>
 
 #include <dcopclient.h>
@@ -25,8 +29,37 @@ class KSnapshotPreview : public QLabel
             : QLabel(parent, name)
         {
             setAlignment(AlignHCenter | AlignVCenter);
+            setCursor(QCursor(Qt::PointingHandCursor));
         }
         virtual ~KSnapshotPreview() {}
+
+        void setPixmap(const QPixmap& pm)
+        {
+            // if this looks convoluted, that's because it is. drawing a PE_SizeGrip
+            // does unexpected things when painting directly onto the pixmap
+            QPixmap pixmap(pm);
+            QPixmap handle(15, 15);
+            QBitmap mask(15, 15, true);
+
+            {
+                QPainter p(&mask);
+                style().drawPrimitive(QStyle::PE_SizeGrip, &p, QRect(0, 0, 15, 15), palette().active());
+                p.end();
+                handle.setMask(mask);
+            }
+
+            {
+                QPainter p(&handle);
+                style().drawPrimitive(QStyle::PE_SizeGrip, &p, QRect(0, 0, 15, 15), palette().active());
+                p.end();
+            }
+
+            QRect rect(pixmap.width() - 16, pixmap.height() - 16, 15, 15);
+            QPainter p(&pixmap);
+            p.drawPixmap(rect, handle);
+            p.end();
+            QLabel::setPixmap(pixmap);
+        }
 
     signals:
         void startDrag();
