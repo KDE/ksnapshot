@@ -182,7 +182,7 @@ bool KSnapshot::save( const KUrl& url )
     }
 
     QByteArray type = "PNG";
-    QString mime = KMimeType::findByURL( url.fileName(), 0, url.isLocalFile(), true )->name();
+    QString mime = KMimeType::findByUrl( url.fileName(), 0, url.isLocalFile(), true )->name();
     QStringList types = KImageIO::typeForMime(mime);
     if ( !types.isEmpty() )
         type = types.first().toLatin1();
