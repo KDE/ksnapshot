@@ -18,7 +18,10 @@
 #ifndef KSNAPSHOT_H
 #define KSNAPSHOT_H
 
+#include <QBitmap>
 #include <QLabel>
+#include <QPainter>
+#include <QStyleOption>
 #include <QTimer>
 #include <QMouseEvent>
 #include <QPixmap>
@@ -30,6 +33,7 @@
 class RegionGrabber;
 class KSnapshotWidget;
 
+#include "kdebug.h"
 class KSnapshotPreview : public QLabel
 {
     Q_OBJECT
@@ -39,8 +43,41 @@ class KSnapshotPreview : public QLabel
             : QLabel(parent)
         {
             setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+            setCursor(Qt::OpenHandCursor);
         }
         virtual ~KSnapshotPreview() {}
+
+        void setPreview(QPixmap pixmap)
+        {
+            // if this looks convoluted, that's because it is. drawing a PE_SizeGrip
+            // does unexpected things when painting directly onto the pixmap
+            QPixmap handle(15, 15);
+            QBitmap mask(15, 15);
+            mask.clear();
+            QStyleOption o;
+            o.rect = QRect(0, 0, 15, 15);
+
+            {
+                QPainter p(&mask);
+                style()->drawControl(QStyle::CE_SizeGrip, &o, &p);
+                p.end();
+                handle.setMask(mask);
+            }
+
+            {
+                QPainter p(&handle);
+                style()->drawControl(QStyle::CE_SizeGrip, &o, &p);
+                p.end();
+            }
+
+            o.rect = QRect(pixmap.width() - 16, pixmap.height() - 16, 15, 15);
+            QPainter p(&pixmap);
+            p.drawPixmap(o.rect, handle);
+            p.end();
+
+            // hooray for making things like setPixmap not virtual! *sigh*
+            setPixmap(pixmap);
+        }
 
     signals:
         void startDrag();

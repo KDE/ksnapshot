@@ -556,7 +556,7 @@ void KSnapshot::setPreview( const QPixmap &pm )
         i18n( "Preview of the snapshot image (%1 x %2)" ,
           pm.width(), pm.height() ) );
 
-    mainWidget->lblImage->setPixmap( pmScaled );
+    mainWidget->lblImage->setPreview( pmScaled );
     mainWidget->lblImage->adjustSize();
 }
 
