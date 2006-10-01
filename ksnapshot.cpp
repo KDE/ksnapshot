@@ -36,7 +36,7 @@
 #include <kio/netaccess.h>
 #include <ksavefile.h>
 #include <kstdaccel.h>
-#include <ktempfile.h>
+#include <ktemporaryfile.h>
 #include <knotification.h>
 #include <khelpmenu.h>
 #include <kmenu.h>
@@ -197,12 +197,10 @@ bool KSnapshot::save( const KUrl& url )
         }
     }
     else {
-    KTempFile tmpFile;
-        tmpFile.setAutoDelete( true );
-        if ( tmpFile.status() == 0 ) {
-            if ( snapshot.save( tmpFile.file(), type ) ) {
-                if ( tmpFile.close() )
-                    ok = KIO::NetAccess::upload( tmpFile.name(), url, this );
+        KTemporaryFile tmpFile;
+        if ( tmpFile.open() ) {
+            if ( snapshot.save( &tmpFile, type ) ) {
+                ok = KIO::NetAccess::upload( tmpFile.fileName(), url, this );
             }
         }
     }
