@@ -32,7 +32,6 @@
 #include <kimagefilepreview.h>
 #include <kmessagebox.h>
 #include <kapplication.h>
-#include <kprinter.h>
 #include <kio/netaccess.h>
 #include <ksavefile.h>
 #include <kstdaccel.h>
@@ -44,11 +43,14 @@
 #include <kvbox.h>
 #include <kinstance.h>
 #include <kglobal.h>
+#include <kstandarddirs.h>
 
 #include "ksnapshot.h"
 #include "regiongrabber.h"
 #include "windowgrabber.h"
 #include "ui_ksnapshotwidget.h"
+#include "openwith.h"
+
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -86,8 +88,8 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
     connect( mainWidget->lblImage, SIGNAL( startDrag() ), SLOT( slotDragSnapshot() ) );
     connect( mainWidget->btnNew, SIGNAL( clicked() ), SLOT( slotGrab() ) );
     connect( mainWidget->btnSave, SIGNAL( clicked() ), SLOT( slotSaveAs() ) );
-    connect( mainWidget->btnPrint, SIGNAL( clicked() ), SLOT( slotPrint() ) );
     connect( mainWidget->btnCopy, SIGNAL( clicked() ), SLOT( slotCopy() ) );
+    connect( mainWidget->btnOpen, SIGNAL( clicked() ), SLOT( slotOpen() ) );
     connect( mainWidget->comboMode, SIGNAL( activated(int) ), SLOT( slotModeChanged(int) ) );
 
     grabber->show();
@@ -140,9 +142,6 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
     new QShortcut( KStdAccel::shortcut( KStdAccel::Save ), mainWidget->btnSave, SLOT(animateClick()));
     new QShortcut( Qt::Key_S, mainWidget->btnSave, SLOT(animateClick()));
 
-    new QShortcut( KStdAccel::shortcut( KStdAccel::Print ), mainWidget->btnPrint, SLOT(animateClick()));
-    new QShortcut( Qt::Key_P, mainWidget->btnPrint, SLOT(animateClick()));
-
     new QShortcut( KStdAccel::shortcut( KStdAccel::New ), mainWidget->btnNew, SLOT(animateClick()) );
     new QShortcut( Qt::Key_N, mainWidget->btnNew, SLOT(animateClick()) );
     new QShortcut( Qt::Key_Space, mainWidget->btnNew, SLOT(animateClick()) );
@@ -180,7 +179,11 @@ bool KSnapshot::save( const KUrl& url )
             return false;
         }
     }
+    return saveEqual( url );
+}
 
+bool KSnapshot::saveEqual( const KUrl& url )
+{
     QByteArray type = "PNG";
     QString mime = KMimeType::findByUrl( url.fileName(), 0, url.isLocalFile(), true )->name();
     QStringList types = KImageIO::typeForMime(mime);
@@ -287,62 +290,14 @@ void KSnapshot::slotGrab()
     }
 }
 
-void KSnapshot::slotPrint()
+void KSnapshot::slotOpen()
 {
-    KPrinter printer;
-    if (snapshot.width() > snapshot.height())
-        printer.setOrientation(KPrinter::Landscape);
-    else
-        printer.setOrientation(KPrinter::Portrait);
+    QString fileopen = KStandardDirs::locateLocal("tmp", filename.fileName());
 
-    qApp->processEvents();
-
-    if (printer.setup(this, i18n("Print Screenshot")))
-    {
-        qApp->processEvents();
-
-        QPainter painter(&printer);
-
-        float w = snapshot.width();
-        float dw = w - printer.width();
-        float h = snapshot.height();
-        float dh = h - printer.height();
-        bool scale = false;
-
-        if ( (dw > 0.0) || (dh > 0.0) )
-            scale = true;
-
-        if ( scale ) {
-
-            QImage img = snapshot.toImage();
-            qApp->processEvents();
-
-            float newh, neww;
-            if ( dw > dh ) {
-                neww = w-dw;
-                newh = neww/w*h;
-            }
-            else {
-                newh = h-dh;
-                neww = newh/h*w;
-            }
-
-            img = img.scaled( int(neww), int(newh), Qt::KeepAspectRatio, Qt::SmoothTransformation );
-            qApp->processEvents();
-
-            int x = (printer.width()-img.width())/2;
-            int y = (printer.height()-img.height())/2;
-
-            painter.drawImage( x, y, img);
-        }
-        else {
-            int x = (printer.width()-snapshot.width())/2;
-            int y = (printer.height()-snapshot.height())/2;
-            painter.drawPixmap( x, y, snapshot );
-        }
-    }
-
-    qApp->processEvents();
+    if(!saveEqual(fileopen))
+        return;
+    OpenWith* ow = new OpenWith(QString("image/png"), fileopen, this);
+    ow->exec();
 }
 
 void KSnapshot::slotRegionGrabbed( const QPixmap &pix )

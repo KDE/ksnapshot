@@ -125,10 +125,10 @@ public slots:
     void slotSave();
     void slotSaveAs();
     void slotCopy();
-    void slotPrint();
+    void slotOpen();
     void slotMovePointer( int x, int y );
-    void setTime(int newTime);
-    void setURL(const QString &newURL);
+    void setTime( int newTime );
+    void setURL( const QString &newURL );
     void setGrabMode( int m );
     void exit();
 
@@ -163,6 +163,7 @@ public:
 
 private:
     bool save( const KUrl& url );
+    bool saveEqual( const KUrl& url );
     void performGrab();
     void autoincFilename();
     QPixmap snapshot;

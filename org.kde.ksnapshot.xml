@@ -3,8 +3,8 @@
 <node>
 	<interface name="org.kde.ksnapshot">
 			<method name="slotGrab"/>
-			<method name="slotPrint"/>
 			<method name="slotSave"/>
+                        <method name="slotOpen"/>
 		<method name="url">
 			<arg type="s" direction="out"/>
 		</method>

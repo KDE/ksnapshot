@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>356</width>
-    <height>226</height>
+    <width>411</width>
+    <height>304</height>
    </rect>
   </property>
   <layout class="QGridLayout" >
@@ -17,7 +17,7 @@
     <number>6</number>
    </property>
    <item row="0" column="0" colspan="3" >
-    <widget class="KSnapshotPreview" name="lblImage" >
+    <widget class="KSnapshotPreview" native="1" name="lblImage" >
      <property name="minimumSize" >
       <size>
        <width>200</width>
@@ -181,8 +181,8 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
        </property>
        <property name="sizeHint" >
         <size>
-         <width>16</width>
-         <height>16</height>
+         <width>140</width>
+         <height>44</height>
         </size>
        </property>
       </spacer>
@@ -201,6 +201,19 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
       </widget>
      </item>
      <item>
+      <widget class="KPushButton" name="btnOpen" >
+       <property name="whatsThis" >
+        <string>Click this button to open the snapshot with an other application</string>
+       </property>
+       <property name="text" >
+        <string>&amp;Open With...</string>
+       </property>
+       <property name="icon" >
+        <iconset/>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="KPushButton" name="btnCopy" >
        <property name="whatsThis" >
         <string>Click this button to copy the current snapshot to the clipboard.</string>
@@ -213,19 +226,6 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="KPushButton" name="btnPrint" >
-       <property name="whatsThis" >
-        <string>Click this button to print the current screenshot.</string>
-       </property>
-       <property name="text" >
-        <string>&amp;Print...</string>
-       </property>
-       <property name="icon" >
-        <iconset>fileprint</iconset>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
   </layout>
@@ -235,21 +235,21 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
  <pixmapfunction>SmallIconSet</pixmapfunction>
  <customwidgets>
   <customwidget>
-   <class>KSnapshotPreview</class>
-   <extends>QWidget</extends>
-   <header>ksnapshot.h</header>
-  </customwidget>
-  <customwidget>
    <class>KPushButton</class>
    <extends>QPushButton</extends>
    <header>kpushbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KSnapshotPreview</class>
+   <extends>QWidget</extends>
+   <header>ksnapshot.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>btnNew</tabstop>
   <tabstop>btnSave</tabstop>
+  <tabstop>btnOpen</tabstop>
   <tabstop>btnCopy</tabstop>
-  <tabstop>btnPrint</tabstop>
   <tabstop>comboMode</tabstop>
   <tabstop>spinDelay</tabstop>
   <tabstop>cbIncludeDecorations</tabstop>

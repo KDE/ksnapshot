@@ -48,6 +48,8 @@ int main(int argc, char **argv)
   aboutData.addAuthor("Aaron J. Seigo", 0, "aseigo@kde.org");
   aboutData.addCredit( "Nadeem Hasan", I18N_NOOP("Region Grabbing\nReworked GUI"),
       "nhasan@kde.org" );
+  aboutData.addCredit( "Marcus Hufgard", I18N_NOOP("\"Open With\" function"),
+      "Marcus.Hufgard@hufgard.de" );
 
   KCmdLineArgs::init( argc, argv, &aboutData );
   KCmdLineArgs::addCmdLineOptions( options ); // Add our own options.
