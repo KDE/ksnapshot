@@ -209,7 +209,7 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
         <string>&amp;Open With...</string>
        </property>
        <property name="icon" >
-        <iconset/>
+        <iconset>project_open</iconset>
        </property>
       </widget>
      </item>

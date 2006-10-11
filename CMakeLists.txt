@@ -19,7 +19,7 @@ kde4_add_ui_files(ksnapshot_SRCS ksnapshotwidget.ui)
 
 kde4_add_executable(ksnapshot ${ksnapshot_SRCS})
 
-target_link_libraries(ksnapshot ${KDE4_KDECORE_LIBS})
+target_link_libraries(ksnapshot ${KDE4_KDECORE_LIBS}  ${KDE4_KDEPRINT_LIBS})
 
 install(TARGETS ksnapshot DESTINATION ${BIN_INSTALL_DIR})
 
