@@ -13,7 +13,7 @@ set(ksnapshot_SRCS
 
 qt4_add_dbus_adaptor(ksnapshot_SRCS org.kde.ksnapshot.xml ksnapshot.h KSnapshot)
 
-kde4_automoc(${ksnapshot_SRCS})
+kde4_automoc(ksnapshot ${ksnapshot_SRCS})
 
 kde4_add_ui_files(ksnapshot_SRCS ksnapshotwidget.ui)
 
