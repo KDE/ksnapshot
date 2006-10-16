@@ -194,9 +194,9 @@ bool KSnapshot::saveEqual( const KUrl& url )
 
     if ( url.isLocalFile() ) {
         KSaveFile saveFile( url.path() );
-        if ( saveFile.status() == 0 ) {
-            if ( snapshot.save( saveFile.file(), type ) )
-                ok = saveFile.close();
+        if ( saveFile.open() ) {
+            if ( snapshot.save( &saveFile, type ) )
+                ok = saveFile.finalize();
         }
     }
     else {
