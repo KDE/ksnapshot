@@ -25,9 +25,14 @@
 #include <QClipboard>
 #include <QPainter>
 #include <QShortcut>
+#include <QMenu>
 
 #include <klocale.h>
+
+#include <kglobal.h>
+#include <kicon.h>
 #include <kimageio.h>
+#include <kinstance.h>
 #include <kfiledialog.h>
 #include <kimagefilepreview.h>
 #include <kmessagebox.h>
@@ -39,17 +44,17 @@
 #include <knotification.h>
 #include <khelpmenu.h>
 #include <kmenu.h>
+#include <kmimetypetrader.h>
+#include <kopenwith.h>
+#include <krun.h>
+#include <kstandarddirs.h>
 #include <kstartupinfo.h>
 #include <kvbox.h>
-#include <kinstance.h>
-#include <kglobal.h>
-#include <kstandarddirs.h>
 
 #include "ksnapshot.h"
 #include "regiongrabber.h"
 #include "windowgrabber.h"
 #include "ui_ksnapshotwidget.h"
-#include "openwith.h"
 
 
 #include <X11/Xlib.h>
@@ -89,8 +94,15 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
     connect( mainWidget->btnNew, SIGNAL( clicked() ), SLOT( slotGrab() ) );
     connect( mainWidget->btnSave, SIGNAL( clicked() ), SLOT( slotSaveAs() ) );
     connect( mainWidget->btnCopy, SIGNAL( clicked() ), SLOT( slotCopy() ) );
-    connect( mainWidget->btnOpen, SIGNAL( clicked() ), SLOT( slotOpen() ) );
+//    connect( mainWidget->btnOpen, SIGNAL( clicked() ), SLOT( slotOpen() ) );
     connect( mainWidget->comboMode, SIGNAL( activated(int) ), SLOT( slotModeChanged(int) ) );
+
+    openMenu = new QMenu(this);
+    mainWidget->btnOpen->setMenu(openMenu);
+    connect(openMenu, SIGNAL(aboutToShow()),
+            this, SLOT(slotPopulateOpenMenu()));
+    connect(openMenu, SIGNAL(triggered(QAction*)),
+            this, SLOT(slotOpen(QAction*)));
 
     grabber->show();
     grabber->grabMouse( Qt::WaitCursor );
@@ -290,14 +302,92 @@ void KSnapshot::slotGrab()
     }
 }
 
-void KSnapshot::slotOpen()
+void KSnapshot::slotOpen(const QString& application)
 {
     QString fileopen = KStandardDirs::locateLocal("tmp", filename.fileName());
 
-    if(!saveEqual(fileopen))
+    if (!saveEqual(fileopen))
+    {
         return;
-    OpenWith* ow = new OpenWith(QString("image/png"), fileopen, this);
-    ow->exec();
+    }
+
+    KUrl::List list;
+    list.append(fileopen);
+    KRun::run(application, list);
+}
+
+void KSnapshot::slotOpen(QAction* action)
+{
+    KSnapshotServiceAction* serviceAction =
+                                  qobject_cast<KSnapshotServiceAction*>(action);
+
+    if (!serviceAction)
+    {
+        return;
+    }
+
+    KService::Ptr service = serviceAction->service;
+    QString fileopen = KStandardDirs::locateLocal("tmp", filename.fileName());
+
+    if (!saveEqual(fileopen))
+    {
+        return;
+    }
+
+    KUrl::List list;
+    list.append(fileopen);
+
+    if (!service)
+    {
+        KOpenWithDlg dlg(list, this);
+        if (!dlg.exec())
+        {
+            return;
+        }
+
+        service = dlg.service();
+
+        if (!service && !dlg.text().isEmpty())
+        {
+             KRun::run(dlg.text(), list);
+             return;
+        }
+    }
+
+    // we have an action with a service, run it!
+    KRun::run(*service, list, this, true);
+}
+
+void KSnapshot::slotPopulateOpenMenu()
+{
+    QList<QAction*> currentActions = openMenu->actions();
+    foreach (QAction* currentAction, currentActions)
+    {
+        openMenu->removeAction(currentAction);
+        currentAction->deleteLater();
+    }
+
+    KService::List services = KMimeTypeTrader::self()->query( "image/png");
+    QMap<QString, KService::Ptr> apps;
+
+    foreach (const KService::Ptr service, services)
+    {
+        apps.insert(service->name(), service);
+    }
+
+    foreach (const KService::Ptr service, apps)
+    {
+        QString name = service->name().replace( "&", "&&" );
+        openMenu->addAction(new KSnapshotServiceAction(service,
+                                                       KIcon(service->icon()),
+                                                       name, this));
+    }
+
+    openMenu->addSeparator();
+    KService::Ptr none;
+    openMenu->addAction(new KSnapshotServiceAction(none,
+                                                   i18n("Other Application..."),
+                                                   this));
 }
 
 void KSnapshot::slotRegionGrabbed( const QPixmap &pix )

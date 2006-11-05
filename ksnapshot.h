@@ -18,6 +18,7 @@
 #ifndef KSNAPSHOT_H
 #define KSNAPSHOT_H
 
+#include <QAction>
 #include <QBitmap>
 #include <QLabel>
 #include <QPainter>
@@ -28,12 +29,33 @@
 
 #include <kglobalsettings.h>
 #include <kdialog.h>
+#include <kservice.h>
 #include <kurl.h>
 
 class RegionGrabber;
 class KSnapshotWidget;
+class QMenu;
 
 #include "kdebug.h"
+class KSnapshotServiceAction : public QAction
+{
+    Q_OBJECT
+    public:
+        KSnapshotServiceAction(KService::Ptr s, QObject * parent)
+            : QAction(parent), service(s) {}
+        KSnapshotServiceAction(KService::Ptr s,
+                               const QString & text,
+                               QObject * parent)
+            : QAction(text, parent), service(s) {}
+        KSnapshotServiceAction(KService::Ptr s,
+                               const QIcon & icon,
+                               const QString & text,
+                               QObject * parent)
+            : QAction(icon, text, parent), service(s) {}
+
+        KService::Ptr service;
+};
+
 class KSnapshotPreview : public QLabel
 {
     Q_OBJECT
@@ -125,7 +147,7 @@ public slots:
     void slotSave();
     void slotSaveAs();
     void slotCopy();
-    void slotOpen();
+    void slotOpen(const QString& application);
     void slotMovePointer( int x, int y );
     void setTime( int newTime );
     void setURL( const QString &newURL );
@@ -139,6 +161,8 @@ protected:
     bool eventFilter( QObject*, QEvent* );
 
 private slots:
+    void slotOpen(QAction*);
+    void slotPopulateOpenMenu();
     void grabTimerDone();
     void slotDragSnapshot();
     void updateCaption();
@@ -170,6 +194,7 @@ private:
     QTimer grabTimer;
     QTimer updateTimer;
     QWidget* grabber;
+    QMenu*  openMenu;
     KUrl filename;
     KSnapshotWidget *mainWidget;
     RegionGrabber *rgnGrab;

@@ -8,8 +8,7 @@ set(ksnapshot_SRCS
    main.cpp
    ksnapshot.cpp
    regiongrabber.cpp
-   windowgrabber.cpp
-   openwith.cpp )
+   windowgrabber.cpp )
 
 qt4_add_dbus_adaptor(ksnapshot_SRCS org.kde.ksnapshot.xml ksnapshot.h KSnapshot)
 

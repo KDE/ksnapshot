@@ -4,7 +4,9 @@
 	<interface name="org.kde.ksnapshot">
 			<method name="slotGrab"/>
 			<method name="slotSave"/>
-                        <method name="slotOpen"/>
+                        <method name="slotOpen">
+                            <arg name="application" type="s" direction="in">
+                        </method>
 		<method name="url">
 			<arg type="s" direction="out"/>
 		</method>
