@@ -145,16 +145,16 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
                    Qt::CTRL+Qt::Key_A, this, SLOT(slotSaveAs()));
 #endif
 
-    new QShortcut( KStdAccel::shortcut( KStdAccel::Quit ), this, SLOT(reject()));
+    new QShortcut( KStdAccel::shortcut( KStdAccel::Quit ).primary(), this, SLOT(reject()));
 
     new QShortcut( Qt::Key_Q, this, SLOT(slotSave()));
 
-    new QShortcut( KStdAccel::shortcut( KStdAccel::Copy ), mainWidget->btnCopy, SLOT(animateClick()));
+    new QShortcut( KStdAccel::shortcut( KStdAccel::Copy ).primary(), mainWidget->btnCopy, SLOT(animateClick()));
 
-    new QShortcut( KStdAccel::shortcut( KStdAccel::Save ), mainWidget->btnSave, SLOT(animateClick()));
+    new QShortcut( KStdAccel::shortcut( KStdAccel::Save ).primary(), mainWidget->btnSave, SLOT(animateClick()));
     new QShortcut( Qt::Key_S, mainWidget->btnSave, SLOT(animateClick()));
 
-    new QShortcut( KStdAccel::shortcut( KStdAccel::New ), mainWidget->btnNew, SLOT(animateClick()) );
+    new QShortcut( KStdAccel::shortcut( KStdAccel::New ).primary(), mainWidget->btnNew, SLOT(animateClick()) );
     new QShortcut( Qt::Key_N, mainWidget->btnNew, SLOT(animateClick()) );
     new QShortcut( Qt::Key_Space, mainWidget->btnNew, SLOT(animateClick()) );
 
