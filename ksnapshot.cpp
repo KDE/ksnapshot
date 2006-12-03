@@ -45,7 +45,7 @@
 #include <khelpmenu.h>
 #include <kmenu.h>
 #include <kmimetypetrader.h>
-#include <kopenwith.h>
+#include <kopenwithdialog.h>
 #include <krun.h>
 #include <kstandarddirs.h>
 #include <kstartupinfo.h>
@@ -339,7 +339,7 @@ void KSnapshot::slotOpen(QAction* action)
 
     if (!service)
     {
-        KOpenWithDlg dlg(list, this);
+        KOpenWithDialog dlg(list, this);
         if (!dlg.exec())
         {
             return;
