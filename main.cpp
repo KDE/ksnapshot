@@ -67,7 +67,6 @@ int main(int argc, char **argv)
 
   new KsnapshotAdaptor(toplevel);
   QDBusConnection::sessionBus().registerObject("/KSnapshot", toplevel);
-  toplevel->setCaption( app.makeStdCaption("") );
   toplevel->show();
   return app.exec();
 }

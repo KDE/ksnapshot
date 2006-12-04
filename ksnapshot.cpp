@@ -26,6 +26,7 @@
 #include <QPainter>
 #include <QShortcut>
 #include <QMenu>
+#include <QX11Info>
 
 #include <klocale.h>
 
@@ -36,7 +37,6 @@
 #include <kfiledialog.h>
 #include <kimagefilepreview.h>
 #include <kmessagebox.h>
-#include <kapplication.h>
 #include <kio/netaccess.h>
 #include <ksavefile.h>
 #include <kstdaccel.h>
@@ -73,6 +73,7 @@ class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
 KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
   : KDialog(parent)
 {
+    setCaption( "" );
     setModal( true );
     showButtonSeparator( true );
     setDefaultButton( User1 );
@@ -555,9 +556,7 @@ int KSnapshot::grabMode()
 
 void KSnapshot::updateCaption()
 {
-    KInstance::CaptionFlags flags = KInstance::ModifiedCaption;
-    flags |= KInstance::AppNameCaption;
-    setCaption( KInstance::makeStdCaption( filename.fileName(), flags) );
+    setCaption( filename.fileName(), true );
 }
 
 void KSnapshot::slotMovePointer(int x, int y)
