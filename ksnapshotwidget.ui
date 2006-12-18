@@ -166,9 +166,6 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
        <property name="text" >
         <string>&amp;New Snapshot</string>
        </property>
-       <property name="icon" >
-        <iconset>ksnapshot</iconset>
-       </property>
       </widget>
      </item>
      <item>
@@ -195,9 +192,6 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
        <property name="text" >
         <string>&amp;Save As...</string>
        </property>
-       <property name="icon" >
-        <iconset>filesave</iconset>
-       </property>
       </widget>
      </item>
      <item>
@@ -207,9 +201,6 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
        </property>
        <property name="text" >
         <string>&amp;Open With...</string>
-       </property>
-       <property name="icon" >
-        <iconset>project_open</iconset>
        </property>
       </widget>
      </item>
@@ -221,9 +212,6 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
        <property name="text" >
         <string>&amp;Copy to Clipboard</string>
        </property>
-       <property name="icon" >
-        <iconset>editcopy</iconset>
-       </property>
       </widget>
      </item>
     </layout>
@@ -232,7 +220,6 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <layoutfunction spacing="KDialog::spacingHint" margin="KDialog::marginHint" />
- <pixmapfunction>SmallIconSet</pixmapfunction>
  <customwidgets>
   <customwidget>
    <class>KPushButton</class>
@@ -256,7 +243,6 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
  </tabstops>
  <includes>
   <include location="local" >kpushbutton.h</include>
-  <include location="local" >kiconloader.h</include>
  </includes>
  <resources/>
  <connections/>
