@@ -25,5 +25,5 @@ install(TARGETS ksnapshot DESTINATION ${BIN_INSTALL_DIR})
 ########### install files ###############
 
 install(FILES ksnapshot.desktop DESTINATION ${XDG_APPS_DIR})
-
+install(FILES org.kde.ksnapshot.xml DESTINATION ${DBUS_INTERFACES_DIR} )
 kde4_install_icons(${ICON_INSTALL_DIR} )
