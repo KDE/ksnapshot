@@ -39,7 +39,7 @@
 #include <kmessagebox.h>
 #include <kio/netaccess.h>
 #include <ksavefile.h>
-#include <kstdaccel.h>
+#include <kstandardshortcut.h>
 #include <ktemporaryfile.h>
 #include <knotification.h>
 #include <khelpmenu.h>
@@ -83,7 +83,7 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
     showButtonSeparator( true );
     setDefaultButton( User1 );
     setButtons(Help|User1);
-    setButtonGuiItem( User1, KStdGuiItem::quit() );
+    setButtonGuiItem( User1, KStandardGuiItem::quit() );
     grabber = new QWidget( 0,  Qt::X11BypassWindowManagerHint );
     grabber->move( -1000, -1000 );
     grabber->installEventFilter( this );
@@ -151,16 +151,16 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
                    Qt::CTRL+Qt::Key_A, this, SLOT(slotSaveAs()));
 #endif
 
-    new QShortcut( KStdAccel::shortcut( KStdAccel::Quit ).primary(), this, SLOT(reject()));
+    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Quit ).primary(), this, SLOT(reject()));
 
     new QShortcut( Qt::Key_Q, this, SLOT(slotSave()));
 
-    new QShortcut( KStdAccel::shortcut( KStdAccel::Copy ).primary(), mainWidget->btnCopy, SLOT(animateClick()));
+    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Copy ).primary(), mainWidget->btnCopy, SLOT(animateClick()));
 
-    new QShortcut( KStdAccel::shortcut( KStdAccel::Save ).primary(), mainWidget->btnSave, SLOT(animateClick()));
+    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Save ).primary(), mainWidget->btnSave, SLOT(animateClick()));
     new QShortcut( Qt::Key_S, mainWidget->btnSave, SLOT(animateClick()));
 
-    new QShortcut( KStdAccel::shortcut( KStdAccel::New ).primary(), mainWidget->btnNew, SLOT(animateClick()) );
+    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::New ).primary(), mainWidget->btnNew, SLOT(animateClick()) );
     new QShortcut( Qt::Key_N, mainWidget->btnNew, SLOT(animateClick()) );
     new QShortcut( Qt::Key_Space, mainWidget->btnNew, SLOT(animateClick()) );
 
