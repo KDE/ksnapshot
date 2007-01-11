@@ -22,8 +22,8 @@
 #include <QApplication>
 #include <QTimer>
 #include <QToolTip>
-#include <QX11Info>
 #include <QRubberBand>
+#include <QDesktopWidget>
 
 #include <kglobalsettings.h>
 
@@ -68,7 +68,7 @@ void SizeTip::positionTip( const QRect &rect )
 
 RegionGrabber::RegionGrabber()
   : QWidget( 0, Qt::X11BypassWindowManagerHint |
-      Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool ),
+      Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint ),
     mouseDown( false ), sizeTip( 0L )
 {
   sizeTip = new SizeTip( ( QWidget * )0L );
@@ -89,10 +89,12 @@ RegionGrabber::~RegionGrabber()
 
 void RegionGrabber::initGrabber()
 {
-  pixmap = QPixmap::grabWindow( QX11Info::appRootWindow() );
+  pixmap = QPixmap::grabWindow( QApplication::desktop()->winId() );
   QPalette p = palette();
   p.setBrush( backgroundRole(), QBrush( pixmap ) );
   setPalette( p );
+
+  resize(pixmap.width(), pixmap.height());
 
   showFullScreen();
 
