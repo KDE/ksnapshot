@@ -33,7 +33,7 @@
 #include <kglobal.h>
 #include <kicon.h>
 #include <kimageio.h>
-#include <kinstance.h>
+#include <kcomponentdata.h>
 #include <kfiledialog.h>
 #include <kimagefilepreview.h>
 #include <kmessagebox.h>
@@ -124,7 +124,7 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
     grabber->releaseMouse();
     grabber->hide();
 
-    KConfig *conf=KGlobal::config();
+    KSharedConfig::Ptr conf = KGlobal::config();
     conf->setGroup("GENERAL");
     setDelay( conf->readEntry("delay", 0) );
     setMode( conf->readEntry("mode", 0) );
@@ -140,7 +140,7 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
     connect( &updateTimer, SIGNAL( timeout() ), this, SLOT(  updatePreview() ) );
     QTimer::singleShot( 0, this, SLOT( updateCaption() ) );
 
-    KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
+    KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::mainComponent().aboutData(), false);
     setButtonMenu( Help, helpMenu->menu() );
 #if 0
     accel->insert( "QuickSave", i18n("Quick Save Snapshot &As..."),
@@ -427,7 +427,7 @@ void KSnapshot::slotWindowGrabbed( const QPixmap &pix )
 
 void KSnapshot::closeEvent( QCloseEvent * e )
 {
-    KConfig *conf=KGlobal::config();
+    KSharedConfig::Ptr conf = KGlobal::config();
     conf->setGroup("GENERAL");
     conf->writeEntry("delay",delay());
     conf->writeEntry("mode",mode());
