@@ -104,7 +104,7 @@ region.  The images can then be saved in a variety of formats.</para>
 <title>Introduction</title>
 
 <para>&ksnapshot; is a simple applet for taking screenshots. It is capable
-of capturing images of the whole desktop, a single window a section of a window or a selected
+of capturing images of the whole desktop, a single window, a section of a window or a selected
 region.  The images can then be saved in a variety of formats.</para>
 
 <para>Please report any problems or feature requests to the <ulink
@@ -369,7 +369,7 @@ So you can set window capture mode (<command>1</command>), using:
 </para>
 
 <para>You can obtain the current timeout setting (the <guilabel>Snapshot delay:</guilabel>
-GUI item) using <literal>timeout</literal>, as shown below:
+&GUI; item) using <literal>timeout</literal>, as shown below:
 <screen width="60">
 <prompt>$</prompt> <command>dcop ksnapshot-23151 interface timeout</command>
 </screen>
