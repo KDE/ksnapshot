@@ -124,12 +124,11 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
     grabber->releaseMouse();
     grabber->hide();
 
-    KSharedConfig::Ptr conf = KGlobal::config();
-    conf->setGroup("GENERAL");
-    setDelay( conf->readEntry("delay", 0) );
-    setMode( conf->readEntry("mode", 0) );
-    setIncludeDecorations(conf->readEntry("includeDecorations",true));
-    filename = KUrl( conf->readPathEntry( "filename", QDir::currentPath()+'/'+i18n("snapshot")+"1.png" ));
+    KConfigGroup conf(KGlobal::config(), "GENERAL");
+    setDelay( conf.readEntry("delay", 0) );
+    setMode( conf.readEntry("mode", 0) );
+    setIncludeDecorations(conf.readEntry("includeDecorations",true));
+    filename = KUrl( conf.readPathEntry( "filename", QDir::currentPath()+'/'+i18n("snapshot")+"1.png" ));
 
     // Make sure the name is not already being used
     while(KIO::NetAccess::exists( filename, false, this )) {
@@ -427,14 +426,13 @@ void KSnapshot::slotWindowGrabbed( const QPixmap &pix )
 
 void KSnapshot::closeEvent( QCloseEvent * e )
 {
-    KSharedConfig::Ptr conf = KGlobal::config();
-    conf->setGroup("GENERAL");
-    conf->writeEntry("delay",delay());
-    conf->writeEntry("mode",mode());
-    conf->writeEntry("includeDecorations",includeDecorations());
+    KConfigGroup conf(KGlobal::config(), "GENERAL");
+    conf.writeEntry("delay",delay());
+    conf.writeEntry("mode",mode());
+    conf.writeEntry("includeDecorations",includeDecorations());
     KUrl url = filename;
     url.setPass( QString::null );
-    conf->writePathEntry("filename",url.url());
+    conf.writePathEntry("filename",url.url());
     e->accept();
 }
 
