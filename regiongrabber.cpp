@@ -299,6 +299,16 @@ void RegionGrabber::mouseReleaseEvent( QMouseEvent* e )
     update();
 }
 
+void RegionGrabber::mouseDoubleClickEvent( QMouseEvent* )
+{
+    QRect r = selection.normalized();
+    if ( !r.isNull() && r.isValid() )
+    {
+        grabbing = true;
+        emit regionGrabbed( QPixmap::grabWidget( this, r ) );
+    }
+}
+
 void RegionGrabber::keyPressEvent( QKeyEvent* e )
 {
     if ( e->key() == Qt::Key_Escape )
