@@ -83,29 +83,42 @@ void RegionGrabber::paintEvent( QPaintEvent* e )
 
     QPainter painter( this );
 
-    QColor handleColor( 60, 60, 60, 220 );
-    QColor overlayColor( 0, 0, 255, 30 );
-    QColor textColor( Qt::black );
-    QColor textBackgroundColor( Qt::white );
+    QColor handleColor = palette().color( QPalette::Active, QPalette::Highlight );
+    handleColor.setAlpha( 160 );
+    QColor overlayColor( 0, 0, 0, 160 );
+    QColor textColor = palette().color( QPalette::Active, QPalette::Text );
+    QColor textBackgroundColor = palette().color( QPalette::Active, QPalette::Base );
+
+    QRect r = selection.normalized().adjusted( 0, 0, -1, -1 );
+    if ( !selection.isNull() )
+    {
+        QRegion grey( rect() );
+        grey = grey.subtracted( r );
+        painter.setPen( handleColor );
+        painter.setBrush( overlayColor );
+        painter.setClipRegion( grey );
+        painter.drawRect( rect() );
+        painter.setClipRect( rect() );
+        painter.setBrush( Qt::NoBrush );
+        painter.drawRect( r );
+    }
 
     if ( showHelp )
     {
         painter.setPen( textColor );
         painter.setBrush( textBackgroundColor );
-        QString helpText = i18n( "Select a region with the mouse, to take the snapshot press the Enter key, ESC to quit" );
+        QString helpText = i18n( "Select a region with the mouse. To take the snapshot press the Enter key, ESC to quit" );
         QRect textRect = painter.boundingRect( rect().adjusted( 2, 2, -2, -2 ), Qt::TextWordWrap, helpText );
-        textRect.moveTopLeft( QPoint( 2, 2 ) );
+        textRect.adjust( -2, -2, 4, 2 );
         painter.drawRect( textRect );
+        textRect.moveTopLeft( QPoint( 3, 3 ) );
         painter.drawText( textRect, helpText );
     }
 
     if ( selection.isNull() )
+    {
         return;
-
-    QRect r = selection.normalized().adjusted( 0, 0, -1, -1 );
-    painter.setPen( handleColor );
-    painter.setBrush( overlayColor );
-    painter.drawRect( r );
+    }
 
     // The grabbed region is everything which is covered by the drawn
     // rectangles (border included). This means that there is no 0px
@@ -150,13 +163,15 @@ void RegionGrabber::paintEvent( QPaintEvent* e )
     painter.drawRect( boundingRect );
     painter.drawText( textRect, txt );
 
-    if ( mouseDown )
-        return;
-
-    updateHandles();
-    painter.setBrush( handleColor );
-    painter.setPen( Qt::NoPen );
-    painter.drawRects( handleMask().rects() );
+    if ( ( r.height() > handleSize*2 && r.width() > handleSize*2 )
+         || !mouseDown )
+    {
+        updateHandles();
+        painter.setPen( handleColor );
+        handleColor.setAlpha( 60 );
+        painter.setBrush( handleColor );
+        painter.drawRects( handleMask().rects() );
+    }
 }
 
 void RegionGrabber::resizeEvent( QResizeEvent* e )
@@ -185,6 +200,7 @@ void RegionGrabber::mousePressEvent( QMouseEvent* e )
         {
             newSelection = true;
             selection = QRect();
+            showHelp = true;
         }
         else
         {
