@@ -68,9 +68,9 @@ class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
         {
             setupUi(this);
             btnNew->setIcon(KIcon("ksnapshot"));
-            btnSave->setIcon(KIcon("filesave"));
+            btnSave->setIcon(KIcon("document-save"));
             btnOpen->setIcon(KIcon("project_open"));
-            btnCopy->setIcon(KIcon("editcopy"));
+            btnCopy->setIcon(KIcon("edit-copy"));
 
         }
 };
