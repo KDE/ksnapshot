@@ -49,7 +49,7 @@ RegionGrabber::RegionGrabber( ) :
             << &LHandle << &THandle << &RHandle << &BHandle;
     setMouseTracking( true );
     setWindowFlags( Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint );
-    QTimer::singleShot( 100, this, SLOT(init()) );
+    QTimer::singleShot( 50, this, SLOT(init()) );
     connect( &idleTimer, SIGNAL( timeout() ), this, SLOT( displayHelp() ) );
     idleTimer.start( 3000 );
 }
@@ -97,7 +97,7 @@ void RegionGrabber::paintEvent( QPaintEvent* e )
         painter.setPen( handleColor );
         painter.setBrush( overlayColor );
         painter.setClipRegion( grey );
-        painter.drawRect( rect() );
+        painter.drawRect( -1, -1, rect().width() + 1, rect().height() + 1 );
         painter.setClipRect( rect() );
         painter.setBrush( Qt::NoBrush );
         painter.drawRect( r );
