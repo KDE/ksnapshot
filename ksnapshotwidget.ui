@@ -200,7 +200,7 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
         <string>Click this button to open the snapshot with an other application</string>
        </property>
        <property name="text" >
-        <string>&amp;Open With...</string>
+        <string>&amp;Open With</string>
        </property>
       </widget>
      </item>
