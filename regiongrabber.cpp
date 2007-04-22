@@ -28,7 +28,7 @@
 #include <QBrush>
 #include <QResizeEvent>
 #include <QVector>
-#include <QString>
+
 #include <QKeyEvent>
 #include <QPixmap>
 #include <QApplication>
