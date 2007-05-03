@@ -22,6 +22,8 @@
  *  Boston, MA 02110-1301, USA.
  */
 
+#include "ksnapshot.h"
+
 #include <QClipboard>
 #include <QPainter>
 #include <QShortcut>
@@ -51,7 +53,6 @@
 #include <kstartupinfo.h>
 #include <kvbox.h>
 
-#include "ksnapshot.h"
 #include "regiongrabber.h"
 #include "windowgrabber.h"
 #include "ui_ksnapshotwidget.h"

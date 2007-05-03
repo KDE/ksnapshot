@@ -17,6 +17,8 @@
   Boston, MA 02110-1301, USA.
 */
 
+#include "windowgrabber.h"
+
 #include <algorithm>
 #include <config.h>
 
@@ -25,8 +27,6 @@
 #include <QPixmap>
 #include <QMouseEvent>
 #include <QWheelEvent>
-
-#include "windowgrabber.h"
 
 #include <config-ksnapshot.h>
 #ifdef HAVE_X11_EXTENSIONS_SHAPE_H
