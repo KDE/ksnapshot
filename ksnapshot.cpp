@@ -319,7 +319,7 @@ void KSnapshot::slotOpen(const QString& application)
 
     KUrl::List list;
     list.append(fileopen);
-    KRun::run(application, list);
+    KRun::run(application, list, this);
 }
 
 void KSnapshot::slotOpen(QAction* action)
@@ -355,7 +355,7 @@ void KSnapshot::slotOpen(QAction* action)
 
         if (!service && !dlg.text().isEmpty())
         {
-             KRun::run(dlg.text(), list);
+             KRun::run(dlg.text(), list, this);
              return;
         }
     }
