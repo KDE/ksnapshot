@@ -174,16 +174,16 @@ private slots:
     void setDelay( int i );
     void setIncludeDecorations( bool b );
     void setMode( int mode );
-    int delay();
-    bool includeDecorations();
-    int mode();
+    int delay() const;
+    bool includeDecorations() const;
+    int mode() const;
     QPixmap preview();
-    int previewWidth();
-    int previewHeight();
+    int previewWidth() const;
+    int previewHeight() const;
 
 public:
-    int grabMode();
-    int timeout();
+    int grabMode() const;
+    int timeout() const;
 
 private:
     bool save( const KUrl& url );

@@ -533,7 +533,7 @@ void KSnapshot::setTime(int newTime)
     setDelay(newTime);
 }
 
-int KSnapshot::timeout()
+int KSnapshot::timeout() const
 {
     return delay();
 }
@@ -553,7 +553,7 @@ void KSnapshot::setGrabMode( int m )
     setMode( m );
 }
 
-int KSnapshot::grabMode()
+int KSnapshot::grabMode() const
 {
     return mode();
 }
@@ -622,17 +622,17 @@ void KSnapshot::setMode( int mode )
     slotModeChanged(mode);
 }
 
-int KSnapshot::delay()
+int KSnapshot::delay() const
 {
     return mainWidget->spinDelay->value();
 }
 
-bool KSnapshot::includeDecorations()
+bool KSnapshot::includeDecorations() const
 {
     return mainWidget->cbIncludeDecorations->isChecked();
 }
 
-int KSnapshot::mode()
+int KSnapshot::mode() const
 {
     return mainWidget->comboMode->currentIndex();
 }
@@ -642,12 +642,12 @@ QPixmap KSnapshot::preview()
     return *mainWidget->lblImage->pixmap();
 }
 
-int KSnapshot::previewWidth()
+int KSnapshot::previewWidth() const
 {
     return mainWidget->lblImage->width();
 }
 
-int KSnapshot::previewHeight()
+int KSnapshot::previewHeight() const
 {
     return mainWidget->lblImage->height();
 }
