@@ -4,11 +4,15 @@ configure_file(config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnap
 
 ########### next target ###############
 
+set(ksnapshot_file_SRCS
+	regiongrabber.cpp
+	windowgrabber.cpp
+	ksnapshotobject.cpp)
+
 set(ksnapshot_SRCS
    main.cpp
-   ksnapshot.cpp
-   regiongrabber.cpp
-   windowgrabber.cpp )
+   ksnapshot.cpp 
+   ${ksnapshot_file_SRCS})
 
 qt4_add_dbus_adaptor(ksnapshot_SRCS org.kde.ksnapshot.xml ksnapshot.h KSnapshot)
 
@@ -22,7 +26,24 @@ target_link_libraries(ksnapshot ${KDE4_KDECORE_LIBS}  ${KDE4_KDEPRINT_LIBS})
 
 install(TARGETS ksnapshot DESTINATION ${BIN_INSTALL_DIR})
 
+
+########### next target ###############
+
+set(kbackgroundsnapshot_SRCS
+   kbackgroundsnapshot.cpp
+   ${ksnapshot_file_SRCS})
+
+kde4_automoc(${kbackgroundsnapshot_SRCS})
+
+kde4_add_executable(kbackgroundsnapshot ${kbackgroundsnapshot_SRCS})
+
+target_link_libraries(kbackgroundsnapshot ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS})
+
+install(TARGETS kbackgroundsnapshot DESTINATION ${BIN_INSTALL_DIR})
+
 ########### install files ###############
+
+
 
 install(FILES ksnapshot.desktop DESTINATION ${XDG_APPS_DIR})
 install(FILES org.kde.ksnapshot.xml DESTINATION ${DBUS_INTERFACES_DIR} )

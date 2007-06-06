@@ -31,12 +31,11 @@
 #include <kdialog.h>
 #include <kservice.h>
 #include <kurl.h>
+#include "ksnapshotobject.h"
 
-class RegionGrabber;
 class KSnapshotWidget;
 class QMenu;
 
-#include "kdebug.h"
 class KSnapshotServiceAction : public QAction
 {
     Q_OBJECT
@@ -129,17 +128,15 @@ class KSnapshotPreview : public QLabel
         QPoint mClickPt;
 };
 
-class KSnapshot : public KDialog
+class KSnapshot : public KDialog, public KSnapshotObject
 {
   Q_OBJECT
 
 public:
-    enum CaptureMode { FullScreen=0, WindowUnderCursor=1, Region=2, ChildWindow=3 };
-    KSnapshot(QWidget *parent= 0, CaptureMode mode = FullScreen);
+    KSnapshot(QWidget *parent= 0, KSnapshotObject::CaptureMode mode = FullScreen);
     ~KSnapshot();
 
 
-    bool save( const QString &filename );
     QString url() const { return filename.url(); }
 
 public slots:
@@ -159,6 +156,7 @@ protected:
     virtual void closeEvent( QCloseEvent * e );
     void resizeEvent(QResizeEvent*);
     bool eventFilter( QObject*, QEvent* );
+    virtual void refreshCaption();
 
 private slots:
     void slotOpen(QAction*);
@@ -186,19 +184,12 @@ public:
     int timeout() const;
 
 private:
-    bool save( const KUrl& url );
-    bool saveEqual( const KUrl& url );
     void performGrab();
-    void autoincFilename();
     void grabRegion();
-    QPixmap snapshot;
     QTimer grabTimer;
     QTimer updateTimer;
-    QWidget* grabber;
     QMenu*  openMenu;
-    KUrl filename;
     KSnapshotWidget *mainWidget;
-    RegionGrabber *rgnGrab;
     bool modified;
 };
 

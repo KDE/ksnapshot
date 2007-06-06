@@ -65,26 +65,27 @@ int main(int argc, char **argv)
   bool showTopLevel = false;
 
   if ( args->isSet( "current" ) )
-     toplevel = new KSnapshot( 0, KSnapshot::WindowUnderCursor );
+     toplevel = new KSnapshot( 0, KSnapshotObject::WindowUnderCursor );
   else if(args->isSet( "fullscreen" ))
   {
      //we grad directly desktop => show dialogbox
      showTopLevel = true;
-     toplevel = new KSnapshot( 0, KSnapshot::FullScreen );
+     toplevel = new KSnapshot( 0, KSnapshotObject::FullScreen );
   }
   else if(args->isSet( "region" ))
-     toplevel = new KSnapshot( 0, KSnapshot::Region );
+     toplevel = new KSnapshot( 0, KSnapshotObject::Region );
   else if(args->isSet( "child" ))
-     toplevel = new KSnapshot( 0, KSnapshot::ChildWindow );
+     toplevel = new KSnapshot( 0, KSnapshotObject::ChildWindow );
   else
   {
      showTopLevel = true;
      toplevel = new KSnapshot();
   }
-  
+
+  args->clear();
   new KsnapshotAdaptor(toplevel);
   QDBusConnection::sessionBus().registerObject("/KSnapshot", toplevel);
-  
+
   if(showTopLevel)
      toplevel->show();
   return app.exec();
