@@ -67,6 +67,7 @@ int main(int argc, char **argv)
   else
      toplevel = new KSnapshot();
 
+  args->clear();
   app.dcopClient()->setDefaultObject( toplevel->objId() );
   toplevel->setCaption( app.makeStdCaption("") );
   app.setMainWidget(toplevel);
