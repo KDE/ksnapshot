@@ -36,8 +36,8 @@ static KCmdLineOptions options[] =
     { "c", 0, 0 },
     { "current", I18N_NOOP("Captures the window under the mouse on startup (instead of the desktop)"), 0 },
     { "fullscreen", I18N_NOOP("Captures the desktop"), 0 },
-    //{ "region", I18N_NOOP("Captures a region"), 0 },
-    //{ "child", I18N_NOOP("Captures a part of windows"), 0 },
+    { "region", I18N_NOOP("Captures a region"), 0 },
+    { "child", I18N_NOOP("Captures a part of windows"), 0 },
     { 0, 0, 0 }
 };
 
@@ -62,20 +62,31 @@ int main(int argc, char **argv)
 
   // Create top level window
   KSnapshot *toplevel;
+  bool showTopLevel = false;
 
   if ( args->isSet( "current" ) )
      toplevel = new KSnapshot( 0, KSnapshot::WindowUnderCursor );
   else if(args->isSet( "fullscreen" ))
+  {
+     //we grad directly desktop => show dialogbox
+     showTopLevel = true;
      toplevel = new KSnapshot( 0, KSnapshot::FullScreen );
-  /*else if(args->isSet( "region" ))
+  }
+  else if(args->isSet( "region" ))
      toplevel = new KSnapshot( 0, KSnapshot::Region );
   else if(args->isSet( "child" ))
-     toplevel = new KSnapshot( 0, KSnapshot::ChildWindow );*/
+     toplevel = new KSnapshot( 0, KSnapshot::ChildWindow );
   else
+  {
+     showTopLevel = true;
      toplevel = new KSnapshot();
-
+  }
+  
   new KsnapshotAdaptor(toplevel);
   QDBusConnection::sessionBus().registerObject("/KSnapshot", toplevel);
-  toplevel->show();
+  
+  if(showTopLevel)
+     toplevel->show();
   return app.exec();
 }
+

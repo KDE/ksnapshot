@@ -118,23 +118,35 @@ KSnapshot::KSnapshot(QWidget *parent, CaptureMode mode )
         snapshot = QPixmap::grabWindow( QX11Info::appRootWindow() );
     else {
         setMode( mode );
-	if(mode == WindowUnderCursor)
+	switch(mode)
 	{
-           setIncludeDecorations( true );
-	   performGrab();
-	}
-	else if(mode == ChildWindow)
-	{
-	  performGrab();
-	}
-	else if(mode == Region )
-	{
-	  grabRegion();
-	}
+	   case WindowUnderCursor:
+	   {
+		setIncludeDecorations( true );
+		performGrab();
+		break;
+	   } 
+	   case ChildWindow:
+	   {
+	  	slotGrab();
+		break;
+	   }
+	   case Region:
+	   {
+	        grabRegion();
+	        break;
+	   }
+	   default:
+	        break;
+	  }
     }
 
-    grabber->releaseMouse();
-    grabber->hide();
+    //When we use argument to take snapshot we mustn't hide it.
+    if(mode != ChildWindow)
+    {
+       grabber->releaseMouse();
+       grabber->hide();
+    }
 
     KConfigGroup conf(KGlobal::config(), "GENERAL");
     setDelay( conf.readEntry("delay", 0) );
