@@ -134,10 +134,10 @@ class KSnapshot : public KDialog
   Q_OBJECT
 
 public:
-    KSnapshot(QWidget *parent= 0, bool grabCurrent=false);
+    enum CaptureMode { FullScreen=0, WindowUnderCursor=1, Region=2, ChildWindow=3 };
+    KSnapshot(QWidget *parent= 0, CaptureMode mode = FullScreen);
     ~KSnapshot();
 
-    enum CaptureMode { FullScreen=0, WindowUnderCursor=1, Region=2, ChildWindow=3 };
 
     bool save( const QString &filename );
     QString url() const { return filename.url(); }
@@ -190,6 +190,7 @@ private:
     bool saveEqual( const KUrl& url );
     void performGrab();
     void autoincFilename();
+    void grabRegion();
     QPixmap snapshot;
     QTimer grabTimer;
     QTimer updateTimer;

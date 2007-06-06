@@ -35,6 +35,9 @@ static KCmdLineOptions options[] =
 {
     { "c", 0, 0 },
     { "current", I18N_NOOP("Captures the window under the mouse on startup (instead of the desktop)"), 0 },
+    { "fullscreen", I18N_NOOP("Captures the desktop"), 0 },
+    //{ "region", I18N_NOOP("Captures a region"), 0 },
+    //{ "child", I18N_NOOP("Captures a part of windows"), 0 },
     { 0, 0, 0 }
 };
 
@@ -61,7 +64,13 @@ int main(int argc, char **argv)
   KSnapshot *toplevel;
 
   if ( args->isSet( "current" ) )
-     toplevel = new KSnapshot( 0, true );
+     toplevel = new KSnapshot( 0, KSnapshot::WindowUnderCursor );
+  else if(args->isSet( "fullscreen" ))
+     toplevel = new KSnapshot( 0, KSnapshot::FullScreen );
+  /*else if(args->isSet( "region" ))
+     toplevel = new KSnapshot( 0, KSnapshot::Region );
+  else if(args->isSet( "child" ))
+     toplevel = new KSnapshot( 0, KSnapshot::ChildWindow );*/
   else
      toplevel = new KSnapshot();
 

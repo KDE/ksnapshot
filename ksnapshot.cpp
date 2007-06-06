@@ -76,7 +76,7 @@ class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
         }
 };
 
-KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
+KSnapshot::KSnapshot(QWidget *parent, CaptureMode mode )
   : KDialog(parent)
 {
     setCaption( "" );
@@ -114,12 +114,23 @@ KSnapshot::KSnapshot(QWidget *parent, bool grabCurrent)
     grabber->show();
     grabber->grabMouse( Qt::WaitCursor );
 
-    if ( !grabCurrent )
+    if ( mode == FullScreen )
         snapshot = QPixmap::grabWindow( QX11Info::appRootWindow() );
     else {
-        setMode( WindowUnderCursor );
-        setIncludeDecorations( true );
-        performGrab();
+        setMode( mode );
+	if(mode == WindowUnderCursor)
+	{
+           setIncludeDecorations( true );
+	   performGrab();
+	}
+	else if(mode == ChildWindow)
+	{
+	  performGrab();
+	}
+	else if(mode == Region )
+	{
+	  grabRegion();
+	}
     }
 
     grabber->releaseMouse();
@@ -297,9 +308,7 @@ void KSnapshot::slotGrab()
     }
     else {
         if ( mode() == Region ) {
-            rgnGrab = new RegionGrabber();
-            connect( rgnGrab, SIGNAL( regionGrabbed( const QPixmap & ) ),
-                              SLOT( slotRegionGrabbed( const QPixmap & ) ) );
+            grabRegion();
         }
         else {
             grabber->show();
@@ -491,12 +500,18 @@ void KSnapshot::updatePreview()
     setPreview( snapshot );
 }
 
+void KSnapshot::grabRegion()
+{
+   rgnGrab = new RegionGrabber();
+   connect( rgnGrab, SIGNAL( regionGrabbed( const QPixmap & ) ),
+                     SLOT( slotRegionGrabbed( const QPixmap & ) ) );
+
+}
+
 void KSnapshot::grabTimerDone()
 {
     if ( mode() == Region ) {
-        rgnGrab = new RegionGrabber();
-        connect( rgnGrab, SIGNAL( regionGrabbed( const QPixmap & ) ),
-                          SLOT( slotRegionGrabbed( const QPixmap & ) ) );
+       grabRegion();
     }
     else {
         performGrab();
