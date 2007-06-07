@@ -24,6 +24,7 @@
 #include <QPixmap>
 class QWidget;
 class RegionGrabber;
+class QString;
 
 class KSnapshotObject
 {

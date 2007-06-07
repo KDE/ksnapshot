@@ -21,6 +21,7 @@
 #define KBACKGROUNDSNAPSHOT_H
 
 #include "ksnapshotobject.h"
+#include <QObject>
 
 class QPixmap;
 

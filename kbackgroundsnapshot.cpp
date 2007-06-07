@@ -84,7 +84,7 @@ KBackgroundSnapshot::KBackgroundSnapshot(KSnapshotObject::CaptureMode mode)
 
 KBackgroundSnapshot::~KBackgroundSnapshot()
 {
-    kDebug()<<" KBackgroundSnapshot::~KBackgroundSnapshot()\n";
+    //kDebug()<<" KBackgroundSnapshot::~KBackgroundSnapshot()\n";
 }
 
 void KBackgroundSnapshot::savePictureOnDesktop()
@@ -100,7 +100,7 @@ void KBackgroundSnapshot::savePictureOnDesktop()
 
 void KBackgroundSnapshot::performGrab()
 {
-    kDebug()<<"KBackgroundSnapshot::performGrab()\n";
+    //kDebug()<<"KBackgroundSnapshot::performGrab()\n";
     grabber->releaseMouse();
     grabber->hide();
     if ( modeCapture == ChildWindow ) {
@@ -122,7 +122,7 @@ void KBackgroundSnapshot::performGrab()
 
 void KBackgroundSnapshot::slotWindowGrabbed( const QPixmap &pix )
 {
-    kDebug()<<" KBackgroundSnapshot::slotWindowGrabbed( const QPixmap &pix )\n";
+    //kDebug()<<" KBackgroundSnapshot::slotWindowGrabbed( const QPixmap &pix )\n";
     if ( !pix.isNull() )
         snapshot = pix;
     QApplication::restoreOverrideCursor();
@@ -131,7 +131,7 @@ void KBackgroundSnapshot::slotWindowGrabbed( const QPixmap &pix )
 
 void KBackgroundSnapshot::slotGrab()
 {
-    kDebug()<<"KBackgroundSnapshot::slotGrab()\n";
+    //kDebug()<<"KBackgroundSnapshot::slotGrab()\n";
     grabber->show();
     grabber->grabMouse( Qt::CrossCursor );
 }
@@ -170,7 +170,7 @@ bool KBackgroundSnapshot::eventFilter( QObject* o, QEvent* e)
 
 #define KBACKGROUNDSNAPVERSION "0.1"
 
-static const char description[] = I18N_NOOP("KDE Screenshot Utility");
+static const char description[] = I18N_NOOP("KDE Background Screenshot Utility");
 
 static KCmdLineOptions options[] =
 {
