@@ -20,7 +20,6 @@
 #include "windowgrabber.h"
 
 #include <algorithm>
-#include <config.h>
 
 #include <QBitmap>
 #include <QPainter>
@@ -28,11 +27,12 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 
+#include <X11/Xlib.h>
 #include <config-ksnapshot.h>
 #ifdef HAVE_X11_EXTENSIONS_SHAPE_H
 #include <X11/extensions/shape.h>
-#include <QX11Info>
 #endif
+#include <QX11Info>
 
 
 static
