@@ -1,5 +1,11 @@
 /*
  *  Copyright (C) 2007 Montel Laurent <montel@kde.org>
+ *  Copyright (C) 1997-2002 Richard J. Moore
+ *  Copyright (C) 2000 Matthias Ettrich
+ *  Copyright (C) 2002 Aaron J. Seigo
+ *  Copyright (C) 2003 Nadeem Hasan
+ *  Copyright (C) 2004 Bernd Brandstetter
+ *  Copyright (C) 2006 Urs Wolfer <uwolfer @ fwo.ch>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
