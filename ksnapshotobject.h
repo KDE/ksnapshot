@@ -45,7 +45,7 @@ public:
 
 protected:
      void autoincFilename();
-     virtual void refreshCaption(){};
+     virtual void refreshCaption(){}
 
      void changeUrl(const QString &newUrl);
 
