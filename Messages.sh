@@ -1,2 +1,2 @@
 #! /bin/sh
-$XGETTEXT rc.cpp *.cpp -o $podir/ksnapshot.pot
+$XGETTEXT *.h *.cpp -o $podir/ksnapshot.pot

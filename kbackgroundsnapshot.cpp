@@ -20,6 +20,7 @@
 #include "kbackgroundsnapshot.h"
 #include "kbackgroundsnapshot.moc"
 #include "regiongrabber.h"
+#include "ksnapshot_options.h"
 #include <windowgrabber.h>
 #include <kdebug.h>
 #include <klocale.h>
@@ -172,16 +173,6 @@ bool KBackgroundSnapshot::eventFilter( QObject* o, QEvent* e)
 
 static const char description[] = I18N_NOOP("KDE Background Screenshot Utility");
 
-static KCmdLineOptions options[] =
-{
-    { "c", 0, 0 },
-    { "current", I18N_NOOP("Captures the window under the mouse on startup (instead of the desktop)"), 0 },
-    { "fullscreen", I18N_NOOP("Captures the desktop"), 0 },
-    { "region", I18N_NOOP("Captures a region"), 0 },
-    { "child", I18N_NOOP("Captures a part of windows"), 0 },
-    { 0, 0, 0 }
-};
-
 int main(int argc, char **argv)
 {
   KAboutData aboutData( "kbackgroundsnapshot", I18N_NOOP("KBackgroundSnapshot"),
@@ -189,7 +180,7 @@ int main(int argc, char **argv)
     "(c) 2007, Montel Laurent");
 
   KCmdLineArgs::init( argc, argv, &aboutData );
-  KCmdLineArgs::addCmdLineOptions( options ); // Add our own options.
+  KCmdLineArgs::addCmdLineOptions( ksnapshot_options ); // Add our own options.
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
   KApplication app;

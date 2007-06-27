@@ -26,20 +26,11 @@
 
 #include "ksnapshotadaptor.h"
 #include "ksnapshot.h"
+#include "ksnapshot_options.h"
 
 #define KSNAPVERSION "0.8"
 
 static const char description[] = I18N_NOOP("KDE Screenshot Utility");
-
-static KCmdLineOptions options[] =
-{
-    { "c", 0, 0 },
-    { "current", I18N_NOOP("Captures the window under the mouse on startup (instead of the desktop)"), 0 },
-    { "fullscreen", I18N_NOOP("Captures the desktop"), 0 },
-    { "region", I18N_NOOP("Captures a region"), 0 },
-    { "child", I18N_NOOP("Captures a part of windows"), 0 },
-    { 0, 0, 0 }
-};
 
 int main(int argc, char **argv)
 {
@@ -55,7 +46,7 @@ int main(int argc, char **argv)
       "Marcus.Hufgard@hufgard.de" );
 
   KCmdLineArgs::init( argc, argv, &aboutData );
-  KCmdLineArgs::addCmdLineOptions( options ); // Add our own options.
+  KCmdLineArgs::addCmdLineOptions( ksnapshot_options ); // Add our own options.
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
   KApplication app;
