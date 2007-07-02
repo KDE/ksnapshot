@@ -23,15 +23,15 @@
 #include <kcmdlineargs.h>
 #include <klocale.h>
 
-
-static KCmdLineOptions ksnapshot_options[] =
+static KCmdLineOptions ksnapshot_options ()
 {
-    { "c", 0, 0 },
-    { "current", I18N_NOOP("Captures the window under the mouse on startup (instead of the desktop)"), 0 },
-    { "fullscreen", I18N_NOOP("Captures the desktop"), 0 },
-    { "region", I18N_NOOP("Captures a region"), 0 },
-    { "child", I18N_NOOP("Captures a part of windows"), 0 },
-    { 0, 0, 0 }
-};
+  KCmdLineOptions options;
+  options.add("c");
+  options.add("current", ki18n("Captures the window under the mouse on startup (instead of the desktop)"));
+  options.add("fullscreen", ki18n("Captures the desktop"));
+  options.add("region", ki18n("Captures a region"));
+  options.add("child", ki18n("Captures a part of windows"));
+  return options;
+}
 
 #endif

@@ -34,19 +34,19 @@ static const char description[] = I18N_NOOP("KDE Screenshot Utility");
 
 int main(int argc, char **argv)
 {
-  KAboutData aboutData( "ksnapshot", I18N_NOOP("KSnapshot"),
-    KSNAPVERSION, description, KAboutData::License_GPL,
-    "(c) 1997-2004, Richard J. Moore,\n(c) 2000, Matthias Ettrich,\n(c) 2002-2003 Aaron J. Seigo");
-  aboutData.addAuthor("Richard J. Moore",0, "rich@kde.org");
-  aboutData.addAuthor("Matthias Ettrich",0, "ettrich@kde.org");
-  aboutData.addAuthor("Aaron J. Seigo", 0, "aseigo@kde.org");
-  aboutData.addCredit( "Nadeem Hasan", I18N_NOOP("Region Grabbing\nReworked GUI"),
+  KAboutData aboutData( "ksnapshot", 0, ki18n("KSnapshot"),
+    KSNAPVERSION, ki18n(description), KAboutData::License_GPL,
+    ki18n("(c) 1997-2004, Richard J. Moore,\n(c) 2000, Matthias Ettrich,\n(c) 2002-2003 Aaron J. Seigo"));
+  aboutData.addAuthor(ki18n("Richard J. Moore"),KLocalizedString(), "rich@kde.org");
+  aboutData.addAuthor(ki18n("Matthias Ettrich"),KLocalizedString(), "ettrich@kde.org");
+  aboutData.addAuthor(ki18n("Aaron J. Seigo"), KLocalizedString(), "aseigo@kde.org");
+  aboutData.addCredit( ki18n("Nadeem Hasan"), ki18n("Region Grabbing\nReworked GUI"),
       "nhasan@kde.org" );
-  aboutData.addCredit( "Marcus Hufgard", I18N_NOOP("\"Open With\" function"),
+  aboutData.addCredit( ki18n("Marcus Hufgard"), ki18n("\"Open With\" function"),
       "Marcus.Hufgard@hufgard.de" );
 
   KCmdLineArgs::init( argc, argv, &aboutData );
-  KCmdLineArgs::addCmdLineOptions( ksnapshot_options ); // Add our own options.
+  KCmdLineArgs::addCmdLineOptions( ksnapshot_options() ); // Add our own options.
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
   KApplication app;

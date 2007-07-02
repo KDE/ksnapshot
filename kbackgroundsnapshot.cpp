@@ -175,12 +175,12 @@ static const char description[] = I18N_NOOP("KDE Background Screenshot Utility")
 
 int main(int argc, char **argv)
 {
-  KAboutData aboutData( "kbackgroundsnapshot", I18N_NOOP("KBackgroundSnapshot"),
-    KBACKGROUNDSNAPVERSION, description, KAboutData::License_GPL,
-    "(c) 2007, Montel Laurent");
+  KAboutData aboutData( "kbackgroundsnapshot", 0, ki18n("KBackgroundSnapshot"),
+    KBACKGROUNDSNAPVERSION, ki18n(description), KAboutData::License_GPL,
+    ki18n("(c) 2007, Montel Laurent"));
 
   KCmdLineArgs::init( argc, argv, &aboutData );
-  KCmdLineArgs::addCmdLineOptions( ksnapshot_options ); // Add our own options.
+  KCmdLineArgs::addCmdLineOptions( ksnapshot_options() ); // Add our own options.
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
   KApplication app;
