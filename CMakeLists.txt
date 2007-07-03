@@ -22,7 +22,7 @@ kde4_add_ui_files(ksnapshot_SRCS ksnapshotwidget.ui)
 
 kde4_add_executable(ksnapshot ${ksnapshot_SRCS})
 
-target_link_libraries(ksnapshot ${KDE4_KDECORE_LIBS}  ${KDE4_KDEPRINT_LIBS})
+target_link_libraries(ksnapshot ${KDE4_KDEPRINT_LIBS})
 
 install(TARGETS ksnapshot DESTINATION ${BIN_INSTALL_DIR})
 
@@ -37,7 +37,7 @@ kde4_automoc(${kbackgroundsnapshot_SRCS})
 
 kde4_add_executable(kbackgroundsnapshot ${kbackgroundsnapshot_SRCS})
 
-target_link_libraries(kbackgroundsnapshot ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS})
+target_link_libraries(kbackgroundsnapshot ${KDE4_KIO_LIBS})
 
 install(TARGETS kbackgroundsnapshot DESTINATION ${BIN_INSTALL_DIR})
 
@@ -48,3 +48,4 @@ install(TARGETS kbackgroundsnapshot DESTINATION ${BIN_INSTALL_DIR})
 install(FILES ksnapshot.desktop DESTINATION ${XDG_APPS_DIR})
 install(FILES org.kde.ksnapshot.xml DESTINATION ${DBUS_INTERFACES_DIR} )
 kde4_install_icons(${ICON_INSTALL_DIR} )
+
