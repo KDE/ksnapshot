@@ -43,7 +43,7 @@ install(TARGETS kbackgroundsnapshot DESTINATION ${BIN_INSTALL_DIR})
 
 
 
-install(FILES ksnapshot.desktop DESTINATION ${XDG_APPS_DIR})
-install(FILES org.kde.ksnapshot.xml DESTINATION ${DBUS_INTERFACES_DIR} )
+install(FILES ksnapshot.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
+install(FILES org.kde.ksnapshot.xml DESTINATION ${DBUS_INTERFACES_INSTALL_DIR} )
 kde4_install_icons(${ICON_INSTALL_DIR} )
 
