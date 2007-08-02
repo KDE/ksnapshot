@@ -142,7 +142,7 @@ bool KSnapshotObject::saveEqual( const KUrl& url,QWidget *widget )
 
     QApplication::restoreOverrideCursor();
     if ( !ok ) {
-        kWarning() << "KSnapshot was unable to save the snapshot" << endl;
+        kWarning() << "KSnapshot was unable to save the snapshot" ;
 
         QString caption = i18n("Unable to save image");
         QString text = i18n("KSnapshot was unable to save the image to\n%1.", url.prettyUrl());
