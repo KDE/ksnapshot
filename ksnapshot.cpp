@@ -396,7 +396,7 @@ void KSnapshot::closeEvent( QCloseEvent * e )
     conf.writeEntry("mode",mode());
     conf.writeEntry("includeDecorations",includeDecorations());
     KUrl url = filename;
-    url.setPass( QString::null );
+    url.setPass( QString::null );	//krazt:exclude=nullstrassign for old broken gcc
     conf.writePathEntry("filename",url.url());
     e->accept();
 }
