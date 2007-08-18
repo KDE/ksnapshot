@@ -92,7 +92,7 @@ void KBackgroundSnapshot::savePictureOnDesktop()
 {
     filename = KUrl( KGlobalSettings::desktopPath()+i18n("snapshot")+"1.png" );
     // Make sure the name is not already being used
-    while(KIO::NetAccess::exists( filename, false, 0L )) {
+    while(KIO::NetAccess::exists( filename, KIO::NetAccess::DestinationSide, 0L )) {
         autoincFilename();
     }
     save( filename, 0L);

@@ -155,7 +155,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     filename = KUrl( conf.readPathEntry( "filename", QDir::currentPath()+'/'+i18n("snapshot")+"1.png" ));
 
     // Make sure the name is not already being used
-    while(KIO::NetAccess::exists( filename, false, this )) {
+    while(KIO::NetAccess::exists( filename, KIO::NetAccess::DestinationSide, this )) {
         autoincFilename();
     }
 
