@@ -33,6 +33,7 @@
 #include <klocale.h>
 #include <KTemporaryFile>
 #include <kio/netaccess.h>
+#include <kdebug.h>
 
 //Qt include
 #include <QRegExp>
