@@ -54,17 +54,17 @@ void KSnapshotObject::autoincFilename()
     QString name= filename.fileName();
 
     // If the name contains a number then increment it
-    QRegExp numSearch("[0-9]+");
+    QRegExp numSearch( "(^|[^\\d])(\\d+)" ); // we want to match as far left as possible, and when the number is at the start of the name
 
     // Does it have a number?
-    int start = numSearch.indexIn(name);
+    int start = numSearch.lastIndexIn( name );
     if (start != -1) {
         // It has a number, increment it
-        int len = numSearch.matchedLength();
-        QString numAsStr= name.mid(start, len);
-        QString number = QString::number(numAsStr.toInt() + 1);
-        number = number.rightJustified( len, '0');
-        name.replace(start, len, number );
+        start = numSearch.pos( 2 ); // we are only interested in the second group
+        QString numAsStr = numSearch.capturedTexts()[ 2 ];
+        QString number = QString::number( numAsStr.toInt() + 1 );
+        number = number.rightJustified( numAsStr.length(), '0' );
+        name.replace( start, number.length(), number );
     }
     else {
         // no number
