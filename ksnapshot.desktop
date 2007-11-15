@@ -1,5 +1,4 @@
 [Desktop Entry]
-Encoding=UTF-8
 GenericName=Screen Capture Program
 GenericName[af]=Skerm Vang Program
 GenericName[bg]=Снимки на екрана
@@ -72,7 +71,6 @@ Name[zh_TW]=KSnapshot 快照
 MimeType=
 Exec=ksnapshot -caption "%c"
 Icon=ksnapshot
-Path=
 Type=Application
 Terminal=false
 X-DocPath=ksnapshot/index.html
