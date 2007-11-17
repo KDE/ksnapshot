@@ -344,6 +344,7 @@ void WindowGrabber::paintEvent( QPaintEvent * )
     if ( current >= 0 ) {
 	QPainter p;
 	p.begin( this );
+        p.fillRect(rect(), palette().brush( backgroundRole()));
 	p.setPen( QPen( Qt::red, 3 ) );
 	p.drawRect( windows[ current ].adjusted( 0, 0, -1, -1 ) );
 	p.end();
