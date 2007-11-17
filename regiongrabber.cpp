@@ -48,7 +48,7 @@ RegionGrabber::RegionGrabber( ) :
     handles << &TLHandle << &TRHandle << &BLHandle << &BRHandle
             << &LHandle << &THandle << &RHandle << &BHandle;
     setMouseTracking( true );
-    setWindowFlags( Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint );
+    setWindowFlags( Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
     QTimer::singleShot( 50, this, SLOT(init()) );
     connect( &idleTimer, SIGNAL( timeout() ), this, SLOT( displayHelp() ) );
     idleTimer.start( 3000 );
@@ -61,11 +61,9 @@ RegionGrabber::~RegionGrabber()
 void RegionGrabber::init()
 {
     pixmap = QPixmap::grabWindow( QApplication::desktop()->winId() );
-    QPalette palette;
-    palette.setBrush( backgroundRole(), QBrush( pixmap ) );
-    setPalette( palette );
-    resize( pixmap.size() );
     showFullScreen();
+    resize( pixmap.size() );
+    move(0, 0);
     setCursor( Qt::CrossCursor );
 }
 
