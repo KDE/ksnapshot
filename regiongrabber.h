@@ -75,6 +75,7 @@ protected:
     QRect LHandle, THandle, RHandle, BHandle;
 
     QVector<QRect*> handles;
+    QPixmap pixmap;
 };
 
 #endif

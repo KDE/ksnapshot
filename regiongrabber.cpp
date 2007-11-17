@@ -60,7 +60,7 @@ RegionGrabber::~RegionGrabber()
 
 void RegionGrabber::init()
 {
-    QPixmap pixmap = QPixmap::grabWindow( QApplication::desktop()->winId() );
+    pixmap = QPixmap::grabWindow( QApplication::desktop()->winId() );
     QPalette palette;
     palette.setBrush( backgroundRole(), QBrush( pixmap ) );
     setPalette( palette );
@@ -88,7 +88,8 @@ void RegionGrabber::paintEvent( QPaintEvent* e )
     QColor overlayColor( 0, 0, 0, 160 );
     QColor textColor = palette().color( QPalette::Active, QPalette::Text );
     QColor textBackgroundColor = palette().color( QPalette::Active, QPalette::Base );
-
+    painter.drawPixmap(0, 0, pixmap);
+    
     QRect r = selection.normalized().adjusted( 0, 0, -1, -1 );
     if ( !selection.isNull() )
     {
@@ -337,7 +338,7 @@ void RegionGrabber::keyPressEvent( QKeyEvent* e )
         if ( !r.isNull() && r.isValid() )
         {
             grabbing = true;
-            emit regionGrabbed( QPixmap::grabWidget( this, r ) );
+            emit regionGrabbed( pixmap.copy(r) );
         }
     }
     else
