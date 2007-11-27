@@ -211,7 +211,7 @@ WindowGrabber::WindowGrabber()
     setFixedSize( pm.size() );
     setMouseTracking( true );
     setGeometry( x, y, w, h );
-    current = windowIndex( QCursor::pos() );
+    current = windowIndex( mapFromGlobal(QCursor::pos()) );
 }
 
 WindowGrabber::~WindowGrabber()
