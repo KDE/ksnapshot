@@ -27,13 +27,11 @@
 #include <QPalette>
 #include <QBrush>
 #include <QResizeEvent>
-#include <QVector>
 
 #include <QKeyEvent>
 #include <QPixmap>
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QtDebug>
 #include <klocale.h>
 
 RegionGrabber::RegionGrabber( ) :

@@ -25,7 +25,6 @@
 #include "ksnapshot.h"
 
 #include <QClipboard>
-#include <QPainter>
 #include <QShortcut>
 #include <QMenu>
 #include <QX11Info>

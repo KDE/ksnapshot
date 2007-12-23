@@ -15,7 +15,6 @@
  *  Boston, MA 02110-1301, USA.
  */
 
-#include <QtDBus>
 
 #include <kapplication.h>
 #include <kimageio.h>
