@@ -145,7 +145,7 @@ bool KSnapshotObject::saveEqual( const KUrl& url,QWidget *widget )
     if ( !ok ) {
         kWarning() << "KSnapshot was unable to save the snapshot" ;
 
-        QString caption = i18n("Unable to save image");
+        QString caption = i18n("Unable to Save Image");
         QString text = i18n("KSnapshot was unable to save the image to\n%1.", url.prettyUrl());
         KMessageBox::error(widget, text, caption);
     }
