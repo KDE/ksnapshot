@@ -22,9 +22,8 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor,
  *  Boston, MA 02110-1301, USA.
  */
-
+#include <fixx11h.h>
 #include "ksnapshotobject.h"
-
 //kde include
 #include <KMessageBox>
 #include <KSaveFile>
