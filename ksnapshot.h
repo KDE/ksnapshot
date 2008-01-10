@@ -1,4 +1,11 @@
 /*
+ *  Copyright (C) 1997-2002 Richard J. Moore <rich@kde.org>
+ *  Copyright (C) 2000 Matthias Ettrich <ettrich@troll.no>
+ *  Copyright (C) 2002 Aaron J. Seigo <aseigo@kde.org>
+ *  Copyright (C) 2003 Nadeem Hasan <nhasan@kde.org>
+ *  Copyright (C) 2004 Bernd Brandstetter <bbrand@freenet.de>
+ *  Copyright (C) 2006 Urs Wolfer <uwolfer @ kde.org>
+ *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -133,7 +140,7 @@ class KSnapshot : public KDialog, public KSnapshotObject
   Q_OBJECT
 
 public:
-    KSnapshot(QWidget *parent= 0, KSnapshotObject::CaptureMode mode = FullScreen);
+    explicit KSnapshot(QWidget *parent= 0, KSnapshotObject::CaptureMode mode = FullScreen);
     ~KSnapshot();
 
 
