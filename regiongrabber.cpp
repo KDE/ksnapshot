@@ -17,22 +17,14 @@
  */
 
 #include "regiongrabber.h"
-#include <QWidget>
-#include <QTimer>
-#include <QPaintEvent>
-#include <QPainter>
-#include <QRect>
-#include <QMouseEvent>
-#include <QPoint>
-#include <QPalette>
-#include <QBrush>
-#include <QResizeEvent>
 
-#include <QKeyEvent>
-#include <QPixmap>
+#include <QPainter>
+#include <QMouseEvent>
 #include <QApplication>
 #include <QDesktopWidget>
+
 #include <klocale.h>
+#include <KWindowSystem>
 
 RegionGrabber::RegionGrabber( ) :
     QWidget( 0 ), selection(), mouseDown( false ), newSelection( false ),
@@ -47,7 +39,8 @@ RegionGrabber::RegionGrabber( ) :
             << &LHandle << &THandle << &RHandle << &BHandle;
     setMouseTracking( true );
     setWindowFlags( Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
-    QTimer::singleShot( 50, this, SLOT(init()) );
+    int timeout = KWindowSystem::compositingActive() ? 200 : 50;
+    QTimer::singleShot( timeout, this, SLOT(init()) );
     connect( &idleTimer, SIGNAL( timeout() ), this, SLOT( displayHelp() ) );
     idleTimer.start( 3000 );
 }
