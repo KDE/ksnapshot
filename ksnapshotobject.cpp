@@ -27,7 +27,6 @@
 
 //kde include
 #include <KMessageBox>
-#include <KSaveFile>
 #include <KMimeType>
 #include <KImageIO>
 #include <klocale.h>
@@ -126,11 +125,8 @@ bool KSnapshotObject::saveEqual( const KUrl& url,QWidget *widget )
     bool ok = false;
 
     if ( url.isLocalFile() ) {
-        KSaveFile saveFile( url.path() );
-        if ( saveFile.open() ) {
-            if ( snapshot.save( &saveFile, type ) )
-                ok = saveFile.finalize();
-        }
+        if ( snapshot.save( url.path(), type ) )
+            ok = true;
     }
     else {
         KTemporaryFile tmpFile;
