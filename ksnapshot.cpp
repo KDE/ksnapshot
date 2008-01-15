@@ -27,7 +27,7 @@
 #include <QClipboard>
 #include <QShortcut>
 #include <QMenu>
-#include <QX11Info>
+#include <QDesktopWidget>
 
 #include <klocale.h>
 
@@ -55,10 +55,6 @@
 #include "regiongrabber.h"
 #include "windowgrabber.h"
 #include "ui_ksnapshotwidget.h"
-
-
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
 
 class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
 {
@@ -114,7 +110,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     grabber->grabMouse( Qt::WaitCursor );
 
     if ( mode == KSnapshotObject::FullScreen )
-        snapshot = QPixmap::grabWindow( QX11Info::appRootWindow() );
+        snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
     else {
         setMode( mode );
 	switch(mode)
@@ -451,7 +447,7 @@ void KSnapshot::performGrab()
         snapshot = WindowGrabber::grabCurrent( includeDecorations() );
     }
     else {
-        snapshot = QPixmap::grabWindow( QX11Info::appRootWindow() );
+        snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
     }
     updatePreview();
     QApplication::restoreOverrideCursor();

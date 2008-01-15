@@ -4,7 +4,7 @@
  *  Copyright (C) 2002 Aaron J. Seigo <aseigo@kde.org>
  *  Copyright (C) 2003 Nadeem Hasan <nhasan@kde.org>
  *  Copyright (C) 2004 Bernd Brandstetter <bbrand@freenet.de>
- *  Copyright (C) 2006 Urs Wolfer <uwolfer @ kde.org>
+ *  Copyright (C) 2006-2008 Urs Wolfer <uwolfer @ kde.org>
  *  Copyright (C) 2007 Montel Laurent <montel@kde.org>
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -28,7 +28,6 @@
 #include <fixx11h.h>
 //kde include
 #include <KMessageBox>
-#include <KSaveFile>
 #include <KMimeType>
 #include <KImageIO>
 #include <klocale.h>
@@ -127,11 +126,8 @@ bool KSnapshotObject::saveEqual( const KUrl& url,QWidget *widget )
     bool ok = false;
 
     if ( url.isLocalFile() ) {
-        KSaveFile saveFile( url.path() );
-        if ( saveFile.open() ) {
-            if ( snapshot.save( &saveFile, type ) )
-                ok = saveFile.finalize();
-        }
+        if ( snapshot.save( url.path(), type ) )
+            ok = true;
     }
     else {
         KTemporaryFile tmpFile;

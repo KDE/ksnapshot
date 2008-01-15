@@ -32,9 +32,7 @@
 
 #include <QMouseEvent>
 #include <QPixmap>
-#include <QX11Info>
-#include <QWidget>
-#include <QApplication>
+#include <QDesktopWidget>
 
 KBackgroundSnapshot::KBackgroundSnapshot(KSnapshotObject::CaptureMode mode)
 	:KSnapshotObject()
@@ -48,7 +46,7 @@ KBackgroundSnapshot::KBackgroundSnapshot(KSnapshotObject::CaptureMode mode)
 
     if ( mode == KSnapshotObject::FullScreen )
     {
-        snapshot = QPixmap::grabWindow( QX11Info::appRootWindow() );
+        snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
         savePictureOnDesktop();
     }
     else {
