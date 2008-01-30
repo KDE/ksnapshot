@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 1997-2002 Richard J. Moore <rich@kde.org>
+ *  Copyright (C) 1997-2008 Richard J. Moore <rich@kde.org>
  *  Copyright (C) 2000 Matthias Ettrich <ettrich@troll.no>
  *  Copyright (C) 2002 Aaron J. Seigo <aseigo@kde.org>
  *  Copyright (C) 2003 Nadeem Hasan <nhasan@kde.org>
@@ -38,6 +38,7 @@
 //Qt include
 #include <QRegExp>
 #include <QApplication>
+#include <QImageWriter>
 
 KSnapshotObject::KSnapshotObject()
 {
@@ -126,7 +127,13 @@ bool KSnapshotObject::saveEqual( const KUrl& url,QWidget *widget )
     bool ok = false;
 
     if ( url.isLocalFile() ) {
-        if ( snapshot.save( url.path(), type ) )
+	bool supported = false;
+	QByteArray format;
+	foreach ( format, QImageWriter::supportedImageFormats() ) {
+	    if ( format.toLower() == type.toLower() )
+		supported = true;
+	}
+        if ( supported && snapshot.save( url.path(), type ) )
             ok = true;
     }
     else {
