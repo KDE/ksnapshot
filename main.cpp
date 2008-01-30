@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 {
   KAboutData aboutData( "ksnapshot", 0, ki18n("KSnapshot"),
     KSNAPVERSION, ki18n(description), KAboutData::License_GPL,
-    ki18n("(c) 1997-2004, Richard J. Moore,\n(c) 2000, Matthias Ettrich,\n(c) 2002-2003 Aaron J. Seigo"));
+    ki18n("(c) 1997-2008, Richard J. Moore,\n(c) 2000, Matthias Ettrich,\n(c) 2002-2003 Aaron J. Seigo"));
   aboutData.addAuthor(ki18n("Richard J. Moore"),KLocalizedString(), "rich@kde.org");
   aboutData.addAuthor(ki18n("Matthias Ettrich"),KLocalizedString(), "ettrich@kde.org");
   aboutData.addAuthor(ki18n("Aaron J. Seigo"), KLocalizedString(), "aseigo@kde.org");

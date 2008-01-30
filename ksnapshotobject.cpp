@@ -37,6 +37,7 @@
 //Qt include
 #include <QRegExp>
 #include <QApplication>
+#include <QImageWriter>
 
 KSnapshotObject::KSnapshotObject()
 {
@@ -125,7 +126,13 @@ bool KSnapshotObject::saveEqual( const KUrl& url,QWidget *widget )
     bool ok = false;
 
     if ( url.isLocalFile() ) {
-        if ( snapshot.save( url.path(), type ) )
+	bool supported = false;
+	QByteArray format;
+	foreach ( format, QImageWriter::supportedImageFormats() ) {
+	    if ( format.toLower() == type.toLower() )
+		supported = true;
+	}
+        if ( supported && snapshot.save( url.path(), type ) )
             ok = true;
     }
     else {
