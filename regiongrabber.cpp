@@ -22,6 +22,7 @@
 #include <QMouseEvent>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QToolTip>
 
 #include <klocale.h>
 #include <KWindowSystem>
@@ -72,12 +73,16 @@ void RegionGrabber::paintEvent( QPaintEvent* e )
 
     QPainter painter( this );
 
-    QColor handleColor = palette().color( QPalette::Active, QPalette::Highlight );
+    QPalette pal(QToolTip::palette());
+    QFont font = QToolTip::font();
+
+    QColor handleColor = pal.color( QPalette::Active, QPalette::Highlight );
     handleColor.setAlpha( 160 );
     QColor overlayColor( 0, 0, 0, 160 );
-    QColor textColor = palette().color( QPalette::Active, QPalette::Text );
-    QColor textBackgroundColor = palette().color( QPalette::Active, QPalette::Base );
+    QColor textColor = pal.color( QPalette::Active, QPalette::Text );
+    QColor textBackgroundColor = pal.color( QPalette::Active, QPalette::Base );
     painter.drawPixmap(0, 0, pixmap);
+    painter.setFont(font);
     
     QRect r = selection.normalized().adjusted( 0, 0, -1, -1 );
     if ( !selection.isNull() )
