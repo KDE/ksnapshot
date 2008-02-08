@@ -55,6 +55,7 @@ protected:
     void updateHandles();
     QRegion handleMask() const;
     QPoint limitPointToRect( const QPoint &p, const QRect &r ) const;
+    void grabRect();
 
     QRect selection;
     bool mouseDown;

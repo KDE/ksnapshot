@@ -307,12 +307,7 @@ void RegionGrabber::mouseReleaseEvent( QMouseEvent* e )
 
 void RegionGrabber::mouseDoubleClickEvent( QMouseEvent* )
 {
-    QRect r = selection.normalized();
-    if ( !r.isNull() && r.isValid() )
-    {
-        grabbing = true;
-        emit regionGrabbed( QPixmap::grabWidget( this, r ) );
-    }
+    grabRect();
 }
 
 void RegionGrabber::keyPressEvent( QKeyEvent* e )
@@ -323,16 +318,21 @@ void RegionGrabber::keyPressEvent( QKeyEvent* e )
     }
     else if ( e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return )
     {
-        QRect r = selection.normalized();
-        if ( !r.isNull() && r.isValid() )
-        {
-            grabbing = true;
-            emit regionGrabbed( pixmap.copy(r) );
-        }
+        grabRect();
     }
     else
     {
         e->ignore();
+    }
+}
+
+void RegionGrabber::grabRect()
+{
+    QRect r = selection.normalized();
+    if ( !r.isNull() && r.isValid() )
+    {
+	grabbing = true;
+        emit regionGrabbed( pixmap.copy(r) );
     }
 }
 
