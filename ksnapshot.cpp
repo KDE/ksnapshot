@@ -365,7 +365,7 @@ void KSnapshot::slotRegionGrabbed( const QPixmap &pix )
     updateCaption();
   }
 
-  delete rgnGrab;
+  rgnGrab->deleteLater();
   QApplication::restoreOverrideCursor();
   show();
 }

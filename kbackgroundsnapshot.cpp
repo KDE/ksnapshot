@@ -149,7 +149,7 @@ void KBackgroundSnapshot::slotRegionGrabbed( const QPixmap &pix )
 {
   if ( !pix.isNull() )
     snapshot = pix;
-  delete rgnGrab;
+  rgnGrab->deleteLater();
   QApplication::restoreOverrideCursor();
   savePictureOnDesktop();
 }
