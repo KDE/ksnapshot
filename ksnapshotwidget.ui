@@ -197,7 +197,7 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
      <item>
       <widget class="KPushButton" name="btnOpen" >
        <property name="whatsThis" >
-        <string>Click this button to open the snapshot with an other application</string>
+        <string>Click this button to open the snapshot with another application.</string>
        </property>
        <property name="text" >
         <string>&amp;Open With</string>
