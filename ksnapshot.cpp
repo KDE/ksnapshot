@@ -335,12 +335,12 @@ void KSnapshot::slotPopulateOpenMenu()
     KService::List services = KMimeTypeTrader::self()->query( "image/png");
     QMap<QString, KService::Ptr> apps;
 
-    foreach (const KService::Ptr service, services)
+    foreach (const KService::Ptr &service, services)
     {
         apps.insert(service->name(), service);
     }
 
-    foreach (const KService::Ptr service, apps)
+    foreach (const KService::Ptr &service, apps)
     {
         QString name = service->name().replace( "&", "&&" );
         openMenu->addAction(new KSnapshotServiceAction(service,

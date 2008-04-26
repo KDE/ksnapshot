@@ -128,8 +128,7 @@ bool KSnapshotObject::saveEqual( const KUrl& url,QWidget *widget )
 
     if ( url.isLocalFile() ) {
 	bool supported = false;
-	QByteArray format;
-	foreach ( format, QImageWriter::supportedImageFormats() ) {
+	foreach ( const QByteArray &format, QImageWriter::supportedImageFormats() ) {
 	    if ( format.toLower() == type.toLower() )
 		supported = true;
 	}
