@@ -23,7 +23,7 @@ kde4_add_executable(ksnapshot ${ksnapshot_SRCS})
 
 target_link_libraries(ksnapshot ${KDE4_KIO_LIBS})
 
-install(TARGETS ksnapshot DESTINATION ${BIN_INSTALL_DIR})
+install(TARGETS ksnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 
 ########### next target ###############
@@ -37,7 +37,7 @@ kde4_add_executable(kbackgroundsnapshot ${kbackgroundsnapshot_SRCS})
 
 target_link_libraries(kbackgroundsnapshot ${KDE4_KIO_LIBS})
 
-install(TARGETS kbackgroundsnapshot DESTINATION ${BIN_INSTALL_DIR})
+install(TARGETS kbackgroundsnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 ########### install files ###############
 
