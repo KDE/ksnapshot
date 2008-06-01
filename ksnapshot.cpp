@@ -31,6 +31,7 @@
 
 #include <klocale.h>
 
+#include <KDebug>
 #include <kglobal.h>
 #include <kicon.h>
 #include <kimageio.h>
@@ -72,7 +73,7 @@ class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
 };
 
 KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
-  : KDialog(parent), KSnapshotObject()
+  : KDialog(parent), KSnapshotObject(), modified(false)
 {
     setCaption( "" );
     setModal( true );
@@ -204,6 +205,7 @@ void KSnapshot::slotSave()
     if ( save(filename, this) ) {
         modified = false;
         autoincFilename();
+        updateCaption();
     }
 }
 
@@ -229,6 +231,7 @@ void KSnapshot::slotSaveAs()
         filename = url;
         modified = false;
         autoincFilename();
+        updateCaption();
     }
 }
 
@@ -253,8 +256,8 @@ void KSnapshot::slotGrab()
     hide();
 
     if ( delay() ) {
-        grabTimer.setSingleShot( true );
-        grabTimer.start( delay() * 1000 );
+        //kDebug() << "starting timer with time of" << delay();
+        grabTimer.start( delay());
     }
     else {
         if ( mode() == Region ) {
@@ -488,7 +491,7 @@ void KSnapshot::refreshCaption()
 
 void KSnapshot::updateCaption()
 {
-    setCaption( filename.fileName(), true );
+    setCaption( filename.fileName(), modified );
 }
 
 void KSnapshot::slotMovePointer(int x, int y)

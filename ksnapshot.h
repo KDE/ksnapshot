@@ -39,6 +39,7 @@
 #include <kservice.h>
 #include <kurl.h>
 #include "ksnapshotobject.h"
+#include "snapshottimer.h"
 
 class KSnapshotWidget;
 class QMenu;
@@ -193,7 +194,7 @@ public:
 private:
     void performGrab();
     void grabRegion();
-    QTimer grabTimer;
+    SnapshotTimer grabTimer;
     QTimer updateTimer;
     QMenu*  openMenu;
     KSnapshotWidget *mainWidget;
