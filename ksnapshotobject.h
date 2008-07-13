@@ -35,7 +35,7 @@ class QString;
 class KSnapshotObject
 {
 public:
-     enum CaptureMode { FullScreen=0, WindowUnderCursor=1, Region=2, ChildWindow=3 };
+    enum CaptureMode { FullScreen=0, WindowUnderCursor=1, Region=2, ChildWindow=3, CurrentScreen=4 };
      KSnapshotObject();
      virtual ~KSnapshotObject();
 

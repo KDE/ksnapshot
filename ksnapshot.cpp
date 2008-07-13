@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 1997-2002 Richard J. Moore <rich@kde.org>
+ *  Copyright (C) 1997-2008 Richard J. Moore <rich@kde.org>
  *  Copyright (C) 2000 Matthias Ettrich <ettrich@troll.no>
  *  Copyright (C) 2002 Aaron J. Seigo <aseigo@kde.org>
  *  Copyright (C) 2003 Nadeem Hasan <nhasan@kde.org>
@@ -52,10 +52,12 @@
 #include <kstandarddirs.h>
 #include <kstartupinfo.h>
 #include <kvbox.h>
+#include <qdebug.h>
 
 #include "regiongrabber.h"
 #include "windowgrabber.h"
 #include "ui_ksnapshotwidget.h"
+
 
 class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
 {
@@ -110,8 +112,20 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     grabber->show();
     grabber->grabMouse( Qt::WaitCursor );
 
+    qDebug() << "Mode = " << mode;
     if ( mode == KSnapshotObject::FullScreen )
         snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
+    else if ( mode == KSnapshotObject::CurrentScreen ) {
+	qDebug() << "Desktop Geom = " << QApplication::desktop()->geometry();
+	QDesktopWidget *desktop = QApplication::desktop();
+	int screenId = desktop->screenNumber( QCursor::pos() );
+	qDebug() << "Screenid = " << screenId;
+	QRect geom = desktop->screenGeometry( screenId );
+	qDebug() << "Geometry = " << screenId;
+	snapshot = QPixmap::grabWindow( desktop->winId(),
+					geom.x(), geom.y(), geom.width(), geom.height() );
+
+    }
     else {
         setMode( mode );
 	switch(mode)
@@ -448,6 +462,16 @@ void KSnapshot::performGrab()
     }
     else if ( mode() == WindowUnderCursor ) {
         snapshot = WindowGrabber::grabCurrent( includeDecorations() );
+    }
+    else if ( mode() == CurrentScreen ) {
+	qDebug() << "Desktop Geom2 = " << QApplication::desktop()->geometry();
+	QDesktopWidget *desktop = QApplication::desktop();
+	int screenId = desktop->screenNumber( QCursor::pos() );
+	qDebug() << "Screenid2 = " << screenId;
+	QRect geom = desktop->screenGeometry( screenId );
+	qDebug() << "Geometry2 = " << geom;
+	snapshot = QPixmap::grabWindow( desktop->winId(),
+					geom.x(), geom.y(), geom.width(), geom.height() );
     }
     else {
         snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );

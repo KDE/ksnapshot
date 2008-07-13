@@ -97,7 +97,7 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
      <property name="sizeType" >
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0" >
       <size>
        <width>156</width>
        <height>16</height>
@@ -148,15 +148,20 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
        <string>Section of Window</string>
       </property>
      </item>
+     <item>
+      <property name="text" >
+       <string>Current Screen</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="0" column="3" >
     <layout class="QVBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
+     </property>
+     <property name="margin" >
+      <number>0</number>
      </property>
      <item>
       <widget class="KPushButton" name="btnNew" >
@@ -176,7 +181,7 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
        <property name="sizeType" >
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>140</width>
          <height>44</height>
