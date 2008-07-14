@@ -84,9 +84,8 @@ void SnapshotTimer::paintEvent( QPaintEvent* e )
 
       painter.setPen( textColor );
       painter.setBrush( textBackgroundColor );
-      //TODO: replace the current string with this one when we are out of string freeze
-      //QString helpText = i18n( "Prepare for snapshot in %1", (length-time) );
-      QString helpText = i18n("Snapshot &delay:").remove('&') + " " + QString::number(length-time);
+      QString helpText = i18np( "Snapshot will be taken in 1 second",
+                                "Snapshot will be taken in %1 seconds", ( length-time ) );
       QRect textRect = painter.boundingRect( rect().adjusted( 2, 2, -2, -2 ), Qt::TextWordWrap, helpText );
       textRect.adjust( -2, -2, 4, 2 );
       painter.drawRect( rect().adjusted(0,0,-1,-1) );
