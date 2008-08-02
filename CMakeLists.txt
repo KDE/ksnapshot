@@ -22,7 +22,7 @@ kde4_add_ui_files(ksnapshot_SRCS ksnapshotwidget.ui)
 
 kde4_add_executable(ksnapshot ${ksnapshot_SRCS})
 
-target_link_libraries(ksnapshot ${KDE4_KIO_LIBS})
+target_link_libraries(ksnapshot ${KDE4_KIO_LIBS} ${X11_LIBRARIES})
 
 install(TARGETS ksnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
 
@@ -36,7 +36,7 @@ set(kbackgroundsnapshot_SRCS
 
 kde4_add_executable(kbackgroundsnapshot ${kbackgroundsnapshot_SRCS})
 
-target_link_libraries(kbackgroundsnapshot ${KDE4_KIO_LIBS})
+target_link_libraries(kbackgroundsnapshot ${KDE4_KIO_LIBS} ${X11_LIBRARIES})
 
 install(TARGETS kbackgroundsnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
 
