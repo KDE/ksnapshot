@@ -42,6 +42,7 @@ public:
      bool save( const QString &filename, QWidget* widget );
      bool save( const KUrl& url, QWidget *widget );
      bool saveEqual( const KUrl& url,QWidget *widget );
+     bool saveImage( QIODevice *device, const QByteArray &format );
 
 protected:
      void autoincFilename();

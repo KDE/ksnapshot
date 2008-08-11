@@ -127,21 +127,17 @@ bool KSnapshotObject::saveEqual( const KUrl& url,QWidget *widget )
     bool ok = false;
 
     if ( url.isLocalFile() ) {
-	bool supported = false;
-	foreach ( const QByteArray &format, QImageWriter::supportedImageFormats() ) {
-	    if ( format.toLower() == type.toLower() )
-		supported = true;
-	}
-        if ( supported && snapshot.save( url.path(), type ) )
-            ok = true;
+	QFile output( url.path() );
+	if ( output.open( QFile::WriteOnly ) )
+	    ok = saveImage( &output, type );
     }
     else {
         KTemporaryFile tmpFile;
-        if ( tmpFile.open() ) {
-            if ( snapshot.save( &tmpFile, type ) ) {
+	if ( tmpFile.open() ) {
+            if ( saveImage( &tmpFile, type ) ) {
                 ok = KIO::NetAccess::upload( tmpFile.fileName(), url, widget );
             }
-        }
+	}
     }
 
     QApplication::restoreOverrideCursor();
@@ -154,4 +150,22 @@ bool KSnapshotObject::saveEqual( const KUrl& url,QWidget *widget )
     }
 
     return ok;
+}
+
+bool KSnapshotObject::saveImage( QIODevice *device, const QByteArray &format )
+{
+    QImageWriter imgWriter( device, format );
+
+    if ( !imgWriter.canWrite() ) {
+	kDebug() << "Cannot write format " << format;
+	return false;
+    }
+
+    // For jpeg use 85% quality not the default
+    if ( 0 == qstricmp(format.constData(), "jpeg") || 0 == qstricmp(format.constData(), "jpg") ) {
+	imgWriter.setQuality( 85 );
+    }
+
+    QImage snap = snapshot.toImage();
+    return imgWriter.write( snap );
 }
