@@ -32,6 +32,8 @@ public:
     ~WindowGrabber();
 
     static QPixmap grabCurrent( bool includeDecorations = true );
+    static QString lastWindowTitle() { return WindowGrabber::title; }
+    static QString lastWindowClass() { return WindowGrabber::windowClass; }
 
 signals:
     void windowGrabbed( const QPixmap & );
@@ -50,6 +52,8 @@ private:
     std::vector<QRect> windows;
     int current;
     int yPos;
+    static QString title;
+    static QString windowClass;
 };
 
 #endif // WINDOWGRABBER_H

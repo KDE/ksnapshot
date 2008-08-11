@@ -54,6 +54,8 @@ protected:
      RegionGrabber *rgnGrab;
      QWidget* grabber;
      QPixmap snapshot;
+     QString title;
+     QString windowClass;
 };
 
 #endif

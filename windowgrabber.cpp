@@ -21,6 +21,9 @@
 
 #include <algorithm>
 
+#include <kwindowinfo.h>
+#include <kdebug.h>
+
 #include <QBitmap>
 #include <QPainter>
 #include <QPixmap>
@@ -33,7 +36,6 @@
 #include <X11/extensions/shape.h>
 #endif
 #include <QX11Info>
-
 
 static
 const int minSize = 8;
@@ -135,9 +137,16 @@ Window windowUnderCursor( bool includeDecorations = true )
 }
 
 static
-QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border )
+QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border,
+		    QString *title=0, QString *windowClass=0 )
 {
     QPixmap pm( QPixmap::grabWindow( QX11Info::appRootWindow(), x, y, w, h ) );
+
+    KWindowInfo winInfo( findRealWindow(child), NET::WMVisibleName, NET::WM2WindowClass );
+    if ( title )
+	(*title) = winInfo.visibleName();
+    if ( windowClass )
+	(*windowClass) = winInfo.windowClassName();
 
 #ifdef HAVE_X11_EXTENSIONS_SHAPE_H
     int tmp1, tmp2;
@@ -190,6 +199,9 @@ QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border )
     return pm;
 }
 
+QString WindowGrabber::title;
+QString WindowGrabber::windowClass;
+
 WindowGrabber::WindowGrabber()
 : QDialog( 0, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint ),
   current( -1 ), yPos( -1 )
@@ -201,7 +213,7 @@ WindowGrabber::WindowGrabber()
     XGrabServer( QX11Info::display() );
     Window child = windowUnderCursor();
     XGetGeometry( QX11Info::display(), child, &root, &x, &y, &w, &h, &border, &depth );
-    QPixmap pm( grabWindow( child, x, y, w, h, border ) );
+    QPixmap pm( grabWindow( child, x, y, w, h, border, &title, &windowClass ) );
     getWindowsRecursive( windows, child );
     XUngrabServer( QX11Info::display() );
 
@@ -241,7 +253,7 @@ QPixmap WindowGrabber::grabCurrent( bool includeDecorations )
 	    y = newy;
 	}
     }
-    QPixmap pm( grabWindow( child, x, y, w, h, border ) );
+    QPixmap pm( grabWindow( child, x, y, w, h, border, &title, &windowClass ) );
     XUngrabServer( QX11Info::display() );
     return pm;
 }

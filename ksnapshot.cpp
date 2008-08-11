@@ -454,6 +454,10 @@ void KSnapshot::performGrab()
     grabber->releaseMouse();
     grabber->hide();
     grabTimer.stop();
+
+    title = QString();
+    windowClass = QString();
+
     if ( mode() == ChildWindow ) {
         WindowGrabber wndGrab;
         connect( &wndGrab, SIGNAL( windowGrabbed( const QPixmap & ) ),
@@ -462,14 +466,21 @@ void KSnapshot::performGrab()
     }
     else if ( mode() == WindowUnderCursor ) {
         snapshot = WindowGrabber::grabCurrent( includeDecorations() );
+
+	// If we're showing decorations anyway then we'll add the title and window
+	// class to the output image meta data.
+	if ( includeDecorations() ) {
+	    title = WindowGrabber::lastWindowTitle();
+	    windowClass = WindowGrabber::lastWindowClass();
+	}
     }
     else if ( mode() == CurrentScreen ) {
-	qDebug() << "Desktop Geom2 = " << QApplication::desktop()->geometry();
+	kDebug() << "Desktop Geom2 = " << QApplication::desktop()->geometry();
 	QDesktopWidget *desktop = QApplication::desktop();
 	int screenId = desktop->screenNumber( QCursor::pos() );
-	qDebug() << "Screenid2 = " << screenId;
+	kDebug() << "Screenid2 = " << screenId;
 	QRect geom = desktop->screenGeometry( screenId );
-	qDebug() << "Geometry2 = " << geom;
+	kDebug() << "Geometry2 = " << geom;
 	snapshot = QPixmap::grabWindow( desktop->winId(),
 					geom.x(), geom.y(), geom.width(), geom.height() );
     }
