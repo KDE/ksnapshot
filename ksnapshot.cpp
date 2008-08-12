@@ -410,6 +410,8 @@ void KSnapshot::closeEvent( QCloseEvent * e )
     KUrl url = filename;
     url.setPass( QString::null );	//krazy:exclude=nullstrassign for old broken gcc
     conf.writePathEntry("filename",url.url());
+
+    conf.sync();
     e->accept();
 }
 
