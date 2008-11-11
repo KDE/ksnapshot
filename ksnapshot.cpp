@@ -230,6 +230,7 @@ void KSnapshot::slotSaveAs()
 
     dlg.setOperationMode( KFileDialog::Saving );
     dlg.setCaption( i18n("Save As") );
+    dlg.setSelection( filename.url() );
 
     KImageFilePreview *ip = new KImageFilePreview( &dlg );
     dlg.setPreviewWidget( ip );
