@@ -74,6 +74,9 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
      <property name="text" >
       <string>Snapshot &amp;delay:</string>
      </property>
+     <property name="alignment" >
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
      <property name="buddy" >
       <cstring>spinDelay</cstring>
      </property>
@@ -83,6 +86,9 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
     <widget class="QLabel" name="textLabel1" >
      <property name="text" >
       <string>Cap&amp;ture mode:</string>
+     </property>
+     <property name="alignment" >
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
      <property name="buddy" >
       <cstring>comboMode</cstring>
