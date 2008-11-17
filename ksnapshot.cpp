@@ -37,7 +37,6 @@
 #include <kimageio.h>
 #include <kcomponentdata.h>
 #include <kfiledialog.h>
-#include <kimagefilepreview.h>
 #include <kmessagebox.h>
 #include <kio/netaccess.h>
 #include <ksavefile.h>
@@ -232,8 +231,7 @@ void KSnapshot::slotSaveAs()
     dlg.setCaption( i18n("Save As") );
     dlg.setSelection( filename.url() );
 
-    KImageFilePreview *ip = new KImageFilePreview( &dlg );
-    dlg.setPreviewWidget( ip );
+    dlg.setInlinePreviewShown(true);
 
     if ( !dlg.exec() )
         return;
