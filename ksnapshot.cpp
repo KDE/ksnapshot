@@ -172,7 +172,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     connect( &updateTimer, SIGNAL( timeout() ), this, SLOT(  updatePreview() ) );
     QTimer::singleShot( 0, this, SLOT( updateCaption() ) );
 
-    KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::mainComponent().aboutData(), false);
+    KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::mainComponent().aboutData(), true);
     setButtonMenu( Help, helpMenu->menu() );
 #if 0
     accel->insert( "QuickSave", i18n("Quick Save Snapshot &As..."),
