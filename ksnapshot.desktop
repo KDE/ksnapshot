@@ -1,6 +1,7 @@
 [Desktop Entry]
 GenericName=Screen Capture Program
 GenericName[af]=Skerm Vang Program
+GenericName[ar]=برنامج التقاط الشاشة
 GenericName[bg]=Снимки на екрана
 GenericName[ca]=Programa de captura de pantalla
 GenericName[cs]=Snímač obrazovky
@@ -61,6 +62,7 @@ GenericName[zh_HK]=螢幕擷取程式
 GenericName[zh_TW]=畫面擷取程式
 Name=KSnapshot
 Name[af]=K-kiekie
+Name[ar]=كيسنابشوت
 Name[cy]=KCipluniau
 Name[hi]=के-स्नेपशॉट
 Name[ne]=केडीई स्न्यापसट
