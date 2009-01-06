@@ -20,6 +20,8 @@ qt4_add_dbus_adaptor(ksnapshot_SRCS org.kde.ksnapshot.xml ksnapshot.h KSnapshot)
 
 kde4_add_ui_files(ksnapshot_SRCS ksnapshotwidget.ui)
 
+kde4_add_app_icon(ksnapshot_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/hi*-app-ksnapshot.png")
+
 kde4_add_executable(ksnapshot ${ksnapshot_SRCS})
 
 target_link_libraries(ksnapshot ${KDE4_KIO_LIBS} ${X11_LIBRARIES})
