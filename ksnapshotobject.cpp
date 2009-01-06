@@ -65,7 +65,7 @@ void KSnapshotObject::autoincFilename()
         QString numAsStr = numSearch.capturedTexts()[ 2 ];
         QString number = QString::number( numAsStr.toInt() + 1 );
         number = number.rightJustified( numAsStr.length(), '0' );
-        name.replace( start, number.length(), number );
+        name.replace( start, numAsStr.length(), number );
     }
     else {
         // no number
