@@ -98,6 +98,7 @@ void KSnapshotObject::changeUrl( const QString &url )
 }
 
 
+// NOTE: widget == NULL if called from dbus interface
 bool KSnapshotObject::save( const QString &filename, QWidget* widget )
 {
     return save( KUrl( filename ), widget);
