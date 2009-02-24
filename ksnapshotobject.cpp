@@ -98,6 +98,7 @@ void KSnapshotObject::changeUrl( const QString &url )
 }
 
 
+// NOTE: widget == NULL if called from dbus interface
 bool KSnapshotObject::save( const QString &filename, QWidget* widget )
 {
     return save( KUrl( filename ), widget);
@@ -106,6 +107,7 @@ bool KSnapshotObject::save( const QString &filename, QWidget* widget )
 bool KSnapshotObject::save( const KUrl& url, QWidget *widget )
 {
     if ( KIO::NetAccess::exists( url, KIO::NetAccess::DestinationSide, widget ) ) {
+        // NOTE: widget == NULL if called from dbus interface
         const QString title = i18n( "File Exists" );
         const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" , url.prettyUrl());
         if (KMessageBox::Continue != KMessageBox::warningContinueCancel( widget, text, title, KGuiItem(i18n("Overwrite")) ) )

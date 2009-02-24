@@ -1,40 +1,40 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
 "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
-	<interface name="org.kde.ksnapshot">
-			<method name="slotGrab"/>
-			<method name="slotSave"/>
-                        <method name="slotOpen">
-                            <arg name="application" type="s" direction="in">
-                        </method>
-		<method name="url">
-			<arg type="s" direction="out"/>
-		</method>
-        <method name="save">
-            <arg type="b" direction="out"/>
-			<arg name="filename" type="s" direction="in"/>
-        </method>
-		<method name="slotSaveAs"/>
-		<method name="slotCopy"/>
-        <method name="setTime">
-            <arg name="newTime" type="i" direction="in"/>
-        </method>
-        <method name="timeout">
-            <arg type="i" direction="out"/>
-        </method>
-        <method name="setURL">
-            <arg name="newURL" type="s" direction="in"/>
-        </method>
-        <method name="setGrabMode">
-            <arg name="grab" type="i" direction="in"/>
-        </method>
-        <method name="grabMode">
-            <arg type="i" direction="out"/>
-        </method>
-        <method name="slotMovePointer">
-            <arg name="x" type="i" direction="in"/>
-            <arg name="y" type="i" direction="in"/>
-        </method>
-		<method name="exit"/>
-	</interface>
+        <interface name="org.kde.ksnapshot">
+                <method name="slotGrab"/>
+                <method name="slotSave"/>
+                <method name="slotOpen">
+                        <arg name="application" type="s" direction="in" />
+                </method>
+                <method name="url">
+                        <arg type="s" direction="out"/>
+                </method>
+                <method name="save">
+                        <arg type="b" direction="out"/>
+                        <arg name="filename" type="s" direction="in"/>
+                </method>
+                <method name="slotSaveAs"/>
+                <method name="slotCopy"/>
+                <method name="setTime">
+                        <arg name="newTime" type="i" direction="in"/>
+                </method>
+                <method name="timeout">
+                        <arg type="i" direction="out"/>
+                </method>
+                <method name="setURL">
+                        <arg name="newURL" type="s" direction="in"/>
+                </method>
+                <method name="setGrabMode">
+                        <arg name="grab" type="i" direction="in"/>
+                </method>
+                <method name="grabMode">
+                        <arg type="i" direction="out"/>
+                </method>
+                <method name="slotMovePointer">
+                        <arg name="x" type="i" direction="in"/>
+                        <arg name="y" type="i" direction="in"/>
+                </method>
+                <method name="exit"/>
+        </interface>
 </node>
