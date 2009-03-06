@@ -52,11 +52,11 @@ You can also copy the image to the clipboard by pressing Ctrl+C.</string>
       <string>Snapshot delay in seconds</string>
      </property>
      <property name="whatsThis" >
-      <string>&lt;qt>
+       <string>&lt;qt>&lt;p>
 This is the number of seconds to wait after clicking the &lt;i>New Snapshot&lt;/i> button before taking the snapshot.
-&lt;p>
+&lt;/p>&lt;p>
 This is very useful for getting windows, menus and other items on the screen set up just the way you want.
-&lt;p>
+&lt;/p>&lt;p>
 If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before taking a snapshot.
 &lt;/p>
 &lt;/qt></string>
@@ -129,10 +129,10 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
      <property name="whatsThis" >
       <string>&lt;qt>Using this menu, you can select from the five following snapshot modes:
 &lt;p>
-&lt;b>Full Screen&lt;/b> - captures the entire desktop.&lt;br>
-&lt;b>Window Under Cursor&lt;/b> - captures only the window (or menu) that is under the mouse cursor when the snapshot is taken.&lt;br>
-&lt;b>Region&lt;/b> - captures only the region of the desktop that you specify. When taking a new snapshot in this mode you will be able to select any area of the screen by clicking and dragging the mouse.&lt;br>
-&lt;b>Section of Window&lt;/b> - captures only a section of the window. When taking a new snapshot in this mode you will be able to select any child window by moving the mouse over it.&lt;br>
+&lt;b>Full Screen&lt;/b> - captures the entire desktop.&lt;br/>
+&lt;b>Window Under Cursor&lt;/b> - captures only the window (or menu) that is under the mouse cursor when the snapshot is taken.&lt;br/>
+&lt;b>Region&lt;/b> - captures only the region of the desktop that you specify. When taking a new snapshot in this mode you will be able to select any area of the screen by clicking and dragging the mouse.&lt;br/>
+&lt;b>Section of Window&lt;/b> - captures only a section of the window. When taking a new snapshot in this mode you will be able to select any child window by moving the mouse over it.&lt;br/>
 &lt;b>Current Screen&lt;/b> - if you have multiple screens, this captures the screen containing the mouse cursor when the snapshot is taken.
 &lt;/p>&lt;/qt></string>
      </property>
