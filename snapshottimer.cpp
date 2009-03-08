@@ -31,7 +31,8 @@
 SnapshotTimer::SnapshotTimer() : QWidget(0)
 {
     setWindowFlags( Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
-    resize(180,20);
+    // The text is copied from paintEvent and the maximum number is used as %1 argument + margins
+    resize( fontMetrics().width( i18n("Snapshot will be taken in %1 seconds", 99) ) + 6 , fontMetrics().height() + 4 );
     connect(&timer, SIGNAL(timeout()), this, SLOT(bell()));
 }
 
@@ -86,7 +87,7 @@ void SnapshotTimer::paintEvent( QPaintEvent* e )
       painter.setBrush( textBackgroundColor );
       QString helpText = i18np( "Snapshot will be taken in 1 second",
                                 "Snapshot will be taken in %1 seconds", ( length-time ) );
-      QRect textRect = painter.boundingRect( rect().adjusted( 2, 2, -2, -2 ), Qt::TextWordWrap, helpText );
+      QRect textRect = painter.boundingRect( rect().adjusted( 2, 2, -2, -2 ), Qt::TextSingleLine, helpText );
       textRect.adjust( -2, -2, 4, 2 );
       painter.drawRect( rect().adjusted(0,0,-1,-1) );
       textRect.moveTopLeft( QPoint( 3, 3 ) );
