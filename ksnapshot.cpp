@@ -111,16 +111,16 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     grabber->show();
     grabber->grabMouse( Qt::WaitCursor );
 
-    qDebug() << "Mode = " << mode;
+    kDebug() << "Mode = " << mode;
     if ( mode == KSnapshotObject::FullScreen )
         snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
     else if ( mode == KSnapshotObject::CurrentScreen ) {
-	qDebug() << "Desktop Geom = " << QApplication::desktop()->geometry();
+	kDebug() << "Desktop Geom = " << QApplication::desktop()->geometry();
 	QDesktopWidget *desktop = QApplication::desktop();
 	int screenId = desktop->screenNumber( QCursor::pos() );
-	qDebug() << "Screenid = " << screenId;
+	kDebug() << "Screenid = " << screenId;
 	QRect geom = desktop->screenGeometry( screenId );
-	qDebug() << "Geometry = " << screenId;
+	kDebug() << "Geometry = " << screenId;
 	snapshot = QPixmap::grabWindow( desktop->winId(),
 					geom.x(), geom.y(), geom.width(), geom.height() );
 
