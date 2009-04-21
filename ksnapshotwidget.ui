@@ -231,8 +231,6 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
- <layoutfunction spacing="KDialog::spacingHint" margin="KDialog::marginHint" />
  <customwidgets>
   <customwidget>
    <class>KPushButton</class>
