@@ -231,8 +231,6 @@ void KSnapshot::slotSaveAs()
     dlg.setCaption( i18n("Save As") );
     dlg.setSelection( filename.url() );
 
-    dlg.setInlinePreviewShown(true);
-
     if ( !dlg.exec() )
         return;
 
