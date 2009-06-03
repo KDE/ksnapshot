@@ -283,7 +283,7 @@ void KSnapshot::slotGrab()
 
 void KSnapshot::slotOpen(const QString& application)
 {
-    QString fileopen = KStandardDirs::locateLocal("tmp", filename.fileName());
+    const QString fileopen = KStandardDirs::locateLocal("tmp", filename.fileName());
 
     if (!saveEqual(fileopen,this))
     {
@@ -346,7 +346,7 @@ void KSnapshot::slotPopulateOpenMenu()
         currentAction->deleteLater();
     }
 
-    KService::List services = KMimeTypeTrader::self()->query( "image/png");
+    const KService::List services = KMimeTypeTrader::self()->query( "image/png");
     QMap<QString, KService::Ptr> apps;
 
     foreach (const KService::Ptr &service, services)

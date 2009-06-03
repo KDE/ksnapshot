@@ -122,7 +122,7 @@ bool KSnapshotObject::saveEqual( const KUrl& url,QWidget *widget )
 {
     QByteArray type = "PNG";
     QString mime = KMimeType::findByUrl( url.fileName(), 0, url.isLocalFile(), true )->name();
-    QStringList types = KImageIO::typeForMime(mime);
+    const QStringList types = KImageIO::typeForMime(mime);
     if ( !types.isEmpty() )
         type = types.first().toLatin1();
 
@@ -146,8 +146,8 @@ bool KSnapshotObject::saveEqual( const KUrl& url,QWidget *widget )
     if ( !ok ) {
         kWarning() << "KSnapshot was unable to save the snapshot" ;
 
-        QString caption = i18n("Unable to Save Image");
-        QString text = i18n("KSnapshot was unable to save the image to\n%1.", url.prettyUrl());
+        const QString caption = i18n("Unable to Save Image");
+        const QString text = i18n("KSnapshot was unable to save the image to\n%1.", url.prettyUrl());
         KMessageBox::error(widget, text, caption);
     }
 
@@ -176,3 +176,4 @@ bool KSnapshotObject::saveImage( QIODevice *device, const QByteArray &format )
     QImage snap = snapshot.toImage();
     return imgWriter.write( snap );
 }
+
