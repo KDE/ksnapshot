@@ -29,7 +29,7 @@
 
 RegionGrabber::RegionGrabber( ) :
     QWidget( 0 ), selection(), mouseDown( false ), newSelection( false ),
-    handleSize( 10 ), mouseOverHandle( 0 ), idleTimer(),
+    handleSize( 10 ), mouseOverHandle( 0 ),
     showHelp( true ), grabbing( false ),
     TLHandle(0,0,handleSize,handleSize), TRHandle(0,0,handleSize,handleSize),
     BLHandle(0,0,handleSize,handleSize), BRHandle(0,0,handleSize,handleSize),
@@ -42,8 +42,6 @@ RegionGrabber::RegionGrabber( ) :
     setWindowFlags( Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
     int timeout = KWindowSystem::compositingActive() ? 200 : 50;
     QTimer::singleShot( timeout, this, SLOT(init()) );
-    connect( &idleTimer, SIGNAL( timeout() ), this, SLOT( displayHelp() ) );
-    idleTimer.start( 3000 );
 }
 
 RegionGrabber::~RegionGrabber()
@@ -53,16 +51,11 @@ RegionGrabber::~RegionGrabber()
 void RegionGrabber::init()
 {
     pixmap = QPixmap::grabWindow( QApplication::desktop()->winId() );
-    showFullScreen();
     resize( pixmap.size() );
-    move(0, 0);
+    move( 0, 0 );
     setCursor( Qt::CrossCursor );
-}
-
-void RegionGrabber::displayHelp()
-{
-    showHelp = true;
-    update();
+    showFullScreen();
+    KWindowSystem::forceActiveWindow( winId() );
 }
 
 void RegionGrabber::paintEvent( QPaintEvent* e )
@@ -83,7 +76,7 @@ void RegionGrabber::paintEvent( QPaintEvent* e )
     QColor textBackgroundColor = pal.color( QPalette::Active, QPalette::Base );
     painter.drawPixmap(0, 0, pixmap);
     painter.setFont(font);
-    
+
     QRect r = selection.normalized().adjusted( 0, 0, -1, -1 );
     if ( !selection.isNull() )
     {
@@ -103,11 +96,10 @@ void RegionGrabber::paintEvent( QPaintEvent* e )
         painter.setPen( textColor );
         painter.setBrush( textBackgroundColor );
         QString helpText = i18n( "Select a region using the mouse. To take the snapshot, press the Enter key. Press Esc to quit." );
-        QRect textRect = painter.boundingRect( rect().adjusted( 2, 2, -2, -2 ), Qt::TextWordWrap, helpText );
-        textRect.adjust( -2, -2, 4, 2 );
-        painter.drawRect( textRect );
-        textRect.moveTopLeft( QPoint( 3, 3 ) );
-        painter.drawText( textRect, helpText );
+        helpTextRect = painter.boundingRect( rect().adjusted( 2, 2, -2, -2 ), Qt::TextWordWrap, helpText );
+        helpTextRect.adjust( -2, -2, 4, 2 );
+        painter.drawRect( helpTextRect );
+        painter.drawText( helpTextRect.adjusted( 3, 3, -3, -3 ), helpText );
     }
 
     if ( selection.isNull() )
@@ -184,8 +176,7 @@ void RegionGrabber::resizeEvent( QResizeEvent* e )
 
 void RegionGrabber::mousePressEvent( QMouseEvent* e )
 {
-    showHelp = false;
-    idleTimer.stop();
+    showHelp = !helpTextRect.contains( e->pos() );
     if ( e->button() == Qt::LeftButton )
     {
         mouseDown = true;
@@ -195,7 +186,6 @@ void RegionGrabber::mousePressEvent( QMouseEvent* e )
         {
             newSelection = true;
             selection = QRect();
-            showHelp = true;
         }
         else
         {
@@ -213,6 +203,12 @@ void RegionGrabber::mousePressEvent( QMouseEvent* e )
 
 void RegionGrabber::mouseMoveEvent( QMouseEvent* e )
 {
+    bool shouldShowHelp = !helpTextRect.contains( e->pos() );
+    if (shouldShowHelp != showHelp) {
+        showHelp = shouldShowHelp;
+        update();
+    }
+
     if ( mouseDown )
     {
         if ( newSelection )
@@ -304,7 +300,6 @@ void RegionGrabber::mouseReleaseEvent( QMouseEvent* e )
 {
     mouseDown = false;
     newSelection = false;
-    idleTimer.start();
     if ( mouseOverHandle == 0 && selection.contains( e->pos() ) )
         setCursor( Qt::OpenHandCursor );
     update();

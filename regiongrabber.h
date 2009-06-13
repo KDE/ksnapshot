@@ -39,7 +39,6 @@ public:
 
 protected slots:
     void init();
-    void displayHelp();
 
 signals:
     void regionGrabbed( const QPixmap & );
@@ -64,7 +63,6 @@ protected:
     QRect* mouseOverHandle;
     QPoint dragStartPoint;
     QRect  selectionBeforeDrag;
-    QTimer idleTimer;
     bool showHelp;
     bool grabbing;
 
@@ -74,6 +72,7 @@ protected:
     // 1 letter: the handle on the middle of the corresponding side
     QRect TLHandle, TRHandle, BLHandle, BRHandle;
     QRect LHandle, THandle, RHandle, BHandle;
+    QRect helpTextRect;
 
     QVector<QRect*> handles;
     QPixmap pixmap;
