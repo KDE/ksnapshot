@@ -39,7 +39,7 @@ RegionGrabber::RegionGrabber( ) :
     handles << &TLHandle << &TRHandle << &BLHandle << &BRHandle
             << &LHandle << &THandle << &RHandle << &BHandle;
     setMouseTracking( true );
-    setWindowFlags( Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+    setWindowFlags( Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint );
     int timeout = KWindowSystem::compositingActive() ? 200 : 50;
     QTimer::singleShot( timeout, this, SLOT(init()) );
 }
