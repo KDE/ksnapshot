@@ -108,6 +108,8 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     connect(openMenu, SIGNAL(triggered(QAction*)),
             this, SLOT(slotOpen(QAction*)));
 
+    mainWidget->spinDelay->setSuffix(ki18np(" second", " seconds"));
+
     grabber->show();
     grabber->grabMouse( Qt::WaitCursor );
 

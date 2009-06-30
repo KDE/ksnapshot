@@ -47,7 +47,7 @@ You can also copy the image to the clipboard by pressing Ctrl+C.</string>
     </widget>
    </item>
    <item row="3" column="1" >
-    <widget class="QSpinBox" name="spinDelay" >
+    <widget class="KIntSpinBox" name="spinDelay" >
      <property name="toolTip" >
       <string>Snapshot delay in seconds</string>
      </property>
@@ -63,9 +63,6 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
      </property>
      <property name="specialValueText" >
       <string>No delay</string>
-     </property>
-     <property name="suffix" >
-      <string> sec</string>
      </property>
     </widget>
    </item>
@@ -232,6 +229,11 @@ If &lt;i>no delay&lt;/i> is set, the program will wait for a mouse click before 
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>KIntSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>knuminput.h</header>
+  </customwidget>
   <customwidget>
    <class>KPushButton</class>
    <extends>QPushButton</extends>
