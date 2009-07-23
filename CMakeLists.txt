@@ -1,5 +1,9 @@
 project(ksnapshot)
 
+include(MacroBoolTo01)
+
+set(HAVE_X11_EXTENSIONS_SHAPE_H X11_Xshape_FOUND)
+
 configure_file(config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnapshot.h)
 
 ########### next target ###############
