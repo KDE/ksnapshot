@@ -28,7 +28,8 @@
 #include <KWindowSystem>
 
 RegionGrabber::RegionGrabber( ) :
-    QWidget( 0 ), selection(), mouseDown( false ), newSelection( false ),
+    QWidget( 0, Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool ),
+    selection(), mouseDown( false ), newSelection( false ),
     handleSize( 10 ), mouseOverHandle( 0 ),
     showHelp( true ), grabbing( false ),
     TLHandle(0,0,handleSize,handleSize), TRHandle(0,0,handleSize,handleSize),
@@ -39,7 +40,6 @@ RegionGrabber::RegionGrabber( ) :
     handles << &TLHandle << &TRHandle << &BLHandle << &BRHandle
             << &LHandle << &THandle << &RHandle << &BHandle;
     setMouseTracking( true );
-    setWindowFlags( Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint );
     int timeout = KWindowSystem::compositingActive() ? 200 : 50;
     QTimer::singleShot( timeout, this, SLOT(init()) );
 }
@@ -54,8 +54,9 @@ void RegionGrabber::init()
     resize( pixmap.size() );
     move( 0, 0 );
     setCursor( Qt::CrossCursor );
-    showFullScreen();
-    KWindowSystem::forceActiveWindow( winId() );
+    show();
+    grabMouse();
+    grabKeyboard();
 }
 
 void RegionGrabber::paintEvent( QPaintEvent* e )
