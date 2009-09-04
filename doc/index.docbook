@@ -127,8 +127,8 @@ below.</para>
 <itemizedlist>
 <listitem>
 <para>You may start &ksnapshot; by selecting it from the <menuchoice>
-<guimenu>K-Menu</guimenu><guisubmenu>Graphics</guisubmenu>
-<guimenuitem>&ksnapshot; (Screen Capture Program)</guimenuitem></menuchoice>.
+<guimenu>K-Menu</guimenu><guisubmenu>Applications</guisubmenu><guisubmenu>Graphics</guisubmenu>
+<guimenuitem>Screen Capture Program &ksnapshot;</guimenuitem></menuchoice>.
 </para></listitem>
 <listitem>
 <para>You may start &ksnapshot; by entering the following at the command
@@ -137,7 +137,7 @@ prompt:</para>
 <prompt>%</prompt> <command>ksnapshot &amp;</command>
 </screen>
 </listitem>
-<listitem><para>The mini command line (invoked with
+<listitem><para>The mini command line &krunner; (invoked with
 <keycombo action="simul">&Alt;<keycap>F2</keycap></keycombo>) may
 also be used to start &ksnapshot;</para></listitem>
 </itemizedlist>
@@ -183,10 +183,10 @@ snapshots. You may however edit the filename to anything you wish, including the
 of a previously saved snapshot. </para>
 
 <para>To take a snapshot of a single window, select the <guilabel>Window
-Under Cursor</guilabel> combo box entry (next to the <guilabel>Capture mode:</guilabel>
+Under Cursor</guilabel> combo box entry (next to the <guilabel>Capture mode</guilabel>
 label), and then click on the <guibutton>New Snapshot</guibutton> button.</para>
 
-<para>Depending on your <guilabel>Snapshot delay:</guilabel> settings you
+<para>Depending on your <guilabel>Snapshot delay</guilabel> settings you
 get either a cross as the mouse pointer (for <guilabel>No delay</guilabel>),
 or a standard mouse cursor which you can use to work with a program until
 the delay is over and a snapshot is taken.</para>
@@ -230,7 +230,7 @@ to capture the screenshot.
 <sect2 id="delay">
 <title>Snapshot Delay</title>
 
-<para>The <guilabel>Snapshot Delay:</guilabel> box allows you to enter an
+<para>The <guilabel>Snapshot Delay</guilabel> box allows you to enter an
 arbitrary time delay, in seconds, between the time that you press the
 <guibutton>New Snapshot</guibutton> button and the time that the snapshot is
 taken.</para>
@@ -244,13 +244,14 @@ and take a picture of it.</para>
 <sect2 id="window-decoration">
 <title>Exclude Window decorations</title>
 
-<para><guilabel>Include window decorations</guilabel> is enabled by default.</para>
+<para><guilabel>Include window decorations</guilabel> is enabled by default in 
+<guilabel>Window Under Cursor</guilabel> mode.</para>
 
 <para>When you only want to capture the application itself without the surrounding
 window decoration, disable this option and take a new snapshot.</para>
 
 </sect2>
-
+<!-- not in 4.1
 <sect2 id="print-snapshot">
 <title>Print</title>
 
@@ -258,7 +259,7 @@ window decoration, disable this option and take a new snapshot.</para>
 <guibutton>Print...</guibutton> and you get the standard &kde; Print dialog, from
 where you can directly print your snapshot.</para>
 </sect2>
-
+-->
 <sect2 id="copy-snapshot">
 <title>Copy to Clipboard</title>
 
@@ -278,7 +279,8 @@ into a viewer or graphics application.</para>
 <varlistentry>
 <term><guibutton>Help</guibutton></term>
 <listitem><para>Gives you a menu where you can open the
-<guimenuitem>&ksnapshot; Handbook</guimenuitem>, report a bug or
+<guimenuitem>&ksnapshot; Handbook</guimenuitem>, report a bug,
+switch the language for &ksnapshot; or
 get some more information <guimenuitem>About &ksnapshot;</guimenuitem>
 and <guimenuitem>About &kde;</guimenuitem>.
 </para></listitem>
@@ -296,17 +298,63 @@ and <guimenuitem>About &kde;</guimenuitem>.
 
 <chapter id="dcop">
 
-<title>&DCOP; Interface</title>
+<title>&DBus; Interface</title>
+<!--
+kdedev@rebutia:~/svn$ qdbus org.kde.ksnapshot-10484
+/
+/KDebug
+/KSnapshot
+/MainApplication
+kdedev@rebutia:~/svn$ qdbus org.kde.ksnapshot-10484 /
+method QString org.freedesktop.DBus.Introspectable.Introspect()
 
-<para>&ksnapshot; can be scripted using its &DCOP; interface. This
-chapter explains the various &DCOP; calls that you can use, and 
+kdedev@rebutia:~/svn$ qdbus org.kde.ksnapshot-10484 /KSnapshot
+method void org.kde.ksnapshot.slotGrab()
+method void org.kde.ksnapshot.slotOpen(QString application)
+method void org.kde.ksnapshot.slotSave()
+method QDBusVariant org.freedesktop.DBus.Properties.Get(QString interface_name, QString property_name)
+method void org.freedesktop.DBus.Properties.Set(QString interface_name, QString property_name, QDBusVariant value)
+method QString org.freedesktop.DBus.Introspectable.Introspect()
+
+kdedev@rebutia:~/svn$ qdbus org.kde.ksnapshot-10484 /MainApplication
+method void org.kde.KApplication.quit()
+method void org.kde.KApplication.reparseConfiguration()
+method void org.kde.KApplication.updateUserTimestamp()
+method void org.kde.KApplication.updateUserTimestamp(int time)
+property readwrite int com.trolltech.Qt.QApplication.cursorFlashTime
+property readwrite int com.trolltech.Qt.QApplication.doubleClickInterval
+property readwrite QSize com.trolltech.Qt.QApplication.globalStrut
+property readwrite int com.trolltech.Qt.QApplication.keyboardInputInterval
+property readwrite bool com.trolltech.Qt.QApplication.quitOnLastWindowClosed
+property readwrite int com.trolltech.Qt.QApplication.startDragDistance
+property readwrite int com.trolltech.Qt.QApplication.startDragTime
+property readwrite QString com.trolltech.Qt.QApplication.styleSheet
+property readwrite int com.trolltech.Qt.QApplication.wheelScrollLines
+property readwrite QString com.trolltech.Qt.QCoreApplication.applicationName
+property readwrite QString com.trolltech.Qt.QCoreApplication.applicationVersion
+property readwrite QString com.trolltech.Qt.QCoreApplication.organizationDomain
+property readwrite QString com.trolltech.Qt.QCoreApplication.organizationName
+method QDBusVariant org.freedesktop.DBus.Properties.Get(QString interface_name, QString property_name)
+method void org.freedesktop.DBus.Properties.Set(QString interface_name, QString property_name, QDBusVariant value)
+method QString org.freedesktop.DBus.Introspectable.Introspect()
+
+kdedev@rebutia:~/svn$ qdbus org.kde.ksnapshot-10484 /KDebug
+method void org.kde.KDebug.notifyKDebugConfigChanged()
+method void org.kde.KDebug.printBacktrace()
+method QDBusVariant org.freedesktop.DBus.Properties.Get(QString interface_name, QString property_name)
+method void org.freedesktop.DBus.Properties.Set(QString interface_name, QString property_name, QDBusVariant value)
+method QString org.freedesktop.DBus.Introspectable.Introspect()
+-->
+<para>&ksnapshot; can be scripted using its &DBus; interface. This
+chapter explains the various &DBus; calls that you can use, and 
 provides some examples of how you can use them.</para>
 
-<para>As with all &DCOP; calls, you need to specify the application
+<para>As with all &DBus; calls, you need to specify the application
 you want to interface with, and the particular interface. With &ksnapshot;
 you need to identify which particular application, which is
 <literal>ksnapshot-</literal> followed by the process number.</para>
-
+<!-- dbus-launch ksnapshot-->
+<!-- ksnapshot qdbus org.kde.ksnapshot-20985-->
 <para>To start &ksnapshot; and obtain the right argument, use
 <command>dcopstart ksnapshot</command>, which returns the 
 argument (such as <computeroutput>ksnapshot-20594</computeroutput>) on
