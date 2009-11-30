@@ -199,6 +199,7 @@ private:
     QMenu*  openMenu;
     KSnapshotWidget *mainWidget;
     bool modified;
+    QPoint savedPosition;
 };
 
 #endif // KSNAPSHOT_H

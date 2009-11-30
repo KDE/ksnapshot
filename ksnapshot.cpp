@@ -74,7 +74,7 @@ class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
 };
 
 KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
-  : KDialog(parent), KSnapshotObject(), modified(false)
+  : KDialog(parent), KSnapshotObject(), modified(false), savedPosition(QPoint(-1, -1))
 {
     setCaption( "" );
     setModal( true );
@@ -266,6 +266,7 @@ void KSnapshot::slotDragSnapshot()
 
 void KSnapshot::slotGrab()
 {
+    savedPosition = pos();
     hide();
 
     if ( delay() ) {
@@ -492,6 +493,9 @@ void KSnapshot::performGrab()
     QApplication::restoreOverrideCursor();
     modified = true;
     updateCaption();
+    if (savedPosition != QPoint(-1, -1)) {
+        move(savedPosition);
+    }
     show();
 }
 
