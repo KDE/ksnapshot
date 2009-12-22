@@ -2,6 +2,7 @@
 GenericName=Screen Capture Program
 GenericName[af]=Skerm Vang Program
 GenericName[ar]=برنامج التقاط الشاشة
+GenericName[ast]=Capturador de pantalla
 GenericName[bg]=Снимки на екрана
 GenericName[ca]=Programa de captura de pantalla
 GenericName[cs]=Snímač obrazovky
@@ -68,6 +69,7 @@ GenericName[zh_TW]=畫面擷取程式
 Name=KSnapshot
 Name[af]=K-kiekie
 Name[ar]=كيسنابشوت
+Name[ast]=KSnapshot
 Name[bg]=KSnapshot
 Name[br]=KSnapshot
 Name[ca]=KSnapshot
