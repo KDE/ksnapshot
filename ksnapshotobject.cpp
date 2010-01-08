@@ -129,7 +129,7 @@ bool KSnapshotObject::saveEqual( const KUrl& url,QWidget *widget )
     bool ok = false;
 
     if ( url.isLocalFile() ) {
-	QFile output( url.path() );
+	QFile output( url.toLocalFile() );
 	if ( output.open( QFile::WriteOnly ) )
 	    ok = saveImage( &output, type );
     }
