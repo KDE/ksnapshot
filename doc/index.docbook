@@ -81,8 +81,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2006-07-05</date>
-<releaseinfo>0.7</releaseinfo>
+<date>2010-01-07</date>
+<releaseinfo>0.8.1</releaseinfo>
 
 <abstract>
 <para>&ksnapshot; is a simple applet for taking screenshots. It is capable
@@ -126,8 +126,9 @@ below.</para>
 
 <itemizedlist>
 <listitem>
-<para>You may start &ksnapshot; by selecting it from the <menuchoice>
-<guimenu>K-Menu</guimenu><guisubmenu>Applications</guisubmenu><guisubmenu>Graphics</guisubmenu>
+<para>You may start &ksnapshot; by selecting it from the application launcher menu
+<menuchoice>
+<guisubmenu>Applications</guisubmenu><guisubmenu>Graphics</guisubmenu>
 <guimenuitem>Screen Capture Program &ksnapshot;</guimenuitem></menuchoice>.
 </para></listitem>
 <listitem>
@@ -211,7 +212,8 @@ or to grab a new one, by pressing the
 <guilabel>Snapshot delay</guilabel> to <guilabel>No delay</guilabel>,
 and then click on the <guibutton>New Snapshot</guibutton> button. The
 mouse cursor will then change into a cross, and you can then use the 
-mouse to select the region you want to capture. </para>
+mouse to select the region you want to capture. 
+To take the snapshot press the &Enter; key or &Esc; to quit.</para>
 
 <para>To take a new snapshot of a section of a window, select the
 <guilabel>Section of Window</guilabel> combo box entry and then click on the 
@@ -222,6 +224,8 @@ with a red border. Move the mouse to the wanted section and click the &LMB;
 to capture the screenshot.
 </para>
 
+<para>If you have multiple screens, <guilabel>Current Screen</guilabel> captures
+the screen containing the mouse cursor when the screenshot is taken.</para>
 </sect1>
 
 <sect1 id="additional-features">
@@ -230,7 +234,7 @@ to capture the screenshot.
 <sect2 id="delay">
 <title>Snapshot Delay</title>
 
-<para>The <guilabel>Snapshot Delay</guilabel> box allows you to enter an
+<para>The <guilabel>Snapshot delay</guilabel> box allows you to enter an
 arbitrary time delay, in seconds, between the time that you press the
 <guibutton>New Snapshot</guibutton> button and the time that the snapshot is
 taken.</para>
@@ -299,6 +303,47 @@ and <guimenuitem>About &kde;</guimenuitem>.
 <chapter id="dcop">
 
 <title>&DBus; Interface</title>
+
+<para>&ksnapshot; can be scripted using its &DBus; interface.</para>
+
+<para>There are two ways to use the &DBus; interface: &Qt;'s &GUI;
+<application>qdbusviewer</application>
+and the command line
+<application>qdbus</application>.
+</para>
+
+<para>
+Examples:
+<itemizedlist mark='opencircle'>
+
+<listitem><para>
+<prompt>&percnt;</prompt>
+<command>qdbus</command>
+will display all services available.
+</para></listitem>
+
+<listitem><para>
+<prompt>&percnt;</prompt>
+<command>qdbus</command>
+<option>org.kde.ksnapshot-`pidof -s ksnapshot`</option>
+will display the &DBus; interface for &ksnapshot;.
+</para></listitem>
+
+<listitem><para>
+<prompt>&percnt;</prompt>
+<command>qdbus</command>
+<option>org.kde.konsole /KSnapshot</option>
+will display methods for controlling &ksnapshot;.
+</para></listitem>
+
+</itemizedlist>
+</para>
+
+<para>
+For more information, please visit
+<ulink url="http://techbase.kde.org/Development/Tutorials/D-Bus/Introduction">&DBus; tutorial</ulink>.
+</para>
+
 <!--
 kdedev@rebutia:~/svn$ qdbus org.kde.ksnapshot-10484
 /
@@ -345,16 +390,9 @@ method QDBusVariant org.freedesktop.DBus.Properties.Get(QString interface_name, 
 method void org.freedesktop.DBus.Properties.Set(QString interface_name, QString property_name, QDBusVariant value)
 method QString org.freedesktop.DBus.Introspectable.Introspect()
 -->
-<para>&ksnapshot; can be scripted using its &DBus; interface. This
-chapter explains the various &DBus; calls that you can use, and 
-provides some examples of how you can use them.</para>
-
-<para>As with all &DBus; calls, you need to specify the application
-you want to interface with, and the particular interface. With &ksnapshot;
-you need to identify which particular application, which is
-<literal>ksnapshot-</literal> followed by the process number.</para>
 <!-- dbus-launch ksnapshot-->
 <!-- ksnapshot qdbus org.kde.ksnapshot-20985-->
+<!--
 <para>To start &ksnapshot; and obtain the right argument, use
 <command>dcopstart ksnapshot</command>, which returns the 
 argument (such as <computeroutput>ksnapshot-20594</computeroutput>) on
@@ -546,7 +584,7 @@ as shown below.
 </para>
 
 </sect1>
-
+-->
 </chapter>
 
 <chapter id="credits">
