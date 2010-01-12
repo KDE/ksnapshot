@@ -560,6 +560,9 @@ void KSnapshot::slotModeChanged( int mode )
     case 3:
         mainWidget->cbIncludeDecorations->setEnabled(false);
         break;
+    case 4:
+        mainWidget->cbIncludeDecorations->setEnabled(false);
+        break;
     default:
         break;
     }
