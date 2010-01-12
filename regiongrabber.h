@@ -33,6 +33,9 @@ class QMouseEvent;
 class RegionGrabber : public QWidget
 {
     Q_OBJECT
+
+    enum MaskType { StrokeMask, FillMask };
+    
 public:
     RegionGrabber();
     ~RegionGrabber();
@@ -52,7 +55,7 @@ protected:
     void mouseDoubleClickEvent( QMouseEvent* );
     void keyPressEvent( QKeyEvent* e );
     void updateHandles();
-    QRegion handleMask() const;
+    QRegion handleMask( MaskType type ) const;
     QPoint limitPointToRect( const QPoint &p, const QRect &r ) const;
     void grabRect();
 

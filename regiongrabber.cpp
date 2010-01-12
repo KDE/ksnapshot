@@ -59,6 +59,24 @@ void RegionGrabber::init()
     grabKeyboard();
 }
 
+static void drawRect( QPainter *painter, const QRect &r, const QColor &outline, const QColor &fill = QColor() )
+{
+    QRegion clip( r );
+    clip = clip.subtracted( r.adjusted( 1, 1, -1, -1 ) );
+
+    painter->save();
+    painter->setClipRegion( clip );
+    painter->setPen( Qt::NoPen );
+    painter->setBrush( outline );
+    painter->drawRect( r );
+    if ( fill.isValid() ) {
+        painter->setClipping( false );
+        painter->setBrush( fill );
+        painter->drawRect( r.adjusted( 1, 1, -1, -1 ) );
+    }
+    painter->restore();
+}
+
 void RegionGrabber::paintEvent( QPaintEvent* e )
 {
     Q_UNUSED( e );
@@ -83,13 +101,12 @@ void RegionGrabber::paintEvent( QPaintEvent* e )
     {
         QRegion grey( rect() );
         grey = grey.subtracted( r );
-        painter.setPen( handleColor );
-        painter.setBrush( overlayColor );
         painter.setClipRegion( grey );
-        painter.drawRect( -1, -1, rect().width() + 1, rect().height() + 1 );
+        painter.setPen( Qt::NoPen );
+        painter.setBrush( overlayColor );
+        painter.drawRect( rect() );
         painter.setClipRect( rect() );
-        painter.setBrush( Qt::NoBrush );
-        painter.drawRect( r );
+        drawRect( &painter, r, handleColor );
     }
 
     if ( showHelp )
@@ -99,7 +116,7 @@ void RegionGrabber::paintEvent( QPaintEvent* e )
         QString helpText = i18n( "Select a region using the mouse. To take the snapshot, press the Enter key. Press Esc to quit." );
         helpTextRect = painter.boundingRect( rect().adjusted( 2, 2, -2, -2 ), Qt::TextWordWrap, helpText );
         helpTextRect.adjust( -2, -2, 4, 2 );
-        painter.drawRect( helpTextRect );
+        drawRect( &painter, helpTextRect, textColor, textBackgroundColor );
         painter.drawText( helpTextRect.adjusted( 3, 3, -3, -3 ), helpText );
     }
 
@@ -146,19 +163,22 @@ void RegionGrabber::paintEvent( QPaintEvent* e )
         textRect.moveBottomLeft( QPoint( r.right() + 5, r.bottom() ) );
     }
     // if the above didn't catch it, you are running on a very tiny screen...
-    painter.setPen( textColor );
-    painter.setBrush( textBackgroundColor );
-    painter.drawRect( boundingRect );
+    drawRect( &painter, boundingRect, textColor, textBackgroundColor );
+
     painter.drawText( textRect, txt );
 
     if ( ( r.height() > handleSize*2 && r.width() > handleSize*2 )
          || !mouseDown )
     {
         updateHandles();
-        painter.setPen( handleColor );
+        painter.setPen( Qt::NoPen );
+        painter.setBrush( handleColor );
+        painter.setClipRegion( handleMask( StrokeMask ) );
+        painter.drawRect( rect() );
         handleColor.setAlpha( 60 );
         painter.setBrush( handleColor );
-        painter.drawRects( handleMask().rects() );
+        painter.setClipRegion( handleMask( FillMask ) );
+        painter.drawRect( rect() );
     }
 }
 
@@ -353,11 +373,18 @@ void RegionGrabber::updateHandles()
     BHandle.moveBottomLeft( QPoint( r.x() + r.width() / 2 - s2, r.bottom() ) );
 }
 
-QRegion RegionGrabber::handleMask() const
+QRegion RegionGrabber::handleMask( MaskType type ) const
 {
     // note: not normalized QRects are bad here, since they will not be drawn
     QRegion mask;
-    foreach( QRect* rect, handles ) mask += QRegion( *rect );
+    foreach( QRect* rect, handles ) {
+        if ( type == StrokeMask ) {
+            QRegion r( *rect );
+            mask += r.subtracted( rect->adjusted( 1, 1, -1, -1 ) );
+        } else {
+            mask += QRegion( rect->adjusted( 1, 1, -1, -1 ) );
+        }
+    }
     return mask;
 }
 
