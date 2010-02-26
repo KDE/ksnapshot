@@ -332,7 +332,7 @@ will display the &DBus; interface for &ksnapshot;.
 <listitem><para>
 <prompt>&percnt;</prompt>
 <command>qdbus</command>
-<option>org.kde.ksnapshot /KSnapshot</option>
+<option>org.kde.ksnapshot-`pidof -s ksnapshot` /KSnapshot</option>
 will display methods for controlling &ksnapshot;.
 </para></listitem>
 
