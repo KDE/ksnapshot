@@ -81,17 +81,9 @@ class KSnapshotPreview : public QLabel
             // if this looks convoluted, that's because it is. drawing a PE_SizeGrip
             // does unexpected things when painting directly onto the pixmap
             QPixmap handle(15, 15);
-            QBitmap mask(15, 15);
-            mask.clear();
+            handle.fill(Qt::transparent);
             QStyleOption o;
             o.rect = QRect(0, 0, 15, 15);
-
-            {
-                QPainter p(&mask);
-                style()->drawControl(QStyle::CE_SizeGrip, &o, &p);
-                p.end();
-                handle.setMask(mask);
-            }
 
             {
                 QPainter p(&handle);
