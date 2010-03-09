@@ -79,9 +79,9 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     setCaption( "" );
     setModal( true );
     showButtonSeparator( true );
-    setDefaultButton( User1 );
     setButtons(Help|User1);
     setButtonGuiItem( User1, KStandardGuiItem::quit() );
+    setDefaultButton( User1 );
     grabber = new QWidget( 0,  Qt::X11BypassWindowManagerHint );
     grabber->move( -1000, -1000 );
     grabber->installEventFilter( this );
