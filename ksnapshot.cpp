@@ -69,7 +69,6 @@ class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
             btnSave->setIcon(KIcon("document-save"));
             btnOpen->setIcon(KIcon("document-open"));
             btnCopy->setIcon(KIcon("edit-copy"));
-
         }
 };
 
@@ -284,17 +283,41 @@ void KSnapshot::slotGrab()
     }
 }
 
-void KSnapshot::slotOpen(const QString& application)
+KUrl KSnapshot::urlToOpen(bool *isTempfile)
 {
+    if (isTempfile) {
+        *isTempfile = false;
+    }
+
+    if (!modified && filename.isValid())
+    {
+        return filename;
+    }
+
     const QString fileopen = KStandardDirs::locateLocal("tmp", filename.fileName());
 
-    if (!saveEqual(fileopen,this))
+    if (saveEqual(fileopen, this))
+    {
+        if (isTempfile) {
+            *isTempfile = true;
+        }
+
+        return fileopen;
+    }
+
+    return KUrl();
+}
+
+void KSnapshot::slotOpen(const QString& application)
+{
+    KUrl url = urlToOpen();
+    if (!url.isValid())
     {
         return;
     }
 
     KUrl::List list;
-    list.append(fileopen);
+    list.append(url);
     KRun::run(application, list, this);
 }
 
@@ -308,17 +331,17 @@ void KSnapshot::slotOpen(QAction* action)
         return;
     }
 
-    KService::Ptr service = serviceAction->service;
-    QString fileopen = KStandardDirs::locateLocal("tmp", filename.fileName());
-
-    if (!saveEqual(fileopen,this))
+    bool isTempfile = false;
+    KUrl url = urlToOpen(&isTempfile);
+    if (!url.isValid())
     {
         return;
     }
 
     KUrl::List list;
-    list.append(fileopen);
+    list.append(url);
 
+    KService::Ptr service = serviceAction->service;
     if (!service)
     {
         KOpenWithDialog dlg(list, this);
@@ -337,7 +360,7 @@ void KSnapshot::slotOpen(QAction* action)
     }
 
     // we have an action with a service, run it!
-    KRun::run(*service, list, this, true);
+    KRun::run(*service, list, this, isTempfile);
 }
 
 void KSnapshot::slotPopulateOpenMenu()

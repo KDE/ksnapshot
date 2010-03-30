@@ -184,6 +184,7 @@ public:
     int timeout() const;
 
 private:
+    KUrl urlToOpen(bool *isTempfile = 0);
     void performGrab();
     void grabRegion();
     SnapshotTimer grabTimer;
