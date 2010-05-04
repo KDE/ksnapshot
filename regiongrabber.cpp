@@ -113,7 +113,7 @@ void RegionGrabber::paintEvent( QPaintEvent* e )
     {
         painter.setPen( textColor );
         painter.setBrush( textBackgroundColor );
-        QString helpText = i18n( "Select a region using the mouse. To take the snapshot, press the Enter key. Press Esc to quit." );
+        QString helpText = i18n( "Select a region using the mouse. To take the snapshot, press the Enter key or double click. Press Esc to quit." );
         helpTextRect = painter.boundingRect( rect().adjusted( 2, 2, -2, -2 ), Qt::TextWordWrap, helpText );
         helpTextRect.adjust( -2, -2, 4, 2 );
         drawRect( &painter, helpTextRect, textColor, textBackgroundColor );
