@@ -567,28 +567,9 @@ void KSnapshot::exit()
     reject();
 }
 
-void KSnapshot::slotModeChanged( int mode )
+void KSnapshot::slotModeChanged(int mode)
 {
-    switch ( mode )
-    {
-    case 0:
-        mainWidget->cbIncludeDecorations->setEnabled(false);
-        break;
-    case 1:
-        mainWidget->cbIncludeDecorations->setEnabled(true);
-        break;
-    case 2:
-        mainWidget->cbIncludeDecorations->setEnabled(false);
-        break;
-    case 3:
-        mainWidget->cbIncludeDecorations->setEnabled(false);
-        break;
-    case 4:
-        mainWidget->cbIncludeDecorations->setEnabled(false);
-        break;
-    default:
-        break;
-    }
+    mainWidget->cbIncludeDecorations->setEnabled(mode == WindowUnderCursor);
 }
 
 void KSnapshot::setPreview( const QPixmap &pm )
