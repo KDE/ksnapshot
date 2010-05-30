@@ -213,7 +213,7 @@ or to grab a new one, by pressing the
 and then click on the <guibutton>New Snapshot</guibutton> button. The
 mouse cursor will then change into a cross, and you can then use the 
 mouse to select the region you want to capture. 
-To take the snapshot press the &Enter; key or &Esc; to quit.</para>
+To take the snapshot press the &Enter; key or double click. Press &Esc; to quit.</para>
 
 <para>To take a new snapshot of a section of a window, select the
 <guilabel>Section of Window</guilabel> combo box entry and then click on the 
