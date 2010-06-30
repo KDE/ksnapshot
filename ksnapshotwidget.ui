@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>418</width>
+    <width>411</width>
     <height>304</height>
    </rect>
   </property>
@@ -50,22 +50,10 @@ You can also copy the image to the clipboard by pressing Ctrl+C.</string>
    <item row="3" column="1">
     <widget class="KIntSpinBox" name="spinDelay">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>16777215</height>
-      </size>
      </property>
      <property name="toolTip">
       <string>Snapshot delay in seconds</string>
@@ -234,12 +222,9 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>150</width>
+       <width>156</width>
        <height>16</height>
       </size>
      </property>
