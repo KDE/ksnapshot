@@ -349,7 +349,7 @@ void RegionGrabber::keyPressEvent( QKeyEvent* e )
 
 void RegionGrabber::grabRect()
 {
-    QRect r = selection.normalized();
+    QRect r = selection.normalized().adjusted( 0, 0, -1, -1 );
     if ( !r.isNull() && r.isValid() )
     {
 	grabbing = true;
