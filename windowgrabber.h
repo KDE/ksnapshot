@@ -31,9 +31,11 @@ public:
     WindowGrabber();
     ~WindowGrabber();
 
-    static QPixmap grabCurrent( bool includeDecorations = true );
+    /* Grab a screenshot of the current window.  x and y are set to the position of the window */
+    static QPixmap grabCurrent( bool includeDecorations );
     static QString lastWindowTitle() { return WindowGrabber::title; }
     static QString lastWindowClass() { return WindowGrabber::windowClass; }
+    static QPoint lastWindowPosition() { return WindowGrabber::windowPosition; }
 
 signals:
     void windowGrabbed( const QPixmap & );
@@ -54,6 +56,7 @@ private:
     int yPos;
     static QString title;
     static QString windowClass;
+    static QPoint windowPosition;
 };
 
 #endif // WINDOWGRABBER_H

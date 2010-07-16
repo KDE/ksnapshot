@@ -171,6 +171,8 @@ private slots:
     void setPreview( const QPixmap &pm );
     void setDelay( int i );
     void setIncludeDecorations( bool b );
+    void setIncludePointer( bool b );
+    bool includePointer() const;
     void setMode( int mode );
     int delay() const;
     bool includeDecorations() const;
@@ -186,13 +188,16 @@ public:
 private:
     KUrl urlToOpen(bool *isTempfile = 0);
     void performGrab();
+    void grabPointerImage(int offsetx, int offsety);
     void grabRegion();
+
     SnapshotTimer grabTimer;
     QTimer updateTimer;
     QMenu*  openMenu;
     KSnapshotWidget *mainWidget;
     bool modified;
     QPoint savedPosition;
+    bool haveXFixes;
 };
 
 #endif // KSNAPSHOT_H

@@ -3,6 +3,8 @@ project(ksnapshot)
 include(MacroBoolTo01)
 
 set(HAVE_X11_EXTENSIONS_SHAPE_H X11_Xshape_FOUND)
+set(HAVE_X11_EXTENSIONS_XFIXES_H X11_Xfixes_FOUND)
+macro_log_feature(HAVE_X11_EXTENSIONS_XFIXES_H "X11 Fixes Extension (xfixes.h)" "X11 XFixes Extension" "http://www.x.org/" FALSE "" "Needed to capture the cursor in ksnapshot.")
 
 configure_file(config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnapshot.h)
 
@@ -29,6 +31,10 @@ kde4_add_app_icon(ksnapshot_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/hi*-app-ksnapshot.
 kde4_add_executable(ksnapshot ${ksnapshot_SRCS})
 
 target_link_libraries(ksnapshot ${KDE4_KIO_LIBS} ${X11_LIBRARIES})
+
+if (X11_Xfixes_FOUND)
+    target_link_libraries(ksnapshot ${X11_Xfixes_LIB})
+endif (X11_Xfixes_FOUND)
 
 install(TARGETS ksnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
 

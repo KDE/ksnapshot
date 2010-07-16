@@ -27,6 +27,7 @@
 #include <QBitmap>
 #include <QPainter>
 #include <QPixmap>
+#include <QPoint>
 #include <QMouseEvent>
 #include <QWheelEvent>
 
@@ -201,6 +202,7 @@ QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border,
 
 QString WindowGrabber::title;
 QString WindowGrabber::windowClass;
+QPoint WindowGrabber::windowPosition;
 
 WindowGrabber::WindowGrabber()
 : QDialog( 0, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint ),
@@ -233,7 +235,7 @@ WindowGrabber::~WindowGrabber()
 QPixmap WindowGrabber::grabCurrent( bool includeDecorations )
 {
     Window root;
-    int y, x;
+    int x, y;
     uint w, h, border, depth;
     XGrabServer( QX11Info::display() );
     Window child = windowUnderCursor( includeDecorations );
@@ -253,6 +255,7 @@ QPixmap WindowGrabber::grabCurrent( bool includeDecorations )
 	    y = newy;
 	}
     }
+    windowPosition = QPoint(x,y);
     QPixmap pm( grabWindow( child, x, y, w, h, border, &title, &windowClass ) );
     XUngrabServer( QX11Info::display() );
     return pm;
@@ -263,10 +266,13 @@ void WindowGrabber::mousePressEvent( QMouseEvent *e )
     if ( e->button() == Qt::RightButton )
 	yPos = e->globalY();
     else {
-        if ( current )
-	    emit windowGrabbed( palette().brush( backgroundRole() ).texture().copy( windows[ current ] ) );
-        else 
+        if ( current ) {
+            windowPosition = e->globalPos() - e->pos() + windows[current].topLeft();
+            emit windowGrabbed( palette().brush( backgroundRole() ).texture().copy( windows[ current ] ) );
+        } else {
+            windowPosition = QPoint(0,0);
             emit windowGrabbed( QPixmap() );
+        }
         accept();
     }
 }

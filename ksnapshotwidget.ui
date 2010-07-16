@@ -6,35 +6,99 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>411</width>
-    <height>304</height>
+    <width>428</width>
+    <height>271</height>
    </rect>
   </property>
-  <layout class="QGridLayout">
-   <property name="margin">
-    <number>0</number>
-   </property>
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <item row="0" column="0" colspan="3">
-    <widget class="KSnapshotPreview" name="lblImage" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>130</height>
-      </size>
-     </property>
-     <property name="whatsThis">
-      <string>This is a preview of the current snapshot.
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="KSnapshotPreview" name="lblImage" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>130</height>
+        </size>
+       </property>
+       <property name="whatsThis">
+        <string>This is a preview of the current snapshot.
 
 The image can be dragged to another application or document to copy the full screenshot there. Try it with the Konqueror file manager.
 
 You can also copy the image to the clipboard by pressing Ctrl+C.</string>
-     </property>
-    </widget>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout">
+       <property name="spacing">
+        <number>6</number>
+       </property>
+       <property name="margin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="KPushButton" name="btnNew">
+         <property name="whatsThis">
+          <string>Click this button to take a new snapshot.</string>
+         </property>
+         <property name="text">
+          <string>&amp;New Snapshot</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>140</width>
+           <height>44</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="KPushButton" name="btnSave">
+         <property name="whatsThis">
+          <string>Click this button to save the current snapshot. To quickly save the snapshot without showing the file dialog, press Ctrl+Shift+S. The filename is automatically incremented after each save.</string>
+         </property>
+         <property name="text">
+          <string>&amp;Save As...</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="KPushButton" name="btnOpen">
+         <property name="whatsThis">
+          <string>Click this button to open the snapshot with another application.</string>
+         </property>
+         <property name="text">
+          <string>&amp;Open With</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="KPushButton" name="btnCopy">
+         <property name="whatsThis">
+          <string>Click this button to copy the current snapshot to the clipboard.</string>
+         </property>
+         <property name="text">
+          <string>&amp;Copy to Clipboard</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </item>
-   <item row="1" column="0" colspan="4">
+   <item>
     <widget class="Line" name="line1">
      <property name="frameShape">
       <enum>QFrame::HLine</enum>
@@ -47,75 +111,25 @@ You can also copy the image to the clipboard by pressing Ctrl+C.</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="KIntSpinBox" name="spinDelay">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="toolTip">
-      <string>Snapshot delay in seconds</string>
-     </property>
-     <property name="whatsThis">
-      <string>&lt;qt&gt;&lt;p&gt;
-This is the number of seconds to wait after clicking the &lt;i&gt;New Snapshot&lt;/i&gt; button before taking the snapshot.
-&lt;/p&gt;&lt;p&gt;
-This is very useful for getting windows, menus and other items on the screen set up just the way you want.
-&lt;/p&gt;&lt;p&gt;
-If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click before taking a snapshot.
-&lt;/p&gt;
-&lt;/qt&gt;</string>
-     </property>
-     <property name="specialValueText">
-      <string>No delay</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="lblDelay">
-     <property name="text">
-      <string>Snapshot &amp;delay:</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="buddy">
-      <cstring>spinDelay</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="textLabel1">
-     <property name="text">
-      <string>Cap&amp;ture mode:</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="buddy">
-      <cstring>comboMode</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0" colspan="4">
-    <widget class="QCheckBox" name="cbIncludeDecorations">
-     <property name="whatsThis">
-      <string>When enabled, snapshot of a window will also include the window decorations</string>
-     </property>
-     <property name="text">
-      <string>Include &amp;window decorations</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1" colspan="3">
-    <widget class="QComboBox" name="comboMode">
-     <property name="whatsThis">
-      <string>&lt;qt&gt;Using this menu, you can select from the five following snapshot modes:
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="textLabel1">
+       <property name="text">
+        <string>Cap&amp;ture mode:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="buddy">
+        <cstring>comboMode</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="comboMode">
+       <property name="whatsThis">
+        <string>&lt;qt&gt;Using this menu, you can select from the five following snapshot modes:
 &lt;p&gt;
 &lt;b&gt;Full Screen&lt;/b&gt; - captures the entire desktop.&lt;br/&gt;
 &lt;b&gt;Window Under Cursor&lt;/b&gt; - captures only the window (or menu) that is under the mouse cursor when the snapshot is taken.&lt;br/&gt;
@@ -123,112 +137,123 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 &lt;b&gt;Section of Window&lt;/b&gt; - captures only a section of the window. When taking a new snapshot in this mode you will be able to select any child window by moving the mouse over it.&lt;br/&gt;
 &lt;b&gt;Current Screen&lt;/b&gt; - if you have multiple screens, this captures the screen containing the mouse cursor when the snapshot is taken.
 &lt;/p&gt;&lt;/qt&gt;</string>
-     </property>
-     <item>
-      <property name="text">
-       <string>Full Screen</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Window Under Cursor</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Region</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Section of Window</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Current Screen</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="0" column="3">
-    <layout class="QVBoxLayout">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <property name="margin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="KPushButton" name="btnNew">
-       <property name="whatsThis">
-        <string>Click this button to take a new snapshot.</string>
        </property>
+       <item>
+        <property name="text">
+         <string>Full Screen</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Window Under Cursor</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Region</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Section of Window</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Current Screen</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="lblDelay">
        <property name="text">
-        <string>&amp;New Snapshot</string>
+        <string>Snapshot &amp;delay:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="buddy">
+        <cstring>spinDelay</cstring>
        </property>
       </widget>
      </item>
-     <item>
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+     <item row="1" column="1">
+      <widget class="KIntSpinBox" name="spinDelay">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
+       <property name="toolTip">
+        <string>Snapshot delay in seconds</string>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>140</width>
-         <height>44</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="KPushButton" name="btnSave">
        <property name="whatsThis">
-        <string>Click this button to save the current snapshot. To quickly save the snapshot without showing the file dialog, press Ctrl+Shift+S. The filename is automatically incremented after each save.</string>
+        <string>&lt;qt&gt;&lt;p&gt;
+This is the number of seconds to wait after clicking the &lt;i&gt;New Snapshot&lt;/i&gt; button before taking the snapshot.
+&lt;/p&gt;&lt;p&gt;
+This is very useful for getting windows, menus and other items on the screen set up just the way you want.
+&lt;/p&gt;&lt;p&gt;
+If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click before taking a snapshot.
+&lt;/p&gt;
+&lt;/qt&gt;</string>
        </property>
-       <property name="text">
-        <string>&amp;Save As...</string>
+       <property name="specialValueText">
+        <string>No delay</string>
+       </property>
+       <property name="suffix">
+        <string> </string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="KPushButton" name="btnOpen">
-       <property name="whatsThis">
-        <string>Click this button to open the snapshot with another application.</string>
-       </property>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>&amp;Open With</string>
+        <string>Include &amp;window decorations:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="buddy">
+        <cstring>cbIncludeDecorations</cstring>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="KPushButton" name="btnCopy">
+     <item row="2" column="1">
+      <widget class="QCheckBox" name="cbIncludeDecorations">
        <property name="whatsThis">
-        <string>Click this button to copy the current snapshot to the clipboard.</string>
+        <string>When enabled, snapshot of a window will also include the window decorations</string>
        </property>
        <property name="text">
-        <string>&amp;Copy to Clipboard</string>
+        <string/>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Include mouse &amp;pointer:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="buddy">
+        <cstring>cbIncludePointer</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QCheckBox" name="cbIncludePointer">
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>
     </layout>
-   </item>
-   <item row="3" column="2" colspan="2">
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>156</width>
-       <height>16</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>
