@@ -7,98 +7,74 @@
     <x>0</x>
     <y>0</y>
     <width>428</width>
-    <height>271</height>
+    <height>374</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="KSnapshotPreview" name="lblImage" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>200</width>
-         <height>130</height>
-        </size>
-       </property>
-       <property name="whatsThis">
-        <string>This is a preview of the current snapshot.
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="KSnapshotPreview" name="lblImage" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>130</height>
+      </size>
+     </property>
+     <property name="whatsThis">
+      <string>This is a preview of the current snapshot.
 
 The image can be dragged to another application or document to copy the full screenshot there. Try it with the Konqueror file manager.
 
 You can also copy the image to the clipboard by pressing Ctrl+C.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="KPushButton" name="btnNew">
+       <property name="whatsThis">
+        <string>Click this button to take a new snapshot.</string>
+       </property>
+       <property name="text">
+        <string>&amp;New Snapshot</string>
        </property>
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout">
-       <property name="spacing">
-        <number>6</number>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
-       <property name="margin">
-        <number>0</number>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
        </property>
-       <item>
-        <widget class="KPushButton" name="btnNew">
-         <property name="whatsThis">
-          <string>Click this button to take a new snapshot.</string>
-         </property>
-         <property name="text">
-          <string>&amp;New Snapshot</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>140</width>
-           <height>44</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="KPushButton" name="btnSave">
-         <property name="whatsThis">
-          <string>Click this button to save the current snapshot. To quickly save the snapshot without showing the file dialog, press Ctrl+Shift+S. The filename is automatically incremented after each save.</string>
-         </property>
-         <property name="text">
-          <string>&amp;Save As...</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="KPushButton" name="btnOpen">
-         <property name="whatsThis">
-          <string>Click this button to open the snapshot with another application.</string>
-         </property>
-         <property name="text">
-          <string>&amp;Open With</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="KPushButton" name="btnCopy">
-         <property name="whatsThis">
-          <string>Click this button to copy the current snapshot to the clipboard.</string>
-         </property>
-         <property name="text">
-          <string>&amp;Copy to Clipboard</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      </spacer>
      </item>
     </layout>
    </item>
-   <item>
+   <item row="2" column="0">
     <widget class="Line" name="line1">
      <property name="frameShape">
       <enum>QFrame::HLine</enum>
@@ -111,7 +87,7 @@ You can also copy the image to the clipboard by pressing Ctrl+C.</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="3" column="0">
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
       <widget class="QLabel" name="textLabel1">
@@ -271,14 +247,11 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
   <customwidget>
    <class>KSnapshotPreview</class>
    <extends>QWidget</extends>
-   <header>ksnapshot.h</header>
+   <header>ksnapshotpreview.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>btnNew</tabstop>
-  <tabstop>btnSave</tabstop>
-  <tabstop>btnOpen</tabstop>
-  <tabstop>btnCopy</tabstop>
   <tabstop>comboMode</tabstop>
   <tabstop>spinDelay</tabstop>
   <tabstop>cbIncludeDecorations</tabstop>

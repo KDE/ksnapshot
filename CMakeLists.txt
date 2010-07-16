@@ -11,10 +11,12 @@ configure_file(config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnap
 ########### next target ###############
 
 set(ksnapshot_file_SRCS
+   expblur.cpp
 	regiongrabber.cpp
 	snapshottimer.cpp
 	windowgrabber.cpp
-	ksnapshotobject.cpp)
+	ksnapshotobject.cpp
+	ksnapshotpreview.cpp)
 
 set(ksnapshot_SRCS
    main.cpp

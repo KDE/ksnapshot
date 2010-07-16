@@ -56,6 +56,7 @@
 
 #include "regiongrabber.h"
 #include "windowgrabber.h"
+#include "ksnapshotpreview.h"
 #include "ui_ksnapshotwidget.h"
 
 #include "config-ksnapshot.h"
@@ -73,9 +74,6 @@ class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
         {
             setupUi(this);
             btnNew->setIcon(KIcon("ksnapshot"));
-            btnSave->setIcon(KIcon("document-save"));
-            btnOpen->setIcon(KIcon("document-open"));
-            btnCopy->setIcon(KIcon("edit-copy"));
         }
 };
 
@@ -85,16 +83,11 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     setCaption( "" );
     setModal( true );
     showButtonSeparator( true );
-    setButtons(Help | User1);
-    setButtonGuiItem(User1, KStandardGuiItem::quit());
-    /*
-    setButtons(Help | Apply | User1 | User2 | User3 | Close);
-    setButtonGuiItem(Apply, KGuiItem(i18n("New Snapshot"), "ksnapshot"));
-    setButtonGuiItem(User1, KStandardGuiItem::save());
-    setButtonGuiItem(User2, KGuiItem(i18n("Copy to Clipboard"), "edit-copy"));
-    setButtonGuiItem(User3, KGuiItem(i18n("Open With..."), "document-open"));
+    setButtons(Help | Apply | User1 | User2);
+    setButtonGuiItem(Apply, KStandardGuiItem::save());
+    setButtonGuiItem(User1, KGuiItem(i18n("Copy"), "edit-copy"));
+    setButtonGuiItem(User2, KGuiItem(i18n("Open With..."), "document-open"));
     setDefaultButton(Apply);
-    */
     grabber = new QWidget( 0,  Qt::X11BypassWindowManagerHint );
     grabber->move( -1000, -1000 );
     grabber->installEventFilter( this );
@@ -107,23 +100,20 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
 
     mainWidget = new KSnapshotWidget( vbox );
 
-    connect( mainWidget->lblImage, SIGNAL( startDrag() ), SLOT( slotDragSnapshot() ) );
-    connect( mainWidget->btnNew, SIGNAL( clicked() ), SLOT( slotGrab() ) );
-    connect( mainWidget->btnSave, SIGNAL( clicked() ), SLOT( slotSaveAs() ) );
-    connect( mainWidget->btnCopy, SIGNAL( clicked() ), SLOT( slotCopy() ) );
-//    connect( mainWidget->btnOpen, SIGNAL( clicked() ), SLOT( slotOpen() ) );
-    connect( mainWidget->comboMode, SIGNAL( activated(int) ), SLOT( slotModeChanged(int) ) );
+    connect(mainWidget->lblImage, SIGNAL(startDrag()), SLOT(slotDragSnapshot()));
+    connect(mainWidget->btnNew, SIGNAL(clicked()), SLOT(slotGrab()));
+    connect(this, SIGNAL(applyClicked()), SLOT(slotSaveAs()));
+    connect(this, SIGNAL(user1Clicked()), SLOT(slotCopy()));
+    connect(mainWidget->comboMode, SIGNAL(activated(int)), SLOT(slotModeChanged(int)));
 
     if (qApp->desktop()->numScreens() < 2) {
         mainWidget->comboMode->removeItem(CurrentScreen);
     }
 
     openMenu = new QMenu(this);
-    mainWidget->btnOpen->setMenu(openMenu);
-    connect(openMenu, SIGNAL(aboutToShow()),
-            this, SLOT(slotPopulateOpenMenu()));
-    connect(openMenu, SIGNAL(triggered(QAction*)),
-            this, SLOT(slotOpen(QAction*)));
+    button(User2)->setMenu(openMenu);
+    connect(openMenu, SIGNAL(aboutToShow()), this, SLOT(slotPopulateOpenMenu()));
+    connect(openMenu, SIGNAL(triggered(QAction*)), this, SLOT(slotOpen(QAction*)));
 
     mainWidget->spinDelay->setSuffix(ki18np(" second", " seconds"));
 
@@ -201,7 +191,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     filename = KUrl( conf.readPathEntry( "filename", QDir::currentPath()+'/'+i18n("snapshot")+"1.png" ));
 
     // Make sure the name is not already being used
-    while(KIO::NetAccess::exists( filename, KIO::NetAccess::DestinationSide, this )) {
+    while (KIO::NetAccess::exists( filename, KIO::NetAccess::DestinationSide, this )) {
         autoincFilename();
     }
 
@@ -224,10 +214,10 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
 
     new QShortcut( Qt::Key_Q, this, SLOT(slotSave()));
 
-    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Copy ).primary(), mainWidget->btnCopy, SLOT(animateClick()));
+    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Copy ).primary(), button(User1), SLOT(animateClick()));
 
-    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Save ).primary(), mainWidget->btnSave, SLOT(animateClick()));
-    new QShortcut( Qt::Key_S, mainWidget->btnSave, SLOT(animateClick()));
+    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Save ).primary(), button(Apply), SLOT(animateClick()));
+    new QShortcut( Qt::Key_S, button(Apply), SLOT(animateClick()));
 
     new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::New ).primary(), mainWidget->btnNew, SLOT(animateClick()) );
     new QShortcut( Qt::Key_N, mainWidget->btnNew, SLOT(animateClick()) );
@@ -237,6 +227,10 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     connect( this, SIGNAL( user1Clicked() ), SLOT( reject() ) );
 
     mainWidget->btnNew->setFocus();
+    setInitialSize(QSize(250, 500));
+
+    KConfigGroup cg(KGlobal::config(), "MainWindow");
+    restoreDialogSize(cg);
 }
 
 KSnapshot::~KSnapshot()
@@ -468,6 +462,9 @@ void KSnapshot::closeEvent( QCloseEvent * e )
     conf.writeEntry("includeDecorations", includeDecorations());
     conf.writeEntry("includePointer", includePointer());
 
+    KConfigGroup cg(KGlobal::config(), "MainWindow");
+    saveDialogSize(cg);
+
     KUrl url = filename;
     url.setPass(QString::null); //krazy:exclude=nullstrassign for old broken gcc
     conf.writePathEntry("filename", url.url());
@@ -661,13 +658,11 @@ void KSnapshot::slotModeChanged(int mode)
 
 void KSnapshot::setPreview( const QPixmap &pm )
 {
-    QPixmap pmScaled = pm.scaled( previewWidth(), previewHeight(), Qt::KeepAspectRatio, Qt::SmoothTransformation );
-
     mainWidget->lblImage->setToolTip(
         i18n( "Preview of the snapshot image (%1 x %2)" ,
           pm.width(), pm.height() ) );
 
-    mainWidget->lblImage->setPreview( pmScaled );
+    mainWidget->lblImage->setPreview(pm);
     mainWidget->lblImage->adjustSize();
 }
 
