@@ -55,7 +55,7 @@ You can also copy the image to the clipboard by pressing Ctrl+C.</string>
         <string>Click this button to take a new snapshot.</string>
        </property>
        <property name="text">
-        <string>&amp;New Snapshot</string>
+        <string>Take a &amp;New Snapshot</string>
        </property>
       </widget>
      </item>
