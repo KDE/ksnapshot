@@ -84,7 +84,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     setModal( true );
     showButtonSeparator( true );
     setButtons(Help | Apply | User1 | User2);
-    setButtonGuiItem(Apply, KStandardGuiItem::save());
+    setButtonGuiItem(Apply, KStandardGuiItem::saveAs());
     setButtonGuiItem(User1, KGuiItem(i18n("Copy"), "edit-copy"));
     setButtonGuiItem(User2, KGuiItem(i18n("Open With..."), "document-open"));
     setDefaultButton(Apply);
@@ -129,9 +129,11 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
         Display *dpy = QX11Info::display();
         if(!XFixesQueryExtension( dpy, &tmp1, &tmp2 ))
             mainWidget->cbIncludePointer->hide();
+            mainWidget->lblIncludePointer->hide();
     }
 #else
     mainWidget->cbIncludePointer->hide();
+    mainWidget->lblIncludePointer->hide();
 #endif
     setIncludePointer(conf.readEntry("includePointer", false));
 
@@ -653,7 +655,9 @@ void KSnapshot::exit()
 void KSnapshot::slotModeChanged(int mode)
 {
     mainWidget->cbIncludePointer->setEnabled(mode != Region);
+    mainWidget->lblIncludePointer->setEnabled(mode != Region);
     mainWidget->cbIncludeDecorations->setEnabled(mode == WindowUnderCursor);
+    mainWidget->lblIncludeDecorations->setEnabled(mode == WindowUnderCursor);
 }
 
 void KSnapshot::setPreview( const QPixmap &pm )
