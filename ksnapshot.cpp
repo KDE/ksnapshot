@@ -192,11 +192,6 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     setIncludeDecorations(conf.readEntry("includeDecorations",true));
     filename = KUrl( conf.readPathEntry( "filename", QDir::currentPath()+'/'+i18n("snapshot")+"1.png" ));
 
-    // Make sure the name is not already being used
-    while (KIO::NetAccess::exists( filename, KIO::NetAccess::DestinationSide, this )) {
-        autoincFilename();
-    }
-
     connect( &grabTimer, SIGNAL( timeout() ), this, SLOT(  grabTimerDone() ) );
     connect( &updateTimer, SIGNAL( timeout() ), this, SLOT(  updatePreview() ) );
     QTimer::singleShot( 0, this, SLOT( updateCaption() ) );
@@ -248,6 +243,11 @@ void KSnapshot::resizeEvent( QResizeEvent * )
 
 void KSnapshot::slotSave()
 {
+    // Make sure the name is not already being used
+    while(KIO::NetAccess::exists( filename, KIO::NetAccess::DestinationSide, this )) {
+        autoincFilename();
+    }
+
     if ( save(filename, this) ) {
         modified = false;
         autoincFilename();
@@ -258,6 +258,12 @@ void KSnapshot::slotSave()
 void KSnapshot::slotSaveAs()
 {
     QStringList mimetypes = KImageIO::mimeTypes( KImageIO::Writing );
+
+    // Make sure the name is not already being used
+    while(KIO::NetAccess::exists( filename, KIO::NetAccess::DestinationSide, this )) {
+        autoincFilename();
+    }
+
     KFileDialog dlg( filename.url(), mimetypes.join(" "), this);
 
     dlg.setOperationMode( KFileDialog::Saving );
