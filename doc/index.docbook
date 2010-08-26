@@ -81,8 +81,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2010-01-07</date>
-<releaseinfo>0.8.1</releaseinfo>
+<date>2010-08-26</date>
+<releaseinfo>0.8.1 (&kde; 4.5)</releaseinfo>
 
 <abstract>
 <para>&ksnapshot; is a simple applet for taking screenshots. It is capable
@@ -175,8 +175,9 @@ will differ depending on what you have displayed on the desktop.</para>
 </textobject>
 </mediaobject>
 
-<para>The snapshot can be saved by clicking on
-the <guibutton>Save As...</guibutton> button. This opens the standard &kde; save dialog,
+<para>The snapshot can be saved by clicking on the <guibutton>Save 
+As...</guibutton> (<keycombo action="simul">&Ctrl;<keycap>S</keycap></keycombo>) 
+button. This opens the standard &kde; save dialog,
 where you can choose the filename, the folder location, and the format that your snapshot
 will be saved in. If multiple snapshots are taken, the
 filename is automatically incremented to prevent you from overwriting previous
@@ -185,7 +186,8 @@ of a previously saved snapshot. </para>
 
 <para>To take a snapshot of a single window, select the <guilabel>Window
 Under Cursor</guilabel> combo box entry (next to the <guilabel>Capture mode</guilabel>
-label), and then click on the <guibutton>New Snapshot</guibutton> button.</para>
+label), and then click on the <guibutton>New Snapshot</guibutton> 
+(<keycombo action="simul">&Ctrl;<keycap>N</keycap></keycombo>) button.</para>
 
 <para>Depending on your <guilabel>Snapshot delay</guilabel> settings you
 get either a cross as the mouse pointer (for <guilabel>No delay</guilabel>),
@@ -255,6 +257,15 @@ and take a picture of it.</para>
 window decoration, disable this option and take a new snapshot.</para>
 
 </sect2>
+
+<sect2 id="open-snapshot">
+<title>Open a Snapshot</title>
+
+<para>When you want to view or modify your snapshot, just click
+<guibutton>Open With</guibutton> and select an application from the drop down box 
+to open and edit your snapshot.</para>
+</sect2>
+
 <!-- not in 4.1
 <sect2 id="print-snapshot">
 <title>Print</title>
@@ -268,7 +279,8 @@ where you can directly print your snapshot.</para>
 <title>Copy to Clipboard</title>
 
 <para>When you want to edit your snapshot in a graphics application without saving 
-the snapshot, just click <guibutton>Copy to Clipboard</guibutton> and insert the image 
+the snapshot, just click <guibutton>Copy to Clipboard</guibutton> 
+(<keycombo action="simul">&Ctrl;<keycap>C</keycap></keycombo>) and insert the image 
 into a viewer or graphics application.</para>
 </sect2>
 
