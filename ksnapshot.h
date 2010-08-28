@@ -115,6 +115,7 @@ private slots:
     QPixmap preview();
     int previewWidth() const;
     int previewHeight() const;
+    void startUndelayedGrab();
 
 public:
     int grabMode() const;

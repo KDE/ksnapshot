@@ -182,8 +182,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     }
 
     //When we use argument to take snapshot we mustn't hide it.
-    if(mode !=  KSnapshotObject::ChildWindow)
-    {
+    if (mode !=  KSnapshotObject::ChildWindow) {
        grabber->releaseMouse();
        grabber->hide();
     }
@@ -307,18 +306,23 @@ void KSnapshot::slotGrab()
     savedPosition = pos();
     hide();
 
-    if ( delay() ) {
+    if (delay()) {
         //kDebug() << "starting timer with time of" << delay();
-        grabTimer.start( delay());
+        grabTimer.start(delay());
     }
     else {
-        if ( mode() == Region ) {
-            grabRegion();
-        }
-        else {
-            grabber->show();
-            grabber->grabMouse( Qt::CrossCursor );
-        }
+        QTimer::singleShot(0, this, SLOT(startUndelayedGrab()));
+    }
+}
+
+void KSnapshot::startUndelayedGrab()
+{
+    if (mode() == Region) {
+        grabRegion();
+    }
+    else {
+        grabber->show();
+        grabber->grabMouse(Qt::CrossCursor);
     }
 }
 
@@ -510,7 +514,7 @@ void KSnapshot::grabRegion()
 void KSnapshot::grabTimerDone()
 {
     if ( mode() == Region ) {
-       grabRegion();
+        grabRegion();
     }
     else {
         performGrab();
