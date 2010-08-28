@@ -220,7 +220,6 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     new QShortcut( Qt::Key_N, mainWidget->btnNew, SLOT(animateClick()) );
     new QShortcut( Qt::Key_Space, mainWidget->btnNew, SLOT(animateClick()) );
 
-    setEscapeButton( User1 );
     connect( this, SIGNAL( user1Clicked() ), SLOT( reject() ) );
 
     mainWidget->btnNew->setFocus();
