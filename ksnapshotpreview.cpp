@@ -66,6 +66,7 @@ void KSnapshotPreview::setPreview(const QPixmap &pm)
         QPainter p(&blur);
         p.setCompositionMode(QPainter::CompositionMode_SourceIn);
         p.fillRect(blur.rect(), color);
+        p.fillRect(QRect(blurRect.topLeft(), pixmap.size()), Qt::transparent);
         p.setCompositionMode(QPainter::CompositionMode_SourceOver);
         p.drawPixmap(QRect(blurRect.topLeft(), pixmap.size()), pixmap);
         p.end();

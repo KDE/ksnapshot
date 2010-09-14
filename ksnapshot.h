@@ -116,6 +116,7 @@ private slots:
     int previewWidth() const;
     int previewHeight() const;
     void startUndelayedGrab();
+    void slotScreenshotReceived(qulonglong handle);
 
 public:
     int grabMode() const;
@@ -134,6 +135,7 @@ private:
     bool modified;
     QPoint savedPosition;
     bool haveXFixes;
+    bool includeAlpha;
 };
 
 #endif // KSNAPSHOT_H

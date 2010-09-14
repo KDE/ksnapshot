@@ -5,6 +5,7 @@
  *  Copyright (C) 2003 Nadeem Hasan <nhasan@kde.org>
  *  Copyright (C) 2004 Bernd Brandstetter <bbrand@freenet.de>
  *  Copyright (C) 2006 Urs Wolfer <uwolfer @ kde.org>
+ *  Copyright (C) 2010 Martin Gräßlin <kde@martin-graesslin.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,6 +30,10 @@
 #include <QMenu>
 #include <QDesktopWidget>
 #include <QVarLengthArray>
+#include <QtCore/QXmlStreamReader>
+#include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusConnectionInterface>
+#include <QtDBus/QDBusInterface>
 
 #include <klocale.h>
 
@@ -137,6 +142,26 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     mainWidget->lblIncludePointer->hide();
 #endif
     setIncludePointer(conf.readEntry("includePointer", false));
+
+    // check if kwin screenshot effect is available
+    includeAlpha = false;
+    if ( QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.kwin" ) ) {
+        QDBusInterface kwinInterface( "org.kde.kwin", "/", "org.freedesktop.DBus.Introspectable" );
+        QDBusReply<QString> reply = kwinInterface.call( "Introspect" );
+        if ( reply.isValid() ) {
+            QXmlStreamReader xml( reply.value() );
+            while ( !xml.atEnd() ) {
+                xml.readNext();
+                if ( xml.tokenType() == QXmlStreamReader::StartElement &&
+                    xml.name().toString() == "node" ) {
+                    if ( xml.attributes().value( "name" ).toString() == "Screenshot" ) {
+                        includeAlpha = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
     kDebug() << "Mode = " << mode;
     if ( mode == KSnapshotObject::FullScreen ) {
@@ -466,6 +491,11 @@ void KSnapshot::slotWindowGrabbed( const QPixmap &pix )
     show();
 }
 
+void KSnapshot::slotScreenshotReceived( qulonglong handle )
+{
+    slotWindowGrabbed( QPixmap::fromX11Pixmap( handle ) );
+}
+
 void KSnapshot::closeEvent( QCloseEvent * e )
 {
     KConfigGroup conf(KGlobal::config(), "GENERAL");
@@ -544,17 +574,35 @@ void KSnapshot::performGrab()
         qDebug() << "last window position is" << offset;
     }
     else if ( mode() == WindowUnderCursor ) {
-        snapshot = WindowGrabber::grabCurrent( includeDecorations() );
+        if ( includeAlpha ) {
+            // use kwin effect
+            QDBusConnection::sessionBus().connect("org.kde.kwin", "/Screenshot",
+                                                  "org.kde.kwin.Screenshot", "screenshotCreated",
+                                                  this, SLOT(slotScreenshotReceived(qulonglong)));
+            QDBusInterface interface( "org.kde.kwin", "/Screenshot", "org.kde.kwin.Screenshot" );
+            int mask = 0;
+            if ( includeDecorations() )
+            {
+                mask |= 1 << 0;
+            }
+            if ( includePointer() )
+            {
+                mask |= 1 << 1;
+            }
+            interface.call( "screenshotWindowUnderCursor", mask );
+        } else {
+            snapshot = WindowGrabber::grabCurrent( includeDecorations() );
 
-        QPoint offset = WindowGrabber::lastWindowPosition();
-        x = offset.x();
-        y = offset.y();
+            QPoint offset = WindowGrabber::lastWindowPosition();
+            x = offset.x();
+            y = offset.y();
 
-        // If we're showing decorations anyway then we'll add the title and window
-        // class to the output image meta data.
-        if ( includeDecorations() ) {
-            title = WindowGrabber::lastWindowTitle();
-            windowClass = WindowGrabber::lastWindowClass();
+            // If we're showing decorations anyway then we'll add the title and window
+            // class to the output image meta data.
+            if ( includeDecorations() ) {
+                title = WindowGrabber::lastWindowTitle();
+                windowClass = WindowGrabber::lastWindowClass();
+            }
         }
     }
     else if ( mode() == CurrentScreen ) {
