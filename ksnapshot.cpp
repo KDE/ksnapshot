@@ -321,6 +321,7 @@ void KSnapshot::slotDragSnapshot()
 
     drag->setMimeData(new QMimeData);
     drag->mimeData()->setImageData(snapshot);
+    drag->mimeData()->setData("application/x-kde-suggestedfilename", filename.fileName().toUtf8());
     drag->setPixmap(preview());
     drag->start();
 }
