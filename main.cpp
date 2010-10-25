@@ -29,7 +29,7 @@
 #include "ksnapshot.h"
 #include "ksnapshot_options.h"
 
-#define KSNAPVERSION "0.8.1"
+#define KSNAPVERSION "0.8.2"
 
 static const char description[] = I18N_NOOP("KDE Screenshot Utility");
 
@@ -45,6 +45,8 @@ int main(int argc, char **argv)
       "nhasan@kde.org" );
   aboutData.addCredit( ki18n("Marcus Hufgard"), ki18n("\"Open With\" function"),
       "Marcus.Hufgard@hufgard.de" );
+  aboutData.addCredit( ki18n("Pau Garcia i Quiles"), ki18n("Free region grabbing"),
+      "pgquiles@elpauer.org" );
 
   KCmdLineArgs::init( argc, argv, &aboutData );
   KCmdLineArgs::addCmdLineOptions( ksnapshot_options() ); // Add our own options.
@@ -68,6 +70,8 @@ int main(int argc, char **argv)
   }
   else if(args->isSet( "region" ))
      toplevel = new KSnapshot( 0, KSnapshotObject::Region );
+  else if(args->isSet( "freeregion" ))
+     toplevel = new KSnapshot( 0, KSnapshotObject::FreeRegion );
   else if(args->isSet( "child" ))
      toplevel = new KSnapshot( 0, KSnapshotObject::ChildWindow );
   else

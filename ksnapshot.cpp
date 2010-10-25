@@ -60,6 +60,7 @@
 #include <qdebug.h>
 
 #include "regiongrabber.h"
+#include "freeregiongrabber.h"
 #include "windowgrabber.h"
 #include "ksnapshotpreview.h"
 #include "ui_ksnapshotwidget.h"
@@ -201,6 +202,11 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
                     grabRegion();
                     break;
                 }
+            case KSnapshotObject::FreeRegion:
+            {
+                 grabFreeRegion();
+                 break;
+            }
             default:
                 break;
         }
@@ -345,6 +351,9 @@ void KSnapshot::startUndelayedGrab()
     if (mode() == Region) {
         grabRegion();
     }
+    else if ( mode() == FreeRegion ) {
+        grabFreeRegion();
+    }
     else {
         grabber->show();
         grabber->grabMouse(Qt::CrossCursor);
@@ -473,7 +482,14 @@ void KSnapshot::slotRegionGrabbed( const QPixmap &pix )
     updateCaption();
   }
 
-  rgnGrab->deleteLater();
+  if( mode() == KSnapshotObject::Region )
+  {
+    rgnGrab->deleteLater();
+  }
+  else if( mode() == KSnapshotObject::FreeRegion ) {
+    freeRgnGrab->deleteLater();
+  }
+
   QApplication::restoreOverrideCursor();
   show();
 }
@@ -541,10 +557,21 @@ void KSnapshot::grabRegion()
 
 }
 
+void KSnapshot::grabFreeRegion()
+{
+   freeRgnGrab = new FreeRegionGrabber();
+   connect( freeRgnGrab, SIGNAL( freeRegionGrabbed( const QPixmap & ) ),
+                     SLOT( slotRegionGrabbed( const QPixmap & ) ) );
+
+}
+
 void KSnapshot::grabTimerDone()
 {
     if ( mode() == Region ) {
         grabRegion();
+    }
+    else if ( mode() == FreeRegion ) {
+        grabFreeRegion();
     }
     else {
         performGrab();

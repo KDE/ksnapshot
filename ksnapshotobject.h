@@ -30,12 +30,13 @@
 #include <QPixmap>
 class QWidget;
 class RegionGrabber;
+class FreeRegionGrabber;
 class QString;
 
 class KSnapshotObject
 {
 public:
-    enum CaptureMode { FullScreen=0, WindowUnderCursor=1, Region=2, ChildWindow=3, CurrentScreen=4 };
+    enum CaptureMode { FullScreen=0, WindowUnderCursor=1, Region=2, FreeRegion=3, ChildWindow=4, CurrentScreen=5 };
      KSnapshotObject();
      virtual ~KSnapshotObject();
 
@@ -52,6 +53,7 @@ protected:
 
      KUrl filename;
      RegionGrabber *rgnGrab;
+     FreeRegionGrabber *freeRgnGrab;
      QWidget* grabber;
      QPixmap snapshot;
      QString title;

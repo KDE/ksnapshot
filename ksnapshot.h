@@ -127,6 +127,7 @@ private:
     void performGrab();
     void grabPointerImage(int offsetx, int offsety);
     void grabRegion();
+    void grabFreeRegion();
 
     SnapshotTimer grabTimer;
     QTimer updateTimer;

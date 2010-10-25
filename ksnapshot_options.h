@@ -30,6 +30,7 @@ static KCmdLineOptions ksnapshot_options ()
   options.add("current", ki18n("Captures the window under the mouse on startup (instead of the desktop)"));
   options.add("fullscreen", ki18n("Captures the desktop"));
   options.add("region", ki18n("Captures a region"));
+  options.add("freeregion", ki18n("Captures a free region (not rectangular)"));
   options.add("child", ki18n("Captures a part of windows"));
   return options;
 }
