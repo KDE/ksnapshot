@@ -35,8 +35,6 @@ class QMouseEvent;
 class FreeRegionGrabber : public QWidget
 {
     Q_OBJECT
-
-    enum MaskType { StrokeMask, FillMask };
     
 public:
     FreeRegionGrabber();
