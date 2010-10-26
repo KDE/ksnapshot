@@ -746,8 +746,8 @@ void KSnapshot::exit()
 
 void KSnapshot::slotModeChanged(int mode)
 {
-    mainWidget->cbIncludePointer->setEnabled(mode != Region);
-    mainWidget->lblIncludePointer->setEnabled(mode != Region);
+    mainWidget->cbIncludePointer->setEnabled(!(mode == Region || mode == FreeRegion));
+    mainWidget->lblIncludePointer->setEnabled(!(mode == Region || mode == FreeRegion));
     mainWidget->cbIncludeDecorations->setEnabled(mode == WindowUnderCursor);
     mainWidget->lblIncludeDecorations->setEnabled(mode == WindowUnderCursor);
 }
