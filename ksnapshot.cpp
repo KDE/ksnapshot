@@ -65,7 +65,7 @@
 #include "ksnapshotpreview.h"
 #include "ui_ksnapshotwidget.h"
 
-#include "config-ksnapshot.h"
+#include <config-ksnapshot.h>
 
 #ifdef HAVE_X11_EXTENSIONS_XFIXES_H
 #include <X11/extensions/Xfixes.h>
@@ -294,16 +294,18 @@ void KSnapshot::slotSaveAs()
         autoincFilename();
     }
 
-    KFileDialog dlg( filename.url(), mimetypes.join(" "), this);
+    QPointer<KFileDialog> dlg = new KFileDialog( filename.url(), mimetypes.join(" "), this);
 
-    dlg.setOperationMode( KFileDialog::Saving );
-    dlg.setCaption( i18n("Save As") );
-    dlg.setSelection( filename.url() );
+    dlg->setOperationMode( KFileDialog::Saving );
+    dlg->setCaption( i18n("Save As") );
+    dlg->setSelection( filename.url() );
 
-    if ( !dlg.exec() )
+    if ( !dlg->exec() ) {
+        delete dlg;
         return;
+    }
 
-    KUrl url = dlg.selectedUrl();
+    KUrl url = dlg->selectedUrl();
     if ( !url.isValid() )
         return;
 
@@ -313,6 +315,8 @@ void KSnapshot::slotSaveAs()
         autoincFilename();
         updateCaption();
     }
+
+    delete dlg;
 }
 
 void KSnapshot::slotCopy()
@@ -421,17 +425,19 @@ void KSnapshot::slotOpen(QAction* action)
     KService::Ptr service = serviceAction->service;
     if (!service)
     {
-        KOpenWithDialog dlg(list, this);
-        if (!dlg.exec())
+        QPointer<KOpenWithDialog> dlg = new KOpenWithDialog(list, this);
+        if (!dlg->exec())
         {
+            delete dlg;
             return;
         }
 
-        service = dlg.service();
+        service = dlg->service();
 
-        if (!service && !dlg.text().isEmpty())
+        if (!service && !dlg->text().isEmpty())
         {
-             KRun::run(dlg.text(), list, this);
+             KRun::run(dlg->text(), list, this);
+             delete dlg;
              return;
         }
     }
@@ -459,7 +465,7 @@ void KSnapshot::slotPopulateOpenMenu()
 
     foreach (const KService::Ptr &service, apps)
     {
-        QString name = service->name().replace( "&", "&&" );
+        QString name = service->name().replace( '&', "&&" );
         openMenu->addAction(new KSnapshotServiceAction(service,
                                                        KIcon(service->icon()),
                                                        name, this));

@@ -17,6 +17,7 @@
  *  Boston, MA 02110-1301, USA.
  */
 
+#include "snapshottimer.h"
 #include <QTimerEvent>
 #include <QPainter>
 #include <QPaintEvent>
@@ -24,9 +25,6 @@
 
 #include <KDebug>
 #include <klocale.h>
-
-
-#include "snapshottimer.h"
 
 SnapshotTimer::SnapshotTimer() : QWidget(0)
 {
