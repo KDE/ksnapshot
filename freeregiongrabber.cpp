@@ -26,6 +26,7 @@
 #include <QToolTip>
 #include <klocale.h>
 #include <KWindowSystem>
+#include <QRgb>
 
 FreeRegionGrabber::FreeRegionGrabber( ) :
     QWidget( 0, Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool ),
@@ -283,17 +284,21 @@ void FreeRegionGrabber::grabRect()
     {
 	grabbing = true;
 
-        QPixmap pixmap2(pixmap.size());
+        int xOffset = pixmap.rect().x() - pol.boundingRect().x();
+        int yOffset = pixmap.rect().y() - pol.boundingRect().y();
+        QPolygon translatedPol = pol.translated(xOffset, yOffset);
+
+        QPixmap pixmap2(pol.boundingRect().size());
         pixmap2.fill(Qt::transparent);
 
         QPainter pt;
         pt.begin(&pixmap2);
         pt.setCompositionMode(QPainter::CompositionMode_Source);
-        pt.setClipRegion(QRegion(pol));
-        pt.drawPixmap(pixmap.rect(), pixmap);
+        pt.setClipRegion(QRegion(translatedPol));
+        pt.drawPixmap(pixmap2.rect(), pixmap, pol.boundingRect());
         pt.end();
 
-        emit freeRegionGrabbed(pixmap2.copy(pol.boundingRect()));
+        emit freeRegionGrabbed(pixmap2);
     }
 }
 
