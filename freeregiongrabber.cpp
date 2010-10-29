@@ -24,9 +24,9 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QToolTip>
+#include <QTimer>
 #include <klocale.h>
 #include <KWindowSystem>
-#include <QRgb>
 
 FreeRegionGrabber::FreeRegionGrabber( ) :
     QWidget( 0, Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool ),

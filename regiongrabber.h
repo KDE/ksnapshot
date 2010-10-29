@@ -24,7 +24,6 @@
 #include <QPoint>
 #include <QVector>
 #include <QRect>
-#include <QTimer>
 
 class QPaintEvent;
 class QResizeEvent;

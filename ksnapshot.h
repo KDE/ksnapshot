@@ -26,12 +26,7 @@
 #define KSNAPSHOT_H
 
 #include <QAction>
-#include <QBitmap>
-#include <QLabel>
-#include <QPainter>
-#include <QStyleOption>
 #include <QTimer>
-#include <QMouseEvent>
 #include <QPixmap>
 
 #include <kglobalsettings.h>

@@ -21,11 +21,8 @@
 #define FREEREGIONGRABBER_H
 
 #include <QWidget>
-#include <QRegion>
 #include <QPoint>
-#include <QVector>
 #include <QRect>
-#include <QTimer>
 #include <QPolygon>
 
 class QPaintEvent;

@@ -18,7 +18,6 @@
  */
 
 #include "snapshottimer.h"
-#include <QTimerEvent>
 #include <QPainter>
 #include <QPaintEvent>
 #include <QToolTip>

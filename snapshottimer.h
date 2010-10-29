@@ -22,7 +22,6 @@
 
 #include <QWidget>
 #include <QTimer>
-#include <QPixmap>
 
 class SnapshotTimer : public QWidget
 {

@@ -30,6 +30,10 @@
 #include <QMenu>
 #include <QDesktopWidget>
 #include <QVarLengthArray>
+#include <QCloseEvent>
+#include <QDrag>
+#include <QMouseEvent>
+#include <QPainter>
 #include <QtCore/QXmlStreamReader>
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusConnectionInterface>

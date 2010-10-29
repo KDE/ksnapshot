@@ -23,6 +23,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QToolTip>
+#include <QTimer>
 
 #include <klocale.h>
 #include <KWindowSystem>
