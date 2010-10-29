@@ -29,7 +29,6 @@
 #include <QPolygon>
 
 class QPaintEvent;
-class QResizeEvent;
 class QMouseEvent;
 
 class FreeRegionGrabber : public QWidget
