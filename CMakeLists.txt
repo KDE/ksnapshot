@@ -30,11 +30,10 @@ set(ksnapshot_SRCS
 
 if (KIPI_FOUND)
 set(ksnapshot_SRCS
-    kipiaction.cpp
     kipiinterface.cpp
     ksnapshotimagecollectionshared.cpp
     ksnapshotinfoshared.cpp
-    ksnapshotjobtracker.cpp
+    kipiimagecollectionselector.cpp
     ${ksnapshot_SRCS})
 endif (KIPI_FOUND)
 

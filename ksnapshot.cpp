@@ -72,7 +72,6 @@
 #ifdef KIPI_FOUND
 #include <libkipi/plugin.h>
 #include "kipiinterface.h"
-#include "kipiaction.h"
 #include <KAction>
 #endif
 
@@ -96,7 +95,6 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
   : KDialog(parent), KSnapshotObject(), modified(false), savedPosition(QPoint(-1, -1))
 {
     setCaption( "" );
-    setModal( true );
     showButtonSeparator( true );
     setButtons(Help | Apply | User1 | User2);
     setButtonGuiItem(Apply, KStandardGuiItem::saveAs());
@@ -139,8 +137,6 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
 
 #ifdef KIPI_FOUND
     mPluginLoader = new KIPI::PluginLoader(QStringList(), new KIPIInterface(this), "");
-
-    mTracker=new KSnapshotJobTracker(/*statusBar()*/ this);
 #endif
 
 #ifdef HAVE_X11_EXTENSIONS_XFIXES_H
@@ -265,8 +261,6 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::New ).primary(), mainWidget->btnNew, SLOT(animateClick()) );
     new QShortcut( Qt::Key_N, mainWidget->btnNew, SLOT(animateClick()) );
     new QShortcut( Qt::Key_Space, mainWidget->btnNew, SLOT(animateClick()) );
-
-    connect( this, SIGNAL( user1Clicked() ), SLOT( reject() ) );
 
     mainWidget->btnNew->setFocus();
     setInitialSize(QSize(250, 500));
@@ -488,15 +482,35 @@ void KSnapshot::slotPopulateOpenMenu()
 
 
 #ifdef KIPI_FOUND
-    // Add KIPI plugins
-    Q_FOREACH(KIPI::PluginLoader::Info* pluginInfo, mPluginLoader->pluginList()) {
-        QStringList pluginMime = pluginInfo->service()->property("X-KIPI-Mimetypes").toStringList();
-        foreach(const QString& supportedPlugin, pluginMime) {
-            Q_UNUSED(supportedPlugin);
-            KipiAction* action=new KipiAction(pluginInfo, this, openMenu);
-            openMenu->addAction(action);
-            break; // If a plugin supports more than one MIME type, add the plugin only once, not once per MIME type
+    KIPI::PluginLoader::PluginList pluginList = mPluginLoader->pluginList();
+
+    Q_FOREACH(KIPI::PluginLoader::Info* pluginInfo, pluginList) {
+        if (!pluginInfo->shouldLoad()) {
+            continue;
         }
+        KIPI::Plugin* plugin = pluginInfo->plugin();
+        if (!plugin) {
+            kWarning() << "Plugin from library" << pluginInfo->library() << "failed to load";
+            continue;
+        }
+
+        plugin->setup(this);
+
+        QList<KAction*> actions = plugin->actions();
+        QSet<KAction*> exportActions;
+        Q_FOREACH(KAction* action, actions) {
+            KIPI::Category category = plugin->category(action);
+            if(category == KIPI::ExportPlugin) {
+                exportActions << action;
+            }
+        }
+
+        Q_FOREACH(KAction* action, exportActions) {
+            openMenu->addAction(action);
+        }
+
+//        FIXME: Port
+//            plugin->actionCollection()->readShortcutSettings();
     }
 #endif
 

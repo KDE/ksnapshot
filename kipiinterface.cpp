@@ -24,6 +24,7 @@
 #include "ksnapshotinfoshared.h"
 #include "ksnapshotimagecollectionshared.h"
 #include "ksnapshot.h"
+#include "kipiimagecollectionselector.h"
 #include <libkipi/uploadwidget.h>
 #include <libkipi/imagecollectionshared.h>
 #include <libkipi/imageinfo.h>
@@ -69,7 +70,7 @@ KIPI::ImageInfo KIPIInterface::info(const KUrl& url) {
     return KIPI::ImageInfo(new KSnapshotInfoShared(this,url));
 }
 
-bool KIPIInterface::addImage(const KUrl&, QString& err) 
+bool KIPIInterface::addImage(const KUrl&, QString&)
 {
     return true;
 }
@@ -77,13 +78,13 @@ void KIPIInterface::delImage( const KUrl& )
 {
 
 }
-void KIPIInterface::refreshImages( const KUrl::List& urls ) 
+void KIPIInterface::refreshImages( const KUrl::List& )
 {
-
+// TODO Implement?
 }
 
 KIPI::ImageCollectionSelector* KIPIInterface::imageCollectionSelector(QWidget *parent) {
-    return new KIPI::ImageCollectionSelector(parent);
+    return new KIPIImageCollectionSelector(this, parent);
 }
 
 KIPI::UploadWidget* KIPIInterface::uploadWidget(QWidget *parent) {
@@ -92,16 +93,4 @@ KIPI::UploadWidget* KIPIInterface::uploadWidget(QWidget *parent) {
 
 int KIPIInterface::features() const {
     return KIPI::HostAcceptNewImages;
-//    return KIPI::CollectionsHaveComments |
-//            KIPI::ImagesHasComments |
-//            KIPI::ImagesHasTime |
-//            KIPI::HostSupportsDateRanges |
-//            KIPI::HostAcceptNewImages |
-//            KIPI::ImagesHasTitlesWritable |
-//            KIPI::CollectionsHaveCategory |
-//            KIPI::CollectionsHaveCreationDate |
-//            KIPI::HostSupportsProgressBar |
-//            KIPI::HostSupportsTags |
-//            KIPI::HostSupportsRating |
-//            KIPI::HostSupportsThumbnails;
 }
