@@ -126,12 +126,12 @@ You can also copy the image to the clipboard by pressing Ctrl+C.</string>
        </item>
        <item>
         <property name="text">
-         <string>Region</string>
+         <string>Rectangular Region</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Free Region</string>
+         <string>Freehand Region</string>
         </property>
        </item>
        <item>

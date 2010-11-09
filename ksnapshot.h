@@ -35,9 +35,18 @@
 #include <kurl.h>
 #include "ksnapshotobject.h"
 #include "snapshottimer.h"
+#include "kipiaction.h"
+#include "ksnapshotimagecollectionshared.h"
+
+#include <config-ksnapshot.h>
 
 class KSnapshotWidget;
 class QMenu;
+
+#ifdef KIPI_FOUND
+#include <libkipi/pluginloader.h>
+#include "ksnapshotjobtracker.h"
+#endif
 
 class KSnapshotServiceAction : public QAction
 {
@@ -68,6 +77,10 @@ public:
 
 
     QString url() const { return filename.url(); }
+
+#ifdef KIPI_FOUND
+    KSnapshotJobTracker* tracker() const { return mTracker; }
+#endif
 
 public slots:
     void slotGrab();
@@ -132,6 +145,12 @@ private:
     QPoint savedPosition;
     bool haveXFixes;
     bool includeAlpha;
+#ifdef KIPI_FOUND
+    KIPI::PluginLoader* mPluginLoader;
+    KSnapshotJobTracker* mTracker;
+    friend void KipiAction::runJob();
+    friend KUrl::List KSnapshotImageCollectionShared::images();
+#endif
 };
 
 #endif // KSNAPSHOT_H

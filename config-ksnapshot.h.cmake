@@ -3,3 +3,6 @@
 
 /* Define to 1 if you have the <X11/extensions/Xfixes.h> header file. */
 #cmakedefine HAVE_X11_EXTENSIONS_XFIXES_H 1
+
+/* Define to 1 if you have libkipi */
+#cmakedefine KIPI_FOUND 1

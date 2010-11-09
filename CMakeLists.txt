@@ -6,6 +6,10 @@ set(HAVE_X11_EXTENSIONS_SHAPE_H X11_Xshape_FOUND)
 set(HAVE_X11_EXTENSIONS_XFIXES_H X11_Xfixes_FOUND)
 macro_log_feature(HAVE_X11_EXTENSIONS_XFIXES_H "X11 Fixes Extension (xfixes.h)" "X11 XFixes Extension" "http://www.x.org/" FALSE "" "Needed to capture the cursor in ksnapshot.")
 
+if (KIPI_FOUND)
+        include_directories(${KIPI_INCLUDE_DIR})
+endif (KIPI_FOUND)
+
 configure_file(config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnapshot.h)
 
 ########### next target ###############
@@ -24,6 +28,16 @@ set(ksnapshot_SRCS
    ksnapshot.cpp 
    ${ksnapshot_file_SRCS})
 
+if (KIPI_FOUND)
+set(ksnapshot_SRCS
+    kipiaction.cpp
+    kipiinterface.cpp
+    ksnapshotimagecollectionshared.cpp
+    ksnapshotinfoshared.cpp
+    ksnapshotjobtracker.cpp
+    ${ksnapshot_SRCS})
+endif (KIPI_FOUND)
+
 qt4_add_dbus_adaptor(ksnapshot_SRCS org.kde.ksnapshot.xml ksnapshot.h KSnapshot)
 
 
@@ -38,6 +52,10 @@ target_link_libraries(ksnapshot ${KDE4_KIO_LIBS} ${X11_LIBRARIES})
 if (X11_Xfixes_FOUND)
     target_link_libraries(ksnapshot ${X11_Xfixes_LIB})
 endif (X11_Xfixes_FOUND)
+
+if (KIPI_FOUND)
+    target_link_libraries(ksnapshot ${KIPI_LIBRARIES})
+endif (KIPI_FOUND)
 
 install(TARGETS ksnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
 

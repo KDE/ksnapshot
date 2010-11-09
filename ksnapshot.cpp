@@ -69,7 +69,12 @@
 #include "ksnapshotpreview.h"
 #include "ui_ksnapshotwidget.h"
 
-#include <config-ksnapshot.h>
+#ifdef KIPI_FOUND
+#include <libkipi/plugin.h>
+#include "kipiinterface.h"
+#include "kipiaction.h"
+#include <KAction>
+#endif
 
 #ifdef HAVE_X11_EXTENSIONS_XFIXES_H
 #include <X11/extensions/Xfixes.h>
@@ -96,7 +101,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     setButtons(Help | Apply | User1 | User2);
     setButtonGuiItem(Apply, KStandardGuiItem::saveAs());
     setButtonGuiItem(User1, KGuiItem(i18n("Copy"), "edit-copy"));
-    setButtonGuiItem(User2, KGuiItem(i18n("Open With..."), "document-open"));
+    setButtonGuiItem(User2, KGuiItem(i18n("Send To..."), "document-open"));
     setDefaultButton(Apply);
     grabber = new QWidget( 0,  Qt::X11BypassWindowManagerHint );
     grabber->move( -1000, -1000 );
@@ -131,6 +136,12 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     grabber->grabMouse();
 
     KConfigGroup conf(KGlobal::config(), "GENERAL");
+
+#ifdef KIPI_FOUND
+    mPluginLoader = new KIPI::PluginLoader(QStringList(), new KIPIInterface(this), "");
+
+    mTracker=new KSnapshotJobTracker(/*statusBar()*/ this);
+#endif
 
 #ifdef HAVE_X11_EXTENSIONS_XFIXES_H
     {
@@ -459,7 +470,7 @@ void KSnapshot::slotPopulateOpenMenu()
         currentAction->deleteLater();
     }
 
-    const KService::List services = KMimeTypeTrader::self()->query( "image/png");
+    const KService::List services = KMimeTypeTrader::self()->query("image/png");
     QMap<QString, KService::Ptr> apps;
 
     foreach (const KService::Ptr &service, services)
@@ -474,6 +485,20 @@ void KSnapshot::slotPopulateOpenMenu()
                                                        KIcon(service->icon()),
                                                        name, this));
     }
+
+
+#ifdef KIPI_FOUND
+    // Add KIPI plugins
+    Q_FOREACH(KIPI::PluginLoader::Info* pluginInfo, mPluginLoader->pluginList()) {
+        QStringList pluginMime = pluginInfo->service()->property("X-KIPI-Mimetypes").toStringList();
+        foreach(const QString& supportedPlugin, pluginMime) {
+            Q_UNUSED(supportedPlugin);
+            KipiAction* action=new KipiAction(pluginInfo, this, openMenu);
+            openMenu->addAction(action);
+            break; // If a plugin supports more than one MIME type, add the plugin only once, not once per MIME type
+        }
+    }
+#endif
 
     openMenu->addSeparator();
     KService::Ptr none;
