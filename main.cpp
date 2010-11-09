@@ -45,7 +45,7 @@ int main(int argc, char **argv)
       "nhasan@kde.org" );
   aboutData.addCredit( ki18n("Marcus Hufgard"), ki18n("\"Open With\" function"),
       "Marcus.Hufgard@hufgard.de" );
-  aboutData.addCredit( ki18n("Pau Garcia i Quiles"), ki18n("Free region grabbing"),
+  aboutData.addCredit( ki18n("Pau Garcia i Quiles"), ki18n("Free region grabbing, KIPI plugins support"),
       "pgquiles@elpauer.org" );
 
   KCmdLineArgs::init( argc, argv, &aboutData );
