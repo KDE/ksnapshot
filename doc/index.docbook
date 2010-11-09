@@ -86,8 +86,8 @@
 
 <abstract>
 <para>&ksnapshot; is a simple applet for taking screenshots. It is capable
-of capturing images of the whole desktop, a single window, a section of a window or a selected
-region.  The images can then be saved in a variety of formats.</para>
+of capturing images of the whole desktop, a single window, a section of a window, a selected
+rectangular region or a freehand region.  The images can then be saved in a variety of formats.</para>
 </abstract>
 
 <keywordset>
@@ -163,7 +163,7 @@ started, but before it displays itself on screen. This allows you to quickly
 create full-desktop screenshot images.</para>
 
 <para>The snapshot taken by &ksnapshot; is displayed in the preview window,
-which is located in the upper left of the &ksnapshot; application window.
+which is located on top of the &ksnapshot; application window.
 Below is an example of the preview window from &ksnapshot;. Your preview
 will differ depending on what you have displayed on the desktop.</para>
 
@@ -209,12 +209,20 @@ or to grab a new one, by pressing the
 &ksnapshot; will now capture the entire desktop if you press
 <guibutton>New Snapshot</guibutton>.</para>
 
-<para>Similarly, to take a snapshot of a region, select the 
-<guilabel>Region</guilabel> combo box entry and set the 
+<para>Similarly, to take a snapshot of a rectangular region, select the 
+<guilabel>Rectangular Region</guilabel> combo box entry and set the 
 <guilabel>Snapshot delay</guilabel> to <guilabel>No delay</guilabel>,
 and then click on the <guibutton>New Snapshot</guibutton> button. The
 mouse cursor will then change into a cross, and you can then use the 
 mouse to select the region you want to capture. 
+To take the snapshot press the &Enter; key or double click. Press &Esc; to quit.</para>
+
+<para>You might want to take a snapshot of a non rectangular region. You can do so by selecting
+the <guilabel>Freehand Region</guilabel> combo box entry and set the 
+<guilabel>Snapshot delay</guilabel> to <guilabel>No delay</guilabel>,
+and then click on the <guibutton>New Snapshot</guibutton> button. The
+mouse cursor will then change into a cross, and you can then use the 
+mouse to draw the region you want to capture. 
 To take the snapshot press the &Enter; key or double click. Press &Esc; to quit.</para>
 
 <para>To take a new snapshot of a section of a window, select the
@@ -258,12 +266,16 @@ window decoration, disable this option and take a new snapshot.</para>
 
 </sect2>
 
-<sect2 id="open-snapshot">
-<title>Open a Snapshot</title>
+<sect2 id="mouse-pointer">
+<title>Include mouse pointer</title>
 
-<para>When you want to view or modify your snapshot, just click
-<guibutton>Open With</guibutton> and select an application from the drop down box 
-to open and edit your snapshot.</para>
+<para><guilabel>Include mouse pointer</guilabel> is disabled by default. This setting is not 
+available in <guilabel>Rectangular Region</guilabel> and <guilabel>Freehand Region</guilabel> 
+modes.</para>
+
+<para>When you want to include the mouse pointer in your snapshot, enable this option and take 
+a new snapshot.</para>
+
 </sect2>
 
 <!-- not in 4.1
@@ -275,20 +287,12 @@ to open and edit your snapshot.</para>
 where you can directly print your snapshot.</para>
 </sect2>
 -->
-<sect2 id="copy-snapshot">
-<title>Copy to Clipboard</title>
-
-<para>When you want to edit your snapshot in a graphics application without saving 
-the snapshot, just click <guibutton>Copy to Clipboard</guibutton> 
-(<keycombo action="simul">&Ctrl;<keycap>C</keycap></keycombo>) and insert the image 
-into a viewer or graphics application.</para>
-</sect2>
 
 
 <sect2 id="bottom-buttons">
 <title>Buttons</title>
 
-<para>There are two further buttons located at the bottom of the
+<para>There are four buttons located at the bottom of the
 &ksnapshot; window. Their function is described below.</para>
 
 <variablelist>
@@ -303,7 +307,21 @@ and <guimenuitem>About &kde;</guimenuitem>.
 </varlistentry>
 
 <varlistentry>
-<term><guibutton>Quit</guibutton></term>
+<term><guibutton>Send To...</guibutton></term>
+<listitem><para>This will allow to directly open the snapshot with an associated 
+program.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><guibutton>Copy</guibutton></term>
+<listitem><para>When you want to edit your snapshot in a graphics application without saving 
+the snapshot, just click <guibutton>Copy to Clipboard</guibutton> 
+(<keycombo action="simul">&Ctrl;<keycap>C</keycap></keycombo>) and insert the image 
+into a viewer or graphics application.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><guibutton>Save As...</guibutton></term>
 <listitem><para>Quits the &ksnapshot; application.</para></listitem>
 </varlistentry>
 </variablelist>
