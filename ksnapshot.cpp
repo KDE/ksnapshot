@@ -502,6 +502,11 @@ void KSnapshot::slotPopulateOpenMenu()
             KIPI::Category category = plugin->category(action);
             if(category == KIPI::ExportPlugin) {
                 exportActions << action;
+            } else if (category == KIPI::ImagesPlugin) {
+                // Horrible hack. Why are the print images and the e-mail images plugins in the same category as rotate and edit metadata!?
+                if( pluginInfo->library().contains("kipiplugin_printimages") || pluginInfo->library().contains("kipiplugin_sendimages")) {
+                    exportActions << action;
+                }
             }
         }
 
