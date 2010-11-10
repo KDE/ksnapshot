@@ -309,10 +309,10 @@ and <guimenuitem>About &kde;</guimenuitem>.
 <varlistentry>
 <term><guibutton>Send To...</guibutton></term>
 <listitem><para>This will allow to directly open the snapshot with all programs
-that are associated with your .png mime type. Depending on what programs are installed, you
-will be able to edit the snapshot in your graphics applications or viewers.</para>
-<para>Furthermore, if you have the <application>Kipi-plugins</application> installed you will be able to export your snapshots
-directly to some social networks and websites and more, as shown on the screenshot below.</para>
+that are associated with your PNG (Portable Network Graphics) MIME type. Depending on what programs are installed, you
+will be able to open and edit the snapshot in your graphics applications or viewers.</para>
+<para>Furthermore, if you have the <application>KIPI plugins</application> installed you will be able to print your snapshots,
+e-mail them and export directly to some social networks and websites, as shown on the screenshot below.</para>
 <mediaobject>
 <imageobject>
 <imagedata fileref="send-to-menu.png" format="PNG"/>
@@ -333,7 +333,7 @@ into a viewer or graphics application.</para></listitem>
 
 <varlistentry>
 <term><guibutton>Save As...</guibutton></term>
-<listitem><para>Quits the &ksnapshot; application.</para></listitem>
+<listitem><para>Saves the screenshot to a file in the selected format.</para></listitem>
 </varlistentry>
 </variablelist>
 
