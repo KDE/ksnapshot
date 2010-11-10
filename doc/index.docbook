@@ -85,7 +85,7 @@
 <releaseinfo>0.8.2 (&kde; 4.6)</releaseinfo>
 
 <abstract>
-<para>&ksnapshot; is a simple applet for taking screenshots. It is capable
+<para>&ksnapshot; is a simple application for taking screenshots. It is capable
 of capturing images of the whole desktop, a single window, a section of a window, a selected
 rectangular region or a freehand region.  The images can then be saved in a variety of formats.</para>
 </abstract>
@@ -103,12 +103,12 @@ rectangular region or a freehand region.  The images can then be saved in a vari
 <chapter id="introduction">
 <title>Introduction</title>
 
-<para>&ksnapshot; is a simple applet for taking screenshots. It is capable
-of capturing images of the whole desktop, a single window, a section of a window or a selected
-region.  The images can then be saved in a variety of formats.</para>
+<para>&ksnapshot; is a simple application for taking screenshots. It is capable
+of capturing images of the whole desktop, a single window, a section of a window, a selected
+rectangular region or a freehand region. The images can then be saved in a variety of formats.</para>
 
 <para>Please report any problems or feature requests to the <ulink
-url="http://bugs.kde.org/">&kde; Bug Tracking System</ulink></para>
+url="http://bugs.kde.org/">&kde; Bug Tracking System</ulink>.</para>
 
 </chapter>
 
@@ -308,8 +308,19 @@ and <guimenuitem>About &kde;</guimenuitem>.
 
 <varlistentry>
 <term><guibutton>Send To...</guibutton></term>
-<listitem><para>This will allow to directly open the snapshot with an associated 
-program.</para></listitem>
+<listitem><para>This will allow to directly open the snapshot with all programs
+that are associated with your .png mime type. Depending on what programs are installed, you
+will be able to edit the snapshot in your graphics applications or viewers.</para>
+<para>Furthermore, if you have the <application>kipi-plugins</application> installed you will be able to export your snapshots
+directly to some social networks and websites and more, as shown on the screenshot below.</para>
+<mediaobject>
+<imageobject>
+<imagedata fileref="send-to-menu.png" format="PNG"/>
+</imageobject>
+<textobject><phrase>&ksnapshot; Send To... menu with kipi-plugins installed</phrase>
+</textobject>
+</mediaobject>
+</listitem>
 </varlistentry>
 
 <varlistentry>
