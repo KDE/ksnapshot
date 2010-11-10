@@ -311,7 +311,7 @@ and <guimenuitem>About &kde;</guimenuitem>.
 <listitem><para>This will allow to directly open the snapshot with all programs
 that are associated with your .png mime type. Depending on what programs are installed, you
 will be able to edit the snapshot in your graphics applications or viewers.</para>
-<para>Furthermore, if you have the <application>kipi-plugins</application> installed you will be able to export your snapshots
+<para>Furthermore, if you have the <application>Kipi-plugins</application> installed you will be able to export your snapshots
 directly to some social networks and websites and more, as shown on the screenshot below.</para>
 <mediaobject>
 <imageobject>
