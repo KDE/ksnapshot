@@ -35,7 +35,6 @@
 #include <kurl.h>
 #include "ksnapshotobject.h"
 #include "snapshottimer.h"
-#include "ksnapshotimagecollectionshared.h"
 
 #include <config-ksnapshot.h>
 
@@ -43,6 +42,7 @@ class KSnapshotWidget;
 class QMenu;
 
 #ifdef KIPI_FOUND
+#include "ksnapshotimagecollectionshared.h"
 #include <libkipi/pluginloader.h>
 #endif
 
