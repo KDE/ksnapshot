@@ -293,8 +293,16 @@ void FreeRegionGrabber::grabRect()
 
         QPainter pt;
         pt.begin(&pixmap2);
-        pt.setCompositionMode(QPainter::CompositionMode_Source);
-        pt.setClipRegion(QRegion(translatedPol));
+//        [02:34] <kdepepo> pgquiles, http://www.kde.pastebin.ca/1986921 works, but you have to improve it.
+//        First you need to make sure the painter actually supports the advanced compositing modes.
+//        Fall back to old code, if not. Additionally, you probably might need to shift the polygon rendering
+//        by a half pixel, or use a half pixel outline pen, so that straight lines aren't antialiased at half the pixel.
+        pt.setRenderHints(QPainter::Antialiasing|QPainter::HighQualityAntialiasing|QPainter::SmoothPixmapTransform, true);
+        pt.setBrush(Qt::black);
+        pt.setPen(QPen(QBrush(Qt::black), 0.5));
+        pt.drawPolygon(translatedPol);
+        pt.setCompositionMode(QPainter::CompositionMode_SourceIn);
+
         pt.drawPixmap(pixmap2.rect(), pixmap, pol.boundingRect());
         pt.end();
 
