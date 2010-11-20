@@ -256,7 +256,7 @@ and take a picture of it.</para>
 </sect2>
 
 <sect2 id="window-decoration">
-<title>Include Window decorations</title>
+<title>Exclude Window decorations</title>
 
 <para><guilabel>Include window decorations</guilabel> is enabled by default in 
 <guilabel>Window Under Cursor</guilabel> mode.</para>
