@@ -140,7 +140,7 @@ prompt:</para>
 </listitem>
 <listitem><para>The mini command line &krunner; (invoked with
 <keycombo action="simul">&Alt;<keycap>F2</keycap></keycombo>) may
-also be used to start &ksnapshot;</para></listitem>
+also be used to start &ksnapshot;.</para></listitem>
 </itemizedlist>
 
 <para>Once &ksnapshot; starts, you will see a window like the following:
