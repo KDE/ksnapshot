@@ -26,7 +26,10 @@
 
 #include "ksnapshotobject.h"
 
+#ifdef Q_WS_X11
 #include <fixx11h.h>
+#endif
+
 //kde include
 #include <KMessageBox>
 #include <KMimeType>

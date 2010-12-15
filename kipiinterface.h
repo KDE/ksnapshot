@@ -30,7 +30,7 @@
 #include <libkipi/imagecollectionshared.h>
 
 class KSnapshot;
-class KIPIInterfacePrivate;
+struct KIPIInterfacePrivate;
 
 class KIPIInterface :public KIPI::Interface {
 	Q_OBJECT

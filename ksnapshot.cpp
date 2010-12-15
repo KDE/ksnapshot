@@ -568,7 +568,9 @@ void KSnapshot::slotWindowGrabbed( const QPixmap &pix )
 
 void KSnapshot::slotScreenshotReceived( qulonglong handle )
 {
+#ifdef Q_WS_X11
     slotWindowGrabbed( QPixmap::fromX11Pixmap( handle ) );
+#endif
 }
 
 void KSnapshot::closeEvent( QCloseEvent * e )

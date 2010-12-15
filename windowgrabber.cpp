@@ -31,12 +31,14 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 
+#ifdef Q_WS_X11
 #include <X11/Xlib.h>
 #include <config-ksnapshot.h>
 #ifdef HAVE_X11_EXTENSIONS_SHAPE_H
 #include <X11/extensions/shape.h>
 #endif
 #include <QX11Info>
+#endif
 
 static
 const int minSize = 8;
@@ -47,6 +49,7 @@ bool operator< ( const QRect& r1, const QRect& r2 )
     return r1.width() * r1.height() < r2.width() * r2.height();
 }
 
+#ifdef Q_WS_X11
 // Recursively iterates over the window w and its children, thereby building
 // a tree of window descriptors. Windows in non-viewable state or with height
 // or width smaller than minSize will be ignored.
@@ -199,6 +202,7 @@ QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border,
 
     return pm;
 }
+#endif
 
 QString WindowGrabber::title;
 QString WindowGrabber::windowClass;
@@ -209,8 +213,10 @@ WindowGrabber::WindowGrabber()
   current( -1 ), yPos( -1 )
 {
     setWindowModality( Qt::WindowModal );
+	int y, x;
+
+#ifdef Q_WS_X11
     Window root;
-    int y, x;
     uint w, h, border, depth;
     XGrabServer( QX11Info::display() );
     Window child = windowUnderCursor();
@@ -218,13 +224,14 @@ WindowGrabber::WindowGrabber()
     QPixmap pm( grabWindow( child, x, y, w, h, border, &title, &windowClass ) );
     getWindowsRecursive( windows, child );
     XUngrabServer( QX11Info::display() );
-
     QPalette p = palette();
     p.setBrush( backgroundRole(), QBrush( pm ) );
     setPalette( p );
     setFixedSize( pm.size() );
     setMouseTracking( true );
     setGeometry( x, y, w, h );
+#endif // Q_WS_X11
+
     current = windowIndex( mapFromGlobal(QCursor::pos()) );
 }
 
@@ -234,6 +241,7 @@ WindowGrabber::~WindowGrabber()
 
 QPixmap WindowGrabber::grabCurrent( bool includeDecorations )
 {
+#ifdef Q_WS_X11
     Window root;
     int x, y;
     uint w, h, border, depth;
@@ -259,7 +267,10 @@ QPixmap WindowGrabber::grabCurrent( bool includeDecorations )
     QPixmap pm( grabWindow( child, x, y, w, h, border, &title, &windowClass ) );
     XUngrabServer( QX11Info::display() );
     return pm;
+#endif // Q_WS_X11
+	return QPixmap(); // TODO Implement on Windows and Mac
 }
+
 
 void WindowGrabber::mousePressEvent( QMouseEvent *e )
 {

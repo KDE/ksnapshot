@@ -114,7 +114,9 @@ void KBackgroundSnapshot::performGrab()
         savePictureOnDesktop();
     }
     else {
+#ifdef Q_WS_X11
         snapshot = QPixmap::grabWindow( QX11Info::appRootWindow() );
+#endif // Q_WS_X11
         savePictureOnDesktop();
     }
 }

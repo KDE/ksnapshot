@@ -41,7 +41,7 @@ public:
         bool isDirectory() { return false; }
 
 private:
-        class Private;
+        struct Private;
         Private* d;
         KUrl::List mImages;
 };
