@@ -114,7 +114,7 @@ void KBackgroundSnapshot::performGrab()
         savePictureOnDesktop();
     }
     else {
-		snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
+        snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
         savePictureOnDesktop();
     }
 }
