@@ -213,9 +213,8 @@ WindowGrabber::WindowGrabber()
   current( -1 ), yPos( -1 )
 {
     setWindowModality( Qt::WindowModal );
-	int y, x;
-
 #ifdef Q_WS_X11
+    int y,x;
     Window root;
     uint w, h, border, depth;
     XGrabServer( QX11Info::display() );

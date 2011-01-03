@@ -45,6 +45,9 @@
 #include <QImageWriter>
 
 KSnapshotObject::KSnapshotObject()
+: rgnGrab( 0 ),
+  freeRgnGrab( 0 ),
+  grabber( 0 )
 {
 }
 

@@ -183,18 +183,16 @@ int main(int argc, char **argv)
 
   KApplication app;
 
-  KBackgroundSnapshot *toplevel;
-
   if ( args->isSet( "current" ) )
-     toplevel = new KBackgroundSnapshot( KSnapshotObject::WindowUnderCursor );
+     new KBackgroundSnapshot( KSnapshotObject::WindowUnderCursor );
   else if(args->isSet( "fullscreen" ))
-     toplevel = new KBackgroundSnapshot( KSnapshotObject::FullScreen );
+     new KBackgroundSnapshot( KSnapshotObject::FullScreen );
   else if(args->isSet( "region" ))
-     toplevel = new KBackgroundSnapshot( KSnapshotObject::Region );
+     new KBackgroundSnapshot( KSnapshotObject::Region );
   else if(args->isSet( "child" ))
-     toplevel = new KBackgroundSnapshot( KSnapshotObject::ChildWindow );
+     new KBackgroundSnapshot( KSnapshotObject::ChildWindow );
   else
-     toplevel = new KBackgroundSnapshot();
+     new KBackgroundSnapshot();
   args->clear();
   return app.exec();
 }
