@@ -191,7 +191,7 @@ int main(int argc, char **argv)
   else if(args->isSet( "region" ))
      new KBackgroundSnapshot( KSnapshotObject::Region );
   else if(args->isSet( "freeregion" ))
-     toplevel = new KBackgroundSnapshot( KSnapshotObject::FreeRegion );
+     new KBackgroundSnapshot( KSnapshotObject::FreeRegion );
   else if(args->isSet( "child" ))
      new KBackgroundSnapshot( KSnapshotObject::ChildWindow );
   else
