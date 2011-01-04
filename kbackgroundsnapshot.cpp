@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2007 Montel Laurent <montel@kde.org>
+ *  Copyright (C) 2010 Pau Garcia i Quiles <pgquiles@elpauer.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -189,6 +190,8 @@ int main(int argc, char **argv)
      new KBackgroundSnapshot( KSnapshotObject::FullScreen );
   else if(args->isSet( "region" ))
      new KBackgroundSnapshot( KSnapshotObject::Region );
+  else if(args->isSet( "freeregion" ))
+     toplevel = new KBackgroundSnapshot( KSnapshotObject::FreeRegion );
   else if(args->isSet( "child" ))
      new KBackgroundSnapshot( KSnapshotObject::ChildWindow );
   else
