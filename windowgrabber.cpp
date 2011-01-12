@@ -217,6 +217,7 @@ HWND windowUnderCursor(bool includeDecorations = true)
 			windowUnderCursor = GetAncestor( windowUnderCursor, GA_ROOT );
 		}
 	}
+
 	return windowUnderCursor;
 }
 #endif
@@ -286,12 +287,26 @@ QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border,
 }
 #elif defined(Q_WS_WIN)
 static
-QPixmap grabWindow( HWND child, int x, int y, uint w, uint h, uint border,
+QPixmap grabWindow( HWND hWnd, int x, int y, uint w, uint h, uint border,
 		    QString *title=0, QString *windowClass=0 )
 {
-    QPixmap pm( QPixmap::grabWindow( child ) );
+	RECT windowRect;
+	GetWindowRect(hWnd, &windowRect);
+	int width = windowRect.right - windowRect.left;
+	int height = windowRect.bottom - windowRect.top;
 
-    KWindowInfo winInfo( findRealWindow(child), NET::WMVisibleName, NET::WM2WindowClass );
+	HDC targetDC = GetWindowDC(hWnd);
+	HDC hDC = CreateCompatibleDC(targetDC);
+	HBITMAP tempPict = CreateCompatibleBitmap(targetDC, width, height);
+	HGDIOBJ oldPict = SelectObject(hDC, tempPict);
+	BitBlt(hDC, 0, 0, width, height, targetDC, 0, 0, SRCCOPY);
+	tempPict = (HBITMAP) SelectObject(hDC, oldPict);
+	QPixmap pm = QPixmap::fromWinHBITMAP(tempPict);
+
+	DeleteDC(hDC);
+	ReleaseDC(GetDesktopWindow(), targetDC);
+
+    KWindowInfo winInfo( findRealWindow(hWnd), NET::WMVisibleName, NET::WM2WindowClass );
     if ( title ) {
 		(*title) = winInfo.visibleName();
 	}
@@ -300,11 +315,7 @@ QPixmap grabWindow( HWND child, int x, int y, uint w, uint h, uint border,
 		(*windowClass) = winInfo.windowClassName();
 	}
 
-	kDebug() << "KWindowInfo::windowClassClass() = " << winInfo.windowClassClass();
-	kDebug() << "KWindowInfo::windowClassName() = " << winInfo.windowClassName();
-
 	return pm;
-
 }
 #endif // Q_WS_X11
 
@@ -407,10 +418,10 @@ QPixmap WindowGrabber::grabCurrent( bool includeDecorations )
 		r = wi.rcClient;
 	}
 
-	x = wi.rcWindow.left;
-	y = wi.rcWindow.top;
-	w = wi.rcWindow.right - wi.rcWindow.left;
-	y = wi.rcWindow.bottom - wi.rcWindow.top;
+	x = r.left;
+	y = r.top;
+	w = r.right - r.left;
+	y = r.bottom - r.top;
 	border = wi.cxWindowBorders; // This is not 100% right. On X11, border has the same width on X and Y axis. On Windows, border may be different width on X and Y axis.
 
 	windowPosition = QPoint(x,y);
