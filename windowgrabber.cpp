@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2004 Bernd Brandstetter <bbrand@freenet.de>
+  Copyright (C) 2010, 2011 Pau Garcia i Quiles <pgquiles@elpauer.org>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public
@@ -36,9 +37,13 @@
 #include <config-ksnapshot.h>
 #ifdef HAVE_X11_EXTENSIONS_SHAPE_H
 #include <X11/extensions/shape.h>
-#endif
+#endif // HAVE_X11_EXTENSIONS_SHAPE_H
 #include <QX11Info>
-#endif
+#endif // Q_WS_X11
+
+#ifdef Q_WS_WIN
+#include <windows.h>
+#endif // Q_WS_WIN
 
 static
 const int minSize = 8;
@@ -49,12 +54,12 @@ bool operator< ( const QRect& r1, const QRect& r2 )
     return r1.width() * r1.height() < r2.width() * r2.height();
 }
 
-#ifdef Q_WS_X11
 // Recursively iterates over the window w and its children, thereby building
 // a tree of window descriptors. Windows in non-viewable state or with height
 // or width smaller than minSize will be ignored.
+#ifdef Q_WS_X11
 static
-void getWindowsRecursive( std::vector<QRect>& windows, Window w,
+void getWindowsRecursive( std::vector<QRect> *windows, Window w,
 			  int rx = 0, int ry = 0, int depth = 0 )
 {
     XWindowAttributes atts;
@@ -68,8 +73,8 @@ void getWindowsRecursive( std::vector<QRect>& windows, Window w,
 	}
 
 	QRect r( x, y, atts.width, atts.height );
-	if ( std::find( windows.begin(), windows.end(), r ) == windows.end() ) {
-	    windows.push_back( r );
+	if ( std::find( windows->begin(), windows->end(), r ) == windows->end() ) {
+	    windows->push_back( r );
 	}
 
 	Window root, parent;
@@ -79,15 +84,62 @@ void getWindowsRecursive( std::vector<QRect>& windows, Window w,
 	if( XQueryTree( QX11Info::display(), w, &root, &parent, &children, &nchildren ) != 0 ) {
             for( unsigned int i = 0; i < nchildren; ++i ) {
                 getWindowsRecursive( windows, children[ i ], x, y, depth + 1 );
-	    }
-            if( children != NULL )
-		XFree( children );
+			}
+
+            if( children != NULL ) {
+				XFree( children );
+			}
 	}
     }
-    if ( depth == 0 )
-	std::sort( windows.begin(), windows.end() );
+    if ( depth == 0 ) {
+		std::sort( windows->begin(), windows->end() );
+	}
+}
+#elif defined(Q_WS_WIN)
+
+static
+bool maybeAddWindow(HWND hwnd, std::vector<QRect> *windows) {
+	WINDOWINFO wi;
+	GetWindowInfo(hwnd, &wi);
+
+	int width = wi.rcWindow.right - wi.rcWindow.left;
+	int height = wi.rcWindow.top - wi.rcWindow.bottom;
+
+	if ( ( ( wi.dwStyle & WS_VISIBLE ) != 0 ) 
+		&& (width >= minSize ) && (height >= minSize ) )
+	{
+		QRect r( wi.rcWindow.left, wi.rcWindow.top, width, height );
+//		if ( std::find( windows->begin(), windows->end(), r ) == windows->end() ) {
+			windows->push_back( r );
+			return true;
+//		}	
+	}
+	return false;
 }
 
+static
+BOOL CALLBACK getWindowsRecursiveHelper( HWND hwnd, LPARAM lParam ) {
+	maybeAddWindow(hwnd, reinterpret_cast< std::vector<QRect>* >(lParam) );
+	return TRUE;
+}
+
+static
+void getWindowsRecursive( std::vector<QRect> *windows, HWND hwnd,
+			  int rx = 0, int ry = 0, int depth = 0 )
+{
+
+	maybeAddWindow(hwnd, windows);
+
+	EnumChildWindows( hwnd, getWindowsRecursiveHelper, (LPARAM) windows );
+
+//	if( depth == 0 ) {
+		std::sort( windows->begin(), windows->end() );
+//	}
+}
+
+#endif // Q_WS_X11
+
+#ifdef Q_WS_X11
 static
 Window findRealWindow( Window w, int depth = 0 )
 {
@@ -119,7 +171,16 @@ Window findRealWindow( Window w, int depth = 0 )
     }
     return ret;
 }
+#elif defined(Q_WS_WIN)
+static
+HWND findRealWindow( HWND w, int depth = 0 )
+{
+	// TODO Implement
+	return w; // This is WRONG but makes code compile for now
+}
+#endif // Q_WS_X11
 
+#ifdef Q_WS_X11
 static
 Window windowUnderCursor( bool includeDecorations = true )
 {
@@ -139,7 +200,28 @@ Window windowUnderCursor( bool includeDecorations = true )
     }
     return child;
 }
+#elif defined(Q_WS_WIN)
+static
+HWND windowUnderCursor(bool includeDecorations = true) 
+{
+	// TODO include decorations if includeDecorations = true
+	POINT pointCursor;
+	QPoint qpointCursor = QCursor::pos();
+	pointCursor.x = qpointCursor.x();
+	pointCursor.y = qpointCursor.y();
+	HWND windowUnderCursor = WindowFromPoint(pointCursor);
 
+	if( includeDecorations ) {
+		LONG_PTR style = GetWindowLongPtr( windowUnderCursor, GWL_STYLE );
+		if( ( style & WS_CHILD ) != 0 ) {
+			windowUnderCursor = GetAncestor( windowUnderCursor, GA_ROOT );
+		}
+	}
+	return windowUnderCursor;
+}
+#endif
+
+#ifdef Q_WS_X11
 static
 QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border,
 		    QString *title=0, QString *windowClass=0 )
@@ -198,11 +280,33 @@ QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border,
 	    pm.setMask(mask);
 	}
     }
-#endif
+#endif // HAVE_X11_EXTENSIONS_SHAPE_H
 
     return pm;
 }
-#endif
+#elif defined(Q_WS_WIN)
+static
+QPixmap grabWindow( HWND child, int x, int y, uint w, uint h, uint border,
+		    QString *title=0, QString *windowClass=0 )
+{
+    QPixmap pm( QPixmap::grabWindow( child ) );
+
+    KWindowInfo winInfo( findRealWindow(child), NET::WMVisibleName, NET::WM2WindowClass );
+    if ( title ) {
+		(*title) = winInfo.visibleName();
+	}
+
+    if ( windowClass ) {
+		(*windowClass) = winInfo.windowClassName();
+	}
+
+	kDebug() << "KWindowInfo::windowClassClass() = " << winInfo.windowClassClass();
+	kDebug() << "KWindowInfo::windowClassName() = " << winInfo.windowClassName();
+
+	return pm;
+
+}
+#endif // Q_WS_X11
 
 QString WindowGrabber::title;
 QString WindowGrabber::windowClass;
@@ -213,23 +317,33 @@ WindowGrabber::WindowGrabber()
   current( -1 ), yPos( -1 )
 {
     setWindowModality( Qt::WindowModal );
-#ifdef Q_WS_X11
     int y,x;
-    Window root;
     uint w, h, border, depth;
+
+#ifdef Q_WS_X11
+    Window root;
     XGrabServer( QX11Info::display() );
     Window child = windowUnderCursor();
     XGetGeometry( QX11Info::display(), child, &root, &x, &y, &w, &h, &border, &depth );
+#elif defined(Q_WS_WIN)
+	HWND root;
+	HWND child = windowUnderCursor();
+	// TODO XGetGeometry
+#endif
+
     QPixmap pm( grabWindow( child, x, y, w, h, border, &title, &windowClass ) );
-    getWindowsRecursive( windows, child );
+    getWindowsRecursive( &windows, child );
+
+#ifdef Q_WS_X11
     XUngrabServer( QX11Info::display() );
+#endif // Q_WS_X11
+
     QPalette p = palette();
     p.setBrush( backgroundRole(), QBrush( pm ) );
     setPalette( p );
     setFixedSize( pm.size() );
     setMouseTracking( true );
     setGeometry( x, y, w, h );
-#endif // Q_WS_X11
 
     current = windowIndex( mapFromGlobal(QCursor::pos()) );
 }
@@ -266,8 +380,45 @@ QPixmap WindowGrabber::grabCurrent( bool includeDecorations )
     QPixmap pm( grabWindow( child, x, y, w, h, border, &title, &windowClass ) );
     XUngrabServer( QX11Info::display() );
     return pm;
+#elif defined(Q_WS_WIN)
+	HWND hWindow;
+	int x, y;
+	uint w, h, border;
+	
+	hWindow = windowUnderCursor(includeDecorations);
+	Q_ASSERT(hWindow);
+
+	HWND hParent;
+
+// Now find the top-most window
+	do {
+	  hParent = hWindow;
+	} while( (hWindow = GetParent(hWindow)) != NULL );
+	Q_ASSERT(hParent);
+
+// Equivalent to XGetGeometry - FIXME Needed here? Shouldn't this be done in grabWindow?
+	WINDOWINFO wi;
+	GetWindowInfo( hParent, &wi );
+
+	RECT r;
+	if( includeDecorations ) {
+		r = wi.rcWindow;
+	} else {
+		r = wi.rcClient;
+	}
+
+	x = wi.rcWindow.left;
+	y = wi.rcWindow.top;
+	w = wi.rcWindow.right - wi.rcWindow.left;
+	y = wi.rcWindow.bottom - wi.rcWindow.top;
+	border = wi.cxWindowBorders; // This is not 100% right. On X11, border has the same width on X and Y axis. On Windows, border may be different width on X and Y axis.
+
+	windowPosition = QPoint(x,y);
+
+	QPixmap pm( grabWindow( hParent, x, y, w, h, border, &title, &windowClass) );
+	return pm;
 #endif // Q_WS_X11
-	return QPixmap(); // TODO Implement on Windows and Mac
+	return QPixmap();
 }
 
 

@@ -6,6 +6,7 @@
  *  Copyright (C) 2004 Bernd Brandstetter <bbrand@freenet.de>
  *  Copyright (C) 2006 Urs Wolfer <uwolfer @ kde.org>
  *  Copyright (C) 2010 Martin Gräßlin <kde@martin-graesslin.com>
+ *  Copyright (C) 2010, 2011 Pau Garcia i Quiles <pgquiles@elpauer.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -153,7 +154,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
             mainWidget->lblIncludePointer->hide();
         }
     }
-#else
+#elif !defined(Q_WS_WIN)
     mainWidget->cbIncludePointer->hide();
     mainWidget->lblIncludePointer->hide();
 #endif
@@ -712,7 +713,7 @@ void KSnapshot::performGrab()
     if (haveXFixes && includePointer()) {
         grabPointerImage(x, y);
     }
-#endif
+#endif // HAVE_X11_EXTENSIONS_XFIXES_H
 
     updatePreview();
     QApplication::restoreOverrideCursor();
@@ -746,11 +747,11 @@ void KSnapshot::grabPointerImage(int offsetx, int offsety)
     painter.drawImage(QPointF(xcursorimg->x - xcursorimg->xhot - offsetx, xcursorimg->y - xcursorimg ->yhot - offsety), qcursorimg);
 
     XFree(xcursorimg);
-#else
+#else // HAVE_X11_EXTENSIONS_XFIXES_H
     Q_UNUSED(offsetx);
     Q_UNUSED(offsety);
     return;
-#endif
+#endif // HAVE_X11_EXTENSIONS_XFIXES_H
 }
 
 void KSnapshot::setTime(int newTime)
