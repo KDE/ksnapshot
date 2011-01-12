@@ -60,80 +60,80 @@ bool operator< ( const QRect& r1, const QRect& r2 )
 #ifdef Q_WS_X11
 static
 void getWindowsRecursive( std::vector<QRect> *windows, Window w,
-			  int rx = 0, int ry = 0, int depth = 0 )
+              int rx = 0, int ry = 0, int depth = 0 )
 {
     XWindowAttributes atts;
     XGetWindowAttributes( QX11Info::display(), w, &atts );
     if ( atts.map_state == IsViewable &&
          atts.width >= minSize && atts.height >= minSize ) {
-	int x = 0, y = 0;
-	if ( depth ) {
-	    x = atts.x + rx;
-	    y = atts.y + ry;
-	}
+    int x = 0, y = 0;
+    if ( depth ) {
+        x = atts.x + rx;
+        y = atts.y + ry;
+    }
 
-	QRect r( x, y, atts.width, atts.height );
-	if ( std::find( windows->begin(), windows->end(), r ) == windows->end() ) {
-	    windows->push_back( r );
-	}
+    QRect r( x, y, atts.width, atts.height );
+    if ( std::find( windows->begin(), windows->end(), r ) == windows->end() ) {
+        windows->push_back( r );
+    }
 
-	Window root, parent;
-	Window* children;
-	unsigned int nchildren;
+    Window root, parent;
+    Window* children;
+    unsigned int nchildren;
 
-	if( XQueryTree( QX11Info::display(), w, &root, &parent, &children, &nchildren ) != 0 ) {
+    if( XQueryTree( QX11Info::display(), w, &root, &parent, &children, &nchildren ) != 0 ) {
             for( unsigned int i = 0; i < nchildren; ++i ) {
                 getWindowsRecursive( windows, children[ i ], x, y, depth + 1 );
-			}
+            }
 
             if( children != NULL ) {
-				XFree( children );
-			}
-	}
+                XFree( children );
+            }
+    }
     }
     if ( depth == 0 ) {
-		std::sort( windows->begin(), windows->end() );
-	}
+        std::sort( windows->begin(), windows->end() );
+    }
 }
 #elif defined(Q_WS_WIN)
 
 static
 bool maybeAddWindow(HWND hwnd, std::vector<QRect> *windows) {
-	WINDOWINFO wi;
-	GetWindowInfo(hwnd, &wi);
+    WINDOWINFO wi;
+    GetWindowInfo(hwnd, &wi);
 
-	int width = wi.rcWindow.right - wi.rcWindow.left;
-	int height = wi.rcWindow.top - wi.rcWindow.bottom;
+    int width = wi.rcWindow.right - wi.rcWindow.left;
+    int height = wi.rcWindow.top - wi.rcWindow.bottom;
 
-	if ( ( ( wi.dwStyle & WS_VISIBLE ) != 0 ) 
-		&& (width >= minSize ) && (height >= minSize ) )
-	{
-		QRect r( wi.rcWindow.left, wi.rcWindow.top, width, height );
+    if ( ( ( wi.dwStyle & WS_VISIBLE ) != 0 ) 
+        && (width >= minSize ) && (height >= minSize ) )
+    {
+        QRect r( wi.rcWindow.left, wi.rcWindow.top, width, height );
 //		if ( std::find( windows->begin(), windows->end(), r ) == windows->end() ) {
-			windows->push_back( r );
-			return true;
+            windows->push_back( r );
+            return true;
 //		}	
-	}
-	return false;
+    }
+    return false;
 }
 
 static
 BOOL CALLBACK getWindowsRecursiveHelper( HWND hwnd, LPARAM lParam ) {
-	maybeAddWindow(hwnd, reinterpret_cast< std::vector<QRect>* >(lParam) );
-	return TRUE;
+    maybeAddWindow(hwnd, reinterpret_cast< std::vector<QRect>* >(lParam) );
+    return TRUE;
 }
 
 static
 void getWindowsRecursive( std::vector<QRect> *windows, HWND hwnd,
-			  int rx = 0, int ry = 0, int depth = 0 )
+              int rx = 0, int ry = 0, int depth = 0 )
 {
 
-	maybeAddWindow(hwnd, windows);
+    maybeAddWindow(hwnd, windows);
 
-	EnumChildWindows( hwnd, getWindowsRecursiveHelper, (LPARAM) windows );
+    EnumChildWindows( hwnd, getWindowsRecursiveHelper, (LPARAM) windows );
 
 //	if( depth == 0 ) {
-		std::sort( windows->begin(), windows->end() );
+        std::sort( windows->begin(), windows->end() );
 //	}
 }
 
@@ -144,30 +144,30 @@ static
 Window findRealWindow( Window w, int depth = 0 )
 {
     if( depth > 5 )
-	return None;
+    return None;
     static Atom wm_state = XInternAtom( QX11Info::display(), "WM_STATE", False );
     Atom type;
     int format;
     unsigned long nitems, after;
     unsigned char* prop;
     if( XGetWindowProperty( QX11Info::display(), w, wm_state, 0, 0, False, AnyPropertyType,
-	&type, &format, &nitems, &after, &prop ) == Success ) {
-	if( prop != NULL )
-	    XFree( prop );
-	if( type != None )
-	    return w;
+    &type, &format, &nitems, &after, &prop ) == Success ) {
+    if( prop != NULL )
+        XFree( prop );
+    if( type != None )
+        return w;
     }
     Window root, parent;
     Window* children;
     unsigned int nchildren;
     Window ret = None;
     if( XQueryTree( QX11Info::display(), w, &root, &parent, &children, &nchildren ) != 0 ) {
-	for( unsigned int i = 0;
-	     i < nchildren && ret == None;
-	     ++i )
-	    ret = findRealWindow( children[ i ], depth + 1 );
-	if( children != NULL )
-	    XFree( children );
+    for( unsigned int i = 0;
+         i < nchildren && ret == None;
+         ++i )
+        ret = findRealWindow( children[ i ], depth + 1 );
+    if( children != NULL )
+        XFree( children );
     }
     return ret;
 }
@@ -175,8 +175,8 @@ Window findRealWindow( Window w, int depth = 0 )
 static
 HWND findRealWindow( HWND w, int depth = 0 )
 {
-	// TODO Implement
-	return w; // This is WRONG but makes code compile for now
+    // TODO Implement
+    return w; // This is WRONG but makes code compile for now
 }
 #endif // Q_WS_X11
 
@@ -190,13 +190,13 @@ Window windowUnderCursor( bool includeDecorations = true )
     int rootX, rootY, winX, winY;
     XGrabServer( QX11Info::display() );
     XQueryPointer( QX11Info::display(), QX11Info::appRootWindow(), &root, &child,
-		   &rootX, &rootY, &winX, &winY, &mask );
+           &rootX, &rootY, &winX, &winY, &mask );
     if( child == None )
-	child = QX11Info::appRootWindow();
+    child = QX11Info::appRootWindow();
     if( !includeDecorations ) {
-	Window real_child = findRealWindow( child );
-	if( real_child != None ) // test just in case
-	    child = real_child;
+    Window real_child = findRealWindow( child );
+    if( real_child != None ) // test just in case
+        child = real_child;
     }
     return child;
 }
@@ -204,82 +204,82 @@ Window windowUnderCursor( bool includeDecorations = true )
 static
 HWND windowUnderCursor(bool includeDecorations = true) 
 {
-	// TODO include decorations if includeDecorations = true
-	POINT pointCursor;
-	QPoint qpointCursor = QCursor::pos();
-	pointCursor.x = qpointCursor.x();
-	pointCursor.y = qpointCursor.y();
-	HWND windowUnderCursor = WindowFromPoint(pointCursor);
+    // TODO include decorations if includeDecorations = true
+    POINT pointCursor;
+    QPoint qpointCursor = QCursor::pos();
+    pointCursor.x = qpointCursor.x();
+    pointCursor.y = qpointCursor.y();
+    HWND windowUnderCursor = WindowFromPoint(pointCursor);
 
-	if( includeDecorations ) {
-		LONG_PTR style = GetWindowLongPtr( windowUnderCursor, GWL_STYLE );
-		if( ( style & WS_CHILD ) != 0 ) {
-			windowUnderCursor = GetAncestor( windowUnderCursor, GA_ROOT );
-		}
-	}
+    if( includeDecorations ) {
+        LONG_PTR style = GetWindowLongPtr( windowUnderCursor, GWL_STYLE );
+        if( ( style & WS_CHILD ) != 0 ) {
+            windowUnderCursor = GetAncestor( windowUnderCursor, GA_ROOT );
+        }
+    }
 
-	return windowUnderCursor;
+    return windowUnderCursor;
 }
 #endif
 
 #ifdef Q_WS_X11
 static
 QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border,
-		    QString *title=0, QString *windowClass=0 )
+            QString *title=0, QString *windowClass=0 )
 {
     QPixmap pm( QPixmap::grabWindow( QX11Info::appRootWindow(), x, y, w, h ) );
 
     KWindowInfo winInfo( findRealWindow(child), NET::WMVisibleName, NET::WM2WindowClass );
     if ( title )
-	(*title) = winInfo.visibleName();
+    (*title) = winInfo.visibleName();
     if ( windowClass )
-	(*windowClass) = winInfo.windowClassName();
+    (*windowClass) = winInfo.windowClassName();
 
 #ifdef HAVE_X11_EXTENSIONS_SHAPE_H
     int tmp1, tmp2;
     //Check whether the extension is available
     if ( XShapeQueryExtension( QX11Info::display(), &tmp1, &tmp2 ) ) {
-	QBitmap mask( w, h );
-	//As the first step, get the mask from XShape.
-	int count, order;
-	XRectangle* rects = XShapeGetRectangles( QX11Info::display(), child,
-						 ShapeBounding, &count, &order );
-	//The ShapeBounding region is the outermost shape of the window;
-	//ShapeBounding - ShapeClipping is defined to be the border.
-	//Since the border area is part of the window, we use bounding
-	// to limit our work region
-	if (rects) {
-	    //Create a QRegion from the rectangles describing the bounding mask.
-	    QRegion contents;
-	    for ( int pos = 0; pos < count; pos++ )
-		contents += QRegion( rects[pos].x, rects[pos].y,
-				     rects[pos].width, rects[pos].height );
-	    XFree( rects );
+    QBitmap mask( w, h );
+    //As the first step, get the mask from XShape.
+    int count, order;
+    XRectangle* rects = XShapeGetRectangles( QX11Info::display(), child,
+                         ShapeBounding, &count, &order );
+    //The ShapeBounding region is the outermost shape of the window;
+    //ShapeBounding - ShapeClipping is defined to be the border.
+    //Since the border area is part of the window, we use bounding
+    // to limit our work region
+    if (rects) {
+        //Create a QRegion from the rectangles describing the bounding mask.
+        QRegion contents;
+        for ( int pos = 0; pos < count; pos++ )
+        contents += QRegion( rects[pos].x, rects[pos].y,
+                     rects[pos].width, rects[pos].height );
+        XFree( rects );
 
-	    //Create the bounding box.
-	    QRegion bbox( 0, 0, w, h );
+        //Create the bounding box.
+        QRegion bbox( 0, 0, w, h );
 
-	    if( border > 0 ) {
-		contents.translate( border, border );
-		contents += QRegion( 0, 0, border, h );
-		contents += QRegion( 0, 0, w, border );
-		contents += QRegion( 0, h - border, w, border );
-		contents += QRegion( w - border, 0, border, h );
-	    }
+        if( border > 0 ) {
+        contents.translate( border, border );
+        contents += QRegion( 0, 0, border, h );
+        contents += QRegion( 0, 0, w, border );
+        contents += QRegion( 0, h - border, w, border );
+        contents += QRegion( w - border, 0, border, h );
+        }
 
-	    //Get the masked away area.
-	    QRegion maskedAway = bbox - contents;
-	    QVector<QRect> maskedAwayRects = maskedAway.rects();
+        //Get the masked away area.
+        QRegion maskedAway = bbox - contents;
+        QVector<QRect> maskedAwayRects = maskedAway.rects();
 
-	    //Construct a bitmap mask from the rectangles
-	    QPainter p(&mask);
-	    p.fillRect(0, 0, w, h, Qt::color1);
-	    for (int pos = 0; pos < maskedAwayRects.count(); pos++)
-		    p.fillRect(maskedAwayRects[pos], Qt::color0);
-	    p.end();
+        //Construct a bitmap mask from the rectangles
+        QPainter p(&mask);
+        p.fillRect(0, 0, w, h, Qt::color1);
+        for (int pos = 0; pos < maskedAwayRects.count(); pos++)
+            p.fillRect(maskedAwayRects[pos], Qt::color0);
+        p.end();
 
-	    pm.setMask(mask);
-	}
+        pm.setMask(mask);
+    }
     }
 #endif // HAVE_X11_EXTENSIONS_SHAPE_H
 
@@ -289,32 +289,32 @@ QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border,
 static
 QPixmap grabWindow( HWND hWnd, QString *title=0, QString *windowClass=0 )
 {
-	RECT windowRect;
-	GetWindowRect(hWnd, &windowRect);
-	int w = windowRect.right - windowRect.left;
-	int h = windowRect.bottom - windowRect.top;
+    RECT windowRect;
+    GetWindowRect(hWnd, &windowRect);
+    int w = windowRect.right - windowRect.left;
+    int h = windowRect.bottom - windowRect.top;
 
-	HDC targetDC = GetWindowDC(hWnd);
-	HDC hDC = CreateCompatibleDC(targetDC);
-	HBITMAP tempPict = CreateCompatibleBitmap(targetDC, w, h);
-	HGDIOBJ oldPict = SelectObject(hDC, tempPict);
-	BitBlt(hDC, 0, 0, w, h, targetDC, 0, 0, SRCCOPY);
-	tempPict = (HBITMAP) SelectObject(hDC, oldPict);
-	QPixmap pm = QPixmap::fromWinHBITMAP(tempPict);
+    HDC targetDC = GetWindowDC(hWnd);
+    HDC hDC = CreateCompatibleDC(targetDC);
+    HBITMAP tempPict = CreateCompatibleBitmap(targetDC, w, h);
+    HGDIOBJ oldPict = SelectObject(hDC, tempPict);
+    BitBlt(hDC, 0, 0, w, h, targetDC, 0, 0, SRCCOPY);
+    tempPict = (HBITMAP) SelectObject(hDC, oldPict);
+    QPixmap pm = QPixmap::fromWinHBITMAP(tempPict);
 
-	DeleteDC(hDC);
-	ReleaseDC(GetDesktopWindow(), targetDC);
+    DeleteDC(hDC);
+    ReleaseDC(GetDesktopWindow(), targetDC);
 
     KWindowInfo winInfo( findRealWindow(hWnd), NET::WMVisibleName, NET::WM2WindowClass );
     if ( title ) {
-		(*title) = winInfo.visibleName();
-	}
+        (*title) = winInfo.visibleName();
+    }
 
     if ( windowClass ) {
-		(*windowClass) = winInfo.windowClassName();
-	}
+        (*windowClass) = winInfo.windowClassName();
+    }
 
-	return pm;
+    return pm;
 }
 #endif // Q_WS_X11
 
@@ -336,9 +336,9 @@ WindowGrabber::WindowGrabber()
     Window child = windowUnderCursor();
     XGetGeometry( QX11Info::display(), child, &root, &x, &y, &w, &h, &border, &depth );
 #elif defined(Q_WS_WIN)
-	HWND root;
-	HWND child = windowUnderCursor();
-	// TODO XGetGeometry
+    HWND root;
+    HWND child = windowUnderCursor();
+    // TODO XGetGeometry
 #endif
 
     QPixmap pm( grabWindow( child, &title, &windowClass ) );
@@ -376,55 +376,55 @@ QPixmap WindowGrabber::grabCurrent( bool includeDecorations )
     unsigned int nchildren;
     if( XQueryTree( QX11Info::display(), child, &root, &parent,
                     &children, &nchildren ) != 0 ) {
-	if( children != NULL )
-	    XFree( children );
-	int newx, newy;
-	Window dummy;
-	if( XTranslateCoordinates( QX11Info::display(), parent, QX11Info::appRootWindow(),
-	    x, y, &newx, &newy, &dummy )) {
-	    x = newx;
-	    y = newy;
-	}
+    if( children != NULL )
+        XFree( children );
+    int newx, newy;
+    Window dummy;
+    if( XTranslateCoordinates( QX11Info::display(), parent, QX11Info::appRootWindow(),
+        x, y, &newx, &newy, &dummy )) {
+        x = newx;
+        y = newy;
+    }
     }
     windowPosition = QPoint(x,y);
     QPixmap pm( grabWindow( child, x, y, w, h, border, &title, &windowClass ) );
     XUngrabServer( QX11Info::display() );
     return pm;
 #elif defined(Q_WS_WIN)
-	HWND hWindow;
-	int x, y;
-	uint w, h;
-	
-	hWindow = windowUnderCursor(includeDecorations);
-	Q_ASSERT(hWindow);
+    HWND hWindow;
+    int x, y;
+    uint w, h;
+    
+    hWindow = windowUnderCursor(includeDecorations);
+    Q_ASSERT(hWindow);
 
-	HWND hParent;
+    HWND hParent;
 
 // Now find the top-most window
-	do {
-	  hParent = hWindow;
-	} while( (hWindow = GetParent(hWindow)) != NULL );
-	Q_ASSERT(hParent);
+    do {
+      hParent = hWindow;
+    } while( (hWindow = GetParent(hWindow)) != NULL );
+    Q_ASSERT(hParent);
 
-	RECT r;
-	GetWindowRect(hParent, &r);
+    RECT r;
+    GetWindowRect(hParent, &r);
 
-	x = r.left;
-	y = r.top;
+    x = r.left;
+    y = r.top;
 
-	windowPosition = QPoint(x,y);
+    windowPosition = QPoint(x,y);
 
-	QPixmap pm( grabWindow( hParent, &title, &windowClass) );
-	return pm;
+    QPixmap pm( grabWindow( hParent, &title, &windowClass) );
+    return pm;
 #endif // Q_WS_X11
-	return QPixmap();
+    return QPixmap();
 }
 
 
 void WindowGrabber::mousePressEvent( QMouseEvent *e )
 {
     if ( e->button() == Qt::RightButton )
-	yPos = e->globalY();
+    yPos = e->globalY();
     else {
         if ( current ) {
             windowPosition = e->globalPos() - e->pos() + windows[current].topLeft();
@@ -440,7 +440,7 @@ void WindowGrabber::mousePressEvent( QMouseEvent *e )
 void WindowGrabber::mouseReleaseEvent( QMouseEvent *e )
 {
     if ( e->button() == Qt::RightButton )
-	yPos = -1;
+    yPos = -1;
 }
 
 static
@@ -449,33 +449,33 @@ const int minDistance = 10;
 void WindowGrabber::mouseMoveEvent( QMouseEvent *e )
 {
     if ( yPos == -1 ) {
-	int w = windowIndex( e->pos() );
-	if ( w != -1 && w != current ) {
-	    current = w;
+    int w = windowIndex( e->pos() );
+    if ( w != -1 && w != current ) {
+        current = w;
             repaint();
-	}
+    }
     }
     else {
-	int y = e->globalY();
-	if ( y > yPos + minDistance ) {
-	    decreaseScope( e->pos() );
-	    yPos = y;
-	}
-	else if ( y < yPos - minDistance ) {
-	    increaseScope( e->pos() );
-	    yPos = y;
-	}
+    int y = e->globalY();
+    if ( y > yPos + minDistance ) {
+        decreaseScope( e->pos() );
+        yPos = y;
+    }
+    else if ( y < yPos - minDistance ) {
+        increaseScope( e->pos() );
+        yPos = y;
+    }
     }
 }
 
 void WindowGrabber::wheelEvent( QWheelEvent *e )
 {
     if ( e->delta() > 0 )
-	increaseScope( e->pos() );
+    increaseScope( e->pos() );
     else if ( e->delta() < 0 )
-	decreaseScope( e->pos() );
+    decreaseScope( e->pos() );
     else
-	e->ignore();
+    e->ignore();
 }
 
 // Increases the scope to the next-bigger window containing the mouse pointer.
@@ -484,10 +484,10 @@ void WindowGrabber::wheelEvent( QWheelEvent *e )
 void WindowGrabber::increaseScope( const QPoint &pos )
 {
     for ( uint i = current + 1; i < windows.size(); i++ ) {
-	if ( windows[ i ].contains( pos ) ) {
-	    current = i;
-	    break;
-	}
+    if ( windows[ i ].contains( pos ) ) {
+        current = i;
+        break;
+    }
     }
     repaint();
 }
@@ -498,10 +498,10 @@ void WindowGrabber::increaseScope( const QPoint &pos )
 void WindowGrabber::decreaseScope( const QPoint &pos )
 {
     for ( int i = current - 1; i >= 0; i-- ) {
-	if ( windows[ i ].contains( pos ) ) {
-	    current = i;
-	    break;
-	}
+    if ( windows[ i ].contains( pos ) ) {
+        current = i;
+        break;
+    }
     }
     repaint();
 }
@@ -511,8 +511,8 @@ void WindowGrabber::decreaseScope( const QPoint &pos )
 int WindowGrabber::windowIndex( const QPoint &pos ) const
 {
     for ( uint i = 0; i < windows.size(); i++ ) {
-	if ( windows[ i ].contains( pos ) )
-	    return i;
+    if ( windows[ i ].contains( pos ) )
+        return i;
     }
     return -1;
 }
@@ -521,12 +521,12 @@ int WindowGrabber::windowIndex( const QPoint &pos ) const
 void WindowGrabber::paintEvent( QPaintEvent * )
 {
     if ( current >= 0 ) {
-	QPainter p;
-	p.begin( this );
+    QPainter p;
+    p.begin( this );
         p.fillRect(rect(), palette().brush( backgroundRole()));
-	p.setPen( QPen( Qt::red, 3 ) );
-	p.drawRect( windows[ current ].adjusted( 0, 0, -1, -1 ) );
-	p.end();
+    p.setPen( QPen( Qt::red, 3 ) );
+    p.drawRect( windows[ current ].adjusted( 0, 0, -1, -1 ) );
+    p.end();
     }
 }
 
