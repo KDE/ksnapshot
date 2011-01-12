@@ -287,19 +287,18 @@ QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border,
 }
 #elif defined(Q_WS_WIN)
 static
-QPixmap grabWindow( HWND hWnd, int x, int y, uint w, uint h, uint border,
-		    QString *title=0, QString *windowClass=0 )
+QPixmap grabWindow( HWND hWnd, QString *title=0, QString *windowClass=0 )
 {
 	RECT windowRect;
 	GetWindowRect(hWnd, &windowRect);
-	int width = windowRect.right - windowRect.left;
-	int height = windowRect.bottom - windowRect.top;
+	int w = windowRect.right - windowRect.left;
+	int h = windowRect.bottom - windowRect.top;
 
 	HDC targetDC = GetWindowDC(hWnd);
 	HDC hDC = CreateCompatibleDC(targetDC);
-	HBITMAP tempPict = CreateCompatibleBitmap(targetDC, width, height);
+	HBITMAP tempPict = CreateCompatibleBitmap(targetDC, w, h);
 	HGDIOBJ oldPict = SelectObject(hDC, tempPict);
-	BitBlt(hDC, 0, 0, width, height, targetDC, 0, 0, SRCCOPY);
+	BitBlt(hDC, 0, 0, w, h, targetDC, 0, 0, SRCCOPY);
 	tempPict = (HBITMAP) SelectObject(hDC, oldPict);
 	QPixmap pm = QPixmap::fromWinHBITMAP(tempPict);
 
@@ -342,7 +341,7 @@ WindowGrabber::WindowGrabber()
 	// TODO XGetGeometry
 #endif
 
-    QPixmap pm( grabWindow( child, x, y, w, h, border, &title, &windowClass ) );
+    QPixmap pm( grabWindow( child, &title, &windowClass ) );
     getWindowsRecursive( &windows, child );
 
 #ifdef Q_WS_X11
@@ -394,7 +393,7 @@ QPixmap WindowGrabber::grabCurrent( bool includeDecorations )
 #elif defined(Q_WS_WIN)
 	HWND hWindow;
 	int x, y;
-	uint w, h, border;
+	uint w, h;
 	
 	hWindow = windowUnderCursor(includeDecorations);
 	Q_ASSERT(hWindow);
@@ -407,26 +406,15 @@ QPixmap WindowGrabber::grabCurrent( bool includeDecorations )
 	} while( (hWindow = GetParent(hWindow)) != NULL );
 	Q_ASSERT(hParent);
 
-// Equivalent to XGetGeometry - FIXME Needed here? Shouldn't this be done in grabWindow?
-	WINDOWINFO wi;
-	GetWindowInfo( hParent, &wi );
-
 	RECT r;
-	if( includeDecorations ) {
-		r = wi.rcWindow;
-	} else {
-		r = wi.rcClient;
-	}
+	GetWindowRect(hParent, &r);
 
 	x = r.left;
 	y = r.top;
-	w = r.right - r.left;
-	y = r.bottom - r.top;
-	border = wi.cxWindowBorders; // This is not 100% right. On X11, border has the same width on X and Y axis. On Windows, border may be different width on X and Y axis.
 
 	windowPosition = QPoint(x,y);
 
-	QPixmap pm( grabWindow( hParent, x, y, w, h, border, &title, &windowClass) );
+	QPixmap pm( grabWindow( hParent, &title, &windowClass) );
 	return pm;
 #endif // Q_WS_X11
 	return QPixmap();
