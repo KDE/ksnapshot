@@ -107,7 +107,30 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     setButtonGuiItem(User2, KGuiItem(i18n("Send To..."), "document-open"));
     setDefaultButton(Apply);
     grabber = new QWidget( 0,  Qt::X11BypassWindowManagerHint );
-    grabber->move( -1000, -1000 );
+    
+    // TODO X11 (Xinerama and Twinview, actually) and Windows use different coordinates for the two monitors case
+    //
+    // On Windows, there are two displays. The origin (0, 0) ('o') is the top left of display 1. If display 2 is to the left, then coordinates in display 2 are negative:
+    //  .-------.
+    //  |       |o-----. 
+    //  |   2   |      |
+    //  |       |   1  |
+    //  ._______.._____.
+    //
+    // On Xinerama and Twinview, there is only one display and two screens. The origin (0, 0) ('o') is the top left of the display:
+    //  o-------.
+    //  |       |.-----. 
+    //  |   2   |      |
+    //  |       |   1  |
+    //  ._______.._____.
+    //
+    // Instead of moving to (-10000, -10000), we should compute how many displays are and make sure we move to somewhere out of the total coordinates. 
+    //   - Windows: use GetSystemMetrics ( http://msdn.microsoft.com/en-us/library/ms724385(v=vs.85).aspx )
+
+    // If moving to a negative position, we need to count the size of the dialog; moving to a positive position avoids having to compute the size of the dialog
+
+    grabber->move( -10000, -10000 ); // FIXME Read above
+
     grabber->installEventFilter( this );
 
     KStartupInfo::appStarted();
