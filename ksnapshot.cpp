@@ -455,6 +455,7 @@ void KSnapshot::slotOpen(QAction* action)
              delete dlg;
              return;
         }
+	delete dlg;
     }
 
     // we have an action with a service, run it!
