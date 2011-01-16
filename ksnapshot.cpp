@@ -319,8 +319,10 @@ void KSnapshot::slotSaveAs()
     }
 
     KUrl url = dlg->selectedUrl();
-    if ( !url.isValid() )
+    if ( !url.isValid() ){
+	delete dlg;
         return;
+    }
 
     if ( save(url,this) ) {
         filename = url;
