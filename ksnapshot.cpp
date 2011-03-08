@@ -93,7 +93,7 @@ class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
 };
 
 KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
-  : KDialog(parent), KSnapshotObject(), modified(false), savedPosition(QPoint(-1, -1))
+  : KDialog(parent), KSnapshotObject(), modified(true), savedPosition(QPoint(-1, -1))
 {
     // TEMPORARY Make sure "untitled" enters the string freeze for 4.6, 
     // as explained in http://lists.kde.org/?l=kde-graphics-devel&m=128942871430175&w=2
