@@ -1,6 +1,7 @@
 project(ksnapshot)
 
 find_package(KDE4 REQUIRED)
+find_package(Kipi)
 include(KDE4Defaults)
 include(MacroLibrary)
 include(MacroOptionalAddSubdirectory)
@@ -16,6 +17,7 @@ macro_log_feature(HAVE_X11_EXTENSIONS_XFIXES_H "X11 Fixes Extension (xfixes.h)" 
 if (KIPI_FOUND)
         include_directories(${KIPI_INCLUDE_DIR})
 endif (KIPI_FOUND)
+macro_log_feature(KIPI_FOUND "KIPI plugins" "KIPI plugins to export, print, etc" "http://www.kipi-plugins.org/" FALSE "" "Neeed to print, send by e-mail, export to Facebook, Picasa, etc")
 
 configure_file(config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnapshot.h)
 
