@@ -1,5 +1,11 @@
 project(ksnapshot)
 
+find_package(KDE4 REQUIRED)
+include(KDE4Defaults)
+
+add_definitions (${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
+include_directories (${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES})
+
 include(MacroBoolTo01)
 
 set(HAVE_X11_EXTENSIONS_SHAPE_H ${X11_Xshape_FOUND})
