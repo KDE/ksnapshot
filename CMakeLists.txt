@@ -1,12 +1,14 @@
 project(ksnapshot)
 
 find_package(KDE4 REQUIRED)
+find_package(Kipi)
 include(KDE4Defaults)
-
-add_definitions (${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
-include_directories (${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES})
-
+include(MacroLibrary)
+include(MacroOptionalAddSubdirectory)
 include(MacroBoolTo01)
+
+add_definitions (${QT_DEFINITIONS} ${QT_QTDBUS_DEFINITIONS} ${KDE4_DEFINITIONS})
+include_directories (${QDBUS_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES})
 
 set(HAVE_X11_EXTENSIONS_SHAPE_H ${X11_Xshape_FOUND})
 set(HAVE_X11_EXTENSIONS_XFIXES_H ${X11_Xfixes_FOUND})
@@ -15,10 +17,13 @@ macro_log_feature(HAVE_X11_EXTENSIONS_XFIXES_H "X11 Fixes Extension (xfixes.h)" 
 if (KIPI_FOUND)
         include_directories(${KIPI_INCLUDE_DIR})
 endif (KIPI_FOUND)
+macro_log_feature(KIPI_FOUND "KIPI plugins" "KIPI plugins to export, print, etc" "http://www.kipi-plugins.org/" FALSE "" "Neeed to print, send by e-mail, export to Facebook, Picasa, etc")
 
 configure_file(config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnapshot.h)
 
 ########### next target ###############
+
+add_subdirectory( doc )
 
 set(ksnapshot_file_SRCS
    expblur.cpp
@@ -86,3 +91,4 @@ install(PROGRAMS ksnapshot.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
 install(FILES org.kde.ksnapshot.xml DESTINATION ${DBUS_INTERFACES_INSTALL_DIR} )
 kde4_install_icons(${ICON_INSTALL_DIR} )
 
+macro_display_feature_log()
