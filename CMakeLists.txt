@@ -12,12 +12,12 @@ include_directories (${QDBUS_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DI
 
 set(HAVE_X11_EXTENSIONS_SHAPE_H ${X11_Xshape_FOUND})
 set(HAVE_X11_EXTENSIONS_XFIXES_H ${X11_Xfixes_FOUND})
-macro_log_feature(HAVE_X11_EXTENSIONS_XFIXES_H "X11 Fixes Extension (xfixes.h)" "X11 XFixes Extension" "http://www.x.org/" FALSE "" "Needed to capture the cursor in ksnapshot.")
+macro_log_feature(HAVE_X11_EXTENSIONS_XFIXES_H "X11 Fixes Extension (xfixes.h)" "Support for capturing the cursor" "http://www.x.org/" FALSE "" "")
 
 if (KIPI_FOUND)
         include_directories(${KIPI_INCLUDE_DIR})
 endif (KIPI_FOUND)
-macro_log_feature(KIPI_FOUND "KIPI plugins" "KIPI plugins to export, print, etc" "http://www.kipi-plugins.org/" FALSE "" "Neeed to print, send by e-mail, export to Facebook, Picasa, etc")
+macro_log_feature(KIPI_FOUND "KIPI plugins" "Provides various image export features, such as printing, emailing and uploading" "http://www.kipi-plugins.org/" FALSE "" "")
 
 configure_file(config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnapshot.h)
 
