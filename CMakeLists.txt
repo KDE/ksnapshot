@@ -8,6 +8,7 @@ include(MacroOptionalAddSubdirectory)
 include(MacroBoolTo01)
 
 add_definitions (${QT_DEFINITIONS} ${QT_QTDBUS_DEFINITIONS} ${KDE4_DEFINITIONS})
+add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 include_directories (${QDBUS_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES})
 
 set(HAVE_X11_EXTENSIONS_SHAPE_H ${X11_Xshape_FOUND})
