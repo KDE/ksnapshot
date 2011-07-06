@@ -81,8 +81,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2010-11-09</date>
-<releaseinfo>0.8.2 (&kde; 4.6)</releaseinfo>
+<date>2011-07-05</date>
+<releaseinfo>0.8.2 (&kde; 4.7)</releaseinfo>
 
 <abstract>
 <para>&ksnapshot; is a simple application for taking screenshots. It is capable
@@ -186,7 +186,7 @@ of a previously saved snapshot. </para>
 
 <para>To take a snapshot of a single window, select the <guilabel>Window
 Under Cursor</guilabel> combo box entry (next to the <guilabel>Capture mode</guilabel>
-label), and then click on the <guibutton>New Snapshot</guibutton> 
+label), and then click on the <guibutton>Take a New Snapshot</guibutton> 
 (<keycombo action="simul">&Ctrl;<keycap>N</keycap></keycombo>) button.</para>
 
 <para>Depending on your <guilabel>Snapshot delay</guilabel> settings you
@@ -201,18 +201,18 @@ click into a window.</para>
 area, at which time you can choose to save the new image (by pressing
 <guibutton>Save As...</guibutton>)
 or to grab a new one, by pressing the
-<guibutton>New Snapshot</guibutton> button.</para>
+<guibutton>Take a New Snapshot</guibutton> button.</para>
 
 <para>To take a new snapshot of the entire desktop, select the
 <guilabel>Full Screen</guilabel> combo box entry and then click on the 
-<guibutton>New Snapshot</guibutton> button.
+<guibutton>Take a New Snapshot</guibutton> button.
 &ksnapshot; will now capture the entire desktop if you press
-<guibutton>New Snapshot</guibutton>.</para>
+<guibutton>Take a New Snapshot</guibutton>.</para>
 
 <para>Similarly, to take a snapshot of a rectangular region, select the 
 <guilabel>Rectangular Region</guilabel> combo box entry and set the 
 <guilabel>Snapshot delay</guilabel> to <guilabel>No delay</guilabel>,
-and then click on the <guibutton>New Snapshot</guibutton> button. The
+and then click on the <guibutton>Take a New Snapshot</guibutton> button. The
 mouse cursor will then change into a cross, and you can then use the 
 mouse to select the region you want to capture. 
 To take the snapshot press the &Enter; key or double click. Press &Esc; to quit.</para>
@@ -220,14 +220,14 @@ To take the snapshot press the &Enter; key or double click. Press &Esc; to quit.
 <para>You might want to take a snapshot of a non rectangular region. You can do so by selecting
 the <guilabel>Freehand Region</guilabel> combo box entry and set the 
 <guilabel>Snapshot delay</guilabel> to <guilabel>No delay</guilabel>,
-and then click on the <guibutton>New Snapshot</guibutton> button. The
+and then click on the <guibutton>Take a New Snapshot</guibutton> button. The
 mouse cursor will then change into a cross, and you can then use the 
 mouse to draw the region you want to capture. 
 To take the snapshot press the &Enter; key or double click. Press &Esc; to quit.</para>
 
 <para>To take a new snapshot of a section of a window, select the
 <guilabel>Section of Window</guilabel> combo box entry and then click on the 
-<guibutton>New Snapshot</guibutton> button. With <guilabel>No delay</guilabel>
+<guibutton>Take a New Snapshot</guibutton> button. With <guilabel>No delay</guilabel>
 you get a cross as the mouse pointer and you have to click once with the &LMB; into 
 the window. The section of the window under the mouse cursor is now highlighted 
 with a red border. Move the mouse to the wanted section and click the &LMB; 
@@ -246,7 +246,7 @@ the screen containing the mouse cursor when the screenshot is taken.</para>
 
 <para>The <guilabel>Snapshot delay</guilabel> box allows you to enter an
 arbitrary time delay, in seconds, between the time that you press the
-<guibutton>New Snapshot</guibutton> button and the time that the snapshot is
+<guibutton>Take a New Snapshot</guibutton> button and the time that the snapshot is
 taken.</para>
 
 <para>When a delay time has been set, you do not have to click the mouse
@@ -326,7 +326,7 @@ e-mail them and export directly to some social networks and websites, as shown o
 <varlistentry>
 <term><guibutton>Copy</guibutton></term>
 <listitem><para>When you want to edit your snapshot in a graphics application without saving 
-the snapshot, just click <guibutton>Copy to Clipboard</guibutton> 
+the snapshot, just click <guibutton>Copy</guibutton> 
 (<keycombo action="simul">&Ctrl;<keycap>C</keycap></keycombo>) and insert the image 
 into a viewer or graphics application.</para></listitem>
 </varlistentry>
