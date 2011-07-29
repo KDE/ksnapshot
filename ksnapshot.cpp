@@ -262,9 +262,9 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     setIncludeDecorations(conf.readEntry("includeDecorations",true));
     filename = KUrl( conf.readPathEntry( "filename", QDir::currentPath()+'/'+i18n("snapshot")+"1.png" ));
 
-    connect( &grabTimer, SIGNAL( timeout() ), this, SLOT(  grabTimerDone() ) );
-    connect( &updateTimer, SIGNAL( timeout() ), this, SLOT(  updatePreview() ) );
-    QTimer::singleShot( 0, this, SLOT( updateCaption() ) );
+    connect( &grabTimer, SIGNAL(timeout()), this, SLOT(grabTimerDone()) );
+    connect( &updateTimer, SIGNAL(timeout()), this, SLOT(updatePreview()) );
+    QTimer::singleShot( 0, this, SLOT(updateCaption()) );
 
     KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::mainComponent().aboutData(), true);
     setButtonMenu( Help, helpMenu->menu() );
@@ -639,16 +639,16 @@ void KSnapshot::updatePreview()
 void KSnapshot::grabRegion()
 {
    rgnGrab = new RegionGrabber();
-   connect( rgnGrab, SIGNAL( regionGrabbed( const QPixmap & ) ),
-                     SLOT( slotRegionGrabbed( const QPixmap & ) ) );
+   connect( rgnGrab, SIGNAL(regionGrabbed(QPixmap)),
+                     SLOT(slotRegionGrabbed(QPixmap)) );
 
 }
 
 void KSnapshot::grabFreeRegion()
 {
    freeRgnGrab = new FreeRegionGrabber();
-   connect( freeRgnGrab, SIGNAL( freeRegionGrabbed( const QPixmap & ) ),
-                     SLOT( slotRegionGrabbed( const QPixmap & ) ) );
+   connect( freeRgnGrab, SIGNAL(freeRegionGrabbed(QPixmap)),
+                     SLOT(slotRegionGrabbed(QPixmap)) );
 
 }
 
@@ -680,8 +680,8 @@ void KSnapshot::performGrab()
 
     if ( mode() == ChildWindow ) {
         WindowGrabber wndGrab;
-        connect( &wndGrab, SIGNAL( windowGrabbed( const QPixmap & ) ),
-                           SLOT( slotWindowGrabbed( const QPixmap & ) ) );
+        connect( &wndGrab, SIGNAL(windowGrabbed(QPixmap)),
+                           SLOT(slotWindowGrabbed(QPixmap)) );
         wndGrab.exec();
         QPoint offset = wndGrab.lastWindowPosition();
         x = offset.x();
