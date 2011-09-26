@@ -40,12 +40,15 @@ class SnapshotTimer : public QWidget
     void bell();
 
   protected:
-    void paintEvent( QPaintEvent* e );
+    void paintEvent(QPaintEvent *e);
+    void enterEvent(QEvent *e);
 
   private:
     QTimer timer;
+    QRect textRect;
     int time;
     int length;
+    bool toggle;
 };
 
 #endif

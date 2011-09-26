@@ -21,16 +21,20 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QToolTip>
+#include <QApplication>
+#include <QDesktopWidget>
 
 #include <KDebug>
 #include <klocale.h>
 
-SnapshotTimer::SnapshotTimer() : QWidget(0)
+SnapshotTimer::SnapshotTimer()
+    : QWidget(0),
+      toggle(true)
 {
     setWindowFlags( Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
     // The text is copied from paintEvent and the maximum number is used as %1 argument + margins
-    resize( fontMetrics().width( i18np("Snapshot will be taken in 1 second",
-                                       "Snapshot will be taken in %1 seconds", 99) ) + 6 , fontMetrics().height() + 4 );
+    resize(fontMetrics().width(i18np("Snapshot will be taken in 1 second",
+                                     "Snapshot will be taken in %1 seconds", 99) ) + 6, fontMetrics().height() + 4);
     connect(&timer, SIGNAL(timeout()), this, SLOT(bell()));
 }
 
@@ -40,10 +44,13 @@ SnapshotTimer::~SnapshotTimer()
 
 void SnapshotTimer::start(int seconds)
 {
-    show();
+    const QRect screenGeom = qApp->desktop()->screenGeometry();
+    move(screenGeom.width() / 2 - size().width() / 2, screenGeom.top());
+    toggle = true;
     time = 0;
     length = seconds;
     timer.start(1000);
+    show();
 }
 
 void SnapshotTimer::stop()
@@ -57,14 +64,27 @@ void SnapshotTimer::bell()
 {
     if (time == length - 1) {
         hide();
-    } else {
+    }
+    else {
         if (time == length) {
             emit timeout();
             timer.stop();
         }
     }
     ++time;
+    toggle = !toggle;
     update();
+}
+
+void SnapshotTimer::enterEvent(QEvent *)
+{
+    const QRect screenGeom = qApp->desktop()->screenGeometry();
+    if (x() == screenGeom.left()) {
+        move(screenGeom.x() + (screenGeom.width() / 2 - size().width() / 2), screenGeom.top());
+    }
+    else {
+        move(screenGeom.topLeft());
+    }
 }
 
 void SnapshotTimer::paintEvent( QPaintEvent* e )
@@ -80,15 +100,17 @@ void SnapshotTimer::paintEvent( QPaintEvent* e )
       QColor overlayColor( 0, 0, 0, 160 );
       QColor textColor = pal.color( QPalette::Active, QPalette::Text );
       QColor textBackgroundColor = pal.color( QPalette::Active, QPalette::Base );
-
+      if (toggle){
+          textColor = pal.color( QPalette::Active, QPalette::Text);
+      }
+      else {
+          textColor = pal.color( QPalette::Active, QPalette::Base);
+      }
       painter.setPen( textColor );
       painter.setBrush( textBackgroundColor );
-      QString helpText = i18np( "Snapshot will be taken in 1 second",
-                                "Snapshot will be taken in %1 seconds", ( length-time ) );
-      QRect textRect = painter.boundingRect( rect().adjusted( 2, 2, -2, -2 ), Qt::TextSingleLine, helpText );
-      textRect.adjust( -2, -2, 4, 2 );
-      painter.drawRect( rect().adjusted(0,0,-1,-1) );
-      textRect.moveTopLeft( QPoint( 3, 3 ) );
+      const QString helpText = i18np("Snapshot will be taken in 1 second",
+                                     "Snapshot will be taken in %1 seconds", length - time);
+      textRect = painter.boundingRect(rect().adjusted(2, 2, -2, -2), Qt::AlignHCenter | Qt::TextSingleLine, helpText);
       painter.drawText(textRect, helpText);
     }
 }
