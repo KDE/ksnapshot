@@ -223,7 +223,6 @@ void FreeRegionGrabber::mouseMoveEvent( QMouseEvent* e )
         if ( newSelection )
         {
             QPoint p = e->pos();
-            QRect r = rect();
             selection << p;
         }
         else // moving the whole selection
