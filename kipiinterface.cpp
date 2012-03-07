@@ -34,8 +34,6 @@
 #include <libkipi/pluginloader.h>
 #include <libkipi/imagecollection.h>
 #include <libkipi/imagecollectionselector.h>
-#include <libkipi/imagecollection.h>
-#include <libkipi/imageinfo.h>
 
 struct KIPIInterfacePrivate {
     KSnapshot *ksnapshot;
