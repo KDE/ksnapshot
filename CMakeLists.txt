@@ -1,11 +1,11 @@
 project(ksnapshot)
 
 find_package(KDE4 REQUIRED)
-find_package(Kipi)
+
 include(KDE4Defaults)
 include(MacroLibrary)
-include(MacroOptionalAddSubdirectory)
-include(MacroBoolTo01)
+
+macro_optional_find_package(Kipi)
 
 add_definitions (${QT_DEFINITIONS} ${QT_QTDBUS_DEFINITIONS} ${KDE4_DEFINITIONS})
 add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
