@@ -72,6 +72,7 @@
 
 #ifdef KIPI_FOUND
 #include <libkipi/plugin.h>
+#include <libkipi/version.h>
 #include "kipiinterface.h"
 #include <KAction>
 #endif
@@ -164,7 +165,13 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     KConfigGroup conf(KGlobal::config(), "GENERAL");
 
 #ifdef KIPI_FOUND
+#if(KIPI_VERSION >= 0x020000)
+    mPluginLoader = new KIPI::PluginLoader();
+    mPluginLoader->setInterface(new KIPIInterface(this));
+    mPluginLoader->init();
+#else
     mPluginLoader = new KIPI::PluginLoader(QStringList(), new KIPIInterface(this), "");
+#endif
 #endif
 
 #ifdef HAVE_X11_EXTENSIONS_XFIXES_H
