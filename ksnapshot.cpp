@@ -189,6 +189,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     mainWidget->lblIncludePointer->hide();
 #endif
     setIncludePointer(conf.readEntry("includePointer", false));
+    setMode( conf.readEntry("mode", 0) );
 
     // check if kwin screenshot effect is available
     includeAlpha = false;
@@ -265,7 +266,6 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     }
 
     setDelay( conf.readEntry("delay", 0) );
-    setMode( conf.readEntry("mode", 0) );
     setIncludeDecorations(conf.readEntry("includeDecorations",true));
     filename = KUrl( conf.readPathEntry( "filename", QDir::currentPath()+'/'+i18n("snapshot")+"1.png" ));
 
