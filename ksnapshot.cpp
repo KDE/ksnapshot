@@ -99,7 +99,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     // TEMPORARY Make sure "untitled" enters the string freeze for 4.6, 
     // as explained in http://lists.kde.org/?l=kde-graphics-devel&m=128942871430175&w=2
     const QString untitled = QString(i18n("untitled"));
-    
+
     setCaption( "" );
     showButtonSeparator( true );
     setButtons(Help | Apply | User1 | User2);
@@ -108,7 +108,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     setButtonGuiItem(User2, KGuiItem(i18n("Send To..."), "document-open"));
     setDefaultButton(Apply);
     grabber = new QWidget( 0,  Qt::X11BypassWindowManagerHint );
-    
+
     // TODO X11 (Xinerama and Twinview, actually) and Windows use different coordinates for the two monitors case
     //
     // On Windows, there are two displays. The origin (0, 0) ('o') is the top left of display 1. If display 2 is to the left, then coordinates in display 2 are negative:

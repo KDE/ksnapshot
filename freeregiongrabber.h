@@ -31,7 +31,7 @@ class QMouseEvent;
 class FreeRegionGrabber : public QWidget
 {
     Q_OBJECT
-    
+
 public:
     FreeRegionGrabber();
     ~FreeRegionGrabber();

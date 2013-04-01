@@ -36,7 +36,7 @@ private slots:
     void slotWindowGrabbed( const QPixmap &pix );
     void slotGrab();
     void slotRegionGrabbed( const QPixmap &pix );
-    
+
 protected:
     void performGrab();
     void grabRegion();

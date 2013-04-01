@@ -124,11 +124,11 @@ bool maybeAddWindow(HWND hwnd, std::vector<QRect> *windows) {
     if ( ( ( wi.dwStyle & WS_VISIBLE ) != 0 ) && (width >= minSize ) && (height >= minSize ) )
     {
         //QRect r( rect.left + 4, rect.top + 4, width, height); // 4 = max(wi.cxWindowBorders) = max(wi.cyWindowBorders)
-        QRect r(rect.left + cxWindowBorder, rect.top + cyWindowBorder, width, height); 
+        QRect r(rect.left + cxWindowBorder, rect.top + cyWindowBorder, width, height);
 		if ( std::find( windows->begin(), windows->end(), r ) == windows->end() ) {
             windows->push_back( r );
             return true;
-		}	
+                }
     }
     return false;
 }
@@ -260,7 +260,7 @@ QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border,
     QPixmap pm( QPixmap::grabWindow( QX11Info::appRootWindow(), x, y, w, h ) );
 
     KWindowInfo winInfo( findRealWindow(child), NET::WMVisibleName, NET::WM2WindowClass );
-    
+
     if ( title ) {
         (*title) = winInfo.visibleName();
     }
@@ -373,7 +373,7 @@ WindowGrabber::WindowGrabber()
     QPixmap pm( grabWindow( child, x, y, w, h, border, &title, &windowClass ) );
 #elif defined(Q_WS_WIN)
     HWND child = windowUnderCursor();
-    
+
     WINDOWINFO wi;
     GetWindowInfo( child, &wi);
 

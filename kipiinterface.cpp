@@ -72,7 +72,7 @@ bool KIPIInterface::addImage(const KUrl&, QString&)
 {
     return true;
 }
-void KIPIInterface::delImage( const KUrl& ) 
+void KIPIInterface::delImage( const KUrl& )
 {
 
 }

@@ -60,7 +60,7 @@ KBackgroundSnapshot::KBackgroundSnapshot(KSnapshotObject::CaptureMode mode)
 	   }
 	   case  KSnapshotObject::ChildWindow:
 	   {
-	  	slotGrab();
+                slotGrab();
 		break;
 	   }
 	   case KSnapshotObject::Region:

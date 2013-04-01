@@ -34,7 +34,7 @@ class RegionGrabber : public QWidget
     Q_OBJECT
 
     enum MaskType { StrokeMask, FillMask };
-    
+
 public:
     RegionGrabber();
     ~RegionGrabber();
