@@ -586,6 +586,16 @@ void KSnapshot::slotRegionGrabbed( const QPixmap &pix )
   show();
 }
 
+void KSnapshot::slotRegionUpdated( const QRect &selection )
+{
+    lastRegion = selection;
+}
+
+void KSnapshot::slotFreeRegionUpdated( const QPolygon &selection )
+{
+    lastFreeRegion = selection;
+}
+
 void KSnapshot::slotWindowGrabbed( const QPixmap &pix )
 {
     if ( !pix.isNull() )
@@ -645,17 +655,21 @@ void KSnapshot::updatePreview()
 
 void KSnapshot::grabRegion()
 {
-   rgnGrab = new RegionGrabber();
+   rgnGrab = new RegionGrabber(lastRegion);
    connect( rgnGrab, SIGNAL(regionGrabbed(QPixmap)),
                      SLOT(slotRegionGrabbed(QPixmap)) );
+   connect( rgnGrab, SIGNAL(regionUpdated(QRect)),
+                     SLOT(slotRegionUpdated(QRect)) );
 
 }
 
 void KSnapshot::grabFreeRegion()
 {
-   freeRgnGrab = new FreeRegionGrabber();
+   freeRgnGrab = new FreeRegionGrabber(lastFreeRegion);
    connect( freeRgnGrab, SIGNAL(freeRegionGrabbed(QPixmap)),
                      SLOT(slotRegionGrabbed(QPixmap)) );
+   connect( freeRgnGrab, SIGNAL(freeRegionUpdated(QPolygon)),
+                     SLOT(slotFreeRegionUpdated(QPolygon)) );
 
 }
 

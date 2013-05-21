@@ -103,6 +103,8 @@ private slots:
     void updateCaption();
     void updatePreview();
     void slotRegionGrabbed( const QPixmap & );
+    void slotRegionUpdated( const QRect & );
+    void slotFreeRegionUpdated( const QPolygon & );
     void slotWindowGrabbed( const QPixmap & );
     void slotModeChanged( int mode );
     void setPreview( const QPixmap &pm );
@@ -139,6 +141,9 @@ private:
     QPoint savedPosition;
     bool haveXFixes;
     bool includeAlpha;
+    QPolygon lastFreeRegion;
+    QRect lastRegion;
+
 #ifdef KIPI_FOUND
     KIPI::PluginLoader* mPluginLoader;
     friend KUrl::List KSnapshotImageCollectionShared::images();

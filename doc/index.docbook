@@ -236,6 +236,13 @@ to capture the screenshot.
 
 <para>If you have multiple screens, <guilabel>Current Screen</guilabel> captures
 the screen containing the mouse cursor when the screenshot is taken.</para>
+
+<para>When keeping &ksnapshot; open to take several snapshots using <guibutton>
+Rectangular Region</guibutton> or <guibutton>Freehand Region</guibutton>,
+the subsequent snapshots will be initialized with the last shape used with this
+function (since you launched &ksnapshot;). You have then the possibility to adjust the
+handles of the rectangular shape, to move the freehand region, or to completely replace the
+shape by starting to draw a new one at a different place of the screen.</para>
 </sect1>
 
 <sect1 id="additional-features">

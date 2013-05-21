@@ -139,7 +139,8 @@ void KBackgroundSnapshot::slotGrab()
 
 void KBackgroundSnapshot::grabRegion()
 {
-   rgnGrab = new RegionGrabber();
+   QRect emptySelection;
+   rgnGrab = new RegionGrabber(emptySelection);
    connect( rgnGrab, SIGNAL(regionGrabbed(QPixmap)),
                      SLOT(slotRegionGrabbed(QPixmap)) );
 

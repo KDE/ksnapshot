@@ -29,9 +29,9 @@
 #include <klocale.h>
 #include <KWindowSystem>
 
-FreeRegionGrabber::FreeRegionGrabber( ) :
+FreeRegionGrabber::FreeRegionGrabber( const QPolygon &startFreeRegion ) :
     QWidget( 0, Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool ),
-    selection(), mouseDown( false ), newSelection( false ),
+    selection( startFreeRegion ), mouseDown( false ), newSelection( false ),
     handleSize( 10 ), mouseOverHandle( 0 ),
     showHelp( true ), grabbing( false )
 {
@@ -263,8 +263,10 @@ void FreeRegionGrabber::mouseDoubleClickEvent( QMouseEvent* )
 
 void FreeRegionGrabber::keyPressEvent( QKeyEvent* e )
 {
+    QPolygon pol = selection;
     if ( e->key() == Qt::Key_Escape )
     {
+        emit freeRegionUpdated( pol );
         emit freeRegionGrabbed( QPixmap() );
     }
     else if ( e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return )
@@ -307,6 +309,7 @@ void FreeRegionGrabber::grabRect()
         pt.drawPixmap(pixmap2.rect(), pixmap, pol.boundingRect());
         pt.end();
 
+        emit freeRegionUpdated(pol);
         emit freeRegionGrabbed(pixmap2);
     }
 }

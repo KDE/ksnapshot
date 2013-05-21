@@ -33,7 +33,7 @@ class FreeRegionGrabber : public QWidget
     Q_OBJECT
 
 public:
-    FreeRegionGrabber();
+    FreeRegionGrabber( const QPolygon &startFreeRegion );
     ~FreeRegionGrabber();
 
 protected slots:
@@ -41,6 +41,7 @@ protected slots:
 
 signals:
     void freeRegionGrabbed( const QPixmap & );
+    void freeRegionUpdated( const QPolygon & );
 
 protected:
     void paintEvent( QPaintEvent* e );

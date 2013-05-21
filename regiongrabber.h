@@ -36,7 +36,7 @@ class RegionGrabber : public QWidget
     enum MaskType { StrokeMask, FillMask };
 
 public:
-    RegionGrabber();
+    RegionGrabber( const QRect &startSelection );
     ~RegionGrabber();
 
 protected slots:
@@ -44,6 +44,7 @@ protected slots:
 
 signals:
     void regionGrabbed( const QPixmap & );
+    void regionUpdated( const QRect & );
 
 protected:
     void paintEvent( QPaintEvent* e );

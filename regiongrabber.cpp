@@ -28,9 +28,9 @@
 #include <klocale.h>
 #include <KWindowSystem>
 
-RegionGrabber::RegionGrabber( ) :
+RegionGrabber::RegionGrabber( const QRect &startSelection ) :
     QWidget( 0, Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool ),
-    selection(), mouseDown( false ), newSelection( false ),
+    selection( startSelection ), mouseDown( false ), newSelection( false ),
     handleSize( 10 ), mouseOverHandle( 0 ),
     showHelp( true ), grabbing( false ),
     TLHandle(0,0,handleSize,handleSize), TRHandle(0,0,handleSize,handleSize),
@@ -334,8 +334,10 @@ void RegionGrabber::mouseDoubleClickEvent( QMouseEvent* )
 
 void RegionGrabber::keyPressEvent( QKeyEvent* e )
 {
+    QRect r = selection;
     if ( e->key() == Qt::Key_Escape )
     {
+        emit regionUpdated( r );
         emit regionGrabbed( QPixmap() );
     }
     else if ( e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return )
@@ -354,6 +356,7 @@ void RegionGrabber::grabRect()
     if ( !r.isNull() && r.isValid() )
     {
 	grabbing = true;
+        emit regionUpdated( r );
         emit regionGrabbed( pixmap.copy(r) );
     }
 }
