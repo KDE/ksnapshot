@@ -81,8 +81,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2011-07-05</date>
-<releaseinfo>0.8.2 (&kde; 4.7)</releaseinfo>
+<date>2013-05-22</date>
+<releaseinfo>0.8.2 (&kde; 4.11)</releaseinfo>
 
 <abstract>
 <para>&ksnapshot; is a simple application for taking screenshots. It is capable
