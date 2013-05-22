@@ -28,7 +28,7 @@
      <property name="whatsThis">
       <string>This is a preview of the current snapshot.
 
-The image can be dragged to another application or document to copy the full screenshot there. Try it with the Konqueror file manager.
+The image can be dragged to another application or document to copy the full screenshot there. Try it with the file manager.
 
 You can also copy the image to the clipboard by pressing Ctrl+C.</string>
      </property>
@@ -109,7 +109,8 @@ You can also copy the image to the clipboard by pressing Ctrl+C.</string>
 &lt;p&gt;
 &lt;b&gt;Full Screen&lt;/b&gt; - captures the entire desktop.&lt;br/&gt;
 &lt;b&gt;Window Under Cursor&lt;/b&gt; - captures only the window (or menu) that is under the mouse cursor when the snapshot is taken.&lt;br/&gt;
-&lt;b&gt;Region&lt;/b&gt; - captures only the region of the desktop that you specify. When taking a new snapshot in this mode you will be able to select any area of the screen by clicking and dragging the mouse.&lt;br/&gt;
+&lt;b&gt;Rectangular Region&lt;/b&gt; - captures only the rectangular region of the desktop that you specify. When taking a new snapshot in this mode you will be able to select any area of the screen by clicking and dragging the mouse.&lt;br/&gt;
+&lt;b&gt;Freehand Region&lt;/b&gt; - captures arbitrary shapes that you specify. When taking a new snapshot in this mode you will be able to select any shape by dragging the mouse.&lt;br/&gt;
 &lt;b&gt;Section of Window&lt;/b&gt; - captures only a section of the window. When taking a new snapshot in this mode you will be able to select any child window by moving the mouse over it.&lt;br/&gt;
 &lt;b&gt;Current Screen&lt;/b&gt; - if you have multiple screens, this captures the screen containing the mouse cursor when the snapshot is taken.
 &lt;/p&gt;&lt;/qt&gt;</string>
