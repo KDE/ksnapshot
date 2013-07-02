@@ -105,7 +105,7 @@ You can also copy the image to the clipboard by pressing Ctrl+C.</string>
      <item row="0" column="1">
       <widget class="QComboBox" name="comboMode">
        <property name="whatsThis">
-        <string>&lt;qt&gt;Using this menu, you can select from the five following snapshot modes:
+        <string>&lt;qt&gt;Using this menu, you can select from the six following snapshot modes:
 &lt;p&gt;
 &lt;b&gt;Full Screen&lt;/b&gt; - captures the entire desktop.&lt;br/&gt;
 &lt;b&gt;Window Under Cursor&lt;/b&gt; - captures only the window (or menu) that is under the mouse cursor when the snapshot is taken.&lt;br/&gt;
