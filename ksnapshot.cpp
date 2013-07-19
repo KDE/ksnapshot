@@ -379,6 +379,9 @@ void KSnapshot::slotDragSnapshot()
     drag->mimeData()->setImageData(snapshot);
     drag->mimeData()->setData("application/x-kde-suggestedfilename", filename.fileName().toUtf8());
     drag->setPixmap(preview());
+    QList<QUrl> urls;
+    urls << urlToOpen();
+    drag->mimeData()->setUrls(urls);
     drag->start();
 }
 
