@@ -354,7 +354,7 @@ to handle images, a copy of the full is inserted there.
 <para>If you drag a screenshot into a file manager window, a dialog pops up where you can edit the filename
 and select the image format and the file will be inserted into the actual folder.
 </para>
-<para>If you drag the screenshot to a text box, the path to the temporary saved file is inserted. This is usefull 
+<para>If you drag the screenshot to a text box, the path to the temporary saved file is inserted. This is useful
 for example to upload a screenshot through web forms or to attach screenshots into bug reports
 on the <ulink url="https://bugs.kde.org/">&kde; bugtracker</ulink>.
 </para>
