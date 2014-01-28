@@ -79,6 +79,7 @@
 
 #ifdef HAVE_X11_EXTENSIONS_XFIXES_H
 #include <X11/extensions/Xfixes.h>
+#include <X11/Xatom.h>
 #include <QX11Info>
 #endif
 
@@ -185,6 +186,16 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
         } else {
             haveXFixes = true;
         }
+
+        // actually not depending on XFixes, but to simplify the ifdefs put here
+        // we can safely assume that XFixes is present for this functionality
+        // it's supposed to prevent that KWin animates the window in the compositor
+        // and XFixes is a requirement for the compositor. So if XFixes is not present
+        // KWin cannot be compiled at all.
+        Atom atom = XInternAtom(dpy, "_KDE_NET_WM_SKIP_CLOSE_ANIMATION", False);
+        long d = 1;
+        XChangeProperty(dpy, winId(), atom, XA_CARDINAL, 32,
+                        PropModeReplace, (unsigned char *) &d, 1);
     }
 #elif !defined(Q_WS_WIN)
     mainWidget->cbIncludePointer->hide();
