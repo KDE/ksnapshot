@@ -115,16 +115,23 @@ install(TARGETS ksnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 ########### next target ###############
 
-#set(kbackgroundsnapshot_SRCS
-#   kbackgroundsnapshot.cpp
-#   ${ksnapshot_file_SRCS})
+set(kbackgroundsnapshot_SRCS
+   kbackgroundsnapshot.cpp
+   ${ksnapshot_file_SRCS})
 
 
-#add_executable(kbackgroundsnapshot ${kbackgroundsnapshot_SRCS})
+add_executable(kbackgroundsnapshot ${kbackgroundsnapshot_SRCS})
 
-#target_link_libraries(kbackgroundsnapshot KF5::KIOWidgets ${X11_LIBRARIES})
+target_link_libraries(kbackgroundsnapshot
+                      Qt5::X11Extras
+                      KF5::CoreAddons
+                      KF5::ConfigGui
+                      KF5::I18n
+                      KF5::KIOWidgets
+                      KF5::WindowSystem
+                      ${X11_LIBRARIES})
 
-#install(TARGETS kbackgroundsnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS kbackgroundsnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 ########### install files ###############
 

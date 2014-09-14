@@ -19,22 +19,21 @@
  */
 
 #include "kbackgroundsnapshot.h"
+
+#include <QApplication>
+#include <QDebug>
+#include <QDesktopWidget>
+#include <QMouseEvent>
+#include <QPixmap>
+#include <QStandardPaths>
+
+#include <KLocalizedString>
+#include <KAboutData>
+
 #include "kbackgroundsnapshot.moc"
 #include "regiongrabber.h"
 #include "ksnapshot_options.h"
-#include <windowgrabber.h>
-#include <QDebug>
-#include <klocale.h>
-#include <kcmdlineargs.h>
-#include <KAboutData>
-#include <KApplication>
-#include <KGlobalSettings>
-#include <kio/netaccess.h>
-
-#include <QMouseEvent>
-#include <QPixmap>
-#include <QDesktopWidget>
-#include <QStandardPaths>
+#include "windowgrabber.h"
 
 KBackgroundSnapshot::KBackgroundSnapshot(KSnapshotObject::CaptureMode mode)
     : KSnapshotObject()
@@ -82,9 +81,7 @@ void KBackgroundSnapshot::savePictureOnDesktop()
 {
     filename = QUrl(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + '/' + i18n("snapshot") + "1.png");
     // Make sure the name is not already being used
-    while (KIO::NetAccess::exists(filename, KIO::NetAccess::DestinationSide, 0L)) {
-        autoincFilename();
-    }
+    autoincFilenameUntilUnique(0);
     save(filename, 0L);
     exit(0);
 }
@@ -168,29 +165,33 @@ static const char description[] = I18N_NOOP("KDE Background Screenshot Utility")
 
 int main(int argc, char **argv)
 {
-    KAboutData aboutData("kbackgroundsnapshot", "ksnapshot", ki18n("KBackgroundSnapshot"),
-                         KBACKGROUNDSNAPVERSION, ki18n(description), KAboutData::License_GPL,
-                         ki18n("(c) 2007, Montel Laurent"));
+    KAboutData aboutData("kbackgroundsnapshot", i18n("KBackgroundSnapshot"),
+                         KBACKGROUNDSNAPVERSION, i18n(description), KAboutLicense::GPL,
+                         i18n("(c) 2007, Montel Laurent"));
 
-    KCmdLineArgs::init(argc, argv, &aboutData);
-    KCmdLineArgs::addCmdLineOptions(ksnapshot_options());    // Add our own options.
-    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+    QApplication app(argc, argv);
+    QCommandLineParser parser;
+    KAboutData::setApplicationData(aboutData);
+    parser.addVersionOption();
+    parser.addHelpOption();
+    aboutData.setupCommandLine(&parser);
+    parser.process(app);
+    aboutData.processCommandLine(&parser);
+    addCommandLineOptions(parser);    // Add our own options.
 
-    KApplication app;
-
-    if (args->isSet("current")) {
+    if (parser.isSet("current")) {
         new KBackgroundSnapshot(KSnapshotObject::WindowUnderCursor);
-    } else if (args->isSet("fullscreen")) {
+    } else if (parser.isSet("fullscreen")) {
         new KBackgroundSnapshot(KSnapshotObject::FullScreen);
-    } else if (args->isSet("region")) {
+    } else if (parser.isSet("region")) {
         new KBackgroundSnapshot(KSnapshotObject::Region);
-    } else if (args->isSet("freeregion")) {
+    } else if (parser.isSet("freeregion")) {
         new KBackgroundSnapshot(KSnapshotObject::FreeRegion);
-    } else if (args->isSet("child")) {
+    } else if (parser.isSet("child")) {
         new KBackgroundSnapshot(KSnapshotObject::ChildWindow);
     } else {
         new KBackgroundSnapshot();
     }
-    args->clear();
+
     return app.exec();
 }
