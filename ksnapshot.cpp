@@ -122,6 +122,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     KGuiItem::assign(user1Button, KGuiItem(i18n("Copy")));
     KGuiItem::assign(user2Button, KGuiItem(i18n("Send To...")));
     buttonBox->button(QDialogButtonBox::Apply)->setDefault(true);
+    buttonBox->button(QDialogButtonBox::Apply)->setShortcut(Qt::CTRL | Qt::Key_Return);
     grabber = new QWidget( 0,  Qt::X11BypassWindowManagerHint );
 
     // TODO X11 (Xinerama and Twinview, actually) and Windows use different coordinates for the two monitors case
