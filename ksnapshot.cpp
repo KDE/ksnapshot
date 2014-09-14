@@ -33,7 +33,10 @@
 #include <QVarLengthArray>
 #include <QCloseEvent>
 #include <QDrag>
+#include <QImageWriter>
+#include <QMimeDatabase>
 #include <QMimeData>
+#include <QMimeType>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QtCore/QXmlStreamReader>
@@ -48,7 +51,6 @@
 #include <QIcon>
 #include <kimageio.h>
 #include <kcomponentdata.h>
-#include <kfiledialog.h>
 #include <kmessagebox.h>
 #include <kio/netaccess.h>
 #include <ksavefile.h>
@@ -360,38 +362,37 @@ void KSnapshot::slotSave()
 
 void KSnapshot::slotSaveAs()
 {
-    QStringList mimetypes = KImageIO::mimeTypes( KImageIO::Writing );
+    //TODO: non-blocking save
+    QStringList filters;
+    QMimeDatabase db;
+    foreach (const QByteArray &mimetype, QImageWriter::supportedMimeTypes()) {
+        filters = db.mimeTypeForName(mimetype).filterString();
+    }
 
     // Make sure the name is not already being used
-    while(KIO::NetAccess::exists( filename, KIO::NetAccess::DestinationSide, this )) {
-        autoincFilename();
+    forever {
+        // we only need to test for existence; details about the file are uninteresting, so 0 for third param
+        KIO::StatJob *job = KIO::stat(filename, KIO::StatJob::DestinationSide, 0);
+        KJobWidgets::setWindow(job, widget);
+        job->exec();
+        if (job->error()) {
+            break;
+        } else {
+            autoincFilename();
+        }
     }
 
-    QPointer<KFileDialog> dlg = new KFileDialog( filename.url(), mimetypes.join(" "), this);
-
-    dlg->setOperationMode( KFileDialog::Saving );
-    dlg->setWindowTitle( i18n("Save As") );
-    dlg->setSelection( filename.url() );
-
-    if ( !dlg->exec() ) {
-        delete dlg;
+    QUrl url = QFileDialog::getSaveFileName(this, i18n("Save Snapshot As"), filename, filters);
+    if (!url.isValid()) {
         return;
     }
 
-    QUrl url = dlg->selectedUrl();
-    if ( !url.isValid() ){
-	delete dlg;
-        return;
-    }
-
-    if ( save(url,this) ) {
+    if (save(url,this)) {
         filename = url;
         modified = false;
         autoincFilename();
         updateCaption();
     }
-
-    delete dlg;
 }
 
 void KSnapshot::slotCopy()
