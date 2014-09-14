@@ -389,7 +389,7 @@ void KSnapshot::slotSaveAs()
         }
     }
 
-    QUrl url = QFileDialog::getSaveFileName(this, i18n("Save Snapshot As"), filename, filters);
+    QUrl url = QFileDialog::getSaveFileName(this, i18n("Save Snapshot As"), filename.url(), filters.join(";;"));
     if (!url.isValid()) {
         return;
     }
