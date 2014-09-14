@@ -366,7 +366,7 @@ void KSnapshot::slotSaveAs()
     //TODO: non-blocking save
     QStringList filters;
     QMimeDatabase db;
-    foreach(const QByteArray & mimetype, QImageWriter::supportedMimeTypes()) {
+    for (auto mimetype: QImageWriter::supportedMimeTypes()) {
         filters << db.mimeTypeForName(mimetype).filterString();
     }
 
@@ -504,7 +504,7 @@ void KSnapshot::slotOpen(QAction *action)
 void KSnapshot::slotPopulateOpenMenu()
 {
     QList<QAction *> currentActions = openMenu->actions();
-    foreach (QAction *currentAction, currentActions) {
+    for (auto currentAction: currentActions) {
         openMenu->removeAction(currentAction);
         currentAction->deleteLater();
     }
@@ -512,11 +512,11 @@ void KSnapshot::slotPopulateOpenMenu()
     const KService::List services = KMimeTypeTrader::self()->query("image/png");
     QMap<QString, KService::Ptr> apps;
 
-    foreach (const KService::Ptr &service, services) {
+    for (auto service: services) {
         apps.insert(service->name(), service);
     }
 
-    foreach (const KService::Ptr &service, apps) {
+    for (auto service: apps) {
         QString name = service->name().replace('&', "&&");
         openMenu->addAction(new KSnapshotServiceAction(service,
                             QIcon::fromTheme(service->icon()),
@@ -526,7 +526,7 @@ void KSnapshot::slotPopulateOpenMenu()
 #ifdef KIPI_FOUND
     KIPI::PluginLoader::PluginList pluginList = mPluginLoader->pluginList();
 
-    foreach (KIPI::PluginLoader::Info *pluginInfo, pluginList) {
+    for (auto pluginInfo: pluginList) {
         if (!pluginInfo->shouldLoad()) {
             continue;
         }
@@ -540,7 +540,7 @@ void KSnapshot::slotPopulateOpenMenu()
 
         QList<KAction *> actions = plugin->actions();
         QSet<KAction *> exportActions;
-        foreach (KAction *action, actions) {
+        for (auto action: actions) {
             KIPI::Category category = plugin->category(action);
             if (category == KIPI::ExportPlugin) {
                 exportActions << action;
