@@ -35,7 +35,7 @@ SnapshotTimer::SnapshotTimer()
     // The text is copied from paintEvent and the maximum number is used as %1 argument + margins
     resize(fontMetrics().width(i18np("Snapshot will be taken in 1 second",
                                      "Snapshot will be taken in %1 seconds", 99)) + 6, fontMetrics().height() + 4);
-    connect(&timer, SIGNAL(timeout()), this, SLOT(bell()));
+    connect(&timer, &QTimer::timeout, this, &SnapshotTimer::bell);
 }
 
 SnapshotTimer::~SnapshotTimer()
