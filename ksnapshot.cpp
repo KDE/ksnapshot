@@ -153,16 +153,16 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     KVBox *vbox = new KVBox( this );
     vbox->setSpacing( spacingHint() );
 
-    mainWidget = new KSnapshotWidget( vbox );
+    m_snapshotWidget = new KSnapshotWidget( vbox );
 
-    connect(mainWidget->lblImage, SIGNAL(startDrag()), SLOT(slotDragSnapshot()));
-    connect(mainWidget->btnNew, SIGNAL(clicked()), SLOT(slotGrab()));
+    connect(m_snapshotWidget->lblImage, SIGNAL(startDrag()), SLOT(slotDragSnapshot()));
+    connect(m_snapshotWidget->btnNew, SIGNAL(clicked()), SLOT(slotGrab()));
     connect(buttonBox->button(QDialogButtonBox::Apply), SIGNAL(clicked()), SLOT(slotSaveAs()));
     connect(user1Button, SIGNAL(clicked()), SLOT(slotCopy()));
-    connect(mainWidget->comboMode, SIGNAL(activated(int)), SLOT(slotModeChanged(int)));
+    connect(m_snapshotWidget->comboMode, SIGNAL(activated(int)), SLOT(slotModeChanged(int)));
 
     if (qApp->desktop()->numScreens() < 2) {
-        mainWidget->comboMode->removeItem(CurrentScreen);
+        m_snapshotWidget->comboMode->removeItem(CurrentScreen);
     }
 
     openMenu = new QMenu(this);
@@ -170,7 +170,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     connect(openMenu, SIGNAL(aboutToShow()), this, SLOT(slotPopulateOpenMenu()));
     connect(openMenu, SIGNAL(triggered(QAction*)), this, SLOT(slotOpen(QAction*)));
 
-    mainWidget->spinDelay->setSuffix(ki18np(" second", " seconds"));
+    m_snapshotWidget->spinDelay->setSuffix(ki18np(" second", " seconds"));
 
     mainLayout->addWidget(vbox);
     mainLayout->addWidget(buttonBox);
@@ -196,8 +196,8 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
         //Check whether the XFixes extension is available
         Display *dpy = QX11Info::display();
         if (!XFixesQueryExtension( dpy, &tmp1, &tmp2 )) {
-            mainWidget->cbIncludePointer->hide();
-            mainWidget->lblIncludePointer->hide();
+            m_snapshotWidget->cbIncludePointer->hide();
+            m_snapshotWidget->lblIncludePointer->hide();
         } else {
             haveXFixes = true;
         }
@@ -213,8 +213,8 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
                         PropModeReplace, (unsigned char *) &d, 1);
     }
 #elif !defined(Q_OS_WIN)
-    mainWidget->cbIncludePointer->hide();
-    mainWidget->lblIncludePointer->hide();
+    m_snapshotWidget->cbIncludePointer->hide();
+    m_snapshotWidget->lblIncludePointer->hide();
 #endif
     setIncludePointer(conf.readEntry("includePointer", false));
     setMode( conf.readEntry("mode", 0) );
@@ -302,7 +302,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     QTimer::singleShot( 0, this, SLOT(updateCaption()) );
 
     KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::mainComponent().aboutData(), true);
-    buttonBox->button(QDialogButtonBox::Help)->setMenu(helpMenu->menu();
+    buttonBox->button(QDialogButtonBox::Help)->setMenu(helpMenu->menu());
 #if 0
     accel->insert( "QuickSave", i18n("Quick Save Snapshot &As..."),
                    i18n("Save the snapshot to the file specified by the user without showing the file dialog."),
@@ -321,11 +321,11 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Save ).primary(), button(Apply), SLOT(animateClick()));
     new QShortcut( Qt::Key_S, button(Apply), SLOT(animateClick()));
 
-    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::New ).primary(), mainWidget->btnNew, SLOT(animateClick()) );
-    new QShortcut( Qt::Key_N, mainWidget->btnNew, SLOT(animateClick()) );
-    new QShortcut( Qt::Key_Space, mainWidget->btnNew, SLOT(animateClick()) );
+    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::New ).primary(), m_snapshotWidget->btnNew, SLOT(animateClick()) );
+    new QShortcut( Qt::Key_N, m_snapshotWidget->btnNew, SLOT(animateClick()) );
+    new QShortcut( Qt::Key_Space, m_snapshotWidget->btnNew, SLOT(animateClick()) );
 
-    mainWidget->btnNew->setFocus();
+    m_snapshotWidget->btnNew->setFocus();
     resize(QSize(250, 500));
 
     KConfigGroup cg(KSharedConfig::openConfig(), "MainWindow");
@@ -334,7 +334,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
 
 KSnapshot::~KSnapshot()
 {
-    delete mainWidget;
+    delete m_snapshotWidget;
 }
 
 void KSnapshot::resizeEvent( QResizeEvent * )
@@ -879,76 +879,76 @@ void KSnapshot::exit()
 
 void KSnapshot::slotModeChanged(int mode)
 {
-    mainWidget->cbIncludePointer->setEnabled(!(mode == Region || mode == FreeRegion));
-    mainWidget->lblIncludePointer->setEnabled(!(mode == Region || mode == FreeRegion));
-    mainWidget->cbIncludeDecorations->setEnabled(mode == WindowUnderCursor);
-    mainWidget->lblIncludeDecorations->setEnabled(mode == WindowUnderCursor);
+    m_snapshotWidget->cbIncludePointer->setEnabled(!(mode == Region || mode == FreeRegion));
+    m_snapshotWidget->lblIncludePointer->setEnabled(!(mode == Region || mode == FreeRegion));
+    m_snapshotWidget->cbIncludeDecorations->setEnabled(mode == WindowUnderCursor);
+    m_snapshotWidget->lblIncludeDecorations->setEnabled(mode == WindowUnderCursor);
 }
 
 void KSnapshot::setPreview( const QPixmap &pm )
 {
-    mainWidget->lblImage->setToolTip(
+    m_snapshotWidget->lblImage->setToolTip(
         i18n( "Preview of the snapshot image (%1 x %2)" ,
           pm.width(), pm.height() ) );
 
-    mainWidget->lblImage->setPreview(pm);
-    mainWidget->lblImage->adjustSize();
+    m_snapshotWidget->lblImage->setPreview(pm);
+    m_snapshotWidget->lblImage->adjustSize();
 }
 
 void KSnapshot::setDelay( int i )
 {
-    mainWidget->spinDelay->setValue(i);
+    m_snapshotWidget->spinDelay->setValue(i);
 }
 
 void KSnapshot::setIncludeDecorations( bool b )
 {
-    mainWidget->cbIncludeDecorations->setChecked(b);
+    m_snapshotWidget->cbIncludeDecorations->setChecked(b);
 }
 
 void KSnapshot::setIncludePointer(bool enabled)
 {
-    mainWidget->cbIncludePointer->setChecked(enabled);
+    m_snapshotWidget->cbIncludePointer->setChecked(enabled);
 }
 
 bool KSnapshot::includePointer() const
 {
-    return mainWidget->cbIncludePointer->isChecked();
+    return m_snapshotWidget->cbIncludePointer->isChecked();
 }
 
 void KSnapshot::setMode( int mode )
 {
-    mainWidget->comboMode->setCurrentIndex(mode);
+    m_snapshotWidget->comboMode->setCurrentIndex(mode);
     slotModeChanged(mode);
 }
 
 int KSnapshot::delay() const
 {
-    return mainWidget->spinDelay->value();
+    return m_snapshotWidget->spinDelay->value();
 }
 
 bool KSnapshot::includeDecorations() const
 {
-    return mainWidget->cbIncludeDecorations->isChecked();
+    return m_snapshotWidget->cbIncludeDecorations->isChecked();
 }
 
 int KSnapshot::mode() const
 {
-    return mainWidget->comboMode->currentIndex();
+    return m_snapshotWidget->comboMode->currentIndex();
 }
 
 QPixmap KSnapshot::preview()
 {
-    return *mainWidget->lblImage->pixmap();
+    return *m_snapshotWidget->lblImage->pixmap();
 }
 
 int KSnapshot::previewWidth() const
 {
-    return mainWidget->lblImage->width();
+    return m_snapshotWidget->lblImage->width();
 }
 
 int KSnapshot::previewHeight() const
 {
-    return mainWidget->lblImage->height();
+    return m_snapshotWidget->lblImage->height();
 }
 
 #include "ksnapshot.moc"

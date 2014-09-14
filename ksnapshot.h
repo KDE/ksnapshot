@@ -136,7 +136,7 @@ private:
     SnapshotTimer grabTimer;
     QTimer updateTimer;
     QMenu*  openMenu;
-    KSnapshotWidget *mainWidget;
+    KSnapshotWidget *m_snapshotWidget;
     bool modified;
     QPoint savedPosition;
     bool haveXFixes;
