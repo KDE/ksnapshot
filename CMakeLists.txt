@@ -29,7 +29,7 @@ find_package(KF5 REQUIRED
        XmlGui
 )
 
-add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
+add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS -std=c++11)
 
 find_package(X11)
 if (X11_FOUND)
