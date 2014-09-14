@@ -35,7 +35,8 @@
 
 #include <klocale.h>
 #include <QTemporaryFile>
-#include <kio/netaccess.h>
+#include <KIO/FileCopyJob>
+#include <KIO/StatJob>
 #include <QDebug>
 
 //Qt include
@@ -115,8 +116,13 @@ bool KSnapshotObject::save( const QString &filename, QWidget* widget )
 
 bool KSnapshotObject::save( const QUrl &url, QWidget *widget )
 {
-    if ( KIO::NetAccess::exists( url, KIO::NetAccess::DestinationSide, widget ) ) {
-        // NOTE: widget == NULL if called from dbus interface
+    // NOTE: widget == NULL if called from dbus interface
+    //TODO: non-blocking
+    // we only need to test for existence; details about the file are uninteresting, so 0 for third param
+    KIO::StatJob *job = KIO::stat(url, KIO::StatJob::DestinationSide, 0);
+    KJobWidgets::setWindow(job, widget);
+    job->exec();
+    if (!job->error()) {
         const QString title = i18n( "File Exists" );
         const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" , url.pathOrUrl());
         if (KMessageBox::Continue != KMessageBox::warningContinueCancel( widget, text, title, KGuiItem(i18n("Overwrite")) ) )
@@ -139,17 +145,22 @@ bool KSnapshotObject::saveEqual( const QUrl &url,QWidget *widget )
     bool ok = false;
 
     if ( url.isLocalFile() ) {
-	QFile output( url.toLocalFile() );
-	if ( output.open( QFile::WriteOnly ) )
-	    ok = saveImage( &output, type );
+        QFile output( url.toLocalFile() );
+        if ( output.open( QFile::WriteOnly ) )
+            ok = saveImage( &output, type );
     }
     else {
         QTemporaryFile tmpFile;
-	if ( tmpFile.open() ) {
+        if ( tmpFile.open() ) {
             if ( saveImage( &tmpFile, type ) ) {
-                ok = KIO::NetAccess::upload( tmpFile.fileName(), url, widget );
+                // TODO: non-blocking
+                // we only need to test for existence; details about the file are uninteresting, so 0 for third param
+                KIO::StatJob *job = KIO::fileCopy(tmpFile.fileName(), url);
+                KJobWidgets::setWindow(job, widget);
+                job->exec();
+                ok = !job->error();
             }
-	}
+        }
     }
 
     QApplication::restoreOverrideCursor();
