@@ -321,12 +321,12 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     new QShortcut(shortcuts.empty() ? QKeySequence() : shortcuts.first(), user1Button, SLOT(animateClick()));
 
     shortcuts = KStandardShortcut::shortcut(KStandardShortcut::Save);
-    new QShortcut(shortcuts.empty() ? QKeySequence() : shortcuts.first(), button(Apply), SLOT(animateClick()));
+    new QShortcut(shortcuts.empty() ? QKeySequence() : shortcuts.first(), buttonBox->button(QDialogButtonBox::Apply), SLOT(animateClick()));
+    new QShortcut(Qt::Key_S, buttonBox->button(QDialogButtonBox::Apply), SLOT(animateClick()));
 
     shortcuts = KStandardShortcut::shortcut(KStandardShortcut::New);
     new QShortcut(shortcuts.empty() ? QKeySequence() : shortcuts.first(), m_snapshotWidget->btnNew, SLOT(animateClick()) );
 
-    new QShortcut(Qt::Key_S, button(Apply), SLOT(animateClick()));
     new QShortcut(Qt::Key_N, m_snapshotWidget->btnNew, SLOT(animateClick()) );
     new QShortcut(Qt::Key_Space, m_snapshotWidget->btnNew, SLOT(animateClick()) );
 
