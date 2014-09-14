@@ -456,15 +456,13 @@ QUrl KSnapshot::urlToOpen(bool *isTempfile)
         *isTempfile = false;
     }
 
-    if (!modified && filename.isValid())
-    {
+    if (!modified && filename.isValid()) {
         return filename;
     }
 
-    const QString fileopen = QDir::tempPath() + QLatin1Char('/') +  filename.fileName());
+    const QString fileopen = QDir::tempPath() + QLatin1Char('/') + filename.fileName();
 
-    if (saveEqual(fileopen, this))
-    {
+    if (saveEqual(fileopen, this)) {
         if (isTempfile) {
             *isTempfile = true;
         }
