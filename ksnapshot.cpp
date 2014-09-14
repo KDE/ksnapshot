@@ -59,7 +59,7 @@
 #include <kmimetypetrader.h>
 #include <kopenwithdialog.h>
 #include <krun.h>
-#include <kstandarddirs.h>
+
 #include <kstartupinfo.h>
 #include <kvbox.h>
 #include <qdebug.h>
@@ -452,7 +452,7 @@ QUrl KSnapshot::urlToOpen(bool *isTempfile)
         return filename;
     }
 
-    const QString fileopen = KStandardDirs::locateLocal("tmp", filename.fileName());
+    const QString fileopen = QDir::tempPath() + QLatin1Char('/') +  filename.fileName());
 
     if (saveEqual(fileopen, this))
     {
