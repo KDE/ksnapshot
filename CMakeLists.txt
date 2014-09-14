@@ -19,7 +19,7 @@ include(ECMGenerateHeaders)
 include(GenerateExportHeader)
 include(FeatureSummary)
 
-find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Core DBus Widgets)
+find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Core DBus Widgets X11Extras)
 
 find_package(KF5 REQUIRED
        Config ConfigWidgets
@@ -83,6 +83,7 @@ ecm_install_icons(ICONS
 add_executable(ksnapshot ${ksnapshot_SRCS})
 
 target_link_libraries(ksnapshot
+   Qt5::X11Extras
    KF5::I18n
    KF5::KIOWidgets
    KF5::WindowSystem
