@@ -52,7 +52,6 @@
 #include <KLocalizedString>
 #include <kmessagebox.h>
 #include <kio/netaccess.h>
-#include <ksavefile.h>
 #include <kstandardshortcut.h>
 #include <knotification.h>
 #include <khelpmenu.h>
