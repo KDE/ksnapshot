@@ -344,7 +344,7 @@ KSnapshot::~KSnapshot()
 
 void KSnapshot::setDelaySpinboxSuffix(int value)
 {
-    m_snapshotWidget->spinDelay->setSuffix(i18np(" second", " seconds", value);
+    m_snapshotWidget->spinDelay->setSuffix(i18np(" second", " seconds", value));
 }
 
 void KSnapshot::resizeEvent( QResizeEvent * )
