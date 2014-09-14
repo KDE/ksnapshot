@@ -58,18 +58,18 @@
 #include <KAboutData>
 #include <KConfigGroup>
 #include <KGuiItem>
-#include <KLocalizedString>
-#include <KJobWidgets>
+#include <KHelpMenu>
 #include <KIO/StatJob>
+#include <KJobWidgets>
+#include <KLocalizedString>
+#include <KMimeTypeTrader>
+#include <KOpenWithDialog>
+#include <KRun>
 #include <KSharedConfig>
-#include <KStandardShortcut>
 #include <KStandardGuiItem>
-#include <khelpmenu.h>
-#include <kmimetypetrader.h>
-#include <kopenwithdialog.h>
-#include <krun.h>
-
-#include <kstartupinfo.h>
+#include <KStandardShortcut>
+#include <KStartupInfo>
+#include <KWindowConfig>
 
 #include "regiongrabber.h"
 #include "freeregiongrabber.h"
@@ -299,7 +299,6 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode)
             this, &KSnapshot::grabTimerDone);
     connect(&updateTimer, &QTimer::timeout,
             this, &KSnapshot::updatePreview);
-    QMetaObject::invokeMethod(this, "refreshCaption", Qt::QueuedConnection);
 
     KHelpMenu *helpMenu = new KHelpMenu(this, KAboutData::applicationData(), true);
     buttonBox->button(QDialogButtonBox::Help)->setMenu(helpMenu->menu());
@@ -325,16 +324,21 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode)
     m_snapshotWidget->btnNew->setFocus();
     resize(QSize(250, 500));
 
-    /**
-    FIXME: find the new idiom for this in frameworks 5
-    KConfigGroup cg(KSharedConfig::openConfig(), "MainWindow");
-    restoreDialogSize(cg);
-    **/
+    QMetaObject::invokeMethod(this, "delayedInit", Qt::QueuedConnection);
 }
 
 KSnapshot::~KSnapshot()
 {
     delete m_snapshotWidget;
+}
+
+void KSnapshot::delayedInit()
+{
+    // calling restoreWindowSize in the ctor doesn't work
+    // doing it in a delayed slot does.
+    KConfigGroup cg(KSharedConfig::openConfig(), "MainWindow");
+    KWindowConfig::restoreWindowSize(windowHandle(), cg);
+    refreshCaption();
 }
 
 void KSnapshot::setDelaySpinboxSuffix(int value)
@@ -630,11 +634,8 @@ void KSnapshot::closeEvent(QCloseEvent *e)
     conf.writeEntry("includeDecorations", includeDecorations());
     conf.writeEntry("includePointer", includePointer());
 
-    /*
-    FIXME: find the new idiom for this in frameworks 5
     KConfigGroup cg(KSharedConfig::openConfig(), "MainWindow");
-    saveDialogSize(cg);
-    */
+    KWindowConfig::saveWindowSize(windowHandle(), cg);
 
     QUrl url = filename;
     url.setPassword(QString::null);    //krazy:exclude=nullstrassign for old broken gcc

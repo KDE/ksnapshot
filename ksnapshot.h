@@ -103,6 +103,7 @@ protected Q_SLOTS:
     virtual void refreshCaption();
 
 private slots:
+    void delayedInit();
     void slotOpen(QAction *);
     void slotPopulateOpenMenu();
     void grabTimerDone();
