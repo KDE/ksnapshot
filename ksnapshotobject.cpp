@@ -32,7 +32,7 @@
 
 //kde include
 #include <KMessageBox>
-#include <KMimeType>
+
 #include <KImageIO>
 #include <klocale.h>
 #include <KTemporaryFile>
@@ -43,6 +43,8 @@
 #include <QRegExp>
 #include <QApplication>
 #include <QImageWriter>
+#include <QMimeDatabase>
+#include <QMimeType>
 
 KSnapshotObject::KSnapshotObject()
 : rgnGrab( 0 ),
@@ -129,7 +131,8 @@ bool KSnapshotObject::save( const QUrl &url, QWidget *widget )
 bool KSnapshotObject::saveEqual( const QUrl &url,QWidget *widget )
 {
     QByteArray type = "PNG";
-    QString mime = KMimeType::findByUrl( url.fileName(), 0, url.isLocalFile(), true )->name();
+    QMimeDatabase db;
+    QString mime = db.mimeTypeForUrl( url.fileName(), 0, url.isLocalFile(), true ).name();
     const QStringList types = KImageIO::typeForMime(mime);
     if ( !types.isEmpty() )
         type = types.first().toLatin1();
