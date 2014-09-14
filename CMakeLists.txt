@@ -84,10 +84,10 @@ qt5_add_dbus_adaptor(ksnapshot_SRCS org.kde.ksnapshot.xml ksnapshot.h KSnapshot)
 ki18n_wrap_ui(ksnapshot_SRCS ksnapshotwidget.ui)
 
 ecm_install_icons(ICONS 
-   16-apps-ksnapshot.png
-   22-apps-ksnapshot.png
-   32-apps-ksnapshot.png
-   48-apps-ksnapshot.png
+   icons/16-apps-ksnapshot.png
+   icons/22-apps-ksnapshot.png
+   icons/32-apps-ksnapshot.png
+   icons/48-apps-ksnapshot.png
    DESTINATION ${ICON_INSTALL_DIR} THEME hicolor)
 
 add_executable(ksnapshot ${ksnapshot_SRCS})
