@@ -26,8 +26,9 @@
 
 #include "ksnapshot.h"
 
-#include <QDebug>
 #include <QClipboard>
+#include <QDebug>
+#include <QDir>
 #include <QIcon>
 #include <QShortcut>
 #include <QMenu>
@@ -35,34 +36,38 @@
 #include <QVarLengthArray>
 #include <QCloseEvent>
 #include <QDrag>
+#include <QFileDialog>
 #include <QImageWriter>
 #include <QMimeDatabase>
 #include <QMimeData>
 #include <QMimeType>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QSpinBox>
 #include <QtCore/QXmlStreamReader>
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusConnectionInterface>
 #include <QtDBus/QDBusInterface>
+#include <QDialogButtonBox>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 #include <KAboutData>
-#include <kimageio.h>
-#include <kcomponentdata.h>
+#include <KConfigGroup>
+#include <KGuiItem>
 #include <KLocalizedString>
-#include <kmessagebox.h>
-#include <kio/netaccess.h>
+#include <KNotification>
+#include <KJobWidgets>
+#include <KIO/StatJob>
+#include <KSharedConfig>
 #include <KStandardShortcut>
-#include <knotification.h>
+#include <KStandardGuiItem>
 #include <khelpmenu.h>
-#include <kmenu.h>
 #include <kmimetypetrader.h>
 #include <kopenwithdialog.h>
 #include <krun.h>
 
 #include <kstartupinfo.h>
-#include <kvbox.h>
-#include <qdebug.h>
 
 #include "regiongrabber.h"
 #include "freeregiongrabber.h"
@@ -81,11 +86,6 @@
 #include <X11/extensions/Xfixes.h>
 #include <X11/Xatom.h>
 #include <QX11Info>
-#include <KConfigGroup>
-#include <QDialogButtonBox>
-#include <QPushButton>
-#include <KGuiItem>
-#include <QVBoxLayout>
 #endif
 
 class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
@@ -119,8 +119,8 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     KGuiItem::assign(buttonBox->button(QDialogButtonBox::Apply), KStandardGuiItem::saveAs());
-    KGuiItem::assign(user1Button, KGuiItem(i18n("Copy"));
-    KGuiItem::assign(user2Button, KGuiItem(i18n("Send To..."));
+    KGuiItem::assign(user1Button, KGuiItem(i18n("Copy")));
+    KGuiItem::assign(user2Button, KGuiItem(i18n("Send To...")));
     buttonBox->button(QDialogButtonBox::Apply)->setDefault(true);
     grabber = new QWidget( 0,  Qt::X11BypassWindowManagerHint );
 
@@ -151,10 +151,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
 
     KStartupInfo::appStarted();
 
-    KVBox *vbox = new KVBox( this );
-    vbox->setSpacing( spacingHint() );
-
-    m_snapshotWidget = new KSnapshotWidget( vbox );
+    m_snapshotWidget = new KSnapshotWidget(this);
 
     connect(m_snapshotWidget->lblImage, SIGNAL(startDrag()), SLOT(slotDragSnapshot()));
     connect(m_snapshotWidget->btnNew, SIGNAL(clicked()), SLOT(slotGrab()));
@@ -171,9 +168,11 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     connect(openMenu, SIGNAL(aboutToShow()), this, SLOT(slotPopulateOpenMenu()));
     connect(openMenu, SIGNAL(triggered(QAction*)), this, SLOT(slotOpen(QAction*)));
 
-    m_snapshotWidget->spinDelay->setSuffix(ki18np(" second", " seconds"));
+    connect(m_snapshotWidget->spinDelay, SIGNAL("valueChanged(int)"),
+            this, SIGNAL("setDelaySpinboxSuffix(int)"));
+    setDelaySpinboxSuffix(m_snapshotWidget->spinDelay->value());
 
-    mainLayout->addWidget(vbox);
+    mainLayout->addWidget(m_snapshotWidget);
     mainLayout->addWidget(buttonBox);
 
     grabber->show();
@@ -313,16 +312,17 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
                    Qt::CTRL+Qt::Key_A, this, SLOT(slotSaveAs()));
 #endif
 
-    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Quit ).primary(), this, SLOT(reject()));
+    //FIXME: can we *guarantee* that KStandardShortcut wil always return a list with values? Check it before using first()
+    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Quit ).first(), this, SLOT(reject()));
 
     new QShortcut( Qt::Key_Q, this, SLOT(slotSave()));
 
-    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Copy ).primary(), user1Button, SLOT(animateClick()));
+    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Copy ).first(), user1Button, SLOT(animateClick()));
 
-    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Save ).primary(), button(Apply), SLOT(animateClick()));
+    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Save ).first(), button(Apply), SLOT(animateClick()));
     new QShortcut( Qt::Key_S, button(Apply), SLOT(animateClick()));
 
-    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::New ).primary(), m_snapshotWidget->btnNew, SLOT(animateClick()) );
+    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::New ).first(), m_snapshotWidget->btnNew, SLOT(animateClick()) );
     new QShortcut( Qt::Key_N, m_snapshotWidget->btnNew, SLOT(animateClick()) );
     new QShortcut( Qt::Key_Space, m_snapshotWidget->btnNew, SLOT(animateClick()) );
 
@@ -336,6 +336,11 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
 KSnapshot::~KSnapshot()
 {
     delete m_snapshotWidget;
+}
+
+void KSnapshot::setDelaySpinboxSuffix(int value)
+{
+    m_snapshotWidget->spinDelay->setSuffix(i18np(" second", " seconds", value);
 }
 
 void KSnapshot::resizeEvent( QResizeEvent * )
@@ -371,7 +376,7 @@ void KSnapshot::slotSaveAs()
     forever {
         // we only need to test for existence; details about the file are uninteresting, so 0 for third param
         KIO::StatJob *job = KIO::stat(filename, KIO::StatJob::DestinationSide, 0);
-        KJobWidgets::setWindow(job, widget);
+        KJobWidgets::setWindow(job, this);
         job->exec();
         if (job->error()) {
             break;

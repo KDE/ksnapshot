@@ -25,7 +25,8 @@ find_package(KF5 REQUIRED
        Config ConfigWidgets
        CoreAddons DocTools GuiAddons I18n
        KDELibs4Support KIO
-       Service WindowSystem
+       Service WindowSystem Notifications
+       XmlGui
 )
 
 add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
@@ -97,7 +98,9 @@ target_link_libraries(ksnapshot
    KF5::ConfigGui
    KF5::I18n
    KF5::KIOWidgets
+   KF5::Notifications
    KF5::WindowSystem
+   KF5::XmlGui
    ${X11_LIBRARIES})
 
 if (X11_Xfixes_FOUND)

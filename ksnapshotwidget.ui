@@ -50,7 +50,7 @@ You can also copy the image to the clipboard by pressing Ctrl+C.</string>
       </spacer>
      </item>
      <item>
-      <widget class="KPushButton" name="btnNew">
+      <widget class="QPushButton" name="btnNew">
        <property name="whatsThis">
         <string>Click this button to take a new snapshot.</string>
        </property>
@@ -161,7 +161,7 @@ You can also copy the image to the clipboard by pressing Ctrl+C.</string>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="KIntSpinBox" name="spinDelay">
+      <widget class="QSpinBox" name="spinDelay">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -241,16 +241,6 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KIntSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>knuminput.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KPushButton</class>
-   <extends>QPushButton</extends>
-   <header>kpushbutton.h</header>
-  </customwidget>
-  <customwidget>
    <class>KSnapshotPreview</class>
    <extends>QWidget</extends>
    <header>ksnapshotpreview.h</header>
@@ -262,9 +252,6 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
   <tabstop>spinDelay</tabstop>
   <tabstop>cbIncludeDecorations</tabstop>
  </tabstops>
- <includes>
-  <include location="local">kpushbutton.h</include>
- </includes>
  <resources/>
  <connections/>
 </ui>

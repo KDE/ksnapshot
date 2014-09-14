@@ -157,7 +157,7 @@ bool KSnapshotObject::saveEqual( const QUrl &url,QWidget *widget )
             if (saveImage(&tmpFile, type.toLatin1())) {
                 // TODO: non-blocking
                 // we only need to test for existence; details about the file are uninteresting, so 0 for third param
-                KIO::StatJob *job = KIO::fileCopy(tmpFile.fileName(), url);
+                KIO::FileCopyJob *job = KIO::file_copy(tmpFile.fileName(), url);
                 KJobWidgets::setWindow(job, widget);
                 job->exec();
                 ok = !job->error();

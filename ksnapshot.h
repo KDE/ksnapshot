@@ -29,7 +29,6 @@
 #include <QTimer>
 #include <QPixmap>
 
-#include <kglobalsettings.h>
 #include <QDialog>
 #include <kservice.h>
 #include <QUrl>
@@ -121,6 +120,7 @@ private slots:
     int previewHeight() const;
     void startUndelayedGrab();
     void slotScreenshotReceived(qulonglong handle);
+    void setDelaySpinboxSuffix(int value);
 
 public:
     int grabMode() const;
