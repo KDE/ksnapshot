@@ -44,7 +44,7 @@ void KSnapshotInfoShared::clearAttributes()
 
 QMap< QString, QVariant > KSnapshotInfoShared::attributes()
 {
-	return QMap<QString,QVariant>();
+    return QMap<QString,QVariant>();
 }
 
 void KSnapshotInfoShared::setDescription(const QString& )

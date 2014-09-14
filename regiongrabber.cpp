@@ -355,7 +355,7 @@ void RegionGrabber::grabRect()
     QRect r = selection;
     if ( !r.isNull() && r.isValid() )
     {
-	grabbing = true;
+    grabbing = true;
         emit regionUpdated( r );
         emit regionGrabbed( pixmap.copy(r) );
     }

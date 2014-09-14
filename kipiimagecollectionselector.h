@@ -31,15 +31,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Cambridge, MA 02110-1301, USA
 
 struct KIPIImageCollectionSelectorPrivate;
 class KIPIImageCollectionSelector : public KIPI::ImageCollectionSelector {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	KIPIImageCollectionSelector(KIPIInterface*, QWidget* parent);
-	~KIPIImageCollectionSelector();
+    KIPIImageCollectionSelector(KIPIInterface*, QWidget* parent);
+    ~KIPIImageCollectionSelector();
 
-	virtual QList<KIPI::ImageCollection> selectedImageCollections() const;
+    virtual QList<KIPI::ImageCollection> selectedImageCollections() const;
 
 private:
-	KIPIImageCollectionSelectorPrivate* const d;
+    KIPIImageCollectionSelectorPrivate* const d;
 };
 
 #endif /* KIPIIMAGECOLLECTIONSELECTOR_H */

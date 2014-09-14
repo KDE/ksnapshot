@@ -126,7 +126,7 @@ bool maybeAddWindow(HWND hwnd, std::vector<QRect> *windows) {
     {
         //QRect r( rect.left + 4, rect.top + 4, width, height); // 4 = max(wi.cxWindowBorders) = max(wi.cyWindowBorders)
         QRect r(rect.left + cxWindowBorder, rect.top + cyWindowBorder, width, height);
-		if ( std::find( windows->begin(), windows->end(), r ) == windows->end() ) {
+        if ( std::find( windows->begin(), windows->end(), r ) == windows->end() ) {
             windows->push_back( r );
             return true;
                 }

@@ -284,7 +284,7 @@ void FreeRegionGrabber::grabRect()
     QPolygon pol = selection;
     if ( !pol.isEmpty() )
     {
-	grabbing = true;
+    grabbing = true;
 
         int xOffset = pixmap.rect().x() - pol.boundingRect().x();
         int yOffset = pixmap.rect().y() - pol.boundingRect().y();

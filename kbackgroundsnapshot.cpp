@@ -37,46 +37,36 @@
 #include <QStandardPaths>
 
 KBackgroundSnapshot::KBackgroundSnapshot(KSnapshotObject::CaptureMode mode)
-	:KSnapshotObject()
+    :KSnapshotObject()
 {
-    modeCapture=mode;
-    grabber = new QWidget( 0,  Qt::X11BypassWindowManagerHint );
-    grabber->move( -1000, -1000 );
-    grabber->installEventFilter( this );
+    modeCapture = mode;
+    grabber = new QWidget(0, Qt::X11BypassWindowManagerHint);
+    grabber->move(-1000, -1000);
+    grabber->installEventFilter(this);
     grabber->show();
-    grabber->grabMouse( Qt::WaitCursor );
+    grabber->grabMouse(Qt::WaitCursor);
 
-    if ( mode == KSnapshotObject::FullScreen )
-    {
+    if (mode == KSnapshotObject::FullScreen) {
         snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
         savePictureOnDesktop();
-    }
-    else {
-	switch(mode)
-	{
+    } else {
+        switch(mode) {
             case KSnapshotObject::WindowUnderCursor:
-	   {
-		performGrab();
-		break;
-	   }
-	   case  KSnapshotObject::ChildWindow:
-	   {
+                performGrab();
+                break;
+            case  KSnapshotObject::ChildWindow:
                 slotGrab();
-		break;
-	   }
-	   case KSnapshotObject::Region:
-	   {
-	        grabRegion();
-	        break;
-	   }
-	   default:
-	        break;
-	  }
+                break;
+            case KSnapshotObject::Region:
+                grabRegion();
+                break;
+            default:
+                break;
+        }
     }
 
     //When we use argument to take snapshot we mustn't hide it.
-    if(mode !=  KSnapshotObject::ChildWindow)
-    {
+    if (mode != KSnapshotObject::ChildWindow) {
        grabber->releaseMouse();
        grabber->hide();
     }
@@ -92,7 +82,7 @@ void KBackgroundSnapshot::savePictureOnDesktop()
 {
     filename = QUrl( QStandardPaths::writableLocation(QStandardPaths::DesktopLocation)+'/'+i18n("snapshot")+"1.png" );
     // Make sure the name is not already being used
-    while(KIO::NetAccess::exists( filename, KIO::NetAccess::DestinationSide, 0L )) {
+    while (KIO::NetAccess::exists( filename, KIO::NetAccess::DestinationSide, 0L )) {
         autoincFilename();
     }
     save( filename, 0L);
