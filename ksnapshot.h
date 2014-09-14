@@ -72,7 +72,6 @@ public:
     explicit KSnapshot(QWidget *parent = 0, KSnapshotObject::CaptureMode mode = FullScreen);
     ~KSnapshot();
 
-
     QString url() const;
 
 public slots:
@@ -100,7 +99,7 @@ private slots:
     void delayedInit();
     void slotOpen(QAction *);
     void slotPopulateOpenMenu();
-    void m_grabTimerDone();
+    void grabTimerDone();
     void slotDragSnapshot();
     void updatePreview();
     void slotRegionGrabbed(const QPixmap &);

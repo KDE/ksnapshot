@@ -296,7 +296,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode)
     m_filename = QUrl(conf.readPathEntry("m_filename", QDir::currentPath() + '/' + i18n("snapshot") + "1.png"));
 
     connect(&m_grabTimer, &SnapshotTimer::timeout,
-            this, &KSnapshot::m_grabTimerDone);
+            this, &KSnapshot::grabTimerDone);
     connect(&m_updateTimer, &QTimer::timeout,
             this, &KSnapshot::updatePreview);
 
@@ -731,7 +731,7 @@ void KSnapshot::grabFreeRegion()
             this, &KSnapshot::slotFreeRegionUpdated);
 }
 
-void KSnapshot::m_grabTimerDone()
+void KSnapshot::grabTimerDone()
 {
     if (mode() == Region) {
         grabRegion();
