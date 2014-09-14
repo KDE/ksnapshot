@@ -332,6 +332,11 @@ KSnapshot::~KSnapshot()
     delete m_snapshotWidget;
 }
 
+QString KSnapshot::url() const
+{
+    return m_filename.url();
+}
+
 void KSnapshot::delayedInit()
 {
     // calling restoreWindowSize in the ctor doesn't work
@@ -625,6 +630,11 @@ void KSnapshot::slotScreenshotReceived(qulonglong handle)
 #else
     Q_UNUSED(handle)
 #endif
+}
+
+void KSnapshot::reject()
+{
+    close();
 }
 
 void KSnapshot::closeEvent(QCloseEvent *e)

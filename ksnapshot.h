@@ -73,10 +73,7 @@ public:
     ~KSnapshot();
 
 
-    QString url() const
-    {
-        return m_filename.url();
-    }
+    QString url() const;
 
 public slots:
     void slotGrab();
@@ -91,10 +88,7 @@ public slots:
     void exit();
 
 protected:
-    void reject()
-    {
-        close();
-    }
+    void reject();
     virtual void closeEvent(QCloseEvent *e);
     void resizeEvent(QResizeEvent *);
     bool eventFilter(QObject *, QEvent *);
