@@ -57,7 +57,6 @@
 #include <KConfigGroup>
 #include <KGuiItem>
 #include <KLocalizedString>
-#include <KNotification>
 #include <KJobWidgets>
 #include <KIO/StatJob>
 #include <KSharedConfig>
@@ -716,7 +715,6 @@ void KSnapshot::grabTimerDone()
     else {
         performGrab();
     }
-    KNotification::beep(i18n("The screen has been successfully grabbed."));
 }
 
 void KSnapshot::performGrab()
