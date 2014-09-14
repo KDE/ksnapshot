@@ -334,8 +334,11 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     m_snapshotWidget->btnNew->setFocus();
     resize(QSize(250, 500));
 
+    /**
+    FIXME: find the new idiom for this in frameworks 5
     KConfigGroup cg(KSharedConfig::openConfig(), "MainWindow");
     restoreDialogSize(cg);
+    **/
 }
 
 KSnapshot::~KSnapshot()
@@ -664,8 +667,11 @@ void KSnapshot::closeEvent( QCloseEvent * e )
     conf.writeEntry("includeDecorations", includeDecorations());
     conf.writeEntry("includePointer", includePointer());
 
+    /*
+    FIXME: find the new idiom for this in frameworks 5
     KConfigGroup cg(KSharedConfig::openConfig(), "MainWindow");
     saveDialogSize(cg);
+    */
 
     QUrl url = filename;
     url.setPassword(QString::null); //krazy:exclude=nullstrassign for old broken gcc
