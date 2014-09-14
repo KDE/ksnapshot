@@ -93,6 +93,8 @@ add_executable(ksnapshot ${ksnapshot_SRCS})
 
 target_link_libraries(ksnapshot
    Qt5::X11Extras
+   KF5::CoreAddons
+   KF5::ConfigGui
    KF5::I18n
    KF5::KIOWidgets
    KF5::WindowSystem
