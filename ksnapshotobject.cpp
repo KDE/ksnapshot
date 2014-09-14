@@ -88,15 +88,16 @@ void KSnapshotObject::autoincFilename()
     }
 
     //Rebuild the path
-    KUrl newUrl = filename;
-    newUrl.setFileName( name );
+    QUrl newUrl = filename;
+    newUrl = newUrl.adjusted(QUrl::RemoveFilename);
+    newUrl.setPath(newUrl.path() +  name );
     changeUrl( newUrl.url() );
 }
 
 
 void KSnapshotObject::changeUrl( const QString &url )
 {
-    KUrl newURL = KUrl( url );
+    QUrl newURL = QUrl( url );
     if ( newURL == filename )
         return;
 
@@ -108,10 +109,10 @@ void KSnapshotObject::changeUrl( const QString &url )
 // NOTE: widget == NULL if called from dbus interface
 bool KSnapshotObject::save( const QString &filename, QWidget* widget )
 {
-    return save( KUrl( filename ), widget);
+    return save( QUrl( filename ), widget);
 }
 
-bool KSnapshotObject::save( const KUrl& url, QWidget *widget )
+bool KSnapshotObject::save( const QUrl &url, QWidget *widget )
 {
     if ( KIO::NetAccess::exists( url, KIO::NetAccess::DestinationSide, widget ) ) {
         // NOTE: widget == NULL if called from dbus interface
@@ -125,7 +126,7 @@ bool KSnapshotObject::save( const KUrl& url, QWidget *widget )
     return saveEqual( url,widget );
 }
 
-bool KSnapshotObject::saveEqual( const KUrl& url,QWidget *widget )
+bool KSnapshotObject::saveEqual( const QUrl &url,QWidget *widget )
 {
     QByteArray type = "PNG";
     QString mime = KMimeType::findByUrl( url.fileName(), 0, url.isLocalFile(), true )->name();
@@ -154,7 +155,7 @@ bool KSnapshotObject::saveEqual( const KUrl& url,QWidget *widget )
         kWarning() << "KSnapshot was unable to save the snapshot" ;
 
         const QString caption = i18n("Unable to Save Image");
-        const QString text = i18n("KSnapshot was unable to save the image to\n%1.", url.prettyUrl());
+        const QString text = i18n("KSnapshot was unable to save the image to\n%1.", url.toDisplayString());
         KMessageBox::error(widget, text, caption);
     }
 

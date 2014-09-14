@@ -22,7 +22,7 @@
 
 #include "ksnapshotinfoshared.h"
 
-KSnapshotInfoShared::KSnapshotInfoShared(KIPIInterface* interface, const KUrl& url) : KIPI::ImageInfoShared(interface,url)
+KSnapshotInfoShared::KSnapshotInfoShared(KIPIInterface* interface, const QUrl &url) : KIPI::ImageInfoShared(interface,url)
 {
 
 }

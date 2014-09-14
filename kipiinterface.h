@@ -39,9 +39,9 @@ public:
         KIPIInterface(KSnapshot* ksnapshot);
 	virtual ~KIPIInterface();
 
-	virtual bool addImage(const KUrl&, QString& err);
-	virtual void delImage( const KUrl& );
-	virtual void refreshImages( const KUrl::List& urls );
+	virtual bool addImage(const QUrl&, QString& err);
+	virtual void delImage( const QUrl& );
+	virtual void refreshImages( const QList<QUrl>& urls );
 
 	virtual KIPI::ImageCollectionSelector* imageCollectionSelector(QWidget *parent);
 	virtual KIPI::UploadWidget* uploadWidget(QWidget *parent);
@@ -50,7 +50,7 @@ public:
 	virtual KIPI::ImageCollection currentAlbum();
 	virtual KIPI::ImageCollection currentSelection();
 	virtual int features() const;
-        virtual KIPI::ImageInfo info(const KUrl& );
+        virtual KIPI::ImageInfo info(const QUrl& );
 
 private:
 	KIPIInterfacePrivate* const d;

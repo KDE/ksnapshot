@@ -64,19 +64,19 @@ QList<KIPI::ImageCollection> KIPIInterface::allAlbums() {
     return list;
 }
 
-KIPI::ImageInfo KIPIInterface::info(const KUrl& url) {
+KIPI::ImageInfo KIPIInterface::info(const QUrl &url) {
     return KIPI::ImageInfo(new KSnapshotInfoShared(this,url));
 }
 
-bool KIPIInterface::addImage(const KUrl&, QString&)
+bool KIPIInterface::addImage(const QUrl&, QString&)
 {
     return true;
 }
-void KIPIInterface::delImage( const KUrl& )
+void KIPIInterface::delImage( const QUrl& )
 {
 
 }
-void KIPIInterface::refreshImages( const KUrl::List& )
+void KIPIInterface::refreshImages( const QList<QUrl>& )
 {
 // TODO Implement?
 }

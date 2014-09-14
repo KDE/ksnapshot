@@ -21,7 +21,7 @@
 */
 
 #include "ksnapshotimagecollectionshared.h"
-#include <KUrl>
+#include <QUrl>
 #include <QtGlobal>
 #include <QDebug>
 #include "ksnapshot.h"
@@ -31,7 +31,7 @@ struct KSnapshotImageCollectionShared::Private
         KSnapshot* ksnapshot;
 };
 
-KSnapshotImageCollectionShared::KSnapshotImageCollectionShared(KSnapshot* ksnapshot): d(new Private), mImages(KUrl::List())
+KSnapshotImageCollectionShared::KSnapshotImageCollectionShared(KSnapshot* ksnapshot): d(new Private), mImages(QList<QUrl>())
 {
         d->ksnapshot = ksnapshot;
 }
@@ -41,14 +41,14 @@ KSnapshotImageCollectionShared::~KSnapshotImageCollectionShared()
     delete d;
 }
 
-KUrl::List KSnapshotImageCollectionShared::images()
+QList<QUrl> KSnapshotImageCollectionShared::images()
 {
     // TODO (pgquiles) Clean up this mess. I'm not even sure all this is required!
     bool isTempfile = false;
-    KUrl url = d->ksnapshot->urlToOpen(&isTempfile);
+    QUrl url = d->ksnapshot->urlToOpen(&isTempfile);
     if (!url.isValid())
     {
-        return KUrl::List();
+        return QList<QUrl>();
     }
-    return KUrl::List(KUrl(url));
+    return QList<QUrl>(QUrl(url));
 }

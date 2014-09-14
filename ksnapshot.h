@@ -32,7 +32,7 @@
 #include <kglobalsettings.h>
 #include <kdialog.h>
 #include <kservice.h>
-#include <kurl.h>
+#include <QUrl>
 #include "ksnapshotobject.h"
 #include "snapshottimer.h"
 
@@ -127,7 +127,7 @@ public:
     int timeout() const;
 
 private:
-    KUrl urlToOpen(bool *isTempfile = 0);
+    QUrl urlToOpen(bool *isTempfile = 0);
     void performGrab();
     void grabPointerImage(int offsetx, int offsety);
     void grabRegion();
@@ -146,7 +146,7 @@ private:
 
 #ifdef KIPI_FOUND
     KIPI::PluginLoader* mPluginLoader;
-    friend KUrl::List KSnapshotImageCollectionShared::images();
+    friend QList<QUrl> KSnapshotImageCollectionShared::images();
 #endif
 };
 

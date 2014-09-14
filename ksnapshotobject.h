@@ -26,7 +26,7 @@
 #ifndef KSNAPSHOTOBJECT_H
 #define KSNAPSHOTOBJECT_H
 
-#include <KUrl>
+#include <QUrl>
 #include <QPixmap>
 class QWidget;
 class RegionGrabber;
@@ -41,8 +41,8 @@ public:
      virtual ~KSnapshotObject();
 
      bool save( const QString &filename, QWidget* widget = 0);
-     bool save( const KUrl& url, QWidget *widget );
-     bool saveEqual( const KUrl& url,QWidget *widget );
+     bool save( const QUrl &url, QWidget *widget );
+     bool saveEqual( const QUrl &url,QWidget *widget );
      bool saveImage( QIODevice *device, const QByteArray &format );
 
 protected:
@@ -51,7 +51,7 @@ protected:
 
      void changeUrl(const QString &newUrl);
 
-     KUrl filename;
+     QUrl filename;
      RegionGrabber *rgnGrab;
      FreeRegionGrabber *freeRgnGrab;
      QWidget* grabber;

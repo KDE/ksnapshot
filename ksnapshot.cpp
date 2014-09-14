@@ -280,7 +280,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
 
     setDelay( conf.readEntry("delay", 0) );
     setIncludeDecorations(conf.readEntry("includeDecorations",true));
-    filename = KUrl( conf.readPathEntry( "filename", QDir::currentPath()+'/'+i18n("snapshot")+"1.png" ));
+    filename = QUrl( conf.readPathEntry( "filename", QDir::currentPath()+'/'+i18n("snapshot")+"1.png" ));
 
     connect( &grabTimer, SIGNAL(timeout()), this, SLOT(grabTimerDone()) );
     connect( &updateTimer, SIGNAL(timeout()), this, SLOT(updatePreview()) );
@@ -362,7 +362,7 @@ void KSnapshot::slotSaveAs()
         return;
     }
 
-    KUrl url = dlg->selectedUrl();
+    QUrl url = dlg->selectedUrl();
     if ( !url.isValid() ){
 	delete dlg;
         return;
@@ -426,7 +426,7 @@ void KSnapshot::startUndelayedGrab()
     }
 }
 
-KUrl KSnapshot::urlToOpen(bool *isTempfile)
+QUrl KSnapshot::urlToOpen(bool *isTempfile)
 {
     if (isTempfile) {
         *isTempfile = false;
@@ -448,18 +448,18 @@ KUrl KSnapshot::urlToOpen(bool *isTempfile)
         return fileopen;
     }
 
-    return KUrl();
+    return QUrl();
 }
 
 void KSnapshot::slotOpen(const QString& application)
 {
-    KUrl url = urlToOpen();
+    QUrl url = urlToOpen();
     if (!url.isValid())
     {
         return;
     }
 
-    KUrl::List list;
+    QList<QUrl> list;
     list.append(url);
     KRun::run(application, list, this);
 }
@@ -475,13 +475,13 @@ void KSnapshot::slotOpen(QAction* action)
     }
 
     bool isTempfile = false;
-    KUrl url = urlToOpen(&isTempfile);
+    QUrl url = urlToOpen(&isTempfile);
     if (!url.isValid())
     {
         return;
     }
 
-    KUrl::List list;
+    QList<QUrl> list;
     list.append(url);
 
     KService::Ptr service = serviceAction->service;
@@ -644,8 +644,8 @@ void KSnapshot::closeEvent( QCloseEvent * e )
     KConfigGroup cg(KGlobal::config(), "MainWindow");
     saveDialogSize(cg);
 
-    KUrl url = filename;
-    url.setPass(QString::null); //krazy:exclude=nullstrassign for old broken gcc
+    QUrl url = filename;
+    url.setPassword(QString::null); //krazy:exclude=nullstrassign for old broken gcc
     conf.writePathEntry("filename", url.url());
 
     conf.sync();

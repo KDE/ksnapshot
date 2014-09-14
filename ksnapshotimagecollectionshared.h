@@ -34,16 +34,16 @@ public:
         ~KSnapshotImageCollectionShared();
         QString name() { return "KSnapshot"; }
         QString comment() { return QString(); }
-        KUrl::List images();
-        KUrl uploadRoot() { return KUrl("/"); }
-//        KUrl uploadPath() { return mDirURL; }
+        QList<QUrl> images();
+        QUrl uploadRoot() { return QUrl("/"); }
+//        QUrl uploadPath() { return mDirURL; }
         QString uploadRootName() { return "/"; }
         bool isDirectory() { return false; }
 
 private:
         struct Private;
         Private* d;
-        KUrl::List mImages;
+        QList<QUrl> mImages;
 };
 
 #endif
