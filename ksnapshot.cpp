@@ -656,7 +656,14 @@ void KSnapshot::slotWindowGrabbed( const QPixmap &pix )
 void KSnapshot::slotScreenshotReceived( qulonglong handle )
 {
 #if HAVE_X11
-    slotWindowGrabbed( QPixmap::fromX11Pixmap( handle ) );
+    //FIXME: there is no fromX11Pixmap anymore and nothing there to replace it
+    //       may have to write our own thing? want to look around a bit more
+    //       to see if anyone has beaten us to that. i mean, screen shotting
+    //       is *not* an uncommon task. Since this comes from kwin, perhaps
+    //       discuss with kwin developers.
+    //slotWindowGrabbed( QPixmap::fromX11Pixmap( handle ) );
+#else
+    Q_UNUSED(handle)
 #endif
 }
 
@@ -756,7 +763,7 @@ void KSnapshot::performGrab()
         qDebug() << "last window position is" << offset;
     }
     else if ( mode() == WindowUnderCursor ) {
-        if ( includeAlpha ) {
+        if ( false /* includeAlpha FIXME ... this is broken right now. see slotWindowGrabbed */) {
             // use kwin effect
             QDBusConnection::sessionBus().connect("org.kde.kwin", "/Screenshot",
                                                   "org.kde.kwin.Screenshot", "screenshotCreated",
