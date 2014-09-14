@@ -68,6 +68,7 @@ void KSnapshotObject::autoincFilenameUntilUnique(QWidget *window)
         KIO::StatJob *job = KIO::stat(filename, KIO::StatJob::DestinationSide, 0);
         KJobWidgets::setWindow(job, window);
         job->exec();
+
         if (job->error()) {
             break;
         } else {
@@ -129,7 +130,7 @@ void KSnapshotObject::changeUrl( const QString &url )
 // NOTE: widget == NULL if called from dbus interface
 bool KSnapshotObject::save( const QString &filename, QWidget* widget )
 {
-    return save( QUrl( filename ), widget );
+    return save(QUrl::fromUserInput(filename), widget);
 }
 
 bool KSnapshotObject::save( const QUrl &url, QWidget *widget )
@@ -150,7 +151,7 @@ bool KSnapshotObject::save( const QUrl &url, QWidget *widget )
         }
     }
 
-    const bool success = saveEqual( url,widget );
+    const bool success = saveTo( url,widget );
     if (success) {
         filename = url;
         autoincFilename();
@@ -160,38 +161,36 @@ bool KSnapshotObject::save( const QUrl &url, QWidget *widget )
     return success;
 }
 
-bool KSnapshotObject::saveEqual( const QUrl &url,QWidget *widget )
+bool KSnapshotObject::saveTo( const QUrl &url,QWidget *widget )
 {
     QMimeDatabase db;
-    QString type = db.mimeTypeForUrl(url.fileName()).name();
+    QString type = db.mimeTypeForName(url.fileName()).name();
     if (type.isEmpty()) {
         type = "PNG";
     }
 
     bool ok = false;
 
-    if ( url.isLocalFile() ) {
-        QFile output( url.toLocalFile() );
-        if ( output.open( QFile::WriteOnly ) )
+    if (url.isLocalFile()) {
+        QFile output(url.toLocalFile());
+        if (output.open(QFile::WriteOnly)) {
             ok = saveImage(&output, type.toLatin1());
-    }
-    else {
+        }
+    } else {
         QTemporaryFile tmpFile;
-        if ( tmpFile.open() ) {
-            if (saveImage(&tmpFile, type.toLatin1())) {
-                // TODO: non-blocking
-                // we only need to test for existence; details about the file are uninteresting, so 0 for third param
-                KIO::FileCopyJob *job = KIO::file_copy(tmpFile.fileName(), url);
-                KJobWidgets::setWindow(job, widget);
-                job->exec();
-                ok = !job->error();
-            }
+        if (tmpFile.open() && saveImage(&tmpFile, type.toLatin1())) {
+            // TODO: non-blocking
+            // we only need to test for existence; details about the file are uninteresting, so 0 for third param
+            KIO::FileCopyJob *job = KIO::file_copy(tmpFile.fileName(), url);
+            KJobWidgets::setWindow(job, widget);
+            job->exec();
+            ok = !job->error();
         }
     }
 
     QApplication::restoreOverrideCursor();
     if ( !ok ) {
-        qWarning() << "KSnapshot was unable to save the snapshot" ;
+        qWarning() << "KSnapshot was unable to save the snapshot to" << url.toDisplayString();
 
         const QString caption = i18n("Unable to Save Image");
         const QString text = i18n("KSnapshot was unable to save the image to\n%1.", url.toDisplayString());
@@ -206,7 +205,7 @@ bool KSnapshotObject::saveImage( QIODevice *device, const QByteArray &format )
     QImageWriter imgWriter( device, format );
 
     if ( !imgWriter.canWrite() ) {
-	//qDebug() << "Cannot write format " << format;
+	qDebug() << "Cannot write format " << format;
 	return false;
     }
 

@@ -42,7 +42,7 @@ public:
 
      bool save( const QString &filename, QWidget* widget = 0);
      bool save( const QUrl &url, QWidget *widget );
-     bool saveEqual( const QUrl &url,QWidget *widget );
+     bool saveTo( const QUrl &url,QWidget *widget );
      bool saveImage( QIODevice *device, const QByteArray &format );
 
 protected Q_SLOTS:

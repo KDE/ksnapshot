@@ -44,6 +44,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QSpinBox>
+#include <QTemporaryFile>
 #include <QtCore/QXmlStreamReader>
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusConnectionInterface>
@@ -443,14 +444,19 @@ QUrl KSnapshot::urlToOpen(bool *isTempfile)
         return filename;
     }
 
-    const QString fileopen = QDir::tempPath() + QLatin1Char('/') + filename.fileName();
+    //TODO: better management of the temp files,
+    //      e.g. guaranteed removal when complete in all cases
+    QTemporaryFile tmpFile("snapshot_XXXXXX.png");
+    tmpFile.setAutoRemove(false);
+    tmpFile.open();
+    const QUrl path = QUrl::fromLocalFile(tmpFile.fileName());
 
-    if (saveEqual(fileopen, this)) {
+    if (saveTo(path, this)) {
         if (isTempfile) {
             *isTempfile = true;
         }
 
-        return fileopen;
+        return path;
     }
 
     return QUrl();
