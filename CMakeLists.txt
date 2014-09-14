@@ -1,24 +1,44 @@
 project(ksnapshot)
 
-find_package(KDE4 REQUIRED)
+cmake_minimum_required (VERSION 2.8.12 FATAL_ERROR)
+set (QT_MIN_VERSION "5.2.0")
 
-include(KDE4Defaults)
-include(MacroLibrary)
+#macro_optional_find_package(Kipi)
 
-macro_optional_find_package(Kipi)
+find_package(ECM 1.1.0 REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
-add_definitions (${QT_DEFINITIONS} ${QT_QTDBUS_DEFINITIONS} ${KDE4_DEFINITIONS})
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDECompilerSettings)
+include(ECMOptionalAddSubdirectory)
+include(ECMInstallIcons)
+include(ECMSetupVersion)
+include(ECMMarkNonGuiExecutable)
+include(ECMGenerateHeaders)
+include(GenerateExportHeader)
+include(FeatureSummary)
+
+find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Core DBus Widgets)
+
+find_package(KF5 REQUIRED
+       Config ConfigWidgets
+       CoreAddons DocTools GuiAddons I18n
+       KDELibs4Support KIO
+       Service WindowSystem
+)
+
 add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
-include_directories (${QDBUS_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES})
 
+find_package(X11)
 set(HAVE_X11_EXTENSIONS_SHAPE_H ${X11_Xshape_FOUND})
 set(HAVE_X11_EXTENSIONS_XFIXES_H ${X11_Xfixes_FOUND})
-macro_log_feature(HAVE_X11_EXTENSIONS_XFIXES_H "X11 Fixes Extension (xfixes.h)" "Support for capturing the cursor" "http://www.x.org/" FALSE "" "")
+#feature_summary(WHAT ENABLED_FEATURES DESCRIPTION "X11 Fixes Extension (xfixes.h)" "Support for capturing the cursor" "http://www.x.org/" VAR HAVE_X11_EXTENSIONS_XFIXES_H)
 
 if (KIPI_FOUND)
         include_directories(${KIPI_INCLUDE_DIR})
 endif (KIPI_FOUND)
-macro_log_feature(KIPI_FOUND "KIPI plugins" "Provides various image export features, such as printing, emailing and uploading" "http://www.kipi-plugins.org/" FALSE "" "")
+#macro_log_feature(KIPI_FOUND "KIPI plugins" "Provides various image export features, such as printing, emailing and uploading" "http://www.kipi-plugins.org/" FALSE "" "")
 
 configure_file(config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnapshot.h)
 
@@ -28,12 +48,12 @@ add_subdirectory( doc )
 
 set(ksnapshot_file_SRCS
    expblur.cpp
-	regiongrabber.cpp
-        freeregiongrabber.cpp
-	snapshottimer.cpp
-	windowgrabber.cpp
-	ksnapshotobject.cpp
-	ksnapshotpreview.cpp)
+   regiongrabber.cpp
+   freeregiongrabber.cpp
+   snapshottimer.cpp
+   windowgrabber.cpp
+   ksnapshotobject.cpp
+   ksnapshotpreview.cpp)
 
 set(ksnapshot_SRCS
    main.cpp
@@ -49,16 +69,24 @@ set(ksnapshot_SRCS
     ${ksnapshot_SRCS})
 endif (KIPI_FOUND)
 
-qt4_add_dbus_adaptor(ksnapshot_SRCS org.kde.ksnapshot.xml ksnapshot.h KSnapshot)
+qt5_add_dbus_adaptor(ksnapshot_SRCS org.kde.ksnapshot.xml ksnapshot.h KSnapshot)
 
+ki18n_wrap_ui(ksnapshot_SRCS ksnapshotwidget.ui)
 
-kde4_add_ui_files(ksnapshot_SRCS ksnapshotwidget.ui)
+ecm_install_icons(ICONS 
+   16-apps-ksnapshot.png
+   22-apps-ksnapshot.png
+   32-apps-ksnapshot.png
+   48-apps-ksnapshot.png
+   DESTINATION ${ICON_INSTALL_DIR} THEME hicolor)
 
-kde4_add_app_icon(ksnapshot_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/hi*-app-ksnapshot.png")
+add_executable(ksnapshot ${ksnapshot_SRCS})
 
-kde4_add_executable(ksnapshot ${ksnapshot_SRCS})
-
-target_link_libraries(ksnapshot ${KDE4_KIO_LIBS} ${X11_LIBRARIES})
+target_link_libraries(ksnapshot
+   KF5::I18n
+   KF5::KIOWidgets
+   KF5::WindowSystem
+   ${X11_LIBRARIES})
 
 if (X11_Xfixes_FOUND)
     target_link_libraries(ksnapshot ${X11_Xfixes_LIB})
@@ -78,18 +106,16 @@ set(kbackgroundsnapshot_SRCS
    ${ksnapshot_file_SRCS})
 
 
-kde4_add_executable(kbackgroundsnapshot ${kbackgroundsnapshot_SRCS})
+add_executable(kbackgroundsnapshot ${kbackgroundsnapshot_SRCS})
 
-target_link_libraries(kbackgroundsnapshot ${KDE4_KIO_LIBS} ${X11_LIBRARIES})
+target_link_libraries(kbackgroundsnapshot KF5::KIOWidgets ${X11_LIBRARIES})
 
 install(TARGETS kbackgroundsnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 ########### install files ###############
 
 
-
 install(PROGRAMS ksnapshot.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
 install(FILES org.kde.ksnapshot.xml DESTINATION ${DBUS_INTERFACES_INSTALL_DIR} )
-kde4_install_icons(${ICON_INSTALL_DIR} )
 
-macro_display_feature_log()
+feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
