@@ -35,6 +35,7 @@
 
 #include <klocale.h>
 #include <QTemporaryFile>
+#include <KJobWidgets>
 #include <KIO/FileCopyJob>
 #include <KIO/StatJob>
 #include <QDebug>
@@ -124,7 +125,7 @@ bool KSnapshotObject::save( const QUrl &url, QWidget *widget )
     job->exec();
     if (!job->error()) {
         const QString title = i18n( "File Exists" );
-        const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" , url.pathOrUrl());
+        const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" , url.url(QUrl::PreferLocalFile));
         if (KMessageBox::Continue != KMessageBox::warningContinueCancel( widget, text, title, KGuiItem(i18n("Overwrite")) ) )
         {
             return false;
@@ -135,24 +136,23 @@ bool KSnapshotObject::save( const QUrl &url, QWidget *widget )
 
 bool KSnapshotObject::saveEqual( const QUrl &url,QWidget *widget )
 {
-    QByteArray type = "PNG";
     QMimeDatabase db;
-    QString mime = db.mimeTypeForUrl( url.fileName(), 0, url.isLocalFile(), true ).name();
-    const QStringList types = QMimeType::name(mime);
-    if ( !types.isEmpty() )
-        type = types.first().toLatin1();
+    QString type = db.mimeTypeForUrl(url.fileName()).name();
+    if (type.isEmpty()) {
+        type = "PNG";
+    }
 
     bool ok = false;
 
     if ( url.isLocalFile() ) {
         QFile output( url.toLocalFile() );
         if ( output.open( QFile::WriteOnly ) )
-            ok = saveImage( &output, type );
+            ok = saveImage(&output, type.toLatin1());
     }
     else {
         QTemporaryFile tmpFile;
         if ( tmpFile.open() ) {
-            if ( saveImage( &tmpFile, type ) ) {
+            if (saveImage(&tmpFile, type.toLatin1())) {
                 // TODO: non-blocking
                 // we only need to test for existence; details about the file are uninteresting, so 0 for third param
                 KIO::StatJob *job = KIO::fileCopy(tmpFile.fileName(), url);
