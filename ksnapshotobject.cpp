@@ -33,7 +33,6 @@
 //kde include
 #include <KMessageBox>
 
-#include <KImageIO>
 #include <klocale.h>
 #include <KTemporaryFile>
 #include <kio/netaccess.h>
@@ -133,7 +132,7 @@ bool KSnapshotObject::saveEqual( const QUrl &url,QWidget *widget )
     QByteArray type = "PNG";
     QMimeDatabase db;
     QString mime = db.mimeTypeForUrl( url.fileName(), 0, url.isLocalFile(), true ).name();
-    const QStringList types = KImageIO::typeForMime(mime);
+    const QStringList types = QMimeType::name(mime);
     if ( !types.isEmpty() )
         type = types.first().toLatin1();
 

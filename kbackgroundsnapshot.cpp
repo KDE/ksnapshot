@@ -34,6 +34,7 @@
 #include <QMouseEvent>
 #include <QPixmap>
 #include <QDesktopWidget>
+#include <QStandardPaths>
 
 KBackgroundSnapshot::KBackgroundSnapshot(KSnapshotObject::CaptureMode mode)
 	:KSnapshotObject()
@@ -89,7 +90,7 @@ KBackgroundSnapshot::~KBackgroundSnapshot()
 
 void KBackgroundSnapshot::savePictureOnDesktop()
 {
-    filename = QUrl( KGlobalSettings::desktopPath()+'/'+i18n("snapshot")+"1.png" );
+    filename = QUrl( QStandardPaths::writableLocation(QStandardPaths::DesktopLocation)+'/'+i18n("snapshot")+"1.png" );
     // Make sure the name is not already being used
     while(KIO::NetAccess::exists( filename, KIO::NetAccess::DestinationSide, 0L )) {
         autoincFilename();

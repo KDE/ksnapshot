@@ -25,7 +25,7 @@
 #include <QPixmap>
 
 #include <QDebug>
-#include <KGlobalSettings>
+#include <QApplication>
 
 #include "expblur.cpp"
 
@@ -84,7 +84,7 @@ void KSnapshotPreview::mousePressEvent(QMouseEvent * e)
 void KSnapshotPreview::mouseMoveEvent(QMouseEvent * e)
 {
     if (mClickPt != QPoint(0, 0) &&
-            (e->pos() - mClickPt).manhattanLength() > KGlobalSettings::dndEventDelay())
+            (e->pos() - mClickPt).manhattanLength() > QApplication::startDragDistance())
     {
         mClickPt = QPoint(0, 0);
         emit startDrag();

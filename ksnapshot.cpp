@@ -163,7 +163,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     grabber->show();
     grabber->grabMouse();
 
-    KConfigGroup conf(KGlobal::config(), "GENERAL");
+    KConfigGroup conf(KSharedConfig::openConfig(), "GENERAL");
 
 #ifdef KIPI_FOUND
 #if(KIPI_VERSION >= 0x020000)
@@ -313,7 +313,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     mainWidget->btnNew->setFocus();
     setInitialSize(QSize(250, 500));
 
-    KConfigGroup cg(KGlobal::config(), "MainWindow");
+    KConfigGroup cg(KSharedConfig::openConfig(), "MainWindow");
     restoreDialogSize(cg);
 }
 
@@ -635,13 +635,13 @@ void KSnapshot::slotScreenshotReceived( qulonglong handle )
 
 void KSnapshot::closeEvent( QCloseEvent * e )
 {
-    KConfigGroup conf(KGlobal::config(), "GENERAL");
+    KConfigGroup conf(KSharedConfig::openConfig(), "GENERAL");
     conf.writeEntry("delay", delay());
     conf.writeEntry("mode", mode());
     conf.writeEntry("includeDecorations", includeDecorations());
     conf.writeEntry("includePointer", includePointer());
 
-    KConfigGroup cg(KGlobal::config(), "MainWindow");
+    KConfigGroup cg(KSharedConfig::openConfig(), "MainWindow");
     saveDialogSize(cg);
 
     QUrl url = filename;
