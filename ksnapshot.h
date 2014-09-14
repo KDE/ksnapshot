@@ -137,6 +137,8 @@ private:
     QUrl urlToOpen(bool *isTempfile = 0);
     void performGrab();
     void grabPointerImage(int offsetx, int offsety);
+    void grabFullScreen();
+    void grabCurrentScreen();
     void grabRegion();
     void grabFreeRegion();
 

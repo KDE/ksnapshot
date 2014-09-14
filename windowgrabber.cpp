@@ -24,13 +24,16 @@
 #include <algorithm>
 
 #include <kwindowinfo.h>
-#include <QDebug>
 
+#include <QApplication>
 #include <QBitmap>
+#include <QDebug>
+#include <QDesktopWidget>
 #include <QPainter>
 #include <QPixmap>
 #include <QPoint>
 #include <QMouseEvent>
+#include <QScreen>
 #include <QWheelEvent>
 
 #include "config-ksnapshot.h"
@@ -259,7 +262,13 @@ static
 QPixmap grabWindow(Window child, int x, int y, uint w, uint h, uint border,
                    QString *title = 0, QString *windowClass = 0)
 {
-    QPixmap pm(QPixmap::grabWindow(QX11Info::appRootWindow(), x, y, w, h));
+    QPixmap pm;
+    const QList<QScreen *> screens = qApp->screens();
+    const QDesktopWidget *desktop = QApplication::desktop();
+    const int screenId = desktop->screenNumber(QPoint(x, y));
+    if (screenId < screens.count()) {
+        pm = screens[screenId]->grabWindow(QX11Info::appRootWindow(), x, y, w, h);
+    }
 
     KWindowInfo winInfo(findRealWindow(child), NET::WMVisibleName, NET::WM2WindowClass);
 

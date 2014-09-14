@@ -40,6 +40,7 @@ private slots:
 protected:
     void performGrab();
     void grabRegion();
+    void grabFullScreen();
     bool eventFilter(QObject *, QEvent *);
     void savePictureOnDesktop();
 

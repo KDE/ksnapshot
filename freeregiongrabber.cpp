@@ -19,14 +19,16 @@
 
 #include "freeregiongrabber.h"
 
-#include <QPainter>
-#include <QPaintEngine>
-#include <QMouseEvent>
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QToolTip>
+#include <QMouseEvent>
+#include <QPainter>
+#include <QPaintEngine>
+#include <QScreen>
 #include <QTimer>
-#include <klocale.h>
+#include <QToolTip>
+
+#include <KLocalizedString>
 #include <KWindowSystem>
 
 FreeRegionGrabber::FreeRegionGrabber(const QPolygon &startFreeRegion) :
@@ -46,7 +48,14 @@ FreeRegionGrabber::~FreeRegionGrabber()
 
 void FreeRegionGrabber::init()
 {
-    pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
+    QPixmap pixamp;
+    const QList<QScreen *> screens = qApp->screens();
+    const QDesktopWidget *desktop = QApplication::desktop();
+    const int screenId = desktop->screenNumber(QCursor::pos());
+    if (screenId < screens.count()) {
+        pixmap = screens[screenId]->grabWindow(desktop->winId());
+    }
+
     resize(pixmap.size());
     move(0, 0);
     setCursor(Qt::CrossCursor);

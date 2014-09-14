@@ -25,6 +25,7 @@
 #include <QDesktopWidget>
 #include <QMouseEvent>
 #include <QPixmap>
+#include <QScreen>
 #include <QStandardPaths>
 
 #include <KLocalizedString>
@@ -46,7 +47,7 @@ KBackgroundSnapshot::KBackgroundSnapshot(KSnapshotObject::CaptureMode mode)
     grabber->grabMouse(Qt::WaitCursor);
 
     if (mode == KSnapshotObject::FullScreen) {
-        snapshot = QPixmap::grabWindow(QApplication::desktop()->winId());
+        grabFullScreen();
         savePictureOnDesktop();
     } else {
         switch (mode) {
@@ -86,6 +87,16 @@ void KBackgroundSnapshot::savePictureOnDesktop()
     exit(0);
 }
 
+void KBackgroundSnapshot::grabFullScreen()
+{
+    const QList<QScreen *> screens = qApp->screens();
+    const QDesktopWidget *desktop = QApplication::desktop();
+    const int screenId = desktop->screenNumber(QCursor::pos());
+    if (screenId < screens.count()) {
+        snapshot = screens[screenId]->grabWindow(desktop->winId());
+    }
+}
+
 void KBackgroundSnapshot::performGrab()
 {
     ////qDebug()<<"KBackgroundSnapshot::performGrab()\n";
@@ -101,7 +112,7 @@ void KBackgroundSnapshot::performGrab()
         snapshot = WindowGrabber::grabCurrent(true);
         savePictureOnDesktop();
     } else {
-        snapshot = QPixmap::grabWindow(QApplication::desktop()->winId());
+        grabFullScreen();
         savePictureOnDesktop();
     }
 }

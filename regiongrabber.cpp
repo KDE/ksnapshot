@@ -18,14 +18,15 @@
 
 #include "regiongrabber.h"
 
-#include <QPainter>
-#include <QMouseEvent>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QMouseEvent>
+#include <QPainter>
+#include <QScreen>
 #include <QToolTip>
 #include <QTimer>
 
-#include <klocale.h>
+#include <KLocalizedString>
 #include <KWindowSystem>
 
 RegionGrabber::RegionGrabber(const QRect &startSelection) :
@@ -51,7 +52,13 @@ RegionGrabber::~RegionGrabber()
 
 void RegionGrabber::init()
 {
-    pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
+    const QList<QScreen *> screens = qApp->screens();
+    const QDesktopWidget *desktop = QApplication::desktop();
+    const int screenId = desktop->screenNumber(QCursor::pos());
+    if (screenId < screens.count()) {
+        pixmap = screens[screenId]->grabWindow(desktop->winId());
+    }
+
     resize(pixmap.size());
     move(0, 0);
     setCursor(Qt::CrossCursor);

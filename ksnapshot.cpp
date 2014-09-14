@@ -52,6 +52,7 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QScreen>
 #include <QWindow>
 
 #include <KAboutData>
@@ -256,21 +257,9 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode)
 
     //qDebug() << "Mode = " << mode;
     if (mode == KSnapshotObject::FullScreen) {
-        snapshot = QPixmap::grabWindow(QApplication::desktop()->winId());
-#if HAVE_X11_EXTENSIONS_XFIXES_H
-        if (haveXFixes && includePointer()) {
-            grabPointerImage(0, 0);
-        }
-#endif
+        grabFullScreen();
     } else if (mode == KSnapshotObject::CurrentScreen) {
-        //qDebug() << "Desktop Geom = " << QApplication::desktop()->geometry();
-        QDesktopWidget *desktop = QApplication::desktop();
-        int screenId = desktop->screenNumber(QCursor::pos());
-        //qDebug() << "Screenid = " << screenId;
-        QRect geom = desktop->screenGeometry(screenId);
-        //qDebug() << "Geometry = " << screenId;
-        snapshot = QPixmap::grabWindow(desktop->winId(),
-                                       geom.x(), geom.y(), geom.width(), geom.height());
+        grabCurrentScreen();
     } else {
         setMode(mode);
         switch (mode) {
@@ -674,6 +663,35 @@ void KSnapshot::updatePreview()
     setPreview(snapshot);
 }
 
+void KSnapshot::grabFullScreen()
+{
+    const QList<QScreen *> screens = qApp->screens();
+    const QDesktopWidget *desktop = QApplication::desktop();
+    const int screenId = desktop->screenNumber(QCursor::pos());
+    if (screenId < screens.count()) {
+        snapshot = screens[screenId]->grabWindow(desktop->winId());
+        grabPointerImage(0, 0);
+    }
+}
+
+void KSnapshot::grabCurrentScreen()
+{
+    //qDebug() << "Desktop Geom2 = " << QApplication::desktop()->geometry();
+    const QList<QScreen *> screens = qApp->screens();
+    const QDesktopWidget *desktop = QApplication::desktop();
+
+    const int screenId = desktop->screenNumber(QCursor::pos());
+    //qDebug() << "Screenid2 = " << screenId;
+
+    const QRect geom = desktop->screenGeometry(screenId);
+    //qDebug() << "Geometry2 = " << geom;
+    if (screenId >= screens.count()) {
+        snapshot = screens[screenId]->grabWindow(desktop->winId(),
+                                                 geom.x(), geom.y(), geom.width(), geom.height());
+        grabPointerImage(geom.x(), geom.y());
+    }
+}
+
 void KSnapshot::grabRegion()
 {
     if (rgnGrab) {
@@ -714,9 +732,6 @@ void KSnapshot::grabTimerDone()
 
 void KSnapshot::performGrab()
 {
-    int x = 0;
-    int y = 0;
-
     grabber->releaseMouse();
     grabber->hide();
     grabTimer.stop();
@@ -730,8 +745,7 @@ void KSnapshot::performGrab()
                 this, &KSnapshot::slotWindowGrabbed);
         wndGrab.exec();
         QPoint offset = wndGrab.lastWindowPosition();
-        x = offset.x();
-        y = offset.y();
+        grabPointerImage(offset.x(), offset.y());
         qDebug() << "last window position is" << offset;
     } else if (mode() == WindowUnderCursor) {
         if (false /* includeAlpha FIXME ... this is broken right now. see slotWindowGrabbed */) {
@@ -751,36 +765,21 @@ void KSnapshot::performGrab()
         } else {
             snapshot = WindowGrabber::grabCurrent(includeDecorations());
 
-            QPoint offset = WindowGrabber::lastWindowPosition();
-            x = offset.x();
-            y = offset.y();
-
             // If we're showing decorations anyway then we'll add the title and window
             // class to the output image meta data.
             if (includeDecorations()) {
                 title = WindowGrabber::lastWindowTitle();
                 windowClass = WindowGrabber::lastWindowClass();
             }
+
+            QPoint offset = WindowGrabber::lastWindowPosition();
+            grabPointerImage(offset.x(), offset.y());
         }
     } else if (mode() == CurrentScreen) {
-        //qDebug() << "Desktop Geom2 = " << QApplication::desktop()->geometry();
-        QDesktopWidget *desktop = QApplication::desktop();
-        int screenId = desktop->screenNumber(QCursor::pos());
-        //qDebug() << "Screenid2 = " << screenId;
-        QRect geom = desktop->screenGeometry(screenId);
-        //qDebug() << "Geometry2 = " << geom;
-        x = geom.x();
-        y = geom.y();
-        snapshot = QPixmap::grabWindow(desktop->winId(),
-                                       x, y, geom.width(), geom.height());
+        grabCurrentScreen();
     } else {
-        snapshot = QPixmap::grabWindow(QApplication::desktop()->winId());
+        grabFullScreen();
     }
-#if HAVE_X11_EXTENSIONS_XFIXES_H
-    if (haveXFixes && includePointer()) {
-        grabPointerImage(x, y);
-    }
-#endif // HAVE_X11_EXTENSIONS_XFIXES_H
 
     updatePreview();
     QApplication::restoreOverrideCursor();
@@ -792,10 +791,14 @@ void KSnapshot::performGrab()
     show();
 }
 
-void KSnapshot::grabPointerImage(int offsetx, int offsety)
 // Uses the X11_EXTENSIONS_XFIXES_H extension to grab the pointer image, and overlays it onto the snapshot.
+void KSnapshot::grabPointerImage(int offsetx, int offsety)
 {
 #if HAVE_X11_EXTENSIONS_XFIXES_H
+    if (!haveXFixes || !includePointer()) {
+        return;
+    }
+
     XFixesCursorImage *xcursorimg = XFixesGetCursorImage(QX11Info::display());
     if (!xcursorimg) {
         return;
