@@ -51,6 +51,7 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QWindow>
 
 #include <KAboutData>
 #include <KConfigGroup>
@@ -878,7 +879,7 @@ void KSnapshot::refreshCaption()
 
 void KSnapshot::updateCaption()
 {
-    setWindowTitle( filename.fileName(), modified );
+    windowHandle()->setTitle(filename.fileName()); // FIXME: no longer can signal modification state! , modified);
 }
 
 void KSnapshot::slotMovePointer(int x, int y)
