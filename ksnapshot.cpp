@@ -312,19 +312,23 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
                    Qt::CTRL+Qt::Key_A, this, SLOT(slotSaveAs()));
 #endif
 
-    //FIXME: can we *guarantee* that KStandardShortcut wil always return a list with values? Check it before using first()
-    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Quit ).first(), this, SLOT(reject()));
+    QList<QKeySequence> shortcuts = KStandardShortcut::shortcut(KStandardShortcut::Quit);
+    new QShortcut(shortcuts.empty() ? QKeySequence() : shortcuts.first(), this, SLOT(reject()));
 
-    new QShortcut( Qt::Key_Q, this, SLOT(slotSave()));
+    new QShortcut(Qt::Key_Q, this, SLOT(slotSave()));
 
-    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Copy ).first(), user1Button, SLOT(animateClick()));
+    shortcuts = KStandardShortcut::shortcut(KStandardShortcut::Copy);
+    new QShortcut(shortcuts.empty() ? QKeySequence() : shortcuts.first(), user1Button, SLOT(animateClick()));
 
-    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Save ).first(), button(Apply), SLOT(animateClick()));
-    new QShortcut( Qt::Key_S, button(Apply), SLOT(animateClick()));
+    shortcuts = KStandardShortcut::shortcut(KStandardShortcut::Save);
+    new QShortcut(shortcuts.empty() ? QKeySequence() : shortcuts.first(), button(Apply), SLOT(animateClick()));
 
-    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::New ).first(), m_snapshotWidget->btnNew, SLOT(animateClick()) );
-    new QShortcut( Qt::Key_N, m_snapshotWidget->btnNew, SLOT(animateClick()) );
-    new QShortcut( Qt::Key_Space, m_snapshotWidget->btnNew, SLOT(animateClick()) );
+    shortcuts = KStandardShortcut::shortcut(KStandardShortcut::New);
+    new QShortcut(shortcuts.empty() ? QKeySequence() : shortcuts.first(), m_snapshotWidget->btnNew, SLOT(animateClick()) );
+
+    new QShortcut(Qt::Key_S, button(Apply), SLOT(animateClick()));
+    new QShortcut(Qt::Key_N, m_snapshotWidget->btnNew, SLOT(animateClick()) );
+    new QShortcut(Qt::Key_Space, m_snapshotWidget->btnNew, SLOT(animateClick()) );
 
     m_snapshotWidget->btnNew->setFocus();
     resize(QSize(250, 500));
