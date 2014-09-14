@@ -498,10 +498,9 @@ void KSnapshot::slotOpen(QAction* action)
     KService::Ptr service = serviceAction->service;
     if (!service)
     {
-        QPointer<KOpenWithDialog> dlg = new KOpenWithDialog(list, this);
+        QSharedPointer<KOpenWithDialog> dlg(new KOpenWithDialog(list, this));
         if (!dlg->exec())
         {
-            delete dlg;
             return;
         }
 
@@ -510,11 +509,8 @@ void KSnapshot::slotOpen(QAction* action)
         if (!service && !dlg->text().isEmpty())
         {
              KRun::run(dlg->text(), list, this);
-             delete dlg;
              return;
         }
-
-        delete dlg;
     }
 
     // we have an action with a service, run it!
