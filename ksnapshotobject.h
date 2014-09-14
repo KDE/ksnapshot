@@ -54,13 +54,13 @@ protected:
 
     void changeUrl(const QString &newUrl);
 
-    QUrl filename;
-    RegionGrabber *rgnGrab;
-    FreeRegionGrabber *freeRgnGrab;
-    QWidget *grabber;
-    QPixmap snapshot;
-    QString title;
-    QString windowClass;
+    QUrl m_filename;
+    RegionGrabber *m_regionGrab;
+    FreeRegionGrabber *m_freeRegionGrab;
+    QWidget *m_grabber;
+    QPixmap m_snapshot;
+    QString m_title;
+    QString m_windowClass;
 };
 
 #endif

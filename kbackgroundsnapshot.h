@@ -45,7 +45,7 @@ protected:
     void savePictureOnDesktop();
 
 private:
-    KSnapshotObject::CaptureMode modeCapture;
+    KSnapshotObject::CaptureMode m_captureMode;
 
 };
 

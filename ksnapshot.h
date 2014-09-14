@@ -26,12 +26,12 @@
 #define KSNAPSHOT_H
 
 #include <QAction>
-#include <QTimer>
-#include <QPixmap>
-
 #include <QDialog>
-#include <kservice.h>
+#include <QPixmap>
+#include <KService>
+#include <QTimer>
 #include <QUrl>
+
 #include "ksnapshotobject.h"
 #include "snapshottimer.h"
 
@@ -75,7 +75,7 @@ public:
 
     QString url() const
     {
-        return filename.url();
+        return m_filename.url();
     }
 
 public slots:
@@ -106,7 +106,7 @@ private slots:
     void delayedInit();
     void slotOpen(QAction *);
     void slotPopulateOpenMenu();
-    void grabTimerDone();
+    void m_grabTimerDone();
     void slotDragSnapshot();
     void updatePreview();
     void slotRegionGrabbed(const QPixmap &);
@@ -143,19 +143,19 @@ private:
     void grabRegion();
     void grabFreeRegion();
 
-    SnapshotTimer grabTimer;
-    QTimer updateTimer;
-    QMenu  *openMenu;
+    SnapshotTimer m_grabTimer;
+    QTimer m_updateTimer;
+    QMenu  *m_openMenu;
     KSnapshotWidget *m_snapshotWidget;
-    bool modified;
-    QPoint savedPosition;
-    bool haveXFixes;
-    bool includeAlpha;
-    QPolygon lastFreeRegion;
-    QRect lastRegion;
+    bool m_modified;
+    QPoint m_savedPosition;
+    bool m_haveXFixes;
+    bool m_includeAlpha;
+    QPolygon m_lastFreeRegion;
+    QRect m_lastRegion;
 
 #ifdef KIPI_FOUND
-    KIPI::PluginLoader *mPluginLoader;
+    KIPI::PluginLoader *m_pluginLoader;
     friend QList<QUrl> KSnapshotImageCollectionShared::images();
 #endif
 };

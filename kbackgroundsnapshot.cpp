@@ -37,14 +37,14 @@
 #include "windowgrabber.h"
 
 KBackgroundSnapshot::KBackgroundSnapshot(KSnapshotObject::CaptureMode mode)
-    : KSnapshotObject()
+    : KSnapshotObject(),
+      m_captureMode(mode)
 {
-    modeCapture = mode;
-    grabber = new QWidget(0, Qt::X11BypassWindowManagerHint);
-    grabber->move(-1000, -1000);
-    grabber->installEventFilter(this);
-    grabber->show();
-    grabber->grabMouse(Qt::WaitCursor);
+    m_grabber = new QWidget(0, Qt::X11BypassWindowManagerHint);
+    m_grabber->move(-1000, -1000);
+    m_grabber->installEventFilter(this);
+    m_grabber->show();
+    m_grabber->grabMouse(Qt::WaitCursor);
 
     if (mode == KSnapshotObject::FullScreen) {
         grabFullScreen();
@@ -65,10 +65,10 @@ KBackgroundSnapshot::KBackgroundSnapshot(KSnapshotObject::CaptureMode mode)
         }
     }
 
-    //When we use argument to take snapshot we mustn't hide it.
+    //When we use argument to take m_snapshot we mustn't hide it.
     if (mode != KSnapshotObject::ChildWindow) {
-        grabber->releaseMouse();
-        grabber->hide();
+        m_grabber->releaseMouse();
+        m_grabber->hide();
     }
 
 }
@@ -80,10 +80,10 @@ KBackgroundSnapshot::~KBackgroundSnapshot()
 
 void KBackgroundSnapshot::savePictureOnDesktop()
 {
-    filename = QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + '/' + i18n("snapshot") + "1.png");
+    m_filename = QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + '/' + i18n("snapshot") + "1.png");
     // Make sure the name is not already being used
     autoincFilenameUntilUnique(0);
-    save(filename, 0L);
+    save(m_filename, 0L);
     exit(0);
 }
 
@@ -93,23 +93,23 @@ void KBackgroundSnapshot::grabFullScreen()
     const QDesktopWidget *desktop = QApplication::desktop();
     const int screenId = desktop->screenNumber(QCursor::pos());
     if (screenId < screens.count()) {
-        snapshot = screens[screenId]->grabWindow(desktop->winId());
+        m_snapshot = screens[screenId]->grabWindow(desktop->winId());
     }
 }
 
 void KBackgroundSnapshot::performGrab()
 {
     ////qDebug()<<"KBackgroundSnapshot::performGrab()\n";
-    grabber->releaseMouse();
-    grabber->hide();
-    if (modeCapture == ChildWindow) {
+    m_grabber->releaseMouse();
+    m_grabber->hide();
+    if (m_captureMode == ChildWindow) {
         WindowGrabber wndGrab;
         connect(&wndGrab, &WindowGrabber::windowGrabbed,
                 this, &KBackgroundSnapshot::slotWindowGrabbed);
         wndGrab.exec();
         savePictureOnDesktop();
-    } else if (modeCapture == WindowUnderCursor) {
-        snapshot = WindowGrabber::grabCurrent(true);
+    } else if (m_captureMode == WindowUnderCursor) {
+        m_snapshot = WindowGrabber::grabCurrent(true);
         savePictureOnDesktop();
     } else {
         grabFullScreen();
@@ -121,7 +121,7 @@ void KBackgroundSnapshot::slotWindowGrabbed(const QPixmap &pix)
 {
     ////qDebug()<<" KBackgroundSnapshot::slotWindowGrabbed( const QPixmap &pix )\n";
     if (!pix.isNull()) {
-        snapshot = pix;
+        m_snapshot = pix;
     }
     QApplication::restoreOverrideCursor();
 }
@@ -130,16 +130,16 @@ void KBackgroundSnapshot::slotWindowGrabbed(const QPixmap &pix)
 void KBackgroundSnapshot::slotGrab()
 {
     ////qDebug()<<"KBackgroundSnapshot::slotGrab()\n";
-    grabber->show();
-    grabber->grabMouse(Qt::CrossCursor);
+    m_grabber->show();
+    m_grabber->grabMouse(Qt::CrossCursor);
 }
 
 
 void KBackgroundSnapshot::grabRegion()
 {
     QRect emptySelection;
-    rgnGrab = new RegionGrabber(emptySelection);
-    connect(rgnGrab, &RegionGrabber::regionGrabbed,
+    m_regionGrab = new RegionGrabber(emptySelection);
+    connect(m_regionGrab, &RegionGrabber::regionGrabbed,
             this, &KBackgroundSnapshot::slotRegionGrabbed);
 
 }
@@ -148,18 +148,18 @@ void KBackgroundSnapshot::grabRegion()
 void KBackgroundSnapshot::slotRegionGrabbed(const QPixmap &pix)
 {
     if (!pix.isNull()) {
-        snapshot = pix;
+        m_snapshot = pix;
     }
 
-    rgnGrab->deleteLater();
+    m_regionGrab->deleteLater();
     QApplication::restoreOverrideCursor();
     savePictureOnDesktop();
 }
 
 bool KBackgroundSnapshot::eventFilter(QObject *object, QEvent *event)
 {
-    if (object == grabber && event->type() == QEvent::MouseButtonPress) {
-        if (QWidget::mouseGrabber() != grabber) {
+    if (object == m_grabber && event->type() == QEvent::MouseButtonPress) {
+        if (QWidget::mouseGrabber() != m_grabber) {
             return false;
         }
 

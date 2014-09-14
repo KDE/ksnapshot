@@ -48,24 +48,28 @@
 #include <fixx11h.h>
 #endif
 
+#include "regiongrabber.h"
+#include "freeregiongrabber.h"
 
 KSnapshotObject::KSnapshotObject()
-    : rgnGrab(0),
-      freeRgnGrab(0),
-      grabber(0)
+    : m_regionGrab(0),
+      m_freeRegionGrab(0),
+      m_grabber(0)
 {
 }
 
 KSnapshotObject::~KSnapshotObject()
 {
-    delete grabber;
+    delete m_regionGrab;
+    delete m_freeRegionGrab;
+    delete m_grabber;
 }
 
 void KSnapshotObject::autoincFilenameUntilUnique(QWidget *window)
 {
     forever {
         // we only need to test for existence; details about the file are uninteresting, so 0 for third param
-        KIO::StatJob *job = KIO::stat(filename, KIO::StatJob::DestinationSide, 0);
+        KIO::StatJob *job = KIO::stat(m_filename, KIO::StatJob::DestinationSide, 0);
         KJobWidgets::setWindow(job, window);
         job->exec();
 
@@ -80,8 +84,8 @@ void KSnapshotObject::autoincFilenameUntilUnique(QWidget *window)
 
 void KSnapshotObject::autoincFilename()
 {
-    // Extract the filename from the path
-    QString name = filename.fileName();
+    // Extract the m_filename from the path
+    QString name = m_filename.fileName();
 
     // If the name contains a number then increment it
     QRegExp numSearch("(^|[^\\d])(\\d+)");    // we want to match as far left as possible, and when the number is at the start of the name
@@ -108,7 +112,7 @@ void KSnapshotObject::autoincFilename()
     }
 
     //Rebuild the path
-    QUrl newUrl = filename;
+    QUrl newUrl = m_filename;
     newUrl = newUrl.adjusted(QUrl::RemoveFilename);
     newUrl.setPath(newUrl.path() +  name);
     changeUrl(newUrl.url());
@@ -118,11 +122,11 @@ void KSnapshotObject::autoincFilename()
 void KSnapshotObject::changeUrl(const QString &url)
 {
     QUrl newURL = QUrl(url);
-    if (newURL == filename) {
+    if (newURL == m_filename) {
         return;
     }
 
-    filename = newURL;
+    m_filename = newURL;
     refreshCaption();
 }
 
@@ -152,7 +156,7 @@ bool KSnapshotObject::save(const QUrl &url, QWidget *widget)
 
     const bool success = saveTo(url, widget);
     if (success) {
-        filename = url;
+        m_filename = url;
         autoincFilename();
         refreshCaption();
     }
@@ -189,7 +193,7 @@ bool KSnapshotObject::saveTo(const QUrl &url, QWidget *widget)
 
     QApplication::restoreOverrideCursor();
     if (!ok) {
-        qWarning() << "KSnapshot was unable to save the snapshot to" << url.toDisplayString();
+        qWarning() << "KSnapshot was unable to save the m_snapshot to" << url.toDisplayString();
 
         const QString caption = i18n("Unable to Save Image");
         const QString text = i18n("KSnapshot was unable to save the image to\n%1.", url.toDisplayString());
@@ -213,14 +217,15 @@ bool KSnapshotObject::saveImage(QIODevice *device, const QByteArray &format)
         imgWriter.setQuality(85);
     }
 
-    if (!title.isEmpty()) {
-        imgWriter.setText(i18n("Title"), title);
-    }
-    if (!windowClass.isEmpty()) {
-        imgWriter.setText(i18n("Window Class"), windowClass);
+    if (!m_title.isEmpty()) {
+        imgWriter.setText(i18n("Title"), m_title);
     }
 
-    QImage snap = snapshot.toImage();
+    if (!m_windowClass.isEmpty()) {
+        imgWriter.setText(i18n("Window Class"), m_windowClass);
+    }
+
+    QImage snap = m_snapshot.toImage();
     return imgWriter.write(snap);
 }
 
