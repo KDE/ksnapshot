@@ -33,14 +33,14 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 
-#ifdef Q_WS_X11
+#ifdef HAVE_X11
 #include <X11/Xlib.h>
 #include <config-ksnapshot.h>
 #ifdef HAVE_X11_EXTENSIONS_SHAPE_H
 #include <X11/extensions/shape.h>
 #endif // HAVE_X11_EXTENSIONS_SHAPE_H
 #include <QX11Info>
-#endif // Q_WS_X11
+#endif // HAVE_X11
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -60,7 +60,7 @@ bool operator< ( const QRect& r1, const QRect& r2 )
 // Recursively iterates over the window w and its children, thereby building
 // a tree of window descriptors. Windows in non-viewable state or with height
 // or width smaller than minSize will be ignored.
-#ifdef Q_WS_X11
+#ifdef HAVE_X11
 static
 void getWindowsRecursive( std::vector<QRect> *windows, Window w,
               int rx = 0, int ry = 0, int depth = 0 )
@@ -150,9 +150,9 @@ void getWindowsRecursive( std::vector<QRect> *windows, HWND hwnd,
 
     std::sort( windows->begin(), windows->end() );
 }
-#endif // Q_WS_X11
+#endif // HAVE_X11
 
-#ifdef Q_WS_X11
+#ifdef HAVE_X11
 static
 Window findRealWindow( Window w, int depth = 0 )
 {
@@ -203,9 +203,9 @@ HWND findRealWindow( HWND w, int depth = 0 )
     // TODO Implement
     return w; // This is WRONG but makes code compile for now
 }
-#endif // Q_WS_X11
+#endif // HAVE_X11
 
-#ifdef Q_WS_X11
+#ifdef HAVE_X11
 static
 Window windowUnderCursor( bool includeDecorations = true )
 {
@@ -252,7 +252,7 @@ HWND windowUnderCursor(bool includeDecorations = true)
 }
 #endif
 
-#ifdef Q_WS_X11
+#ifdef HAVE_X11
 static
 QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border,
             QString *title=0, QString *windowClass=0 )
@@ -348,7 +348,7 @@ QPixmap grabWindow( HWND hWnd, QString *title=0, QString *windowClass=0 )
     }
     return pm;
 }
-#endif // Q_WS_X11
+#endif // HAVE_X11
 
 QString WindowGrabber::title;
 QString WindowGrabber::windowClass;
@@ -362,7 +362,7 @@ WindowGrabber::WindowGrabber()
     int y,x;
     uint w, h;
 
-#ifdef Q_WS_X11
+#ifdef HAVE_X11
     uint border, depth;
     Window root;
     XGrabServer( QX11Info::display() );
@@ -389,7 +389,7 @@ WindowGrabber::WindowGrabber()
     HDC childDC = GetDC(child);
 
     QPixmap pm( grabWindow( child, &title, &windowClass ) );
-#endif // Q_WS_X11
+#endif // HAVE_X11
 
     getWindowsRecursive( &windows, child );
 
@@ -409,7 +409,7 @@ WindowGrabber::~WindowGrabber()
 QPixmap WindowGrabber::grabCurrent( bool includeDecorations )
 {
     int x, y;
-#ifdef Q_WS_X11
+#ifdef HAVE_X11
     Window root;
     uint w, h, border, depth;
 
@@ -463,7 +463,7 @@ QPixmap WindowGrabber::grabCurrent( bool includeDecorations )
     windowPosition = QPoint(x,y);
     QPixmap pm( grabWindow( hParent, &title, &windowClass) );
     return pm;
-#endif // Q_WS_X11
+#endif // HAVE_X11
     return QPixmap();
 }
 

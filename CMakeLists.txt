@@ -31,8 +31,17 @@ find_package(KF5 REQUIRED
 add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 
 find_package(X11)
-set(HAVE_X11_EXTENSIONS_SHAPE_H ${X11_Xshape_FOUND})
-set(HAVE_X11_EXTENSIONS_XFIXES_H ${X11_Xfixes_FOUND})
+if (X11_FOUND)
+    set(HAVE_X11 1)
+
+    if (X11_Xshape_FOUND)
+        set(HAVE_X11_EXTENSIONS_SHAPE_H 1)
+    endif (X11_Xshape_FOUND)
+
+    if (X11_Xfixes_FOUND)
+        set(HAVE_X11_EXTENSIONS_XFIXES_H 1)
+    endif (X11_Xfixes_FOUND)
+endif (X11_FOUND)
 #feature_summary(WHAT ENABLED_FEATURES DESCRIPTION "X11 Fixes Extension (xfixes.h)" "Support for capturing the cursor" "http://www.x.org/" VAR HAVE_X11_EXTENSIONS_XFIXES_H)
 
 if (KIPI_FOUND)
@@ -55,19 +64,19 @@ set(ksnapshot_file_SRCS
    ksnapshotobject.cpp
    ksnapshotpreview.cpp)
 
+if (KIPI_FOUND)
+    set(ksnapshot_kipi_SRCS
+        kipiinterface.cpp
+        ksnapshotimagecollectionshared.cpp
+        ksnapshotinfoshared.cpp
+        kipiimagecollectionselector.cpp)
+endif (KIPI_FOUND)
+
 set(ksnapshot_SRCS
    main.cpp
    ksnapshot.cpp 
-   ${ksnapshot_file_SRCS})
-
-if (KIPI_FOUND)
-set(ksnapshot_SRCS
-    kipiinterface.cpp
-    ksnapshotimagecollectionshared.cpp
-    ksnapshotinfoshared.cpp
-    kipiimagecollectionselector.cpp
-    ${ksnapshot_SRCS})
-endif (KIPI_FOUND)
+   ${ksnapshot_file_SRCS}
+   ${ksnapshot_kipi_SRCS})
 
 qt5_add_dbus_adaptor(ksnapshot_SRCS org.kde.ksnapshot.xml ksnapshot.h KSnapshot)
 

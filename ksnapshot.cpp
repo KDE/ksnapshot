@@ -33,6 +33,7 @@
 #include <QVarLengthArray>
 #include <QCloseEvent>
 #include <QDrag>
+#include <QMimeData>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QtCore/QXmlStreamReader>
@@ -643,7 +644,7 @@ void KSnapshot::slotWindowGrabbed( const QPixmap &pix )
 
 void KSnapshot::slotScreenshotReceived( qulonglong handle )
 {
-#ifdef Q_WS_X11
+#ifdef HAVE_X11
     slotWindowGrabbed( QPixmap::fromX11Pixmap( handle ) );
 #endif
 }
