@@ -44,7 +44,7 @@
 
 #include <QDebug>
 #include <kglobal.h>
-#include <kicon.h>
+#include <QIcon>
 #include <kimageio.h>
 #include <kcomponentdata.h>
 #include <kfiledialog.h>
@@ -80,6 +80,11 @@
 #include <X11/extensions/Xfixes.h>
 #include <X11/Xatom.h>
 #include <QX11Info>
+#include <KConfigGroup>
+#include <QDialogButtonBox>
+#include <QPushButton>
+#include <KGuiItem>
+#include <QVBoxLayout>
 #endif
 
 class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
@@ -89,24 +94,33 @@ class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
         : QWidget(parent)
         {
             setupUi(this);
-            btnNew->setIcon(KIcon("ksnapshot"));
+            btnNew->setIcon(QIcon::fromTheme("ksnapshot"));
         }
 };
 
 KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
-  : KDialog(parent), KSnapshotObject(), modified(true), savedPosition(QPoint(-1, -1)), haveXFixes(false)
+  : QDialog(parent), KSnapshotObject(), modified(true), savedPosition(QPoint(-1, -1)), haveXFixes(false)
 {
     // TEMPORARY Make sure "untitled" enters the string freeze for 4.6, 
     // as explained in http://lists.kde.org/?l=kde-graphics-devel&m=128942871430175&w=2
     const QString untitled = QString(i18n("untitled"));
 
-    setCaption( "" );
-    showButtonSeparator( true );
-    setButtons(Help | Apply | User1 | User2);
-    setButtonGuiItem(Apply, KStandardGuiItem::saveAs());
-    setButtonGuiItem(User1, KGuiItem(i18n("Copy"), "edit-copy"));
-    setButtonGuiItem(User2, KGuiItem(i18n("Send To..."), "document-open"));
-    setDefaultButton(Apply);
+    setWindowTitle( "" );
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Help|QDialogButtonBox::Apply);
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(mainWidget);
+    QPushButton *user1Button = new QPushButton;
+    buttonBox->addButton(user1Button, QDialogButtonBox::ActionRole);
+    QPushButton *user2Button = new QPushButton;
+    buttonBox->addButton(user2Button, QDialogButtonBox::ActionRole);
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    KGuiItem::assign(buttonBox->button(QDialogButtonBox::Apply), KStandardGuiItem::saveAs());
+    KGuiItem::assign(user1Button, KGuiItem(i18n("Copy"));
+    KGuiItem::assign(user2Button, KGuiItem(i18n("Send To..."));
+    buttonBox->button(QDialogButtonBox::Apply)->setDefault(true);
     grabber = new QWidget( 0,  Qt::X11BypassWindowManagerHint );
 
     // TODO X11 (Xinerama and Twinview, actually) and Windows use different coordinates for the two monitors case
@@ -138,14 +152,13 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
 
     KVBox *vbox = new KVBox( this );
     vbox->setSpacing( spacingHint() );
-    setMainWidget( vbox );
 
     mainWidget = new KSnapshotWidget( vbox );
 
     connect(mainWidget->lblImage, SIGNAL(startDrag()), SLOT(slotDragSnapshot()));
     connect(mainWidget->btnNew, SIGNAL(clicked()), SLOT(slotGrab()));
-    connect(this, SIGNAL(applyClicked()), SLOT(slotSaveAs()));
-    connect(this, SIGNAL(user1Clicked()), SLOT(slotCopy()));
+    connect(buttonBox->button(QDialogButtonBox::Apply), SIGNAL(clicked()), SLOT(slotSaveAs()));
+    connect(user1Button, SIGNAL(clicked()), SLOT(slotCopy()));
     connect(mainWidget->comboMode, SIGNAL(activated(int)), SLOT(slotModeChanged(int)));
 
     if (qApp->desktop()->numScreens() < 2) {
@@ -153,11 +166,14 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     }
 
     openMenu = new QMenu(this);
-    button(User2)->setMenu(openMenu);
+    user2Button->setMenu(openMenu);
     connect(openMenu, SIGNAL(aboutToShow()), this, SLOT(slotPopulateOpenMenu()));
     connect(openMenu, SIGNAL(triggered(QAction*)), this, SLOT(slotOpen(QAction*)));
 
     mainWidget->spinDelay->setSuffix(ki18np(" second", " seconds"));
+
+    mainLayout->addWidget(vbox);
+    mainLayout->addWidget(buttonBox);
 
     grabber->show();
     grabber->grabMouse();
@@ -286,7 +302,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     QTimer::singleShot( 0, this, SLOT(updateCaption()) );
 
     KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::mainComponent().aboutData(), true);
-    setButtonMenu( Help, helpMenu->menu() );
+    buttonBox->button(QDialogButtonBox::Help)->setMenu(helpMenu->menu();
 #if 0
     accel->insert( "QuickSave", i18n("Quick Save Snapshot &As..."),
                    i18n("Save the snapshot to the file specified by the user without showing the file dialog."),
@@ -300,7 +316,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
 
     new QShortcut( Qt::Key_Q, this, SLOT(slotSave()));
 
-    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Copy ).primary(), button(User1), SLOT(animateClick()));
+    new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Copy ).primary(), user1Button, SLOT(animateClick()));
 
     new QShortcut( KStandardShortcut::shortcut( KStandardShortcut::Save ).primary(), button(Apply), SLOT(animateClick()));
     new QShortcut( Qt::Key_S, button(Apply), SLOT(animateClick()));
@@ -310,7 +326,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     new QShortcut( Qt::Key_Space, mainWidget->btnNew, SLOT(animateClick()) );
 
     mainWidget->btnNew->setFocus();
-    setInitialSize(QSize(250, 500));
+    resize(QSize(250, 500));
 
     KConfigGroup cg(KSharedConfig::openConfig(), "MainWindow");
     restoreDialogSize(cg);
@@ -353,7 +369,7 @@ void KSnapshot::slotSaveAs()
     QPointer<KFileDialog> dlg = new KFileDialog( filename.url(), mimetypes.join(" "), this);
 
     dlg->setOperationMode( KFileDialog::Saving );
-    dlg->setCaption( i18n("Save As") );
+    dlg->setWindowTitle( i18n("Save As") );
     dlg->setSelection( filename.url() );
 
     if ( !dlg->exec() ) {
@@ -529,7 +545,7 @@ void KSnapshot::slotPopulateOpenMenu()
     {
         QString name = service->name().replace( '&', "&&" );
         openMenu->addAction(new KSnapshotServiceAction(service,
-                                                       KIcon(service->icon()),
+                                                       QIcon::fromTheme(service->icon()),
                                                        name, this));
     }
 
@@ -848,7 +864,7 @@ void KSnapshot::refreshCaption()
 
 void KSnapshot::updateCaption()
 {
-    setCaption( filename.fileName(), modified );
+    setWindowTitle( filename.fileName(), modified );
 }
 
 void KSnapshot::slotMovePointer(int x, int y)

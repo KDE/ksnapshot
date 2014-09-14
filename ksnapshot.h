@@ -30,7 +30,7 @@
 #include <QPixmap>
 
 #include <kglobalsettings.h>
-#include <kdialog.h>
+#include <QDialog>
 #include <kservice.h>
 #include <QUrl>
 #include "ksnapshotobject.h"
@@ -65,7 +65,7 @@ class KSnapshotServiceAction : public QAction
         KService::Ptr service;
 };
 
-class KSnapshot : public KDialog, public KSnapshotObject
+class KSnapshot : public QDialog, public KSnapshotObject
 {
   Q_OBJECT
 
