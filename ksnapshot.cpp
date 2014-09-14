@@ -26,7 +26,9 @@
 
 #include "ksnapshot.h"
 
+#include <QDebug>
 #include <QClipboard>
+#include <QIcon>
 #include <QShortcut>
 #include <QMenu>
 #include <QDesktopWidget>
@@ -44,13 +46,10 @@
 #include <QtDBus/QDBusConnectionInterface>
 #include <QtDBus/QDBusInterface>
 
-#include <klocale.h>
-
-#include <QDebug>
-#include <kglobal.h>
-#include <QIcon>
+#include <KAboutData>
 #include <kimageio.h>
 #include <kcomponentdata.h>
+#include <KLocalizedString>
 #include <kmessagebox.h>
 #include <kio/netaccess.h>
 #include <ksavefile.h>
@@ -304,7 +303,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     connect( &updateTimer, SIGNAL(timeout()), this, SLOT(updatePreview()) );
     QTimer::singleShot( 0, this, SLOT(updateCaption()) );
 
-    KHelpMenu *helpMenu = new KHelpMenu(this, KGlobal::mainComponent().aboutData(), true);
+    KHelpMenu *helpMenu = new KHelpMenu(this, KAboutData::applicationData(), true);
     buttonBox->button(QDialogButtonBox::Help)->setMenu(helpMenu->menu());
 #if 0
     accel->insert( "QuickSave", i18n("Quick Save Snapshot &As..."),
