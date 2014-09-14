@@ -79,7 +79,7 @@ KBackgroundSnapshot::~KBackgroundSnapshot()
 
 void KBackgroundSnapshot::savePictureOnDesktop()
 {
-    filename = QUrl(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + '/' + i18n("snapshot") + "1.png");
+    filename = QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + '/' + i18n("snapshot") + "1.png");
     // Make sure the name is not already being used
     autoincFilenameUntilUnique(0);
     save(filename, 0L);
@@ -139,22 +139,25 @@ void KBackgroundSnapshot::slotRegionGrabbed(const QPixmap &pix)
     if (!pix.isNull()) {
         snapshot = pix;
     }
+
     rgnGrab->deleteLater();
     QApplication::restoreOverrideCursor();
     savePictureOnDesktop();
 }
 
-bool KBackgroundSnapshot::eventFilter(QObject *o, QEvent *e)
+bool KBackgroundSnapshot::eventFilter(QObject *object, QEvent *event)
 {
-    if (o == grabber && e->type() == QEvent::MouseButtonPress) {
-        QMouseEvent *me = (QMouseEvent *) e;
+    if (object == grabber && event->type() == QEvent::MouseButtonPress) {
         if (QWidget::mouseGrabber() != grabber) {
             return false;
         }
-        if (me->button() == Qt::LeftButton) {
+
+        QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
+        if (mouseEvent->button() == Qt::LeftButton) {
             performGrab();
         }
     }
+
     return false;
 }
 
