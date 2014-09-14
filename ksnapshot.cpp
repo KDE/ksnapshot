@@ -170,8 +170,8 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     connect(openMenu, SIGNAL(aboutToShow()), this, SLOT(slotPopulateOpenMenu()));
     connect(openMenu, SIGNAL(triggered(QAction*)), this, SLOT(slotOpen(QAction*)));
 
-    connect(m_snapshotWidget->spinDelay, SIGNAL("valueChanged(int)"),
-            this, SIGNAL("setDelaySpinboxSuffix(int)"));
+    connect(m_snapshotWidget->spinDelay, SIGNAL(valueChanged(int)),
+            this, SLOT(setDelaySpinboxSuffix(int)));
     setDelaySpinboxSuffix(m_snapshotWidget->spinDelay->value());
 
     mainLayout->addWidget(m_snapshotWidget);
