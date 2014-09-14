@@ -24,7 +24,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 
-#include <KDebug>
+#include <QDebug>
 #include <klocale.h>
 
 SnapshotTimer::SnapshotTimer()

@@ -24,7 +24,7 @@
 #include <QMouseEvent>
 #include <QPixmap>
 
-#include <KDebug>
+#include <QDebug>
 #include <KGlobalSettings>
 
 #include "expblur.cpp"
@@ -49,7 +49,7 @@ void KSnapshotPreview::setPreview(const QPixmap &pm)
     QImage blur(pixmap.size() + QSize(BLUR_PAD, BLUR_PAD), QImage::Format_ARGB32);
     QRect blurRect = QRect(QPoint(BLUR_PAD / 2, BLUR_PAD / 2), pixmap.size());
     blur.fill(Qt::transparent);
-    //kDebug() << blur.size() << blurRect << pixmap.size();
+    ////qDebug() << blur.size() << blurRect << pixmap.size();
 
     const QColor color = qGray(palette().color(QPalette::Base).rgb()) < 192 ? Qt::white : Qt::black;
 

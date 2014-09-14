@@ -42,7 +42,7 @@
 
 #include <klocale.h>
 
-#include <KDebug>
+#include <QDebug>
 #include <kglobal.h>
 #include <kicon.h>
 #include <kimageio.h>
@@ -224,7 +224,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
         }
     }
 
-    kDebug() << "Mode = " << mode;
+    //qDebug() << "Mode = " << mode;
     if ( mode == KSnapshotObject::FullScreen ) {
         snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
 #ifdef HAVE_X11_EXTENSIONS_XFIXES_H
@@ -233,12 +233,12 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
 #endif
     }
     else if ( mode == KSnapshotObject::CurrentScreen ) {
-        kDebug() << "Desktop Geom = " << QApplication::desktop()->geometry();
+        //qDebug() << "Desktop Geom = " << QApplication::desktop()->geometry();
         QDesktopWidget *desktop = QApplication::desktop();
         int screenId = desktop->screenNumber( QCursor::pos() );
-        kDebug() << "Screenid = " << screenId;
+        //qDebug() << "Screenid = " << screenId;
         QRect geom = desktop->screenGeometry( screenId );
-        kDebug() << "Geometry = " << screenId;
+        //qDebug() << "Geometry = " << screenId;
         snapshot = QPixmap::grabWindow( desktop->winId(),
                 geom.x(), geom.y(), geom.width(), geom.height() );
     }
@@ -404,7 +404,7 @@ void KSnapshot::slotGrab()
     hide();
 
     if (delay()) {
-        //kDebug() << "starting timer with time of" << delay();
+        ////qDebug() << "starting timer with time of" << delay();
         grabTimer.start(delay());
     }
     else {
@@ -544,7 +544,7 @@ void KSnapshot::slotPopulateOpenMenu()
         }
         KIPI::Plugin* plugin = pluginInfo->plugin();
         if (!plugin) {
-            kWarning() << "Plugin from library" << pluginInfo->library() << "failed to load";
+            qWarning() << "Plugin from library" << pluginInfo->library() << "failed to load";
             continue;
         }
 
@@ -758,12 +758,12 @@ void KSnapshot::performGrab()
         }
     }
     else if ( mode() == CurrentScreen ) {
-        kDebug() << "Desktop Geom2 = " << QApplication::desktop()->geometry();
+        //qDebug() << "Desktop Geom2 = " << QApplication::desktop()->geometry();
         QDesktopWidget *desktop = QApplication::desktop();
         int screenId = desktop->screenNumber( QCursor::pos() );
-        kDebug() << "Screenid2 = " << screenId;
+        //qDebug() << "Screenid2 = " << screenId;
         QRect geom = desktop->screenGeometry( screenId );
-        kDebug() << "Geometry2 = " << geom;
+        //qDebug() << "Geometry2 = " << geom;
         x = geom.x();
         y = geom.y();
         snapshot = QPixmap::grabWindow( desktop->winId(),

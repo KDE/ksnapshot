@@ -23,7 +23,7 @@
 #include "regiongrabber.h"
 #include "ksnapshot_options.h"
 #include <windowgrabber.h>
-#include <kdebug.h>
+#include <QDebug>
 #include <klocale.h>
 #include <kcmdlineargs.h>
 #include <KAboutData>
@@ -84,7 +84,7 @@ KBackgroundSnapshot::KBackgroundSnapshot(KSnapshotObject::CaptureMode mode)
 
 KBackgroundSnapshot::~KBackgroundSnapshot()
 {
-    //kDebug()<<" KBackgroundSnapshot::~KBackgroundSnapshot()\n";
+    ////qDebug()<<" KBackgroundSnapshot::~KBackgroundSnapshot()\n";
 }
 
 void KBackgroundSnapshot::savePictureOnDesktop()
@@ -100,7 +100,7 @@ void KBackgroundSnapshot::savePictureOnDesktop()
 
 void KBackgroundSnapshot::performGrab()
 {
-    //kDebug()<<"KBackgroundSnapshot::performGrab()\n";
+    ////qDebug()<<"KBackgroundSnapshot::performGrab()\n";
     grabber->releaseMouse();
     grabber->hide();
     if ( modeCapture == ChildWindow ) {
@@ -122,7 +122,7 @@ void KBackgroundSnapshot::performGrab()
 
 void KBackgroundSnapshot::slotWindowGrabbed( const QPixmap &pix )
 {
-    //kDebug()<<" KBackgroundSnapshot::slotWindowGrabbed( const QPixmap &pix )\n";
+    ////qDebug()<<" KBackgroundSnapshot::slotWindowGrabbed( const QPixmap &pix )\n";
     if ( !pix.isNull() )
         snapshot = pix;
     QApplication::restoreOverrideCursor();
@@ -131,7 +131,7 @@ void KBackgroundSnapshot::slotWindowGrabbed( const QPixmap &pix )
 
 void KBackgroundSnapshot::slotGrab()
 {
-    //kDebug()<<"KBackgroundSnapshot::slotGrab()\n";
+    ////qDebug()<<"KBackgroundSnapshot::slotGrab()\n";
     grabber->show();
     grabber->grabMouse( Qt::CrossCursor );
 }

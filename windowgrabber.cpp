@@ -24,7 +24,7 @@
 #include <algorithm>
 
 #include <kwindowinfo.h>
-#include <kdebug.h>
+#include <QDebug>
 
 #include <QBitmap>
 #include <QPainter>

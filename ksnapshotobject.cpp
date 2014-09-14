@@ -37,7 +37,7 @@
 #include <klocale.h>
 #include <KTemporaryFile>
 #include <kio/netaccess.h>
-#include <kdebug.h>
+#include <QDebug>
 
 //Qt include
 #include <QRegExp>
@@ -152,7 +152,7 @@ bool KSnapshotObject::saveEqual( const QUrl &url,QWidget *widget )
 
     QApplication::restoreOverrideCursor();
     if ( !ok ) {
-        kWarning() << "KSnapshot was unable to save the snapshot" ;
+        qWarning() << "KSnapshot was unable to save the snapshot" ;
 
         const QString caption = i18n("Unable to Save Image");
         const QString text = i18n("KSnapshot was unable to save the image to\n%1.", url.toDisplayString());
@@ -167,7 +167,7 @@ bool KSnapshotObject::saveImage( QIODevice *device, const QByteArray &format )
     QImageWriter imgWriter( device, format );
 
     if ( !imgWriter.canWrite() ) {
-	kDebug() << "Cannot write format " << format;
+	//qDebug() << "Cannot write format " << format;
 	return false;
     }
 
