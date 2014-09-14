@@ -34,7 +34,7 @@
 #include <KMessageBox>
 
 #include <klocale.h>
-#include <KTemporaryFile>
+#include <QTemporaryFile>
 #include <kio/netaccess.h>
 #include <QDebug>
 
@@ -144,7 +144,7 @@ bool KSnapshotObject::saveEqual( const QUrl &url,QWidget *widget )
 	    ok = saveImage( &output, type );
     }
     else {
-        KTemporaryFile tmpFile;
+        QTemporaryFile tmpFile;
 	if ( tmpFile.open() ) {
             if ( saveImage( &tmpFile, type ) ) {
                 ok = KIO::NetAccess::upload( tmpFile.fileName(), url, widget );
