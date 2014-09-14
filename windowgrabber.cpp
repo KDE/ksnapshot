@@ -42,11 +42,11 @@
 #include <QX11Info>
 #endif // Q_WS_X11
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #include <windows.h>
 
 static UINT cxWindowBorder, cyWindowBorder;
-#endif // Q_WS_WIN
+#endif // Q_OS_WIN
 
 static
 const int minSize = 8;
@@ -100,7 +100,7 @@ void getWindowsRecursive( std::vector<QRect> *windows, Window w,
         std::sort( windows->begin(), windows->end() );
     }
 }
-#elif defined(Q_WS_WIN)
+#elif defined(Q_OS_WIN)
 static
 bool maybeAddWindow(HWND hwnd, std::vector<QRect> *windows) {
     WINDOWINFO wi;
@@ -196,7 +196,7 @@ Window findRealWindow( Window w, int depth = 0 )
 
     return ret;
 }
-#elif defined(Q_WS_WIN)
+#elif defined(Q_OS_WIN)
 static
 HWND findRealWindow( HWND w, int depth = 0 )
 {
@@ -232,7 +232,7 @@ Window windowUnderCursor( bool includeDecorations = true )
 
     return child;
 }
-#elif defined(Q_WS_WIN)
+#elif defined(Q_OS_WIN)
 static
 HWND windowUnderCursor(bool includeDecorations = true) 
 {
@@ -319,7 +319,7 @@ QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border,
 
     return pm;
 }
-#elif defined(Q_WS_WIN)
+#elif defined(Q_OS_WIN)
 static
 QPixmap grabWindow( HWND hWnd, QString *title=0, QString *windowClass=0 )
 {
@@ -371,7 +371,7 @@ WindowGrabber::WindowGrabber()
     XUngrabServer( QX11Info::display() );
 
     QPixmap pm( grabWindow( child, x, y, w, h, border, &title, &windowClass ) );
-#elif defined(Q_WS_WIN)
+#elif defined(Q_OS_WIN)
     HWND child = windowUnderCursor();
 
     WINDOWINFO wi;
@@ -441,7 +441,7 @@ QPixmap WindowGrabber::grabCurrent( bool includeDecorations )
     QPixmap pm( grabWindow( child, x, y, w, h, border, &title, &windowClass ) );
     XUngrabServer( QX11Info::display() );
     return pm;
-#elif defined(Q_WS_WIN)
+#elif defined(Q_OS_WIN)
     HWND hWindow;
     hWindow = windowUnderCursor(includeDecorations);
     Q_ASSERT(hWindow);

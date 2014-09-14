@@ -212,7 +212,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
         XChangeProperty(dpy, winId(), atom, XA_CARDINAL, 32,
                         PropModeReplace, (unsigned char *) &d, 1);
     }
-#elif !defined(Q_WS_WIN)
+#elif !defined(Q_OS_WIN)
     mainWidget->cbIncludePointer->hide();
     mainWidget->lblIncludePointer->hide();
 #endif
