@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2007 Montel Laurent <montel@kde.org>
+ *  Copyright (C) 2014 Aaron Seigo <aseigo@kde.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,19 +21,27 @@
 #ifndef KSNAPSHOTOPTIONS_H
 #define KSNAPSHOTOPTIONS_H
 
-#include <kcmdlineargs.h>
-#include <klocale.h>
+#include <QCommandLineParser>
 
-static KCmdLineOptions ksnapshot_options ()
+#include <KLocalizedString>
+
+static void addCommandLineOptions(QCommandLineParser &parser)
 {
-  KCmdLineOptions options;
-  options.add("c");
-  options.add("current", ki18n("Captures the window under the mouse on startup (instead of the desktop)"));
-  options.add("fullscreen", ki18n("Captures the desktop"));
-  options.add("region", ki18n("Captures a region"));
-  options.add("freeregion", ki18n("Captures a free region (not rectangular)"));
-  options.add("child", ki18n("Captures a part of windows"));
-  return options;
+    QCommandLineOption currentOption(QStringList() << "c" << "current",
+                                     i18n("Captures the window under the mouse on startup (instead of the desktop)"));
+    parser.addOption(currentOption);
+
+    QCommandLineOption fullscreenOption("fullscreen", i18n("Captures the desktop"));
+    parser.addOption(fullscreenOption);
+
+    QCommandLineOption regionOption("region", i18n("Captures a region"));
+    parser.addOption(regionOption);
+
+    QCommandLineOption freeRegionOption("freeregion", i18n("Captures a free region (not rectangular)"));
+    parser.addOption(freeRegionOption);
+
+    QCommandLineOption childOption("child", i18n("Captures a part of windows"));
+    parser.addOption(childOption);
 }
 
 #endif
