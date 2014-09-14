@@ -45,9 +45,12 @@ public:
      bool saveEqual( const QUrl &url,QWidget *widget );
      bool saveImage( QIODevice *device, const QByteArray &format );
 
+protected Q_SLOTS:
+     virtual void refreshCaption() { }
+
 protected:
+     void autoincFilenameUntilUnique(QWidget *window);
      void autoincFilename();
-     virtual void refreshCaption(){}
 
      void changeUrl(const QString &newUrl);
 

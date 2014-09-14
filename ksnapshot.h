@@ -92,6 +92,8 @@ protected:
     virtual void closeEvent( QCloseEvent * e );
     void resizeEvent(QResizeEvent*);
     bool eventFilter( QObject*, QEvent* );
+
+protected Q_SLOTS:
     virtual void refreshCaption();
 
 private slots:
@@ -99,7 +101,6 @@ private slots:
     void slotPopulateOpenMenu();
     void grabTimerDone();
     void slotDragSnapshot();
-    void updateCaption();
     void updatePreview();
     void slotRegionGrabbed( const QPixmap & );
     void slotRegionUpdated( const QRect & );

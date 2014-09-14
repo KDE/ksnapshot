@@ -61,10 +61,25 @@ KSnapshotObject::~KSnapshotObject()
     delete grabber;
 }
 
+void KSnapshotObject::autoincFilenameUntilUnique(QWidget *window)
+{
+    forever {
+        // we only need to test for existence; details about the file are uninteresting, so 0 for third param
+        KIO::StatJob *job = KIO::stat(filename, KIO::StatJob::DestinationSide, 0);
+        KJobWidgets::setWindow(job, window);
+        job->exec();
+        if (job->error()) {
+            break;
+        } else {
+            autoincFilename();
+        }
+    }
+}
+
 void KSnapshotObject::autoincFilename()
 {
     // Extract the filename from the path
-    QString name= filename.fileName();
+    QString name = filename.fileName();
 
     // If the name contains a number then increment it
     QRegExp numSearch( "(^|[^\\d])(\\d+)" ); // we want to match as far left as possible, and when the number is at the start of the name
@@ -114,13 +129,14 @@ void KSnapshotObject::changeUrl( const QString &url )
 // NOTE: widget == NULL if called from dbus interface
 bool KSnapshotObject::save( const QString &filename, QWidget* widget )
 {
-    return save( QUrl( filename ), widget);
+    return save( QUrl( filename ), widget );
 }
 
 bool KSnapshotObject::save( const QUrl &url, QWidget *widget )
 {
     // NOTE: widget == NULL if called from dbus interface
     //TODO: non-blocking
+
     // we only need to test for existence; details about the file are uninteresting, so 0 for third param
     KIO::StatJob *job = KIO::stat(url, KIO::StatJob::DestinationSide, 0);
     KJobWidgets::setWindow(job, widget);
@@ -133,7 +149,15 @@ bool KSnapshotObject::save( const QUrl &url, QWidget *widget )
             return false;
         }
     }
-    return saveEqual( url,widget );
+
+    const bool success = saveEqual( url,widget );
+    if (success) {
+        filename = url;
+        autoincFilename();
+        refreshCaption();
+    }
+
+    return success;
 }
 
 bool KSnapshotObject::saveEqual( const QUrl &url,QWidget *widget )

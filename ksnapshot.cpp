@@ -301,7 +301,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
 
     connect( &grabTimer, SIGNAL(timeout()), this, SLOT(grabTimerDone()) );
     connect( &updateTimer, SIGNAL(timeout()), this, SLOT(updatePreview()) );
-    QTimer::singleShot( 0, this, SLOT(updateCaption()) );
+    QTimer::singleShot( 0, this, SLOT(refreshCaption()) );
 
     KHelpMenu *helpMenu = new KHelpMenu(this, KAboutData::applicationData(), true);
     buttonBox->button(QDialogButtonBox::Help)->setMenu(helpMenu->menu());
@@ -361,14 +361,9 @@ void KSnapshot::resizeEvent( QResizeEvent * )
 void KSnapshot::slotSave()
 {
     // Make sure the name is not already being used
-    while(KIO::NetAccess::exists( filename, KIO::NetAccess::DestinationSide, this )) {
-        autoincFilename();
-    }
-
-    if ( save(filename, this) ) {
+    autoincFilenameUntilUnique(this);
+    if (save(filename, this)) {
         modified = false;
-        autoincFilename();
-        updateCaption();
     }
 }
 
@@ -381,29 +376,13 @@ void KSnapshot::slotSaveAs()
         filters << db.mimeTypeForName(mimetype).filterString();
     }
 
-    // Make sure the name is not already being used
-    forever {
-        // we only need to test for existence; details about the file are uninteresting, so 0 for third param
-        KIO::StatJob *job = KIO::stat(filename, KIO::StatJob::DestinationSide, 0);
-        KJobWidgets::setWindow(job, this);
-        job->exec();
-        if (job->error()) {
-            break;
-        } else {
-            autoincFilename();
-        }
-    }
-
     QUrl url = QFileDialog::getSaveFileName(this, i18n("Save Snapshot As"), filename.url(), filters.join(";;"));
     if (!url.isValid()) {
         return;
     }
 
-    if (save(url,this)) {
-        filename = url;
+    if (save(url, this)) {
         modified = false;
-        autoincFilename();
-        updateCaption();
     }
 }
 
@@ -614,7 +593,7 @@ void KSnapshot::slotRegionGrabbed( const QPixmap &pix )
     snapshot = pix;
     updatePreview();
     modified = true;
-    updateCaption();
+    refreshCaption();
   }
 
   if( mode() == KSnapshotObject::Region )
@@ -646,7 +625,7 @@ void KSnapshot::slotWindowGrabbed( const QPixmap &pix )
         snapshot = pix;
         updatePreview();
         modified = true;
-        updateCaption();
+        refreshCaption();
     }
 
     QApplication::restoreOverrideCursor();
@@ -818,7 +797,7 @@ void KSnapshot::performGrab()
     updatePreview();
     QApplication::restoreOverrideCursor();
     modified = true;
-    updateCaption();
+    refreshCaption();
     if (savedPosition != QPoint(-1, -1)) {
         move(savedPosition);
     }
@@ -880,11 +859,6 @@ int KSnapshot::grabMode() const
 }
 
 void KSnapshot::refreshCaption()
-{
-    updateCaption();
-}
-
-void KSnapshot::updateCaption()
 {
     windowHandle()->setTitle(filename.fileName()); // FIXME: no longer can signal modification state! , modified);
 }
