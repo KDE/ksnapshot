@@ -182,7 +182,7 @@ If &lt;i&gt;no delay&lt;/i&gt; is set, the program will wait for a mouse click b
 &lt;/qt&gt;</string>
        </property>
        <property name="specialValueText">
-        <string>No delay</string>
+        <string>On click</string>
        </property>
        <property name="suffix">
         <string/>
