@@ -373,7 +373,7 @@ void KSnapshot::slotSaveAs()
     QStringList filters;
     QMimeDatabase db;
     foreach (const QByteArray &mimetype, QImageWriter::supportedMimeTypes()) {
-        filters = db.mimeTypeForName(mimetype).filterString();
+        filters << db.mimeTypeForName(mimetype).filterString();
     }
 
     // Make sure the name is not already being used
