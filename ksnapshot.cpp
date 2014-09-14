@@ -91,24 +91,24 @@
 
 class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
 {
-    public:
-        KSnapshotWidget(QWidget *parent = 0)
+public:
+    KSnapshotWidget(QWidget *parent = 0)
         : QWidget(parent)
-        {
-            setupUi(this);
-            btnNew->setIcon(QIcon::fromTheme("ksnapshot"));
-        }
+    {
+        setupUi(this);
+        btnNew->setIcon(QIcon::fromTheme("ksnapshot"));
+    }
 };
 
-KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
-  : QDialog(parent), KSnapshotObject(), modified(true), savedPosition(QPoint(-1, -1)), haveXFixes(false)
+KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode)
+    : QDialog(parent), KSnapshotObject(), modified(true), savedPosition(QPoint(-1, -1)), haveXFixes(false)
 {
-    // TEMPORARY Make sure "untitled" enters the string freeze for 4.6, 
+    // TEMPORARY Make sure "untitled" enters the string freeze for 4.6,
     // as explained in http://lists.kde.org/?l=kde-graphics-devel&m=128942871430175&w=2
     const QString untitled = QString(i18n("untitled"));
 
-    setWindowTitle( "" );
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Help|QDialogButtonBox::Apply);
+    setWindowTitle("");
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Help | QDialogButtonBox::Apply);
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
@@ -124,32 +124,32 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     KGuiItem::assign(user2Button, KGuiItem(i18n("Send To...")));
     buttonBox->button(QDialogButtonBox::Apply)->setDefault(true);
     buttonBox->button(QDialogButtonBox::Apply)->setShortcut(Qt::CTRL | Qt::Key_Return);
-    grabber = new QWidget( 0,  Qt::X11BypassWindowManagerHint );
+    grabber = new QWidget(0,  Qt::X11BypassWindowManagerHint);
 
     // TODO X11 (Xinerama and Twinview, actually) and Windows use different coordinates for the two monitors case
     //
     // On Windows, there are two displays. The origin (0, 0) ('o') is the top left of display 1. If display 2 is to the left, then coordinates in display 2 are negative:
     //  .-------.
-    //  |       |o-----. 
+    //  |       |o-----.
     //  |   2   |      |
     //  |       |   1  |
     //  ._______.._____.
     //
     // On Xinerama and Twinview, there is only one display and two screens. The origin (0, 0) ('o') is the top left of the display:
     //  o-------.
-    //  |       |.-----. 
+    //  |       |.-----.
     //  |   2   |      |
     //  |       |   1  |
     //  ._______.._____.
     //
-    // Instead of moving to (-10000, -10000), we should compute how many displays are and make sure we move to somewhere out of the total coordinates. 
+    // Instead of moving to (-10000, -10000), we should compute how many displays are and make sure we move to somewhere out of the total coordinates.
     //   - Windows: use GetSystemMetrics ( http://msdn.microsoft.com/en-us/library/ms724385(v=vs.85).aspx )
 
     // If moving to a negative position, we need to count the size of the dialog; moving to a positive position avoids having to compute the size of the dialog
 
-    grabber->move( -10000, -10000 ); // FIXME Read above
+    grabber->move(-10000, -10000);    // FIXME Read above
 
-    grabber->installEventFilter( this );
+    grabber->installEventFilter(this);
 
     KStartupInfo::appStarted();
 
@@ -168,7 +168,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     openMenu = new QMenu(this);
     user2Button->setMenu(openMenu);
     connect(openMenu, SIGNAL(aboutToShow()), this, SLOT(slotPopulateOpenMenu()));
-    connect(openMenu, SIGNAL(triggered(QAction*)), this, SLOT(slotOpen(QAction*)));
+    connect(openMenu, SIGNAL(triggered(QAction *)), this, SLOT(slotOpen(QAction *)));
 
     connect(m_snapshotWidget->spinDelay, SIGNAL(valueChanged(int)),
             this, SLOT(setDelaySpinboxSuffix(int)));
@@ -197,7 +197,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
         int tmp1, tmp2;
         //Check whether the XFixes extension is available
         Display *dpy = QX11Info::display();
-        if (!XFixesQueryExtension( dpy, &tmp1, &tmp2 )) {
+        if (!XFixesQueryExtension(dpy, &tmp1, &tmp2)) {
             m_snapshotWidget->cbIncludePointer->hide();
             m_snapshotWidget->lblIncludePointer->hide();
         } else {
@@ -219,20 +219,20 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     m_snapshotWidget->lblIncludePointer->hide();
 #endif
     setIncludePointer(conf.readEntry("includePointer", false));
-    setMode( conf.readEntry("mode", 0) );
+    setMode(conf.readEntry("mode", 0));
 
     // check if kwin screenshot effect is available
     includeAlpha = false;
-    if ( QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.kwin" ) ) {
-        QDBusInterface kwinInterface( "org.kde.kwin", "/", "org.freedesktop.DBus.Introspectable" );
-        QDBusReply<QString> reply = kwinInterface.call( "Introspect" );
-        if ( reply.isValid() ) {
-            QXmlStreamReader xml( reply.value() );
-            while ( !xml.atEnd() ) {
+    if (QDBusConnection::sessionBus().interface()->isServiceRegistered("org.kde.kwin")) {
+        QDBusInterface kwinInterface("org.kde.kwin", "/", "org.freedesktop.DBus.Introspectable");
+        QDBusReply<QString> reply = kwinInterface.call("Introspect");
+        if (reply.isValid()) {
+            QXmlStreamReader xml(reply.value());
+            while (!xml.atEnd()) {
                 xml.readNext();
-                if ( xml.tokenType() == QXmlStreamReader::StartElement &&
-                    xml.name().toString() == "node" ) {
-                    if ( xml.attributes().value( "name" ).toString() == "Screenshot" ) {
+                if (xml.tokenType() == QXmlStreamReader::StartElement &&
+                        xml.name().toString() == "node") {
+                    if (xml.attributes().value("name").toString() == "Screenshot") {
                         includeAlpha = true;
                         break;
                     }
@@ -242,47 +242,41 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     }
 
     //qDebug() << "Mode = " << mode;
-    if ( mode == KSnapshotObject::FullScreen ) {
-        snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
+    if (mode == KSnapshotObject::FullScreen) {
+        snapshot = QPixmap::grabWindow(QApplication::desktop()->winId());
 #if HAVE_X11_EXTENSIONS_XFIXES_H
-        if ( haveXFixes && includePointer() )
+        if (haveXFixes && includePointer()) {
             grabPointerImage(0, 0);
+        }
 #endif
-    }
-    else if ( mode == KSnapshotObject::CurrentScreen ) {
+    } else if (mode == KSnapshotObject::CurrentScreen) {
         //qDebug() << "Desktop Geom = " << QApplication::desktop()->geometry();
         QDesktopWidget *desktop = QApplication::desktop();
-        int screenId = desktop->screenNumber( QCursor::pos() );
+        int screenId = desktop->screenNumber(QCursor::pos());
         //qDebug() << "Screenid = " << screenId;
-        QRect geom = desktop->screenGeometry( screenId );
+        QRect geom = desktop->screenGeometry(screenId);
         //qDebug() << "Geometry = " << screenId;
-        snapshot = QPixmap::grabWindow( desktop->winId(),
-                geom.x(), geom.y(), geom.width(), geom.height() );
-    }
-    else {
-        setMode( mode );
-        switch(mode)
-        {
-            case KSnapshotObject::WindowUnderCursor:
-                {
-                    setIncludeDecorations( true );
-                    performGrab();
-                    break;
-                }
-            case  KSnapshotObject::ChildWindow:
-                {
-                    slotGrab();
-                    break;
-                }
-            case KSnapshotObject::Region:
-                {
-                    grabRegion();
-                    break;
-                }
-            case KSnapshotObject::FreeRegion:
-            {
-                 grabFreeRegion();
-                 break;
+        snapshot = QPixmap::grabWindow(desktop->winId(),
+                                       geom.x(), geom.y(), geom.width(), geom.height());
+    } else {
+        setMode(mode);
+        switch (mode) {
+            case KSnapshotObject::WindowUnderCursor: {
+                setIncludeDecorations(true);
+                performGrab();
+                break;
+            }
+            case  KSnapshotObject::ChildWindow: {
+                slotGrab();
+                break;
+            }
+            case KSnapshotObject::Region: {
+                grabRegion();
+                break;
+            }
+            case KSnapshotObject::FreeRegion: {
+                grabFreeRegion();
+                break;
             }
             default:
                 break;
@@ -291,27 +285,27 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
 
     //When we use argument to take snapshot we mustn't hide it.
     if (mode !=  KSnapshotObject::ChildWindow) {
-       grabber->releaseMouse();
-       grabber->hide();
+        grabber->releaseMouse();
+        grabber->hide();
     }
 
-    setDelay( conf.readEntry("delay", 0) );
-    setIncludeDecorations(conf.readEntry("includeDecorations",true));
-    filename = QUrl( conf.readPathEntry( "filename", QDir::currentPath()+'/'+i18n("snapshot")+"1.png" ));
+    setDelay(conf.readEntry("delay", 0));
+    setIncludeDecorations(conf.readEntry("includeDecorations", true));
+    filename = QUrl(conf.readPathEntry("filename", QDir::currentPath() + '/' + i18n("snapshot") + "1.png"));
 
-    connect( &grabTimer, SIGNAL(timeout()), this, SLOT(grabTimerDone()) );
-    connect( &updateTimer, SIGNAL(timeout()), this, SLOT(updatePreview()) );
-    QTimer::singleShot( 0, this, SLOT(refreshCaption()) );
+    connect(&grabTimer, SIGNAL(timeout()), this, SLOT(grabTimerDone()));
+    connect(&updateTimer, SIGNAL(timeout()), this, SLOT(updatePreview()));
+    QTimer::singleShot(0, this, SLOT(refreshCaption()));
 
     KHelpMenu *helpMenu = new KHelpMenu(this, KAboutData::applicationData(), true);
     buttonBox->button(QDialogButtonBox::Help)->setMenu(helpMenu->menu());
 #if 0
-    accel->insert( "QuickSave", i18n("Quick Save Snapshot &As..."),
-                   i18n("Save the snapshot to the file specified by the user without showing the file dialog."),
-                   Qt::CTRL+Qt::SHIFT+Qt::Key_S, this, SLOT(slotSave()));
-    accel->insert( "SaveAs", i18n("Save Snapshot &As..."),
-                   i18n("Save the snapshot to the file specified by the user."),
-                   Qt::CTRL+Qt::Key_A, this, SLOT(slotSaveAs()));
+    accel->insert("QuickSave", i18n("Quick Save Snapshot &As..."),
+                  i18n("Save the snapshot to the file specified by the user without showing the file dialog."),
+                  Qt::CTRL + Qt::SHIFT + Qt::Key_S, this, SLOT(slotSave()));
+    accel->insert("SaveAs", i18n("Save Snapshot &As..."),
+                  i18n("Save the snapshot to the file specified by the user."),
+                  Qt::CTRL + Qt::Key_A, this, SLOT(slotSaveAs()));
 #endif
 
     QList<QKeySequence> shortcuts = KStandardShortcut::shortcut(KStandardShortcut::Quit);
@@ -327,10 +321,10 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     new QShortcut(Qt::Key_S, buttonBox->button(QDialogButtonBox::Apply), SLOT(animateClick()));
 
     shortcuts = KStandardShortcut::shortcut(KStandardShortcut::New);
-    new QShortcut(shortcuts.empty() ? QKeySequence() : shortcuts.first(), m_snapshotWidget->btnNew, SLOT(animateClick()) );
+    new QShortcut(shortcuts.empty() ? QKeySequence() : shortcuts.first(), m_snapshotWidget->btnNew, SLOT(animateClick()));
 
-    new QShortcut(Qt::Key_N, m_snapshotWidget->btnNew, SLOT(animateClick()) );
-    new QShortcut(Qt::Key_Space, m_snapshotWidget->btnNew, SLOT(animateClick()) );
+    new QShortcut(Qt::Key_N, m_snapshotWidget->btnNew, SLOT(animateClick()));
+    new QShortcut(Qt::Key_Space, m_snapshotWidget->btnNew, SLOT(animateClick()));
 
     m_snapshotWidget->btnNew->setFocus();
     resize(QSize(250, 500));
@@ -352,10 +346,10 @@ void KSnapshot::setDelaySpinboxSuffix(int value)
     m_snapshotWidget->spinDelay->setSuffix(i18np(" second", " seconds", value));
 }
 
-void KSnapshot::resizeEvent( QResizeEvent * )
+void KSnapshot::resizeEvent(QResizeEvent *)
 {
-    updateTimer.setSingleShot( true );
-    updateTimer.start( 200 );
+    updateTimer.setSingleShot(true);
+    updateTimer.start(200);
 }
 
 void KSnapshot::slotSave()
@@ -372,7 +366,7 @@ void KSnapshot::slotSaveAs()
     //TODO: non-blocking save
     QStringList filters;
     QMimeDatabase db;
-    foreach (const QByteArray &mimetype, QImageWriter::supportedMimeTypes()) {
+    foreach(const QByteArray & mimetype, QImageWriter::supportedMimeTypes()) {
         filters << db.mimeTypeForName(mimetype).filterString();
     }
 
@@ -389,7 +383,7 @@ void KSnapshot::slotSaveAs()
 void KSnapshot::slotCopy()
 {
     QClipboard *cb = QApplication::clipboard();
-    cb->setPixmap( snapshot );
+    cb->setPixmap(snapshot);
 }
 
 void KSnapshot::slotDragSnapshot()
@@ -414,8 +408,7 @@ void KSnapshot::slotGrab()
     if (delay()) {
         ////qDebug() << "starting timer with time of" << delay();
         grabTimer.start(delay());
-    }
-    else {
+    } else {
         QTimer::singleShot(0, this, SLOT(startUndelayedGrab()));
     }
 }
@@ -424,11 +417,9 @@ void KSnapshot::startUndelayedGrab()
 {
     if (mode() == Region) {
         grabRegion();
-    }
-    else if ( mode() == FreeRegion ) {
+    } else if (mode() == FreeRegion) {
         grabFreeRegion();
-    }
-    else {
+    } else {
         grabber->show();
         grabber->grabMouse(Qt::CrossCursor);
     }
@@ -462,11 +453,10 @@ QUrl KSnapshot::urlToOpen(bool *isTempfile)
     return QUrl();
 }
 
-void KSnapshot::slotOpen(const QString& application)
+void KSnapshot::slotOpen(const QString &application)
 {
     QUrl url = urlToOpen();
-    if (!url.isValid())
-    {
+    if (!url.isValid()) {
         return;
     }
 
@@ -475,20 +465,17 @@ void KSnapshot::slotOpen(const QString& application)
     KRun::run(application, list, this);
 }
 
-void KSnapshot::slotOpen(QAction* action)
+void KSnapshot::slotOpen(QAction *action)
 {
-    KSnapshotServiceAction* serviceAction =
-                                  qobject_cast<KSnapshotServiceAction*>(action);
+    KSnapshotServiceAction *serviceAction = qobject_cast<KSnapshotServiceAction *> (action);
 
-    if (!serviceAction)
-    {
+    if (!serviceAction) {
         return;
     }
 
     bool isTempfile = false;
     QUrl url = urlToOpen(&isTempfile);
-    if (!url.isValid())
-    {
+    if (!url.isValid()) {
         return;
     }
 
@@ -496,20 +483,17 @@ void KSnapshot::slotOpen(QAction* action)
     list.append(url);
 
     KService::Ptr service = serviceAction->service;
-    if (!service)
-    {
+    if (!service) {
         QSharedPointer<KOpenWithDialog> dlg(new KOpenWithDialog(list, this));
-        if (!dlg->exec())
-        {
+        if (!dlg->exec()) {
             return;
         }
 
         service = dlg->service();
 
-        if (!service && !dlg->text().isEmpty())
-        {
-             KRun::run(dlg->text(), list, this);
-             return;
+        if (!service && !dlg->text().isEmpty()) {
+            KRun::run(dlg->text(), list, this);
+            return;
         }
     }
 
@@ -519,9 +503,8 @@ void KSnapshot::slotOpen(QAction* action)
 
 void KSnapshot::slotPopulateOpenMenu()
 {
-    QList<QAction*> currentActions = openMenu->actions();
-    foreach (QAction* currentAction, currentActions)
-    {
+    QList<QAction *> currentActions = openMenu->actions();
+    foreach (QAction *currentAction, currentActions) {
         openMenu->removeAction(currentAction);
         currentAction->deleteLater();
     }
@@ -529,28 +512,25 @@ void KSnapshot::slotPopulateOpenMenu()
     const KService::List services = KMimeTypeTrader::self()->query("image/png");
     QMap<QString, KService::Ptr> apps;
 
-    foreach (const KService::Ptr &service, services)
-    {
+    foreach (const KService::Ptr &service, services) {
         apps.insert(service->name(), service);
     }
 
-    foreach (const KService::Ptr &service, apps)
-    {
-        QString name = service->name().replace( '&', "&&" );
+    foreach (const KService::Ptr &service, apps) {
+        QString name = service->name().replace('&', "&&");
         openMenu->addAction(new KSnapshotServiceAction(service,
-                                                       QIcon::fromTheme(service->icon()),
-                                                       name, this));
+                            QIcon::fromTheme(service->icon()),
+                            name, this));
     }
-
 
 #ifdef KIPI_FOUND
     KIPI::PluginLoader::PluginList pluginList = mPluginLoader->pluginList();
 
-    Q_FOREACH(KIPI::PluginLoader::Info* pluginInfo, pluginList) {
+    foreach (KIPI::PluginLoader::Info *pluginInfo, pluginList) {
         if (!pluginInfo->shouldLoad()) {
             continue;
         }
-        KIPI::Plugin* plugin = pluginInfo->plugin();
+        KIPI::Plugin *plugin = pluginInfo->plugin();
         if (!plugin) {
             qWarning() << "Plugin from library" << pluginInfo->library() << "failed to load";
             continue;
@@ -558,21 +538,21 @@ void KSnapshot::slotPopulateOpenMenu()
 
         plugin->setup(this);
 
-        QList<KAction*> actions = plugin->actions();
-        QSet<KAction*> exportActions;
-        Q_FOREACH(KAction* action, actions) {
+        QList<KAction *> actions = plugin->actions();
+        QSet<KAction *> exportActions;
+        foreach (KAction *action, actions) {
             KIPI::Category category = plugin->category(action);
-            if(category == KIPI::ExportPlugin) {
+            if (category == KIPI::ExportPlugin) {
                 exportActions << action;
             } else if (category == KIPI::ImagesPlugin) {
                 // Horrible hack. Why are the print images and the e-mail images plugins in the same category as rotate and edit metadata!?
-                if( pluginInfo->library().contains("kipiplugin_printimages") || pluginInfo->library().contains("kipiplugin_sendimages")) {
+                if (pluginInfo->library().contains("kipiplugin_printimages") || pluginInfo->library().contains("kipiplugin_sendimages")) {
                     exportActions << action;
                 }
             }
         }
 
-        Q_FOREACH(KAction* action, exportActions) {
+        Q_FOREACH(KAction * action, exportActions) {
             openMenu->addAction(action);
         }
 
@@ -584,46 +564,42 @@ void KSnapshot::slotPopulateOpenMenu()
     openMenu->addSeparator();
     KService::Ptr none;
     openMenu->addAction(new KSnapshotServiceAction(none,
-                                                   i18n("Other Application..."),
-                                                   this));
+                        i18n("Other Application..."),
+                        this));
 }
 
-void KSnapshot::slotRegionGrabbed( const QPixmap &pix )
+void KSnapshot::slotRegionGrabbed(const QPixmap &pix)
 {
-  if ( !pix.isNull() )
-  {
-    snapshot = pix;
-    updatePreview();
-    modified = true;
-    refreshCaption();
-  }
+    if (!pix.isNull()) {
+        snapshot = pix;
+        updatePreview();
+        modified = true;
+        refreshCaption();
+    }
 
-  if( mode() == KSnapshotObject::Region )
-  {
-    rgnGrab->deleteLater();
-  }
-  else if( mode() == KSnapshotObject::FreeRegion ) {
-    freeRgnGrab->deleteLater();
-  }
+    if (mode() == KSnapshotObject::Region) {
+        rgnGrab->deleteLater();
+    } else if (mode() == KSnapshotObject::FreeRegion) {
+        freeRgnGrab->deleteLater();
+    }
 
-  QApplication::restoreOverrideCursor();
-  show();
+    QApplication::restoreOverrideCursor();
+    show();
 }
 
-void KSnapshot::slotRegionUpdated( const QRect &selection )
+void KSnapshot::slotRegionUpdated(const QRect &selection)
 {
     lastRegion = selection;
 }
 
-void KSnapshot::slotFreeRegionUpdated( const QPolygon &selection )
+void KSnapshot::slotFreeRegionUpdated(const QPolygon &selection)
 {
     lastFreeRegion = selection;
 }
 
-void KSnapshot::slotWindowGrabbed( const QPixmap &pix )
+void KSnapshot::slotWindowGrabbed(const QPixmap &pix)
 {
-    if ( !pix.isNull() )
-    {
+    if (!pix.isNull()) {
         snapshot = pix;
         updatePreview();
         modified = true;
@@ -634,7 +610,7 @@ void KSnapshot::slotWindowGrabbed( const QPixmap &pix )
     show();
 }
 
-void KSnapshot::slotScreenshotReceived( qulonglong handle )
+void KSnapshot::slotScreenshotReceived(qulonglong handle)
 {
 #if HAVE_X11
     //FIXME: there is no fromX11Pixmap anymore and nothing there to replace it
@@ -648,7 +624,7 @@ void KSnapshot::slotScreenshotReceived( qulonglong handle )
 #endif
 }
 
-void KSnapshot::closeEvent( QCloseEvent * e )
+void KSnapshot::closeEvent(QCloseEvent *e)
 {
     KConfigGroup conf(KSharedConfig::openConfig(), "GENERAL");
     conf.writeEntry("delay", delay());
@@ -663,59 +639,59 @@ void KSnapshot::closeEvent( QCloseEvent * e )
     */
 
     QUrl url = filename;
-    url.setPassword(QString::null); //krazy:exclude=nullstrassign for old broken gcc
+    url.setPassword(QString::null);    //krazy:exclude=nullstrassign for old broken gcc
     conf.writePathEntry("filename", url.url());
 
     conf.sync();
     e->accept();
 }
 
-bool KSnapshot::eventFilter( QObject* o, QEvent* e)
+bool KSnapshot::eventFilter(QObject *o, QEvent *e)
 {
-    if ( o == grabber && e->type() == QEvent::MouseButtonPress ) {
-        QMouseEvent* me = (QMouseEvent*) e;
-        if ( QWidget::mouseGrabber() != grabber )
+    if (o == grabber && e->type() == QEvent::MouseButtonPress) {
+        QMouseEvent *me = (QMouseEvent *) e;
+        if (QWidget::mouseGrabber() != grabber) {
             return false;
-        if ( me->button() == Qt::LeftButton )
+        }
+        if (me->button() == Qt::LeftButton) {
             performGrab();
+        }
     }
     return false;
 }
 
 void KSnapshot::updatePreview()
 {
-    setPreview( snapshot );
+    setPreview(snapshot);
 }
 
 void KSnapshot::grabRegion()
 {
-   rgnGrab = new RegionGrabber(lastRegion);
-   connect( rgnGrab, SIGNAL(regionGrabbed(QPixmap)),
-                     SLOT(slotRegionGrabbed(QPixmap)) );
-   connect( rgnGrab, SIGNAL(regionUpdated(QRect)),
-                     SLOT(slotRegionUpdated(QRect)) );
+    rgnGrab = new RegionGrabber(lastRegion);
+    connect(rgnGrab, SIGNAL(regionGrabbed(QPixmap)),
+            SLOT(slotRegionGrabbed(QPixmap)));
+    connect(rgnGrab, SIGNAL(regionUpdated(QRect)),
+            SLOT(slotRegionUpdated(QRect)));
 
 }
 
 void KSnapshot::grabFreeRegion()
 {
-   freeRgnGrab = new FreeRegionGrabber(lastFreeRegion);
-   connect( freeRgnGrab, SIGNAL(freeRegionGrabbed(QPixmap)),
-                     SLOT(slotRegionGrabbed(QPixmap)) );
-   connect( freeRgnGrab, SIGNAL(freeRegionUpdated(QPolygon)),
-                     SLOT(slotFreeRegionUpdated(QPolygon)) );
+    freeRgnGrab = new FreeRegionGrabber(lastFreeRegion);
+    connect(freeRgnGrab, SIGNAL(freeRegionGrabbed(QPixmap)),
+            SLOT(slotRegionGrabbed(QPixmap)));
+    connect(freeRgnGrab, SIGNAL(freeRegionUpdated(QPolygon)),
+            SLOT(slotFreeRegionUpdated(QPolygon)));
 
 }
 
 void KSnapshot::grabTimerDone()
 {
-    if ( mode() == Region ) {
+    if (mode() == Region) {
         grabRegion();
-    }
-    else if ( mode() == FreeRegion ) {
+    } else if (mode() == FreeRegion) {
         grabFreeRegion();
-    }
-    else {
+    } else {
         performGrab();
     }
 }
@@ -732,35 +708,32 @@ void KSnapshot::performGrab()
     title.clear();
     windowClass.clear();
 
-    if ( mode() == ChildWindow ) {
+    if (mode() == ChildWindow) {
         WindowGrabber wndGrab;
-        connect( &wndGrab, SIGNAL(windowGrabbed(QPixmap)),
-                           SLOT(slotWindowGrabbed(QPixmap)) );
+        connect(&wndGrab, SIGNAL(windowGrabbed(QPixmap)),
+                SLOT(slotWindowGrabbed(QPixmap)));
         wndGrab.exec();
         QPoint offset = wndGrab.lastWindowPosition();
         x = offset.x();
         y = offset.y();
         qDebug() << "last window position is" << offset;
-    }
-    else if ( mode() == WindowUnderCursor ) {
-        if ( false /* includeAlpha FIXME ... this is broken right now. see slotWindowGrabbed */) {
+    } else if (mode() == WindowUnderCursor) {
+        if (false /* includeAlpha FIXME ... this is broken right now. see slotWindowGrabbed */) {
             // use kwin effect
             QDBusConnection::sessionBus().connect("org.kde.kwin", "/Screenshot",
                                                   "org.kde.kwin.Screenshot", "screenshotCreated",
                                                   this, SLOT(slotScreenshotReceived(qulonglong)));
-            QDBusInterface interface( "org.kde.kwin", "/Screenshot", "org.kde.kwin.Screenshot" );
+            QDBusInterface interface("org.kde.kwin", "/Screenshot", "org.kde.kwin.Screenshot");
             int mask = 0;
-            if ( includeDecorations() )
-            {
+            if (includeDecorations()) {
                 mask |= 1 << 0;
             }
-            if ( includePointer() )
-            {
+            if (includePointer()) {
                 mask |= 1 << 1;
             }
-            interface.call( "screenshotWindowUnderCursor", mask );
+            interface.call("screenshotWindowUnderCursor", mask);
         } else {
-            snapshot = WindowGrabber::grabCurrent( includeDecorations() );
+            snapshot = WindowGrabber::grabCurrent(includeDecorations());
 
             QPoint offset = WindowGrabber::lastWindowPosition();
             x = offset.x();
@@ -768,26 +741,24 @@ void KSnapshot::performGrab()
 
             // If we're showing decorations anyway then we'll add the title and window
             // class to the output image meta data.
-            if ( includeDecorations() ) {
+            if (includeDecorations()) {
                 title = WindowGrabber::lastWindowTitle();
                 windowClass = WindowGrabber::lastWindowClass();
             }
         }
-    }
-    else if ( mode() == CurrentScreen ) {
+    } else if (mode() == CurrentScreen) {
         //qDebug() << "Desktop Geom2 = " << QApplication::desktop()->geometry();
         QDesktopWidget *desktop = QApplication::desktop();
-        int screenId = desktop->screenNumber( QCursor::pos() );
+        int screenId = desktop->screenNumber(QCursor::pos());
         //qDebug() << "Screenid2 = " << screenId;
-        QRect geom = desktop->screenGeometry( screenId );
+        QRect geom = desktop->screenGeometry(screenId);
         //qDebug() << "Geometry2 = " << geom;
         x = geom.x();
         y = geom.y();
-        snapshot = QPixmap::grabWindow( desktop->winId(),
-                x, y, geom.width(), geom.height() );
-    }
-    else {
-        snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
+        snapshot = QPixmap::grabWindow(desktop->winId(),
+                                       x, y, geom.width(), geom.height());
+    } else {
+        snapshot = QPixmap::grabWindow(QApplication::desktop()->winId());
     }
 #if HAVE_X11_EXTENSIONS_XFIXES_H
     if (haveXFixes && includePointer()) {
@@ -809,19 +780,21 @@ void KSnapshot::grabPointerImage(int offsetx, int offsety)
 // Uses the X11_EXTENSIONS_XFIXES_H extension to grab the pointer image, and overlays it onto the snapshot.
 {
 #if HAVE_X11_EXTENSIONS_XFIXES_H
-    XFixesCursorImage *xcursorimg = XFixesGetCursorImage( QX11Info::display() );
-    if ( !xcursorimg )
-      return;
+    XFixesCursorImage *xcursorimg = XFixesGetCursorImage(QX11Info::display());
+    if (!xcursorimg) {
+        return;
+    }
 
     //Annoyingly, xfixes specifies the data to be 32bit, but places it in an unsigned long *
     //which can be 64 bit.  So we need to iterate over a 64bit structure to put it in a 32bit
     //structure.
-    QVarLengthArray< quint32 > pixels( xcursorimg->width * xcursorimg->height );
-    for (int i = 0; i < xcursorimg->width * xcursorimg->height; ++i)
+    QVarLengthArray< quint32 > pixels(xcursorimg->width * xcursorimg->height);
+    for (int i = 0; i < xcursorimg->width * xcursorimg->height; ++i) {
         pixels[i] = xcursorimg->pixels[i] & 0xffffffff;
+    }
 
     QImage qcursorimg((uchar *) pixels.data(), xcursorimg->width, xcursorimg->height,
-                       QImage::Format_ARGB32_Premultiplied);
+                      QImage::Format_ARGB32_Premultiplied);
 
     QPainter painter(&snapshot);
     painter.drawImage(QPointF(xcursorimg->x - xcursorimg->xhot - offsetx, xcursorimg->y - xcursorimg ->yhot - offsety), qcursorimg);
@@ -844,14 +817,14 @@ int KSnapshot::timeout() const
     return delay();
 }
 
-void KSnapshot::setURL( const QString &url )
+void KSnapshot::setURL(const QString &url)
 {
-    changeUrl( url );
+    changeUrl(url);
 }
 
-void KSnapshot::setGrabMode( int m )
+void KSnapshot::setGrabMode(int m)
 {
-    setMode( m );
+    setMode(m);
 }
 
 int KSnapshot::grabMode() const
@@ -861,12 +834,12 @@ int KSnapshot::grabMode() const
 
 void KSnapshot::refreshCaption()
 {
-    windowHandle()->setTitle(filename.fileName()); // FIXME: no longer can signal modification state! , modified);
+    windowHandle()->setTitle(filename.fileName());    // FIXME: no longer can signal modification state! , modified);
 }
 
 void KSnapshot::slotMovePointer(int x, int y)
 {
-    QCursor::setPos( x, y );
+    QCursor::setPos(x, y);
 }
 
 void KSnapshot::exit()
@@ -882,22 +855,22 @@ void KSnapshot::slotModeChanged(int mode)
     m_snapshotWidget->lblIncludeDecorations->setEnabled(mode == WindowUnderCursor);
 }
 
-void KSnapshot::setPreview( const QPixmap &pm )
+void KSnapshot::setPreview(const QPixmap &pm)
 {
     m_snapshotWidget->lblImage->setToolTip(
-        i18n( "Preview of the snapshot image (%1 x %2)" ,
-          pm.width(), pm.height() ) );
+        i18n("Preview of the snapshot image (%1 x %2)" ,
+             pm.width(), pm.height()));
 
     m_snapshotWidget->lblImage->setPreview(pm);
     m_snapshotWidget->lblImage->adjustSize();
 }
 
-void KSnapshot::setDelay( int i )
+void KSnapshot::setDelay(int i)
 {
     m_snapshotWidget->spinDelay->setValue(i);
 }
 
-void KSnapshot::setIncludeDecorations( bool b )
+void KSnapshot::setIncludeDecorations(bool b)
 {
     m_snapshotWidget->cbIncludeDecorations->setChecked(b);
 }
@@ -912,7 +885,7 @@ bool KSnapshot::includePointer() const
     return m_snapshotWidget->cbIncludePointer->isChecked();
 }
 
-void KSnapshot::setMode( int mode )
+void KSnapshot::setMode(int mode)
 {
     m_snapshotWidget->comboMode->setCurrentIndex(mode);
     slotModeChanged(mode);

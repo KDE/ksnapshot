@@ -37,8 +37,8 @@ int main(int argc, char **argv)
     aboutData.addAuthor("Richard J. Moore", QString(), QString("rich@kde.org"));
     aboutData.addAuthor("Matthias Ettrich", QString(), "ettrich@kde.org");
     aboutData.addAuthor("Aaron J. Seigo", QString(), "aseigo@kde.org");
-    aboutData.addCredit("Nadeem Hasan", i18n("Region Grabbing\nReworked GUI"), "nhasan@kde.org" );
-    aboutData.addCredit("Marcus Hufgard", i18n("\"Open With\" function"), "Marcus.Hufgard@hufgard.de" );
+    aboutData.addCredit("Nadeem Hasan", i18n("Region Grabbing\nReworked GUI"), "nhasan@kde.org");
+    aboutData.addCredit("Marcus Hufgard", i18n("\"Open With\" function"), "Marcus.Hufgard@hufgard.de");
     aboutData.addCredit("Pau Garcia i Quiles", i18n("Free region grabbing, KIPI plugins support, port to Windows"),
                         "pgquiles@elpauer.org");
 
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
     aboutData.setupCommandLine(&parser);
     parser.process(app);
     aboutData.processCommandLine(&parser);
-    addCommandLineOptions(parser); // Add our own options.
+    addCommandLineOptions(parser);    // Add our own options.
 
     // This is one of the applications that requires the "native" / X11 graphics backend to work.
     QApplication::setGraphicsSystem("native");
@@ -59,22 +59,19 @@ int main(int argc, char **argv)
     KSnapshot *toplevel;
     bool showTopLevel = false;
 
-    if ( parser.isSet( "current" ) )
-        toplevel = new KSnapshot( 0, KSnapshotObject::WindowUnderCursor );
-    else if(parser.isSet( "fullscreen" ))
-    {
+    if (parser.isSet("current")) {
+        toplevel = new KSnapshot(0, KSnapshotObject::WindowUnderCursor);
+    } else if (parser.isSet("fullscreen")) {
         //we grad directly desktop => show dialogbox
         showTopLevel = true;
-        toplevel = new KSnapshot( 0, KSnapshotObject::FullScreen );
-    }
-    else if(parser.isSet( "region" ))
-        toplevel = new KSnapshot( 0, KSnapshotObject::Region );
-    else if(parser.isSet( "freeregion" ))
-        toplevel = new KSnapshot( 0, KSnapshotObject::FreeRegion );
-    else if(parser.isSet( "child" ))
-        toplevel = new KSnapshot( 0, KSnapshotObject::ChildWindow );
-    else
-    {
+        toplevel = new KSnapshot(0, KSnapshotObject::FullScreen);
+    } else if (parser.isSet("region")) {
+        toplevel = new KSnapshot(0, KSnapshotObject::Region);
+    } else if (parser.isSet("freeregion")) {
+        toplevel = new KSnapshot(0, KSnapshotObject::FreeRegion);
+    } else if (parser.isSet("child")) {
+        toplevel = new KSnapshot(0, KSnapshotObject::ChildWindow);
+    } else {
         showTopLevel = true;
         toplevel = new KSnapshot();
     }
@@ -83,8 +80,9 @@ int main(int argc, char **argv)
     new KsnapshotAdaptor(toplevel);
     QDBusConnection::sessionBus().registerObject("/KSnapshot", toplevel);
 
-    if(showTopLevel)
+    if (showTopLevel) {
         toplevel->show();
+    }
     return app.exec();
 }
 

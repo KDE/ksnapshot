@@ -36,31 +36,31 @@ class QString;
 class KSnapshotObject
 {
 public:
-    enum CaptureMode { FullScreen=0, WindowUnderCursor=1, Region=2, FreeRegion=3, ChildWindow=4, CurrentScreen=5 };
-     KSnapshotObject();
-     virtual ~KSnapshotObject();
+    enum CaptureMode { FullScreen = 0, WindowUnderCursor = 1, Region = 2, FreeRegion = 3, ChildWindow = 4, CurrentScreen = 5 };
+    KSnapshotObject();
+    virtual ~KSnapshotObject();
 
-     bool save( const QString &filename, QWidget* widget = 0);
-     bool save( const QUrl &url, QWidget *widget );
-     bool saveTo( const QUrl &url,QWidget *widget );
-     bool saveImage( QIODevice *device, const QByteArray &format );
+    bool save(const QString &filename, QWidget *widget = 0);
+    bool save(const QUrl &url, QWidget *widget);
+    bool saveTo(const QUrl &url, QWidget *widget);
+    bool saveImage(QIODevice *device, const QByteArray &format);
 
 protected Q_SLOTS:
-     virtual void refreshCaption() { }
+    virtual void refreshCaption() { }
 
 protected:
-     void autoincFilenameUntilUnique(QWidget *window);
-     void autoincFilename();
+    void autoincFilenameUntilUnique(QWidget *window);
+    void autoincFilename();
 
-     void changeUrl(const QString &newUrl);
+    void changeUrl(const QString &newUrl);
 
-     QUrl filename;
-     RegionGrabber *rgnGrab;
-     FreeRegionGrabber *freeRgnGrab;
-     QWidget* grabber;
-     QPixmap snapshot;
-     QString title;
-     QString windowClass;
+    QUrl filename;
+    RegionGrabber *rgnGrab;
+    FreeRegionGrabber *freeRgnGrab;
+    QWidget *grabber;
+    QPixmap snapshot;
+    QString title;
+    QString windowClass;
 };
 
 #endif

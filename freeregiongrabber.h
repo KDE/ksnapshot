@@ -33,30 +33,30 @@ class FreeRegionGrabber : public QWidget
     Q_OBJECT
 
 public:
-    FreeRegionGrabber( const QPolygon &startFreeRegion );
+    FreeRegionGrabber(const QPolygon &startFreeRegion);
     ~FreeRegionGrabber();
 
 protected slots:
     void init();
 
 signals:
-    void freeRegionGrabbed( const QPixmap & );
-    void freeRegionUpdated( const QPolygon & );
+    void freeRegionGrabbed(const QPixmap &);
+    void freeRegionUpdated(const QPolygon &);
 
 protected:
-    void paintEvent( QPaintEvent* e );
-    void mousePressEvent( QMouseEvent* e );
-    void mouseMoveEvent( QMouseEvent* e );
-    void mouseReleaseEvent( QMouseEvent* e );
-    void mouseDoubleClickEvent( QMouseEvent* );
-    void keyPressEvent( QKeyEvent* e );
+    void paintEvent(QPaintEvent *e);
+    void mousePressEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
+    void mouseDoubleClickEvent(QMouseEvent *);
+    void keyPressEvent(QKeyEvent *e);
     void grabRect();
 
     QPolygon selection;
     bool mouseDown;
     bool newSelection;
     const int handleSize;
-    QRect* mouseOverHandle;
+    QRect *mouseOverHandle;
     QPoint dragStartPoint;
     QPolygon  selectionBeforeDrag;
     bool showHelp;

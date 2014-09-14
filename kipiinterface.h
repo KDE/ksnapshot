@@ -32,28 +32,29 @@
 class KSnapshot;
 struct KIPIInterfacePrivate;
 
-class KIPIInterface :public KIPI::Interface {
+class KIPIInterface : public KIPI::Interface
+{
     Q_OBJECT
 
 public:
-        KIPIInterface(KSnapshot* ksnapshot);
+    KIPIInterface(KSnapshot *ksnapshot);
     virtual ~KIPIInterface();
 
-    virtual bool addImage(const QUrl&, QString& err);
-    virtual void delImage( const QUrl& );
-    virtual void refreshImages( const QList<QUrl>& urls );
+    virtual bool addImage(const QUrl &, QString &err);
+    virtual void delImage(const QUrl &);
+    virtual void refreshImages(const QList<QUrl> &urls);
 
-    virtual KIPI::ImageCollectionSelector* imageCollectionSelector(QWidget *parent);
-    virtual KIPI::UploadWidget* uploadWidget(QWidget *parent);
+    virtual KIPI::ImageCollectionSelector *imageCollectionSelector(QWidget *parent);
+    virtual KIPI::UploadWidget *uploadWidget(QWidget *parent);
 
-        virtual QList<KIPI::ImageCollection> allAlbums();
+    virtual QList<KIPI::ImageCollection> allAlbums();
     virtual KIPI::ImageCollection currentAlbum();
     virtual KIPI::ImageCollection currentSelection();
     virtual int features() const;
-        virtual KIPI::ImageInfo info(const QUrl& );
+    virtual KIPI::ImageInfo info(const QUrl &);
 
 private:
-    KIPIInterfacePrivate* const d;
+    KIPIInterfacePrivate *const d;
 };
 
 #endif // KIPIINTERFACE_H

@@ -33,14 +33,14 @@ public:
     virtual ~KBackgroundSnapshot();
 
 private slots:
-    void slotWindowGrabbed( const QPixmap &pix );
+    void slotWindowGrabbed(const QPixmap &pix);
     void slotGrab();
-    void slotRegionGrabbed( const QPixmap &pix );
+    void slotRegionGrabbed(const QPixmap &pix);
 
 protected:
     void performGrab();
     void grabRegion();
-    bool eventFilter( QObject*, QEvent* );
+    bool eventFilter(QObject *, QEvent *);
     void savePictureOnDesktop();
 
 private:

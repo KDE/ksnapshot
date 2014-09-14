@@ -33,25 +33,34 @@ public:
     ~WindowGrabber();
 
     /* Grab a screenshot of the current window.  x and y are set to the position of the window */
-    static QPixmap grabCurrent( bool includeDecorations );
-    static QString lastWindowTitle() { return WindowGrabber::title; }
-    static QString lastWindowClass() { return WindowGrabber::windowClass; }
-    static QPoint lastWindowPosition() { return WindowGrabber::windowPosition; }
+    static QPixmap grabCurrent(bool includeDecorations);
+    static QString lastWindowTitle()
+    {
+        return WindowGrabber::title;
+    }
+    static QString lastWindowClass()
+    {
+        return WindowGrabber::windowClass;
+    }
+    static QPoint lastWindowPosition()
+    {
+        return WindowGrabber::windowPosition;
+    }
 
 signals:
-    void windowGrabbed( const QPixmap & );
+    void windowGrabbed(const QPixmap &);
 
 protected:
-    void mousePressEvent( QMouseEvent * );
-    void mouseReleaseEvent( QMouseEvent * );
-    void mouseMoveEvent( QMouseEvent * );
-    void wheelEvent( QWheelEvent * );
-    void paintEvent( QPaintEvent * );
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
+    void wheelEvent(QWheelEvent *);
+    void paintEvent(QPaintEvent *);
 
 private:
-    void increaseScope( const QPoint & );
-    void decreaseScope( const QPoint & );
-    int windowIndex( const QPoint & ) const;
+    void increaseScope(const QPoint &);
+    void decreaseScope(const QPoint &);
+    int windowIndex(const QPoint &) const;
     std::vector<QRect> windows;
     int current;
     int yPos;

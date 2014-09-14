@@ -30,16 +30,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Cambridge, MA 02110-1301, USA
 #include "kipiinterface.h"
 
 struct KIPIImageCollectionSelectorPrivate;
-class KIPIImageCollectionSelector : public KIPI::ImageCollectionSelector {
+class KIPIImageCollectionSelector : public KIPI::ImageCollectionSelector
+{
     Q_OBJECT
 public:
-    KIPIImageCollectionSelector(KIPIInterface*, QWidget* parent);
+    KIPIImageCollectionSelector(KIPIInterface *, QWidget *parent);
     ~KIPIImageCollectionSelector();
 
     virtual QList<KIPI::ImageCollection> selectedImageCollections() const;
 
 private:
-    KIPIImageCollectionSelectorPrivate* const d;
+    KIPIImageCollectionSelectorPrivate *const d;
 };
 
 #endif /* KIPIIMAGECOLLECTIONSELECTOR_H */

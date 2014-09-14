@@ -25,25 +25,25 @@
 
 class SnapshotTimer : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     SnapshotTimer();
     ~SnapshotTimer();
     void start(int seconds);
     void stop();
 
-  signals:
+signals:
     void timeout();
 
-  protected slots:
+protected slots:
     void bell();
 
-  protected:
+protected:
     void paintEvent(QPaintEvent *e);
     void enterEvent(QEvent *e);
 
-  private:
+private:
     QTimer timer;
     QRect textRect;
     int time;

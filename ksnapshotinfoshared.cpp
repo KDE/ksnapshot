@@ -22,17 +22,17 @@
 
 #include "ksnapshotinfoshared.h"
 
-KSnapshotInfoShared::KSnapshotInfoShared(KIPIInterface* interface, const QUrl &url) : KIPI::ImageInfoShared(interface,url)
+KSnapshotInfoShared::KSnapshotInfoShared(KIPIInterface *interface, const QUrl &url) : KIPI::ImageInfoShared(interface, url)
 {
 
 }
 
-void KSnapshotInfoShared::delAttributes(const QStringList& )
+void KSnapshotInfoShared::delAttributes(const QStringList &)
 {
 
 }
 
-void KSnapshotInfoShared::addAttributes(const QMap< QString, QVariant >& )
+void KSnapshotInfoShared::addAttributes(const QMap< QString, QVariant > &)
 {
 
 }
@@ -44,15 +44,15 @@ void KSnapshotInfoShared::clearAttributes()
 
 QMap< QString, QVariant > KSnapshotInfoShared::attributes()
 {
-    return QMap<QString,QVariant>();
+    return QMap<QString, QVariant>();
 }
 
-void KSnapshotInfoShared::setDescription(const QString& )
+void KSnapshotInfoShared::setDescription(const QString &)
 {
 
 }
 
 QString KSnapshotInfoShared::description()
 {
-        return "Taken with KSnapshot";
+    return "Taken with KSnapshot";
 }

@@ -37,58 +37,67 @@
 
 struct KIPIInterfacePrivate {
     KSnapshot *ksnapshot;
-    KIPI::PluginLoader* pluginLoader;
+    KIPI::PluginLoader *pluginLoader;
 };
 
-KIPIInterface::KIPIInterface(KSnapshot* ksnapshot)
-:KIPI::Interface(ksnapshot)
-, d(new KIPIInterfacePrivate) {
+KIPIInterface::KIPIInterface(KSnapshot *ksnapshot)
+    : KIPI::Interface(ksnapshot)
+    , d(new KIPIInterfacePrivate)
+{
     d->ksnapshot = ksnapshot;
 }
 
-KIPIInterface::~KIPIInterface() {
+KIPIInterface::~KIPIInterface()
+{
     delete d;
 }
 
-KIPI::ImageCollection KIPIInterface::currentAlbum() {
+KIPI::ImageCollection KIPIInterface::currentAlbum()
+{
     return KIPI::ImageCollection(new KSnapshotImageCollectionShared(d->ksnapshot));
 }
 
-KIPI::ImageCollection KIPIInterface::currentSelection() {
+KIPI::ImageCollection KIPIInterface::currentSelection()
+{
     return KIPI::ImageCollection(new KSnapshotImageCollectionShared(d->ksnapshot));
 }
 
-QList<KIPI::ImageCollection> KIPIInterface::allAlbums() {
+QList<KIPI::ImageCollection> KIPIInterface::allAlbums()
+{
     QList<KIPI::ImageCollection> list;
     list << currentSelection();
     return list;
 }
 
-KIPI::ImageInfo KIPIInterface::info(const QUrl &url) {
-    return KIPI::ImageInfo(new KSnapshotInfoShared(this,url));
+KIPI::ImageInfo KIPIInterface::info(const QUrl &url)
+{
+    return KIPI::ImageInfo(new KSnapshotInfoShared(this, url));
 }
 
-bool KIPIInterface::addImage(const QUrl&, QString&)
+bool KIPIInterface::addImage(const QUrl &, QString &)
 {
     return true;
 }
-void KIPIInterface::delImage( const QUrl& )
+void KIPIInterface::delImage(const QUrl &)
 {
 
 }
-void KIPIInterface::refreshImages( const QList<QUrl>& )
+void KIPIInterface::refreshImages(const QList<QUrl> &)
 {
 // TODO Implement?
 }
 
-KIPI::ImageCollectionSelector* KIPIInterface::imageCollectionSelector(QWidget *parent) {
+KIPI::ImageCollectionSelector *KIPIInterface::imageCollectionSelector(QWidget *parent)
+{
     return new KIPIImageCollectionSelector(this, parent);
 }
 
-KIPI::UploadWidget* KIPIInterface::uploadWidget(QWidget *parent) {
+KIPI::UploadWidget *KIPIInterface::uploadWidget(QWidget *parent)
+{
     return (new KIPI::UploadWidget(parent));
 }
 
-int KIPIInterface::features() const {
+int KIPIInterface::features() const
+{
     return KIPI::HostAcceptNewImages;
 }

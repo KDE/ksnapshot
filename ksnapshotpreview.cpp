@@ -44,7 +44,7 @@ void KSnapshotPreview::setPreview(const QPixmap &pm)
 {
     static const int BLUR_PAD = 6;
     static const int BLUR_RADIUS = 2;
-    QPixmap pixmap = pm.scaled(width() - BLUR_PAD, height() - BLUR_PAD, Qt::KeepAspectRatio, Qt::SmoothTransformation );
+    QPixmap pixmap = pm.scaled(width() - BLUR_PAD, height() - BLUR_PAD, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
     QImage blur(pixmap.size() + QSize(BLUR_PAD, BLUR_PAD), QImage::Format_ARGB32);
     QRect blurRect = QRect(QPoint(BLUR_PAD / 2, BLUR_PAD / 2), pixmap.size());
@@ -60,7 +60,7 @@ void KSnapshotPreview::setPreview(const QPixmap &pm)
     }
 
     // apply blur for the thumbnail shadow
-    expblur<16, 7>(blur, BLUR_RADIUS);
+    expblur<16, 7> (blur, BLUR_RADIUS);
 
     {
         QPainter p(&blur);
@@ -75,17 +75,17 @@ void KSnapshotPreview::setPreview(const QPixmap &pm)
     setPixmap(QPixmap::fromImage(blur));
 }
 
-void KSnapshotPreview::mousePressEvent(QMouseEvent * e)
+void KSnapshotPreview::mousePressEvent(QMouseEvent *e)
 {
-    if ( e->button() == Qt::LeftButton )
+    if (e->button() == Qt::LeftButton) {
         mClickPt = e->pos();
+    }
 }
 
-void KSnapshotPreview::mouseMoveEvent(QMouseEvent * e)
+void KSnapshotPreview::mouseMoveEvent(QMouseEvent *e)
 {
     if (mClickPt != QPoint(0, 0) &&
-            (e->pos() - mClickPt).manhattanLength() > QApplication::startDragDistance())
-    {
+            (e->pos() - mClickPt).manhattanLength() > QApplication::startDragDistance()) {
         mClickPt = QPoint(0, 0);
         emit startDrag();
     }

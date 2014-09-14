@@ -50,9 +50,9 @@
 #include <QMimeType>
 
 KSnapshotObject::KSnapshotObject()
-: rgnGrab( 0 ),
-  freeRgnGrab( 0 ),
-  grabber( 0 )
+    : rgnGrab(0),
+      freeRgnGrab(0),
+      grabber(0)
 {
 }
 
@@ -69,7 +69,8 @@ void KSnapshotObject::autoincFilenameUntilUnique(QWidget *window)
         KJobWidgets::setWindow(job, window);
         job->exec();
 
-        if (job->error()) {
+        if (job->error())
+        {
             break;
         } else {
             autoincFilename();
@@ -83,26 +84,24 @@ void KSnapshotObject::autoincFilename()
     QString name = filename.fileName();
 
     // If the name contains a number then increment it
-    QRegExp numSearch( "(^|[^\\d])(\\d+)" ); // we want to match as far left as possible, and when the number is at the start of the name
+    QRegExp numSearch("(^|[^\\d])(\\d+)");    // we want to match as far left as possible, and when the number is at the start of the name
 
     // Does it have a number?
-    int start = numSearch.lastIndexIn( name );
+    int start = numSearch.lastIndexIn(name);
     if (start != -1) {
         // It has a number, increment it
-        start = numSearch.pos( 2 ); // we are only interested in the second group
-        QString numAsStr = numSearch.capturedTexts()[ 2 ];
-        QString number = QString::number( numAsStr.toInt() + 1 );
-        number = number.rightJustified( numAsStr.length(), '0' );
-        name.replace( start, numAsStr.length(), number );
-    }
-    else {
+        start = numSearch.pos(2);    // we are only interested in the second group
+        QString numAsStr = numSearch.capturedTexts() [ 2 ];
+        QString number = QString::number(numAsStr.toInt() + 1);
+        number = number.rightJustified(numAsStr.length(), '0');
+        name.replace(start, numAsStr.length(), number);
+    } else {
         // no number
         start = name.lastIndexOf('.');
         if (start != -1) {
             // has a . somewhere, e.g. it has an extension
             name.insert(start, '1');
-        }
-        else {
+        } else {
             // no extension, just tack it on to the end
             name += '1';
         }
@@ -111,16 +110,17 @@ void KSnapshotObject::autoincFilename()
     //Rebuild the path
     QUrl newUrl = filename;
     newUrl = newUrl.adjusted(QUrl::RemoveFilename);
-    newUrl.setPath(newUrl.path() +  name );
-    changeUrl( newUrl.url() );
+    newUrl.setPath(newUrl.path() +  name);
+    changeUrl(newUrl.url());
 }
 
 
-void KSnapshotObject::changeUrl( const QString &url )
+void KSnapshotObject::changeUrl(const QString &url)
 {
-    QUrl newURL = QUrl( url );
-    if ( newURL == filename )
+    QUrl newURL = QUrl(url);
+    if (newURL == filename) {
         return;
+    }
 
     filename = newURL;
     refreshCaption();
@@ -128,12 +128,12 @@ void KSnapshotObject::changeUrl( const QString &url )
 
 
 // NOTE: widget == NULL if called from dbus interface
-bool KSnapshotObject::save( const QString &filename, QWidget* widget )
+bool KSnapshotObject::save(const QString &filename, QWidget *widget)
 {
     return save(QUrl::fromUserInput(filename), widget);
 }
 
-bool KSnapshotObject::save( const QUrl &url, QWidget *widget )
+bool KSnapshotObject::save(const QUrl &url, QWidget *widget)
 {
     // NOTE: widget == NULL if called from dbus interface
     //TODO: non-blocking
@@ -143,15 +143,14 @@ bool KSnapshotObject::save( const QUrl &url, QWidget *widget )
     KJobWidgets::setWindow(job, widget);
     job->exec();
     if (!job->error()) {
-        const QString title = i18n( "File Exists" );
-        const QString text = i18n( "<qt>Do you really want to overwrite <b>%1</b>?</qt>" , url.url(QUrl::PreferLocalFile));
-        if (KMessageBox::Continue != KMessageBox::warningContinueCancel( widget, text, title, KGuiItem(i18n("Overwrite")) ) )
-        {
+        const QString title = i18n("File Exists");
+        const QString text = i18n("<qt>Do you really want to overwrite <b>%1</b>?</qt>" , url.url(QUrl::PreferLocalFile));
+        if (KMessageBox::Continue != KMessageBox::warningContinueCancel(widget, text, title, KGuiItem(i18n("Overwrite")))) {
             return false;
         }
     }
 
-    const bool success = saveTo( url,widget );
+    const bool success = saveTo(url, widget);
     if (success) {
         filename = url;
         autoincFilename();
@@ -161,7 +160,7 @@ bool KSnapshotObject::save( const QUrl &url, QWidget *widget )
     return success;
 }
 
-bool KSnapshotObject::saveTo( const QUrl &url,QWidget *widget )
+bool KSnapshotObject::saveTo(const QUrl &url, QWidget *widget)
 {
     QMimeDatabase db;
     QString type = db.mimeTypeForName(url.fileName()).name();
@@ -189,7 +188,7 @@ bool KSnapshotObject::saveTo( const QUrl &url,QWidget *widget )
     }
 
     QApplication::restoreOverrideCursor();
-    if ( !ok ) {
+    if (!ok) {
         qWarning() << "KSnapshot was unable to save the snapshot to" << url.toDisplayString();
 
         const QString caption = i18n("Unable to Save Image");
@@ -200,26 +199,28 @@ bool KSnapshotObject::saveTo( const QUrl &url,QWidget *widget )
     return ok;
 }
 
-bool KSnapshotObject::saveImage( QIODevice *device, const QByteArray &format )
+bool KSnapshotObject::saveImage(QIODevice *device, const QByteArray &format)
 {
-    QImageWriter imgWriter( device, format );
+    QImageWriter imgWriter(device, format);
 
-    if ( !imgWriter.canWrite() ) {
-    qDebug() << "Cannot write format " << format;
-    return false;
+    if (!imgWriter.canWrite()) {
+        qDebug() << "Cannot write format " << format;
+        return false;
     }
 
     // For jpeg use 85% quality not the default
-    if ( 0 == qstricmp(format.constData(), "jpeg") || 0 == qstricmp(format.constData(), "jpg") ) {
-    imgWriter.setQuality( 85 );
+    if (0 == qstricmp(format.constData(), "jpeg") || 0 == qstricmp(format.constData(), "jpg")) {
+        imgWriter.setQuality(85);
     }
 
-    if ( !title.isEmpty() )
-    imgWriter.setText( i18n("Title"), title );
-    if ( !windowClass.isEmpty() )
-    imgWriter.setText( i18n("Window Class"), windowClass );
+    if (!title.isEmpty()) {
+        imgWriter.setText(i18n("Title"), title);
+    }
+    if (!windowClass.isEmpty()) {
+        imgWriter.setText(i18n("Window Class"), windowClass);
+    }
 
     QImage snap = snapshot.toImage();
-    return imgWriter.write( snap );
+    return imgWriter.write(snap);
 }
 

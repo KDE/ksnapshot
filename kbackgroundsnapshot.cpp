@@ -37,7 +37,7 @@
 #include <QStandardPaths>
 
 KBackgroundSnapshot::KBackgroundSnapshot(KSnapshotObject::CaptureMode mode)
-    :KSnapshotObject()
+    : KSnapshotObject()
 {
     modeCapture = mode;
     grabber = new QWidget(0, Qt::X11BypassWindowManagerHint);
@@ -47,10 +47,10 @@ KBackgroundSnapshot::KBackgroundSnapshot(KSnapshotObject::CaptureMode mode)
     grabber->grabMouse(Qt::WaitCursor);
 
     if (mode == KSnapshotObject::FullScreen) {
-        snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
+        snapshot = QPixmap::grabWindow(QApplication::desktop()->winId());
         savePictureOnDesktop();
     } else {
-        switch(mode) {
+        switch (mode) {
             case KSnapshotObject::WindowUnderCursor:
                 performGrab();
                 break;
@@ -67,8 +67,8 @@ KBackgroundSnapshot::KBackgroundSnapshot(KSnapshotObject::CaptureMode mode)
 
     //When we use argument to take snapshot we mustn't hide it.
     if (mode != KSnapshotObject::ChildWindow) {
-       grabber->releaseMouse();
-       grabber->hide();
+        grabber->releaseMouse();
+        grabber->hide();
     }
 
 }
@@ -80,13 +80,13 @@ KBackgroundSnapshot::~KBackgroundSnapshot()
 
 void KBackgroundSnapshot::savePictureOnDesktop()
 {
-    filename = QUrl( QStandardPaths::writableLocation(QStandardPaths::DesktopLocation)+'/'+i18n("snapshot")+"1.png" );
+    filename = QUrl(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + '/' + i18n("snapshot") + "1.png");
     // Make sure the name is not already being used
-    while (KIO::NetAccess::exists( filename, KIO::NetAccess::DestinationSide, 0L )) {
+    while (KIO::NetAccess::exists(filename, KIO::NetAccess::DestinationSide, 0L)) {
         autoincFilename();
     }
-    save( filename, 0L);
-    exit( 0 );
+    save(filename, 0L);
+    exit(0);
 }
 
 void KBackgroundSnapshot::performGrab()
@@ -94,28 +94,27 @@ void KBackgroundSnapshot::performGrab()
     ////qDebug()<<"KBackgroundSnapshot::performGrab()\n";
     grabber->releaseMouse();
     grabber->hide();
-    if ( modeCapture == ChildWindow ) {
+    if (modeCapture == ChildWindow) {
         WindowGrabber wndGrab;
-        connect( &wndGrab, SIGNAL(windowGrabbed(QPixmap)),
-                           SLOT(slotWindowGrabbed(QPixmap)) );
+        connect(&wndGrab, SIGNAL(windowGrabbed(QPixmap)),
+                SLOT(slotWindowGrabbed(QPixmap)));
         wndGrab.exec();
         savePictureOnDesktop();
-    }
-    else if ( modeCapture == WindowUnderCursor ) {
-        snapshot = WindowGrabber::grabCurrent( true );
+    } else if (modeCapture == WindowUnderCursor) {
+        snapshot = WindowGrabber::grabCurrent(true);
         savePictureOnDesktop();
-    }
-    else {
-        snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
+    } else {
+        snapshot = QPixmap::grabWindow(QApplication::desktop()->winId());
         savePictureOnDesktop();
     }
 }
 
-void KBackgroundSnapshot::slotWindowGrabbed( const QPixmap &pix )
+void KBackgroundSnapshot::slotWindowGrabbed(const QPixmap &pix)
 {
     ////qDebug()<<" KBackgroundSnapshot::slotWindowGrabbed( const QPixmap &pix )\n";
-    if ( !pix.isNull() )
+    if (!pix.isNull()) {
         snapshot = pix;
+    }
     QApplication::restoreOverrideCursor();
 }
 
@@ -124,37 +123,40 @@ void KBackgroundSnapshot::slotGrab()
 {
     ////qDebug()<<"KBackgroundSnapshot::slotGrab()\n";
     grabber->show();
-    grabber->grabMouse( Qt::CrossCursor );
+    grabber->grabMouse(Qt::CrossCursor);
 }
 
 
 void KBackgroundSnapshot::grabRegion()
 {
-   QRect emptySelection;
-   rgnGrab = new RegionGrabber(emptySelection);
-   connect( rgnGrab, SIGNAL(regionGrabbed(QPixmap)),
-                     SLOT(slotRegionGrabbed(QPixmap)) );
+    QRect emptySelection;
+    rgnGrab = new RegionGrabber(emptySelection);
+    connect(rgnGrab, SIGNAL(regionGrabbed(QPixmap)),
+            SLOT(slotRegionGrabbed(QPixmap)));
 
 }
 
 
-void KBackgroundSnapshot::slotRegionGrabbed( const QPixmap &pix )
+void KBackgroundSnapshot::slotRegionGrabbed(const QPixmap &pix)
 {
-  if ( !pix.isNull() )
-    snapshot = pix;
-  rgnGrab->deleteLater();
-  QApplication::restoreOverrideCursor();
-  savePictureOnDesktop();
+    if (!pix.isNull()) {
+        snapshot = pix;
+    }
+    rgnGrab->deleteLater();
+    QApplication::restoreOverrideCursor();
+    savePictureOnDesktop();
 }
 
-bool KBackgroundSnapshot::eventFilter( QObject* o, QEvent* e)
+bool KBackgroundSnapshot::eventFilter(QObject *o, QEvent *e)
 {
-    if ( o == grabber && e->type() == QEvent::MouseButtonPress ) {
-        QMouseEvent* me = (QMouseEvent*) e;
-        if ( QWidget::mouseGrabber() != grabber )
+    if (o == grabber && e->type() == QEvent::MouseButtonPress) {
+        QMouseEvent *me = (QMouseEvent *) e;
+        if (QWidget::mouseGrabber() != grabber) {
             return false;
-        if ( me->button() == Qt::LeftButton )
+        }
+        if (me->button() == Qt::LeftButton) {
             performGrab();
+        }
     }
     return false;
 }
@@ -166,28 +168,29 @@ static const char description[] = I18N_NOOP("KDE Background Screenshot Utility")
 
 int main(int argc, char **argv)
 {
-  KAboutData aboutData( "kbackgroundsnapshot", "ksnapshot", ki18n("KBackgroundSnapshot"),
-    KBACKGROUNDSNAPVERSION, ki18n(description), KAboutData::License_GPL,
-    ki18n("(c) 2007, Montel Laurent"));
+    KAboutData aboutData("kbackgroundsnapshot", "ksnapshot", ki18n("KBackgroundSnapshot"),
+                         KBACKGROUNDSNAPVERSION, ki18n(description), KAboutData::License_GPL,
+                         ki18n("(c) 2007, Montel Laurent"));
 
-  KCmdLineArgs::init( argc, argv, &aboutData );
-  KCmdLineArgs::addCmdLineOptions( ksnapshot_options() ); // Add our own options.
-  KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+    KCmdLineArgs::init(argc, argv, &aboutData);
+    KCmdLineArgs::addCmdLineOptions(ksnapshot_options());    // Add our own options.
+    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
-  KApplication app;
+    KApplication app;
 
-  if ( args->isSet( "current" ) )
-     new KBackgroundSnapshot( KSnapshotObject::WindowUnderCursor );
-  else if(args->isSet( "fullscreen" ))
-     new KBackgroundSnapshot( KSnapshotObject::FullScreen );
-  else if(args->isSet( "region" ))
-     new KBackgroundSnapshot( KSnapshotObject::Region );
-  else if(args->isSet( "freeregion" ))
-     new KBackgroundSnapshot( KSnapshotObject::FreeRegion );
-  else if(args->isSet( "child" ))
-     new KBackgroundSnapshot( KSnapshotObject::ChildWindow );
-  else
-     new KBackgroundSnapshot();
-  args->clear();
-  return app.exec();
+    if (args->isSet("current")) {
+        new KBackgroundSnapshot(KSnapshotObject::WindowUnderCursor);
+    } else if (args->isSet("fullscreen")) {
+        new KBackgroundSnapshot(KSnapshotObject::FullScreen);
+    } else if (args->isSet("region")) {
+        new KBackgroundSnapshot(KSnapshotObject::Region);
+    } else if (args->isSet("freeregion")) {
+        new KBackgroundSnapshot(KSnapshotObject::FreeRegion);
+    } else if (args->isSet("child")) {
+        new KBackgroundSnapshot(KSnapshotObject::ChildWindow);
+    } else {
+        new KBackgroundSnapshot();
+    }
+    args->clear();
+    return app.exec();
 }

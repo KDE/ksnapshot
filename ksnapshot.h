@@ -48,71 +48,77 @@ class QMenu;
 class KSnapshotServiceAction : public QAction
 {
     Q_OBJECT
-    public:
-        KSnapshotServiceAction(KService::Ptr s, QObject * parent)
-            : QAction(parent), service(s) {}
-        KSnapshotServiceAction(KService::Ptr s,
-                               const QString & text,
-                               QObject * parent)
-            : QAction(text, parent), service(s) {}
-        KSnapshotServiceAction(KService::Ptr s,
-                               const QIcon & icon,
-                               const QString & text,
-                               QObject * parent)
-            : QAction(icon, text, parent), service(s) {}
+public:
+    KSnapshotServiceAction(KService::Ptr s, QObject *parent)
+        : QAction(parent), service(s) {}
+    KSnapshotServiceAction(KService::Ptr s,
+                           const QString &text,
+                           QObject *parent)
+        : QAction(text, parent), service(s) {}
+    KSnapshotServiceAction(KService::Ptr s,
+                           const QIcon &icon,
+                           const QString &text,
+                           QObject *parent)
+        : QAction(icon, text, parent), service(s) {}
 
-        KService::Ptr service;
+    KService::Ptr service;
 };
 
 class KSnapshot : public QDialog, public KSnapshotObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-    explicit KSnapshot(QWidget *parent= 0, KSnapshotObject::CaptureMode mode = FullScreen);
+    explicit KSnapshot(QWidget *parent = 0, KSnapshotObject::CaptureMode mode = FullScreen);
     ~KSnapshot();
 
 
-    QString url() const { return filename.url(); }
+    QString url() const
+    {
+        return filename.url();
+    }
 
 public slots:
     void slotGrab();
     void slotSave();
     void slotSaveAs();
     void slotCopy();
-    void slotOpen(const QString& application);
-    void slotMovePointer( int x, int y );
-    void setTime( int newTime );
-    void setURL( const QString &newURL );
-    void setGrabMode( int m );
+    void slotOpen(const QString &application);
+    void slotMovePointer(int x, int y);
+    void setTime(int newTime);
+    void setURL(const QString &newURL);
+    void setGrabMode(int m);
     void exit();
 
 protected:
-    void reject() { close(); }
-    virtual void closeEvent( QCloseEvent * e );
-    void resizeEvent(QResizeEvent*);
-    bool eventFilter( QObject*, QEvent* );
+    void reject()
+    {
+        close();
+    }
+    virtual void closeEvent(QCloseEvent *e);
+    void resizeEvent(QResizeEvent *);
+    bool eventFilter(QObject *, QEvent *);
 
 protected Q_SLOTS:
     virtual void refreshCaption();
 
 private slots:
-    void slotOpen(QAction*);
+    void slotOpen(QAction *);
     void slotPopulateOpenMenu();
     void grabTimerDone();
     void slotDragSnapshot();
     void updatePreview();
-    void slotRegionGrabbed( const QPixmap & );
-    void slotRegionUpdated( const QRect & );
-    void slotFreeRegionUpdated( const QPolygon & );
-    void slotWindowGrabbed( const QPixmap & );
-    void slotModeChanged( int mode );
-    void setPreview( const QPixmap &pm );
-    void setDelay( int i );
-    void setIncludeDecorations( bool b );
-    void setIncludePointer( bool b );
+    void slotRegionGrabbed(const QPixmap &);
+    void slotRegionUpdated(const QRect &);
+    void slotFreeRegionUpdated(const QPolygon &);
+    void slotWindowGrabbed(const QPixmap &);
+    void slotModeChanged(int mode);
+    void setPreview(const QPixmap &pm);
+    void setDelay(int i);
+    void setIncludeDecorations(bool b);
+    void setIncludePointer(bool b);
     bool includePointer() const;
-    void setMode( int mode );
+    void setMode(int mode);
     int delay() const;
     bool includeDecorations() const;
     int mode() const;
@@ -136,7 +142,7 @@ private:
 
     SnapshotTimer grabTimer;
     QTimer updateTimer;
-    QMenu*  openMenu;
+    QMenu  *openMenu;
     KSnapshotWidget *m_snapshotWidget;
     bool modified;
     QPoint savedPosition;
@@ -146,7 +152,7 @@ private:
     QRect lastRegion;
 
 #ifdef KIPI_FOUND
-    KIPI::PluginLoader* mPluginLoader;
+    KIPI::PluginLoader *mPluginLoader;
     friend QList<QUrl> KSnapshotImageCollectionShared::images();
 #endif
 };

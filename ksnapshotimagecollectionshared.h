@@ -30,20 +30,35 @@ class KSnapshotImageCollectionShared : public KIPI::ImageCollectionShared
 {
 
 public:
-        KSnapshotImageCollectionShared(KSnapshot* ksnapshot);
-        ~KSnapshotImageCollectionShared();
-        QString name() { return "KSnapshot"; }
-        QString comment() { return QString(); }
-        QList<QUrl> images();
-        QUrl uploadRoot() { return QUrl("/"); }
+    KSnapshotImageCollectionShared(KSnapshot *ksnapshot);
+    ~KSnapshotImageCollectionShared();
+    QString name()
+    {
+        return "KSnapshot";
+    }
+    QString comment()
+    {
+        return QString();
+    }
+    QList<QUrl> images();
+    QUrl uploadRoot()
+    {
+        return QUrl("/");
+    }
 //        QUrl uploadPath() { return mDirURL; }
-        QString uploadRootName() { return "/"; }
-        bool isDirectory() { return false; }
+    QString uploadRootName()
+    {
+        return "/";
+    }
+    bool isDirectory()
+    {
+        return false;
+    }
 
 private:
-        struct Private;
-        Private* d;
-        QList<QUrl> mImages;
+    struct Private;
+    Private *d;
+    QList<QUrl> mImages;
 };
 
 #endif

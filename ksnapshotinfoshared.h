@@ -29,12 +29,12 @@
 class KSnapshotInfoShared : public KIPI::ImageInfoShared
 {
 public:
-    KSnapshotInfoShared(KIPIInterface* interface, const QUrl &url);
-    virtual void delAttributes(const QStringList& );
-    virtual void addAttributes(const QMap< QString, QVariant >& );
+    KSnapshotInfoShared(KIPIInterface *interface, const QUrl &url);
+    virtual void delAttributes(const QStringList &);
+    virtual void addAttributes(const QMap< QString, QVariant > &);
     virtual void clearAttributes();
     virtual QMap< QString, QVariant > attributes();
-    virtual void setDescription(const QString& );
+    virtual void setDescription(const QString &);
     virtual QString description();
 };
 

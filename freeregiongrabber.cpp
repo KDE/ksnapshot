@@ -29,15 +29,15 @@
 #include <klocale.h>
 #include <KWindowSystem>
 
-FreeRegionGrabber::FreeRegionGrabber( const QPolygon &startFreeRegion ) :
-    QWidget( 0, Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool ),
-    selection( startFreeRegion ), mouseDown( false ), newSelection( false ),
-    handleSize( 10 ), mouseOverHandle( 0 ),
-    showHelp( true ), grabbing( false )
+FreeRegionGrabber::FreeRegionGrabber(const QPolygon &startFreeRegion) :
+    QWidget(0, Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool),
+    selection(startFreeRegion), mouseDown(false), newSelection(false),
+    handleSize(10), mouseOverHandle(0),
+    showHelp(true), grabbing(false)
 {
-    setMouseTracking( true );
+    setMouseTracking(true);
     int timeout = KWindowSystem::compositingActive() ? 200 : 50;
-    QTimer::singleShot( timeout, this, SLOT(init()) );
+    QTimer::singleShot(timeout, this, SLOT(init()));
 }
 
 FreeRegionGrabber::~FreeRegionGrabber()
@@ -46,55 +46,55 @@ FreeRegionGrabber::~FreeRegionGrabber()
 
 void FreeRegionGrabber::init()
 {
-    pixmap = QPixmap::grabWindow( QApplication::desktop()->winId() );
-    resize( pixmap.size() );
-    move( 0, 0 );
-    setCursor( Qt::CrossCursor );
+    pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
+    resize(pixmap.size());
+    move(0, 0);
+    setCursor(Qt::CrossCursor);
     show();
     grabMouse();
     grabKeyboard();
 }
 
-static void drawPolygon( QPainter *painter, const QPolygon &p, const QColor &outline, const QColor &fill = QColor() )
+static void drawPolygon(QPainter *painter, const QPolygon &p, const QColor &outline, const QColor &fill = QColor())
 {
-    QRegion clip( p );
+    QRegion clip(p);
     clip = clip - p;
     QPen pen(outline, 1, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
 
     painter->save();
-    painter->setClipRegion( clip );
+    painter->setClipRegion(clip);
     painter->setPen(pen);
-    painter->drawPolygon( p );
-    if ( fill.isValid() ) {
-        painter->setClipping( false );
-        painter->setBrush( fill );
-        painter->drawPolygon( p /*.translated( 1, -1 ) */);
+    painter->drawPolygon(p);
+    if (fill.isValid()) {
+        painter->setClipping(false);
+        painter->setBrush(fill);
+        painter->drawPolygon(p /*.translated( 1, -1 ) */);
     }
     painter->restore();
 }
 
-void FreeRegionGrabber::paintEvent( QPaintEvent* e )
+void FreeRegionGrabber::paintEvent(QPaintEvent *e)
 {
-    Q_UNUSED( e );
-    if ( grabbing ) // grabWindow() should just get the background
+    Q_UNUSED(e);
+    if (grabbing) {   // grabWindow() should just get the background
         return;
+    }
 
-    QPainter painter( this );
+    QPainter painter(this);
 
     QPalette pal(QToolTip::palette());
     QFont font = QToolTip::font();
 
-    QColor handleColor = pal.color( QPalette::Active, QPalette::Highlight );
-    handleColor.setAlpha( 160 );
-    QColor overlayColor( 0, 0, 0, 160 );
-    QColor textColor = pal.color( QPalette::Active, QPalette::Text );
-    QColor textBackgroundColor = pal.color( QPalette::Active, QPalette::Base );
+    QColor handleColor = pal.color(QPalette::Active, QPalette::Highlight);
+    handleColor.setAlpha(160);
+    QColor overlayColor(0, 0, 0, 160);
+    QColor textColor = pal.color(QPalette::Active, QPalette::Text);
+    QColor textBackgroundColor = pal.color(QPalette::Active, QPalette::Base);
     painter.drawPixmap(0, 0, pixmap);
     painter.setFont(font);
 
     QPolygon pol = selection;
-    if ( !selection.boundingRect().isNull() )
-    {
+    if (!selection.boundingRect().isNull()) {
         // Draw outline around selection.
         // Important: the 1px-wide outline is *also* part of the captured free-region because
         // I found no way to draw the outline *around* the selection because I found no way
@@ -102,179 +102,153 @@ void FreeRegionGrabber::paintEvent( QPaintEvent* e )
         // is NOT equivalent to QRect::adjusted)
         QPen pen(handleColor, 1, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
         painter.setPen(pen);
-        painter.drawPolygon( pol );
+        painter.drawPolygon(pol);
 
         // Draw the grey area around the selection
-        QRegion grey( rect() );
+        QRegion grey(rect());
         grey = grey - pol;
-        painter.setClipRegion( grey );
-        painter.setPen( Qt::NoPen );
-        painter.setBrush( overlayColor );
-        painter.drawRect( rect() );
-        painter.setClipRect( rect() );
-        drawPolygon( &painter, pol, handleColor);
+        painter.setClipRegion(grey);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(overlayColor);
+        painter.drawRect(rect());
+        painter.setClipRect(rect());
+        drawPolygon(&painter, pol, handleColor);
     }
 
-    if ( showHelp )
-    {
-        painter.setPen( textColor );
-        painter.setBrush( textBackgroundColor );
-        QString helpText = i18n( "Select a region using the mouse. To take the snapshot, press the Enter key or double click. Press Esc to quit." );
-        helpTextRect = painter.boundingRect( rect().adjusted( 2, 2, -2, -2 ), Qt::TextWordWrap, helpText );
-        helpTextRect.adjust( -2, -2, 4, 2 );
-        drawPolygon( &painter, helpTextRect, textColor, textBackgroundColor );
-        painter.drawText( helpTextRect.adjusted( 3, 3, -3, -3 ), helpText );
+    if (showHelp) {
+        painter.setPen(textColor);
+        painter.setBrush(textBackgroundColor);
+        QString helpText = i18n("Select a region using the mouse. To take the snapshot, press the Enter key or double click. Press Esc to quit.");
+        helpTextRect = painter.boundingRect(rect().adjusted(2, 2, -2, -2), Qt::TextWordWrap, helpText);
+        helpTextRect.adjust(-2, -2, 4, 2);
+        drawPolygon(&painter, helpTextRect, textColor, textBackgroundColor);
+        painter.drawText(helpTextRect.adjusted(3, 3, -3, -3), helpText);
     }
 
-    if ( selection.isEmpty() )
-    {
+    if (selection.isEmpty()) {
         return;
     }
 
     // The grabbed region is everything which is covered by the drawn
     // rectangles (border included). This means that there is no 0px
     // selection, since a 0px wide rectangle will always be drawn as a line.
-    QString txt = QString( "%1x%2" ).arg( selection.boundingRect().width() )
-                  .arg( selection.boundingRect().height() );
-    QRect textRect = painter.boundingRect( rect(), Qt::AlignLeft, txt );
-    QRect boundingRect = textRect.adjusted( -4, 0, 0, 0);
+    QString txt = QString("%1x%2").arg(selection.boundingRect().width())
+                  .arg(selection.boundingRect().height());
+    QRect textRect = painter.boundingRect(rect(), Qt::AlignLeft, txt);
+    QRect boundingRect = textRect.adjusted(-4, 0, 0, 0);
 
-    if ( textRect.width() < pol.boundingRect().width() - 2*handleSize &&
-         textRect.height() < pol.boundingRect().height() - 2*handleSize &&
-         ( pol.boundingRect().width() > 100 && pol.boundingRect().height() > 100 ) ) // center, unsuitable for small selections
-    {
-        boundingRect.moveCenter( pol.boundingRect().center() );
-        textRect.moveCenter( pol.boundingRect().center() );
-    }
-    else if ( pol.boundingRect().y() - 3 > textRect.height() &&
-              pol.boundingRect().x() + textRect.width() < rect().right() ) // on top, left aligned
-    {
-        boundingRect.moveBottomLeft( QPoint( pol.boundingRect().x(), pol.boundingRect().y() - 3 ) );
-        textRect.moveBottomLeft( QPoint( pol.boundingRect().x() + 2, pol.boundingRect().y() - 3 ) );
-    }
-    else if ( pol.boundingRect().x() - 3 > textRect.width() ) // left, top aligned
-    {
-        boundingRect.moveTopRight( QPoint( pol.boundingRect().x() - 3, pol.boundingRect().y() ) );
-        textRect.moveTopRight( QPoint( pol.boundingRect().x() - 5, pol.boundingRect().y() ) );
-    }
-    else if ( pol.boundingRect().bottom() + 3 + textRect.height() < rect().bottom() &&
-              pol.boundingRect().right() > textRect.width() ) // at bottom, right aligned
-    {
-        boundingRect.moveTopRight( QPoint( pol.boundingRect().right(), pol.boundingRect().bottom() + 3 ) );
-        textRect.moveTopRight( QPoint( pol.boundingRect().right() - 2, pol.boundingRect().bottom() + 3 ) );
-    }
-    else if ( pol.boundingRect().right() + textRect.width() + 3 < rect().width() ) // right, bottom aligned
-    {
-        boundingRect.moveBottomLeft( QPoint( pol.boundingRect().right() + 3, pol.boundingRect().bottom() ) );
-        textRect.moveBottomLeft( QPoint( pol.boundingRect().right() + 5, pol.boundingRect().bottom() ) );
+    if (textRect.width() < pol.boundingRect().width() - 2 * handleSize &&
+            textRect.height() < pol.boundingRect().height() - 2 * handleSize &&
+            (pol.boundingRect().width() > 100 && pol.boundingRect().height() > 100)) {  // center, unsuitable for small selections
+        boundingRect.moveCenter(pol.boundingRect().center());
+        textRect.moveCenter(pol.boundingRect().center());
+    } else if (pol.boundingRect().y() - 3 > textRect.height() &&
+               pol.boundingRect().x() + textRect.width() < rect().right()) {  // on top, left aligned
+        boundingRect.moveBottomLeft(QPoint(pol.boundingRect().x(), pol.boundingRect().y() - 3));
+        textRect.moveBottomLeft(QPoint(pol.boundingRect().x() + 2, pol.boundingRect().y() - 3));
+    } else if (pol.boundingRect().x() - 3 > textRect.width()) {  // left, top aligned
+        boundingRect.moveTopRight(QPoint(pol.boundingRect().x() - 3, pol.boundingRect().y()));
+        textRect.moveTopRight(QPoint(pol.boundingRect().x() - 5, pol.boundingRect().y()));
+    } else if (pol.boundingRect().bottom() + 3 + textRect.height() < rect().bottom() &&
+               pol.boundingRect().right() > textRect.width()) {  // at bottom, right aligned
+        boundingRect.moveTopRight(QPoint(pol.boundingRect().right(), pol.boundingRect().bottom() + 3));
+        textRect.moveTopRight(QPoint(pol.boundingRect().right() - 2, pol.boundingRect().bottom() + 3));
+    } else if (pol.boundingRect().right() + textRect.width() + 3 < rect().width()) {  // right, bottom aligned
+        boundingRect.moveBottomLeft(QPoint(pol.boundingRect().right() + 3, pol.boundingRect().bottom()));
+        textRect.moveBottomLeft(QPoint(pol.boundingRect().right() + 5, pol.boundingRect().bottom()));
     }
     // if the above didn't catch it, you are running on a very tiny screen...
-    drawPolygon( &painter, boundingRect, textColor, textBackgroundColor );
+    drawPolygon(&painter, boundingRect, textColor, textBackgroundColor);
 
-    painter.drawText( textRect, txt );
+    painter.drawText(textRect, txt);
 
-    if ( ( pol.boundingRect().height() > handleSize*2 && pol.boundingRect().width() > handleSize*2 )
-         || !mouseDown )
-    {
+    if ((pol.boundingRect().height() > handleSize * 2 && pol.boundingRect().width() > handleSize * 2)
+            || !mouseDown) {
         painter.setBrush(QBrush(Qt::transparent));
-        painter.setClipRegion( QRegion(pol));
-        painter.drawPolygon( rect() );
+        painter.setClipRegion(QRegion(pol));
+        painter.drawPolygon(rect());
     }
 }
 
-void FreeRegionGrabber::mousePressEvent( QMouseEvent* e )
+void FreeRegionGrabber::mousePressEvent(QMouseEvent *e)
 {
     pBefore = e->pos();
-    showHelp = !helpTextRect.contains( e->pos() );
-    if ( e->button() == Qt::LeftButton )
-    {
+    showHelp = !helpTextRect.contains(e->pos());
+    if (e->button() == Qt::LeftButton) {
         mouseDown = true;
         dragStartPoint = e->pos();
         selectionBeforeDrag = selection;
-        if ( !selection.containsPoint( e->pos(), Qt::WindingFill ) )
-        {
+        if (!selection.containsPoint(e->pos(), Qt::WindingFill)) {
             newSelection = true;
             selection = QPolygon();
+        } else {
+            setCursor(Qt::ClosedHandCursor);
         }
-        else
-        {
-            setCursor( Qt::ClosedHandCursor );
-        }
-    }
-    else if ( e->button() == Qt::RightButton )
-    {
+    } else if (e->button() == Qt::RightButton) {
         newSelection = false;
         selection = QPolygon();
-        setCursor( Qt::CrossCursor );
+        setCursor(Qt::CrossCursor);
     }
     update();
 }
 
-void FreeRegionGrabber::mouseMoveEvent( QMouseEvent* e )
+void FreeRegionGrabber::mouseMoveEvent(QMouseEvent *e)
 {
-    bool shouldShowHelp = !helpTextRect.contains( e->pos() );
+    bool shouldShowHelp = !helpTextRect.contains(e->pos());
     if (shouldShowHelp != showHelp) {
         showHelp = shouldShowHelp;
         update();
     }
 
-    if ( mouseDown )
-    {
-        if ( newSelection )
-        {
+    if (mouseDown) {
+        if (newSelection) {
             QPoint p = e->pos();
             selection << p;
-        }
-        else // moving the whole selection
-        {
+        } else { // moving the whole selection
             QPoint p = e->pos() - pBefore; // Offset
             pBefore = e->pos(); // Save position for next iteration
             selection.translate(p);
         }
 
         update();
-    }
-    else
-    {
-        if ( selection.boundingRect().isEmpty() )
+    } else {
+        if (selection.boundingRect().isEmpty()) {
             return;
+        }
 
-        if ( selection.containsPoint( e->pos(), Qt::WindingFill ) )
-            setCursor( Qt::OpenHandCursor );
-        else
-            setCursor( Qt::CrossCursor );
+        if (selection.containsPoint(e->pos(), Qt::WindingFill)) {
+            setCursor(Qt::OpenHandCursor);
+        } else {
+            setCursor(Qt::CrossCursor);
+        }
 
     }
 }
 
-void FreeRegionGrabber::mouseReleaseEvent( QMouseEvent* e )
+void FreeRegionGrabber::mouseReleaseEvent(QMouseEvent *e)
 {
     mouseDown = false;
     newSelection = false;
-    if ( mouseOverHandle == 0 && selection.containsPoint( e->pos(), Qt::WindingFill ) )
-        setCursor( Qt::OpenHandCursor );
+    if (mouseOverHandle == 0 && selection.containsPoint(e->pos(), Qt::WindingFill)) {
+        setCursor(Qt::OpenHandCursor);
+    }
     update();
 }
 
-void FreeRegionGrabber::mouseDoubleClickEvent( QMouseEvent* )
+void FreeRegionGrabber::mouseDoubleClickEvent(QMouseEvent *)
 {
     grabRect();
 }
 
-void FreeRegionGrabber::keyPressEvent( QKeyEvent* e )
+void FreeRegionGrabber::keyPressEvent(QKeyEvent *e)
 {
     QPolygon pol = selection;
-    if ( e->key() == Qt::Key_Escape )
-    {
-        emit freeRegionUpdated( pol );
-        emit freeRegionGrabbed( QPixmap() );
-    }
-    else if ( e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return )
-    {
+    if (e->key() == Qt::Key_Escape) {
+        emit freeRegionUpdated(pol);
+        emit freeRegionGrabbed(QPixmap());
+    } else if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return) {
         grabRect();
-    }
-    else
-    {
+    } else {
         e->ignore();
     }
 }
@@ -282,9 +256,8 @@ void FreeRegionGrabber::keyPressEvent( QKeyEvent* e )
 void FreeRegionGrabber::grabRect()
 {
     QPolygon pol = selection;
-    if ( !pol.isEmpty() )
-    {
-    grabbing = true;
+    if (!pol.isEmpty()) {
+        grabbing = true;
 
         int xOffset = pixmap.rect().x() - pol.boundingRect().x();
         int yOffset = pixmap.rect().y() - pol.boundingRect().y();

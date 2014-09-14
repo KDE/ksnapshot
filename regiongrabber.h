@@ -36,35 +36,35 @@ class RegionGrabber : public QWidget
     enum MaskType { StrokeMask, FillMask };
 
 public:
-    RegionGrabber( const QRect &startSelection );
+    RegionGrabber(const QRect &startSelection);
     ~RegionGrabber();
 
 protected slots:
     void init();
 
 signals:
-    void regionGrabbed( const QPixmap & );
-    void regionUpdated( const QRect & );
+    void regionGrabbed(const QPixmap &);
+    void regionUpdated(const QRect &);
 
 protected:
-    void paintEvent( QPaintEvent* e );
-    void resizeEvent( QResizeEvent* e );
-    void mousePressEvent( QMouseEvent* e );
-    void mouseMoveEvent( QMouseEvent* e );
-    void mouseReleaseEvent( QMouseEvent* e );
-    void mouseDoubleClickEvent( QMouseEvent* );
-    void keyPressEvent( QKeyEvent* e );
+    void paintEvent(QPaintEvent *e);
+    void resizeEvent(QResizeEvent *e);
+    void mousePressEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
+    void mouseDoubleClickEvent(QMouseEvent *);
+    void keyPressEvent(QKeyEvent *e);
     void updateHandles();
-    QRegion handleMask( MaskType type ) const;
-    QPoint limitPointToRect( const QPoint &p, const QRect &r ) const;
-    QRect normalizeSelection( const QRect &s ) const;
+    QRegion handleMask(MaskType type) const;
+    QPoint limitPointToRect(const QPoint &p, const QRect &r) const;
+    QRect normalizeSelection(const QRect &s) const;
     void grabRect();
 
     QRect selection;
     bool mouseDown;
     bool newSelection;
     const int handleSize;
-    QRect* mouseOverHandle;
+    QRect *mouseOverHandle;
     QPoint dragStartPoint;
     QRect  selectionBeforeDrag;
     bool showHelp;
@@ -78,7 +78,7 @@ protected:
     QRect LHandle, THandle, RHandle, BHandle;
     QRect helpTextRect;
 
-    QVector<QRect*> handles;
+    QVector<QRect *> handles;
     QPixmap pixmap;
 };
 
