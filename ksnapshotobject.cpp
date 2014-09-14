@@ -28,26 +28,26 @@
 
 #include "config-ksnapshot.h"
 
-#if HAVE_X11
-#include <fixx11h.h>
-#endif
-
-//kde include
-#include <KMessageBox>
-
-#include <klocale.h>
-#include <QTemporaryFile>
-#include <KJobWidgets>
-#include <KIO/FileCopyJob>
-#include <KIO/StatJob>
-#include <QDebug>
-
 //Qt include
+#include <QDebug>
 #include <QRegExp>
 #include <QApplication>
 #include <QImageWriter>
 #include <QMimeDatabase>
 #include <QMimeType>
+#include <QTemporaryFile>
+
+//kde include
+#include <KIO/FileCopyJob>
+#include <KIO/StatJob>
+#include <KJobWidgets>
+#include <KLocalizedString>
+#include <KMessageBox>
+
+#if HAVE_X11
+#include <fixx11h.h>
+#endif
+
 
 KSnapshotObject::KSnapshotObject()
     : rgnGrab(0),

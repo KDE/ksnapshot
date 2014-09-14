@@ -25,7 +25,7 @@
 #include <QDesktopWidget>
 
 #include <QDebug>
-#include <klocale.h>
+#include <KLocalizedString>
 
 SnapshotTimer::SnapshotTimer()
     : QWidget(0),
