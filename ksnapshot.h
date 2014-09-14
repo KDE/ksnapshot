@@ -36,7 +36,7 @@
 #include "ksnapshotobject.h"
 #include "snapshottimer.h"
 
-#include <config-ksnapshot.h>
+#include "config-ksnapshot.h"
 
 class KSnapshotWidget;
 class QMenu;

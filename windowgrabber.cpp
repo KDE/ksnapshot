@@ -33,10 +33,11 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 
-#ifdef HAVE_X11
+#include "config-ksnapshot.h"
+
+#if HAVE_X11
 #include <X11/Xlib.h>
-#include <config-ksnapshot.h>
-#ifdef HAVE_X11_EXTENSIONS_SHAPE_H
+#if HAVE_X11_EXTENSIONS_SHAPE_H
 #include <X11/extensions/shape.h>
 #endif // HAVE_X11_EXTENSIONS_SHAPE_H
 #include <QX11Info>
@@ -60,7 +61,7 @@ bool operator< ( const QRect& r1, const QRect& r2 )
 // Recursively iterates over the window w and its children, thereby building
 // a tree of window descriptors. Windows in non-viewable state or with height
 // or width smaller than minSize will be ignored.
-#ifdef HAVE_X11
+#if HAVE_X11
 static
 void getWindowsRecursive( std::vector<QRect> *windows, Window w,
               int rx = 0, int ry = 0, int depth = 0 )
@@ -152,7 +153,7 @@ void getWindowsRecursive( std::vector<QRect> *windows, HWND hwnd,
 }
 #endif // HAVE_X11
 
-#ifdef HAVE_X11
+#if HAVE_X11
 static
 Window findRealWindow( Window w, int depth = 0 )
 {
@@ -205,7 +206,7 @@ HWND findRealWindow( HWND w, int depth = 0 )
 }
 #endif // HAVE_X11
 
-#ifdef HAVE_X11
+#if HAVE_X11
 static
 Window windowUnderCursor( bool includeDecorations = true )
 {
@@ -252,7 +253,7 @@ HWND windowUnderCursor(bool includeDecorations = true)
 }
 #endif
 
-#ifdef HAVE_X11
+#if HAVE_X11
 static
 QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border,
             QString *title=0, QString *windowClass=0 )
@@ -269,7 +270,7 @@ QPixmap grabWindow( Window child, int x, int y, uint w, uint h, uint border,
         (*windowClass) = winInfo.windowClassName();
     }
 
-#ifdef HAVE_X11_EXTENSIONS_SHAPE_H
+#if HAVE_X11_EXTENSIONS_SHAPE_H
     int tmp1, tmp2;
     //Check whether the extension is available
     if ( XShapeQueryExtension( QX11Info::display(), &tmp1, &tmp2 ) ) {
@@ -362,7 +363,7 @@ WindowGrabber::WindowGrabber()
     int y,x;
     uint w, h;
 
-#ifdef HAVE_X11
+#if HAVE_X11
     uint border, depth;
     Window root;
     XGrabServer( QX11Info::display() );
@@ -409,7 +410,7 @@ WindowGrabber::~WindowGrabber()
 QPixmap WindowGrabber::grabCurrent( bool includeDecorations )
 {
     int x, y;
-#ifdef HAVE_X11
+#if HAVE_X11
     Window root;
     uint w, h, border, depth;
 

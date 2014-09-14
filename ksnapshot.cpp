@@ -77,7 +77,7 @@
 #include <KAction>
 #endif
 
-#ifdef HAVE_X11_EXTENSIONS_XFIXES_H
+#if HAVE_X11_EXTENSIONS_XFIXES_H
 #include <X11/extensions/Xfixes.h>
 #include <X11/Xatom.h>
 #include <QX11Info>
@@ -191,7 +191,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
 #endif
 #endif
 
-#ifdef HAVE_X11_EXTENSIONS_XFIXES_H
+#if HAVE_X11_EXTENSIONS_XFIXES_H
     {
         int tmp1, tmp2;
         //Check whether the XFixes extension is available
@@ -243,7 +243,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode )
     //qDebug() << "Mode = " << mode;
     if ( mode == KSnapshotObject::FullScreen ) {
         snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
-#ifdef HAVE_X11_EXTENSIONS_XFIXES_H
+#if HAVE_X11_EXTENSIONS_XFIXES_H
         if ( haveXFixes && includePointer() )
             grabPointerImage(0, 0);
 #endif
@@ -643,7 +643,7 @@ void KSnapshot::slotWindowGrabbed( const QPixmap &pix )
 
 void KSnapshot::slotScreenshotReceived( qulonglong handle )
 {
-#ifdef HAVE_X11
+#if HAVE_X11
     slotWindowGrabbed( QPixmap::fromX11Pixmap( handle ) );
 #endif
 }
@@ -787,7 +787,7 @@ void KSnapshot::performGrab()
     else {
         snapshot = QPixmap::grabWindow( QApplication::desktop()->winId() );
     }
-#ifdef HAVE_X11_EXTENSIONS_XFIXES_H
+#if HAVE_X11_EXTENSIONS_XFIXES_H
     if (haveXFixes && includePointer()) {
         grabPointerImage(x, y);
     }
@@ -806,7 +806,7 @@ void KSnapshot::performGrab()
 void KSnapshot::grabPointerImage(int offsetx, int offsety)
 // Uses the X11_EXTENSIONS_XFIXES_H extension to grab the pointer image, and overlays it onto the snapshot.
 {
-#ifdef HAVE_X11_EXTENSIONS_XFIXES_H
+#if HAVE_X11_EXTENSIONS_XFIXES_H
     XFixesCursorImage *xcursorimg = XFixesGetCursorImage( QX11Info::display() );
     if ( !xcursorimg )
       return;

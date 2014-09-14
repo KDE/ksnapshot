@@ -26,7 +26,9 @@
 
 #include "ksnapshotobject.h"
 
-#ifdef HAVE_X11
+#include "config-ksnapshot.h"
+
+#if HAVE_X11
 #include <fixx11h.h>
 #endif
 
