@@ -91,7 +91,7 @@
 #endif
 
 #if XCB_XCB_FOUND
-#include <xcb/pixmaphelper.h>
+#include <platforms/xcb/pixmaphelper.h>
 #endif
 
 class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget

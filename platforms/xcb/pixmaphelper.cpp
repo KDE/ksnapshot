@@ -17,7 +17,7 @@
   Boston, MA 02110-1301, USA.
 */
 
-#include "xcb/pixmaphelper.h"
+#include "platforms/xcb/pixmaphelper.h"
 
 #include <stdint.h>
 
@@ -26,7 +26,7 @@
 #include <QDebug>
 #include <QPainter>
 
-#include "xcb/xcbutils.h"
+#include "platforms/xcb/xcbutils.h"
 
 namespace PixmapHelperXCB
 {

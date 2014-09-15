@@ -37,8 +37,8 @@
 // KDE Frameworks
 #include <KWindowInfo>
 
-#include "xcb/pixmaphelper.h"
-#include "xcb/xcbutils.h"
+#include "platforms/xcb/pixmaphelper.h"
+#include "platforms/xcb/xcbutils.h"
 
 static
 bool operator< ( const QRect& r1, const QRect& r2 )

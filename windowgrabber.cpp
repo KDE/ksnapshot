@@ -36,9 +36,9 @@
 #include <QWheelEvent>
 
 #ifdef Q_OS_WIN
-#include "windows/windowgrabber.cpp"
+#include "platforms/windows/windowgrabber.cpp"
 #elif XCB_XCB_FOUND
-#include "xcb/windowgrabber.cpp"
+#include "platforms/xcb/windowgrabber.cpp"
 #endif
 
 QString WindowGrabber::title;

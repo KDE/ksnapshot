@@ -59,7 +59,7 @@ configure_file(config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnap
 
 if (XCB_XCB_FOUND AND X11_XCB_FOUND)
    set(ksnapshot_xcb_SRCS
-       xcb/pixmaphelper.cpp)
+       platforms/xcb/pixmaphelper.cpp)
 endif (XCB_XCB_FOUND AND X11_XCB_FOUND)
 
 ########### next target ###############
