@@ -425,8 +425,8 @@ QUrl KSnapshot::urlToOpen(bool *isTempfile)
         *isTempfile = false;
     }
 
-    if (!m_modified && m_filename.isValid()) {
-        return m_filename;
+    if (!m_modified && urlExists(m_successfulSaveUrl, this)) {
+        return m_successfulSaveUrl;
     }
 
     //TODO: better management of the temp files,
