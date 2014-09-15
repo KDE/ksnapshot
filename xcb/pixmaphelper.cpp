@@ -23,6 +23,7 @@
 
 #include <xcb/xfixes.h>
 
+#include <QDebug>
 #include <QPainter>
 
 #include "xcb/xcbutils.h"
@@ -53,26 +54,34 @@ QPixmap grabWindow(WId id, int x, int y, int width, int height)
 {
     xcb_connection_t *c = Xcb::connection();
     Xcb::WindowGeometry geo(id);
+
     if (geo.isNull()) {
         return QPixmap();
     }
+
     if (width < 0 || width > geo->width) {
         width = geo->width;
     }
+
     if (width + x > geo->width) {
         width = width + x - geo->width;
     }
+
     if (height < 0 || height > geo->height) {
         height = geo->height;
     }
+
     if (height + y > geo->height) {
         height = height + y - geo->height;
     }
+
     Xcb::ScopedCPointer<xcb_get_image_reply_t> xImage(xcb_get_image_reply(
         c, xcb_get_image_unchecked(c, XCB_IMAGE_FORMAT_Z_PIXMAP, id, x, y, width, height, ~0), NULL));
+
     if (xImage.isNull()) {
         return QPixmap();
     }
+
     QImage::Format format = QImage::Format_ARGB32_Premultiplied;
     switch (xImage->depth) {
     case 1:
@@ -88,11 +97,14 @@ QPixmap grabWindow(WId id, int x, int y, int width, int height)
 
             pixels[i] = qRgba(r, g, b, 0xff);
         }
+
         QImage image(reinterpret_cast<uchar *>(pixels), geo->width, geo->height,
                      xcb_get_image_data_length(xImage.data()) / geo->height, QImage::Format_ARGB32_Premultiplied);
+
         if (image.isNull()) {
             return QPixmap();
         }
+
         return QPixmap::fromImage(image);
     }
     case 32:
@@ -109,17 +121,21 @@ QPixmap grabWindow(WId id, int x, int y, int width, int height)
             return QPixmap();
         }
     }
+
     QImage image(xcb_get_image_data(xImage.data()), width, height,
                  xcb_get_image_data_length(xImage.data()) / height, format);
+
     if (image.isNull()) {
         return QPixmap();
     }
+
     if (image.format() == QImage::Format_MonoLSB) {
         // work around an abort in QImage::color
         image.setColorCount(2);
         image.setColor(0, QColor(Qt::white).rgb());
         image.setColor(1, QColor(Qt::black).rgb());
     }
+
     return QPixmap::fromImage(image);
 }
 
