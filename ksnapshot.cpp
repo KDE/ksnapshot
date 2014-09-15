@@ -121,17 +121,17 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode)
     QVBoxLayout *mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
     mainLayout->addWidget(mainWidget);
-    QPushButton *user1Button = new QPushButton;
-    buttonBox->addButton(user1Button, QDialogButtonBox::ActionRole);
-    QPushButton *user2Button = new QPushButton;
-    buttonBox->addButton(user2Button, QDialogButtonBox::ActionRole);
+    QPushButton *copyToClipboardButton = new QPushButton;
+    buttonBox->addButton(copyToClipboardButton, QDialogButtonBox::ActionRole);
+    QPushButton *sendToButton = new QPushButton;
+    buttonBox->addButton(sendToButton, QDialogButtonBox::ActionRole);
     connect(buttonBox, &QDialogButtonBox::accepted,
             this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected,
             this, &QDialog::reject);
     KGuiItem::assign(buttonBox->button(QDialogButtonBox::Apply), KStandardGuiItem::saveAs());
-    KGuiItem::assign(user1Button, KGuiItem(i18n("Copy")));
-    KGuiItem::assign(user2Button, KGuiItem(i18n("Send To...")));
+    KGuiItem::assign(copyToClipboardButton, KGuiItem(i18n("Copy")));
+    KGuiItem::assign(sendToButton, KGuiItem(i18n("Send To...")));
     buttonBox->button(QDialogButtonBox::Apply)->setDefault(true);
     buttonBox->button(QDialogButtonBox::Apply)->setShortcut(Qt::CTRL | Qt::Key_Return);
     m_grabber = new QWidget(0,  Qt::X11BypassWindowManagerHint);
@@ -171,7 +171,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode)
             this, &KSnapshot::slotGrab);
     connect(buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked,
             this, &KSnapshot::slotSaveAs);
-    connect(user1Button, &QPushButton::clicked,
+    connect(copyToClipboardButton, &QPushButton::clicked,
             this, &KSnapshot::slotCopy);
     connect(m_snapshotWidget->comboMode, (void (QComboBox:: *)(int)) &QComboBox::activated,
             this, &KSnapshot::slotModeChanged);
@@ -181,7 +181,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode)
     }
 
     m_openMenu = new QMenu(this);
-    user2Button->setMenu(m_openMenu);
+    sendToButton->setMenu(m_openMenu);
     connect(m_openMenu, &QMenu::aboutToShow,
             this, &KSnapshot::slotPopulateOpenMenu);
     connect(m_openMenu, &QMenu::triggered,
@@ -299,7 +299,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode)
     new QShortcut(Qt::Key_Q, this, SLOT(slotSave()));
 
     shortcuts = KStandardShortcut::shortcut(KStandardShortcut::Copy);
-    new QShortcut(shortcuts.empty() ? QKeySequence() : shortcuts.first(), user1Button, SLOT(animateClick()));
+    new QShortcut(shortcuts.empty() ? QKeySequence() : shortcuts.first(), copyToClipboardButton, SLOT(animateClick()));
 
     shortcuts = KStandardShortcut::shortcut(KStandardShortcut::Save);
     new QShortcut(shortcuts.empty() ? QKeySequence() : shortcuts.first(), buttonBox->button(QDialogButtonBox::Apply), SLOT(animateClick()));
