@@ -65,19 +65,27 @@ KSnapshotObject::~KSnapshotObject()
     delete m_grabber;
 }
 
+bool KSnapshotObject::urlExists(const QUrl &url, QWidget *window)
+{
+    if (!url.isValid()) {
+        return false;
+    }
+
+    // we only need to test for existence; details about the file are uninteresting, so 0 for third param
+    KIO::StatJob *job = KIO::stat(url, KIO::StatJob::DestinationSide, 0);
+    KJobWidgets::setWindow(job, window);
+    job->exec();
+
+    return !job->error();
+}
+
 void KSnapshotObject::autoincFilenameUntilUnique(QWidget *window)
 {
     forever {
-        // we only need to test for existence; details about the file are uninteresting, so 0 for third param
-        KIO::StatJob *job = KIO::stat(m_filename, KIO::StatJob::DestinationSide, 0);
-        KJobWidgets::setWindow(job, window);
-        job->exec();
-
-        if (job->error())
-        {
-            break;
-        } else {
+        if (urlExists(m_filename, window)) {
             autoincFilename();
+        } else {
+            break;
         }
     }
 }
@@ -131,40 +139,40 @@ void KSnapshotObject::changeUrl(const QString &url)
 }
 
 
-// NOTE: widget == NULL if called from dbus interface
-bool KSnapshotObject::save(const QString &filename, QWidget *widget)
+// NOTE: window == NULL if called from dbus interface
+bool KSnapshotObject::save(const QString &filename, QWidget *window)
 {
-    return save(QUrl::fromUserInput(filename), widget);
+    return save(QUrl::fromUserInput(filename), window);
 }
 
-bool KSnapshotObject::save(const QUrl &url, QWidget *widget)
+bool KSnapshotObject::save(const QUrl &url, QWidget *window)
 {
-    // NOTE: widget == NULL if called from dbus interface
+    // NOTE: window == NULL if called from dbus interface
     //TODO: non-blocking
 
     // we only need to test for existence; details about the file are uninteresting, so 0 for third param
-    KIO::StatJob *job = KIO::stat(url, KIO::StatJob::DestinationSide, 0);
-    KJobWidgets::setWindow(job, widget);
-    job->exec();
-    if (!job->error()) {
+    if (urlExists(url, window)) {
         const QString title = i18n("File Exists");
         const QString text = i18n("<qt>Do you really want to overwrite <b>%1</b>?</qt>" , url.url(QUrl::PreferLocalFile));
-        if (KMessageBox::Continue != KMessageBox::warningContinueCancel(widget, text, title, KGuiItem(i18n("Overwrite")))) {
+        if (KMessageBox::Continue != KMessageBox::warningContinueCancel(window, text, title, KGuiItem(i18n("Overwrite")))) {
             return false;
         }
     }
 
-    const bool success = saveTo(url, widget);
+    const bool success = saveTo(url, window);
     if (success) {
+        m_successfulSaveUrl = url;
         m_filename = url;
         autoincFilename();
         refreshCaption();
+    } else {
+        m_successfulSaveUrl = QUrl();
     }
 
     return success;
 }
 
-bool KSnapshotObject::saveTo(const QUrl &url, QWidget *widget)
+bool KSnapshotObject::saveTo(const QUrl &url, QWidget *window)
 {
     QMimeDatabase db;
     QString type = db.mimeTypeForName(url.fileName()).name();
@@ -185,7 +193,7 @@ bool KSnapshotObject::saveTo(const QUrl &url, QWidget *widget)
             // TODO: non-blocking
             // we only need to test for existence; details about the file are uninteresting, so 0 for third param
             KIO::FileCopyJob *job = KIO::file_copy(tmpFile.fileName(), url);
-            KJobWidgets::setWindow(job, widget);
+            KJobWidgets::setWindow(job, window);
             job->exec();
             ok = !job->error();
         }
@@ -197,7 +205,7 @@ bool KSnapshotObject::saveTo(const QUrl &url, QWidget *widget)
 
         const QString caption = i18n("Unable to Save Image");
         const QString text = i18n("KSnapshot was unable to save the image to\n%1.", url.toDisplayString());
-        KMessageBox::error(widget, text, caption);
+        KMessageBox::error(window, text, caption);
     }
 
     return ok;

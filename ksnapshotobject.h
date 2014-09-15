@@ -40,10 +40,11 @@ public:
     KSnapshotObject();
     virtual ~KSnapshotObject();
 
-    bool save(const QString &filename, QWidget *widget = 0);
-    bool save(const QUrl &url, QWidget *widget);
-    bool saveTo(const QUrl &url, QWidget *widget);
+    bool save(const QString &filename, QWidget *window = 0);
+    bool save(const QUrl &url, QWidget *window = 0);
+    bool saveTo(const QUrl &url, QWidget *window = 0);
     bool saveImage(QIODevice *device, const QByteArray &format);
+    bool urlExists(const QUrl &url, QWidget *window);
 
 protected Q_SLOTS:
     virtual void refreshCaption() { }
@@ -55,6 +56,7 @@ protected:
     void changeUrl(const QString &newUrl);
 
     QUrl m_filename;
+    QUrl m_successfulSaveUrl;
     RegionGrabber *m_regionGrab;
     FreeRegionGrabber *m_freeRegionGrab;
     QWidget *m_grabber;
