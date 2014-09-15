@@ -386,7 +386,7 @@ void KSnapshot::slotDragSnapshot()
 
     drag->setMimeData(new QMimeData);
     drag->mimeData()->setImageData(m_snapshot);
-    drag->mimeData()->setData("application/x-kde-suggestedm_filename", m_filename.fileName().toUtf8());
+    drag->mimeData()->setData("application/x-kde-suggestedfilename", m_filename.fileName().toUtf8());
     drag->setPixmap(preview());
     QList<QUrl> urls;
     urls << urlToOpen();
