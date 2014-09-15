@@ -142,7 +142,7 @@ private:
     KSnapshotWidget *m_snapshotWidget;
     bool m_modified;
     QPoint m_savedPosition;
-    bool m_includeAlpha;
+    bool m_useKwinEffect;
     QPolygon m_lastFreeRegion;
     QRect m_lastRegion;
 
