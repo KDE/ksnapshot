@@ -84,10 +84,14 @@
 #include <KAction>
 #endif
 
-#if HAVE_X11_EXTENSIONS_XFIXES_H
-#include <X11/extensions/Xfixes.h>
+#if HAVE_X11
 #include <X11/Xatom.h>
+#include <X11/Xlib.h>
 #include <QX11Info>
+#endif
+
+#if XCB_XCB_FOUND
+#include <xcb/pixmaphelper.h>
 #endif
 
 class KSnapshotWidget : public QWidget, public Ui::KSnapshotWidget
@@ -105,8 +109,7 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode)
     : QDialog(parent),
       KSnapshotObject(),
       m_modified(true),
-      m_savedPosition(QPoint(-1, -1)),
-      m_haveXFixes(false)
+      m_savedPosition(QPoint(-1, -1))
 {
     // TEMPORARY Make sure "untitled" enters the string freeze for 4.6,
     // as explained in http://lists.kde.org/?l=kde-graphics-devel&m=128942871430175&w=2
@@ -197,32 +200,19 @@ KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode)
     KConfigGroup conf(KSharedConfig::openConfig(), "GENERAL");
 
 #ifdef KIPI_FOUND
-#if(KIPI_VERSION >= 0x020000)
-    m_pluginLoader = new KIPI::PluginLoader();
-    m_pluginLoader->setInterface(new KIPIInterface(this));
-    m_pluginLoader->init();
-#else
-    m_pluginLoader = new KIPI::PluginLoader(QStringList(), new KIPIInterface(this), "");
-#endif
+    #if(KIPI_VERSION >= 0x020000)
+        m_pluginLoader = new KIPI::PluginLoader();
+        m_pluginLoader->setInterface(new KIPIInterface(this));
+        m_pluginLoader->init();
+    #else
+        m_pluginLoader = new KIPI::PluginLoader(QStringList(), new KIPIInterface(this), "");
+    #endif
 #endif
 
-#if HAVE_X11_EXTENSIONS_XFIXES_H
+#if HAVE_X11
     {
-        int tmp1, tmp2;
-        //Check whether the XFixes extension is available
+        // prevent KWin from animating the window in the compositor
         Display *dpy = QX11Info::display();
-        if (!XFixesQueryExtension(dpy, &tmp1, &tmp2)) {
-            m_snapshotWidget->cbIncludePointer->hide();
-            m_snapshotWidget->lblIncludePointer->hide();
-        } else {
-            m_haveXFixes = true;
-        }
-
-        // actually not depending on XFixes, but to simplify the ifdefs put here
-        // we can safely assume that XFixes is present for this functionality
-        // it's supposed to prevent that KWin animates the window in the compositor
-        // and XFixes is a requirement for the compositor. So if XFixes is not present
-        // KWin cannot be compiled at all.
         Atom atom = XInternAtom(dpy, "_KDE_NET_WM_SKIP_CLOSE_ANIMATION", False);
         long d = 1;
         XChangeProperty(dpy, winId(), atom, XA_CARDINAL, 32,
@@ -620,13 +610,8 @@ void KSnapshot::slotWindowGrabbed(const QPixmap &pix)
 
 void KSnapshot::slotScreenshotReceived(qulonglong handle)
 {
-#if HAVE_X11
-    //FIXME: there is no fromX11Pixmap anymore and nothing there to replace it
-    //       may have to write our own thing? want to look around a bit more
-    //       to see if anyone has beaten us to that. i mean, screen shotting
-    //       is *not* an uncommon task. Since this comes from kwin, perhaps
-    //       discuss with kwin developers.
-    //slotWindowGrabbed( QPixmap::fromX11Pixmap( handle ) );
+#if XCB_XCB_FOUND
+    slotWindowGrabbed(PixmapHelperXCB::grabWindow(handle));
 #else
     Q_UNUSED(handle)
 #endif
@@ -803,39 +788,16 @@ void KSnapshot::performGrab()
     show();
 }
 
-// Uses the X11_EXTENSIONS_XFIXES_H extension to grab the pointer image, and overlays it onto the snapshot.
+// Grabs the pointer image if there is platform support for it, and overlays it onto the snapshot.
 void KSnapshot::grabPointerImage(int offsetx, int offsety)
 {
-#if HAVE_X11_EXTENSIONS_XFIXES_H
-    if (!m_haveXFixes || !includePointer()) {
-        return;
-    }
-
-    XFixesCursorImage *xcursorimg = XFixesGetCursorImage(QX11Info::display());
-    if (!xcursorimg) {
-        return;
-    }
-
-    //Annoyingly, xfixes specifies the data to be 32bit, but places it in an unsigned long *
-    //which can be 64 bit.  So we need to iterate over a 64bit structure to put it in a 32bit
-    //structure.
-    QVarLengthArray< quint32 > pixels(xcursorimg->width * xcursorimg->height);
-    for (int i = 0; i < xcursorimg->width * xcursorimg->height; ++i) {
-        pixels[i] = xcursorimg->pixels[i] & 0xffffffff;
-    }
-
-    QImage qcursorimg((uchar *) pixels.data(), xcursorimg->width, xcursorimg->height,
-                      QImage::Format_ARGB32_Premultiplied);
-
-    QPainter painter(&m_snapshot);
-    painter.drawImage(QPointF(xcursorimg->x - xcursorimg->xhot - offsetx, xcursorimg->y - xcursorimg ->yhot - offsety), qcursorimg);
-
-    XFree(xcursorimg);
-#else // HAVE_X11_EXTENSIONS_XFIXES_H
+#if XCB_XFIXES_FOUND
+    PixmapHelperXCB::compositePointer(offsetx, offsety, m_snapshot);
+#else
     Q_UNUSED(offsetx);
     Q_UNUSED(offsety);
     return;
-#endif // HAVE_X11_EXTENSIONS_XFIXES_H
+#endif
 }
 
 void KSnapshot::setTime(int newTime)

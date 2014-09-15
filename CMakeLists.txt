@@ -6,7 +6,11 @@ set (QT_MIN_VERSION "5.2.0")
 #macro_optional_find_package(Kipi)
 
 find_package(ECM 1.1.0 REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
+
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules
+                      ${CMAKE_MODULE_PATH}
+                      ${ECM_MODULE_PATH}
+                      ${ECM_KDE_MODULE_DIR})
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
@@ -34,21 +38,22 @@ add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 find_package(X11)
 if (X11_FOUND)
     set(HAVE_X11 1)
+endif(X11_FOUND)
 
-    if (X11_Xshape_FOUND)
-        set(HAVE_X11_EXTENSIONS_SHAPE_H 1)
-    endif (X11_Xshape_FOUND)
+find_package(XCB MODULE COMPONENTS XCB SHAPE XFIXES)
+set_package_properties(XCB PROPERTIES DESCRIPTION "X protocol C-language Binding"
+                       URL "http://xcb.freedesktop.org"
+                       TYPE OPTIONAL)
+find_package(X11_XCB MODULE)
+set_package_properties(X11_XCB PROPERTIES DESCRIPTION "Xlib/XCB interface library"
+                       URL "http://xcb.freedesktop.org"
+                       TYPE OPTIONAL)
 
-    if (X11_Xfixes_FOUND)
-        set(HAVE_X11_EXTENSIONS_XFIXES_H 1)
-    endif (X11_Xfixes_FOUND)
-endif (X11_FOUND)
-#feature_summary(WHAT ENABLED_FEATURES DESCRIPTION "X11 Fixes Extension (xfixes.h)" "Support for capturing the cursor" "http://www.x.org/" VAR HAVE_X11_EXTENSIONS_XFIXES_H)
+#include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 if (KIPI_FOUND)
-        include_directories(${KIPI_INCLUDE_DIR})
+   include_directories(${KIPI_INCLUDE_DIR})
 endif (KIPI_FOUND)
-#macro_log_feature(KIPI_FOUND "KIPI plugins" "Provides various image export features, such as printing, emailing and uploading" "http://www.kipi-plugins.org/" FALSE "" "")
 
 configure_file(config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnapshot.h)
 
@@ -65,6 +70,12 @@ set(ksnapshot_file_SRCS
    ksnapshotobject.cpp
    ksnapshotpreview.cpp)
 
+if (XCB_XCB_FOUND AND X11_XCB_FOUND)
+   set(ksnapshot_xcb_SRCS
+      #       windowgrabber_x11.cpp
+       xcb/pixmaphelper.cpp)
+endif (XCB_XCB_FOUND AND X11_XCB_FOUND)
+
 if (KIPI_FOUND)
     set(ksnapshot_kipi_SRCS
         kipiinterface.cpp
@@ -76,6 +87,7 @@ endif (KIPI_FOUND)
 set(ksnapshot_SRCS
    main.cpp
    ksnapshot.cpp 
+   ${ksnapshot_xcb_SRCS}
    ${ksnapshot_file_SRCS}
    ${ksnapshot_kipi_SRCS})
 
@@ -100,11 +112,21 @@ target_link_libraries(ksnapshot
    KF5::KIOWidgets
    KF5::WindowSystem
    KF5::XmlGui
-   ${X11_LIBRARIES})
+   ${X11_LIBRARIES}
+   )
 
-if (X11_Xfixes_FOUND)
-    target_link_libraries(ksnapshot ${X11_Xfixes_LIB})
-endif (X11_Xfixes_FOUND)
+if (X11_XCB_FOUND)
+    target_link_libraries(ksnapshot ${X11_XCB_LIBRARIES})
+endif ()
+if (XCB_XCB_FOUND)
+    target_link_libraries(ksnapshot ${XCB_XCB_LIBRARY})
+endif ()
+if (XCB_SHAPE_FOUND)
+    target_link_libraries(ksnapshot ${XCB_SHAPE_LIBRARY})
+endif ()
+if (XCB_XFIXES_FOUND)
+    target_link_libraries(ksnapshot ${XCB_XFIXES_LIBRARY})
+endif ()
 
 if (KIPI_FOUND)
     target_link_libraries(ksnapshot ${KIPI_LIBRARIES})
@@ -129,7 +151,22 @@ target_link_libraries(kbackgroundsnapshot
                       KF5::I18n
                       KF5::KIOWidgets
                       KF5::WindowSystem
-                      ${X11_LIBRARIES})
+                      ${X11_LIBRARIES}
+                     )
+
+target_link_libraries(kbackgroundsnapshot ${KDE4_KIO_LIBS})
+
+if (X11_XCB_FOUND)
+    target_link_libraries(kbackgroundsnapshot ${X11_XCB_LIBRARIES})
+endif ()
+
+if (XCB_XCB_FOUND)
+    target_link_libraries(kbackgroundsnapshot ${XCB_XCB_LIBRARY})
+endif ()
+
+if (XCB_SHAPE_FOUND)
+    target_link_libraries(kbackgroundsnapshot ${XCB_SHAPE_LIBRARY})
+endif ()
 
 install(TARGETS kbackgroundsnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
 
