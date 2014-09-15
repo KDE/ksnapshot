@@ -745,7 +745,7 @@ void KSnapshot::performGrab()
         grabPointerImage(offset.x(), offset.y());
         qDebug() << "last window position is" << offset;
     } else if (mode() == WindowUnderCursor) {
-        if (false /* m_includeAlpha FIXME ... this is broken right now. see slotWindowGrabbed */) {
+        if (m_includeAlpha) {
             // use kwin effect
             QDBusConnection::sessionBus().connect("org.kde.kwin", "/Screenshot",
                                                   "org.kde.kwin.Screenshot", "screenshotCreated",
