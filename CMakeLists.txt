@@ -57,6 +57,11 @@ endif (KIPI_FOUND)
 
 configure_file(config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnapshot.h)
 
+if (XCB_XCB_FOUND AND X11_XCB_FOUND)
+   set(ksnapshot_xcb_SRCS
+       xcb/pixmaphelper.cpp)
+endif (XCB_XCB_FOUND AND X11_XCB_FOUND)
+
 ########### next target ###############
 
 add_subdirectory( doc )
@@ -69,12 +74,6 @@ set(ksnapshot_file_SRCS
    windowgrabber.cpp
    ksnapshotobject.cpp
    ksnapshotpreview.cpp)
-
-if (XCB_XCB_FOUND AND X11_XCB_FOUND)
-   set(ksnapshot_xcb_SRCS
-      #       windowgrabber_x11.cpp
-       xcb/pixmaphelper.cpp)
-endif (XCB_XCB_FOUND AND X11_XCB_FOUND)
 
 if (KIPI_FOUND)
     set(ksnapshot_kipi_SRCS
@@ -118,12 +117,15 @@ target_link_libraries(ksnapshot
 if (X11_XCB_FOUND)
     target_link_libraries(ksnapshot ${X11_XCB_LIBRARIES})
 endif ()
+
 if (XCB_XCB_FOUND)
     target_link_libraries(ksnapshot ${XCB_XCB_LIBRARY})
 endif ()
+
 if (XCB_SHAPE_FOUND)
     target_link_libraries(ksnapshot ${XCB_SHAPE_LIBRARY})
 endif ()
+
 if (XCB_XFIXES_FOUND)
     target_link_libraries(ksnapshot ${XCB_XFIXES_LIBRARY})
 endif ()
@@ -139,10 +141,13 @@ install(TARGETS ksnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 set(kbackgroundsnapshot_SRCS
    kbackgroundsnapshot.cpp
-   ${ksnapshot_file_SRCS})
+   )
 
-
-add_executable(kbackgroundsnapshot ${kbackgroundsnapshot_SRCS})
+add_executable(kbackgroundsnapshot
+               ${kbackgroundsnapshot_SRCS}
+               ${ksnapshot_xcb_SRCS}
+               ${ksnapshot_file_SRCS}
+               )
 
 target_link_libraries(kbackgroundsnapshot
                       Qt5::X11Extras
@@ -166,6 +171,10 @@ endif ()
 
 if (XCB_SHAPE_FOUND)
     target_link_libraries(kbackgroundsnapshot ${XCB_SHAPE_LIBRARY})
+endif ()
+
+if (XCB_XFIXES_FOUND)
+    target_link_libraries(kbackgroundsnapshot ${XCB_XFIXES_LIBRARY})
 endif ()
 
 install(TARGETS kbackgroundsnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})

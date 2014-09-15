@@ -58,6 +58,7 @@ protected:
     void paintEvent(QPaintEvent *);
 
 private:
+    void platformSetup(QPixmap &pm, QRect &geom);
     void increaseScope(const QPoint &);
     void decreaseScope(const QPoint &);
     int windowIndex(const QPoint &) const;
