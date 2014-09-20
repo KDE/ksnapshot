@@ -49,9 +49,9 @@ int main(int argc, char **argv)
     parser.addVersionOption();
     parser.addHelpOption();
     aboutData.setupCommandLine(&parser);
-    aboutData.processCommandLine(&parser);
     addCommandLineOptions(parser);    // Add our own options.
     parser.process(app);
+    aboutData.processCommandLine(&parser);
 
     // This is one of the applications that requires the "native" / X11 graphics backend to work.
     QApplication::setGraphicsSystem("native");
