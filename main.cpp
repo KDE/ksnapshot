@@ -57,32 +57,32 @@ int main(int argc, char **argv)
     QApplication::setGraphicsSystem("native");
 
     // Create top level window
-    KSnapshot *toplevel;
     bool showTopLevel = false;
+    KSnapshotObject::CaptureMode startingMode = KSnapshotObject::FullScreen;
 
     if (parser.isSet("current")) {
-        toplevel = new KSnapshot(0, KSnapshotObject::WindowUnderCursor);
+        startingMode = KSnapshotObject::WindowUnderCursor;
     } else if (parser.isSet("fullscreen")) {
         //we grad directly desktop => show dialogbox
         showTopLevel = true;
-        toplevel = new KSnapshot(0, KSnapshotObject::FullScreen);
+        startingMode = KSnapshotObject::FullScreen;
     } else if (parser.isSet("region")) {
-        toplevel = new KSnapshot(0, KSnapshotObject::Region);
+        startingMode = KSnapshotObject::Region;
     } else if (parser.isSet("freeregion")) {
-        toplevel = new KSnapshot(0, KSnapshotObject::FreeRegion);
+        startingMode = KSnapshotObject::FreeRegion;
     } else if (parser.isSet("child")) {
-        toplevel = new KSnapshot(0, KSnapshotObject::ChildWindow);
+        startingMode = KSnapshotObject::ChildWindow;
     } else {
         showTopLevel = true;
-        toplevel = new KSnapshot();
     }
 
 
-    new KsnapshotAdaptor(toplevel);
-    QDBusConnection::sessionBus().registerObject("/KSnapshot", toplevel);
+    KSnapshot *window = new KSnapshot(startingMode);
+    new KsnapshotAdaptor(window);
+    QDBusConnection::sessionBus().registerObject("/KSnapshot", window);
 
     if (showTopLevel) {
-        toplevel->show();
+        window->show();
     }
     return app.exec();
 }

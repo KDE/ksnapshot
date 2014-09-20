@@ -69,7 +69,7 @@ class KSnapshot : public QDialog, public KSnapshotObject
     Q_OBJECT
 
 public:
-    explicit KSnapshot(QWidget *parent = 0, KSnapshotObject::CaptureMode mode = FullScreen);
+    explicit KSnapshot(KSnapshotObject::CaptureMode mode = FullScreen, QWidget *parent = 0);
     ~KSnapshot();
 
     QString url() const;

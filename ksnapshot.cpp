@@ -105,7 +105,7 @@ public:
     }
 };
 
-KSnapshot::KSnapshot(QWidget *parent,  KSnapshotObject::CaptureMode mode)
+KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
     : QDialog(parent),
       KSnapshotObject(),
       m_modified(true),
