@@ -223,7 +223,6 @@ KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
     m_snapshotWidget->lblIncludePointer->hide();
 #endif
     setIncludePointer(conf.readEntry("includePointer", false));
-    setMode(conf.readEntry("mode", 0));
 
     // check if kwin screenshot effect is available
     m_useKwinEffect = false;
@@ -246,6 +245,7 @@ KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
     }
 
     //qDebug() << "Mode = " << mode;
+    setMode(conf.readEntry("mode", 0));
     if (mode == KSnapshotObject::FullScreen) {
         grabFullScreen();
     } else if (mode == KSnapshotObject::CurrentScreen) {
@@ -751,13 +751,16 @@ void KSnapshot::performGrab()
                                                   "org.kde.kwin.Screenshot", "screenshotCreated",
                                                   this, SLOT(slotScreenshotReceived(qulonglong)));
             QDBusInterface interface("org.kde.kwin", "/Screenshot", "org.kde.kwin.Screenshot");
+
             int mask = 0;
             if (includeDecorations()) {
                 mask |= 1 << 0;
             }
+
             if (includePointer()) {
                 mask |= 1 << 1;
             }
+
             interface.call("screenshotWindowUnderCursor", mask);
         } else {
             m_snapshot = WindowGrabber::grabCurrent(includeDecorations());
