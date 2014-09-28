@@ -28,12 +28,10 @@
 
 #define KSNAPVERSION "0.8.2"
 
-static const char description[] = I18N_NOOP("KDE Screenshot Utility");
-
 int main(int argc, char **argv)
 {
     KLocalizedString::setApplicationDomain("ksnapshot");
-    KAboutData aboutData("ksnapshot", i18n("KSnapshot"), KSNAPVERSION, i18n(description), KAboutLicense::GPL,
+    KAboutData aboutData("ksnapshot", i18n("KSnapshot"), KSNAPVERSION, i18n("KDE Screenshot Utility"), KAboutLicense::GPL,
                          i18n("(c) 1997-2008, Richard J. Moore,\n(c) 2000, Matthias Ettrich,\n(c) 2002-2014 Aaron J. Seigo"));
     aboutData.addAuthor("Richard J. Moore", QString(), QString("rich@kde.org"));
     aboutData.addAuthor("Matthias Ettrich", QString(), "ettrich@kde.org");
