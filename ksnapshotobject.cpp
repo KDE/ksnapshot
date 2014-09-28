@@ -218,8 +218,12 @@ bool KSnapshotObject::saveImage(QIODevice *device, const QByteArray &format)
         return false;
     }
 
-    // For jpeg use 85% quality not the default
-    if (0 == qstricmp(format.constData(), "jpeg") || 0 == qstricmp(format.constData(), "jpg")) {
+    qDebug() << "saving file format" << format << " in quality " << imgWriter.quality();
+
+    // For jpeg and webp use 85% quality not the default
+    if (0 == qstricmp(format.constData(), "jpeg")
+            || 0 == qstricmp(format.constData(), "jpg")
+            || 0 == qstricmp(format.constData(), "webp")) {
         imgWriter.setQuality(85);
     }
 
