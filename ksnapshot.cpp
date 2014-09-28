@@ -111,11 +111,7 @@ KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
       m_modified(true),
       m_savedPosition(QPoint(-1, -1))
 {
-    // TEMPORARY Make sure "untitled" enters the string freeze for 4.6,
-    // as explained in http://lists.kde.org/?l=kde-graphics-devel&m=128942871430175&w=2
-    const QString untitled = QString(i18n("untitled"));
-
-    setWindowTitle("");
+    setWindowTitle(i18nc("untitled snapshot", "untitled"));
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Help | QDialogButtonBox::Apply);
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -134,7 +130,7 @@ KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
     KGuiItem::assign(sendToButton, KGuiItem(i18n("Send To...")));
     buttonBox->button(QDialogButtonBox::Apply)->setDefault(true);
     buttonBox->button(QDialogButtonBox::Apply)->setShortcut(Qt::CTRL | Qt::Key_Return);
-    m_grabber = new QWidget(0,  Qt::X11BypassWindowManagerHint);
+    m_grabber = new QWidget(0, Qt::X11BypassWindowManagerHint);
 
     // TODO X11 (Xinerama and Twinview, actually) and Windows use different coordinates for the two monitors case
     //
@@ -361,11 +357,17 @@ void KSnapshot::slotSaveAs()
     //TODO: non-blocking save
     QStringList filters;
     QMimeDatabase db;
+    QString selectedFilter;
+    const QString mimeTypeForFilename = db.mimeTypeForUrl(m_filename).name();
     for (auto mimetype: QImageWriter::supportedMimeTypes()) {
         filters << db.mimeTypeForName(mimetype).filterString();
+        if (mimetype == mimeTypeForFilename) {
+            selectedFilter = filters.last(); // pre-select the right MIME type (image type format) in the dialog
+        }
     }
 
-    QUrl url = QFileDialog::getSaveFileName(this, i18n("Save Snapshot As"), m_filename.url(), filters.join(";;"));
+    const QUrl url = QFileDialog::getSaveFileUrl(this, i18n("Save Snapshot As"), m_filename, filters.join(";;"), &selectedFilter);
+
     if (!url.isValid()) {
         return;
     }
@@ -386,7 +388,7 @@ void KSnapshot::slotDragSnapshot()
 
     drag->setMimeData(new QMimeData);
     drag->mimeData()->setImageData(m_snapshot);
-    drag->mimeData()->setData("application/x-kde-suggestedfilename", m_filename.fileName().toUtf8());
+    drag->mimeData()->setData("application/x-kde-suggestedfilename", QFile::encodeName(m_filename.fileName()));
     drag->setPixmap(preview());
     QList<QUrl> urls;
     urls << urlToOpen();
@@ -400,7 +402,7 @@ void KSnapshot::slotGrab()
     hide();
 
     if (delay()) {
-        ////qDebug() << "starting timer with time of" << delay();
+        //qDebug() << "starting timer with time of" << delay();
         m_grabTimer.start(delay());
     } else {
         QMetaObject::invokeMethod(this, "startUndelayedGrab", Qt::QueuedConnection);
@@ -429,10 +431,7 @@ QUrl KSnapshot::urlToOpen(bool *isTempfile)
         return m_successfulSaveUrl;
     }
 
-    //TODO: better management of the temp files,
-    //      e.g. guaranteed removal when complete in all cases
     QTemporaryFile tmpFile("snapshot_XXXXXX.png");
-    tmpFile.setAutoRemove(false);
     tmpFile.open();
     const QUrl path = QUrl::fromLocalFile(tmpFile.fileName());
 
@@ -634,7 +633,7 @@ void KSnapshot::closeEvent(QCloseEvent *e)
     KWindowConfig::saveWindowSize(windowHandle(), cg);
 
     QUrl url = m_filename;
-    url.setPassword(QString::null);    //krazy:exclude=nullstrassign for old broken gcc
+    url.setPassword(QString());
     conf.writePathEntry("m_filename", url.url());
 
     conf.sync();
@@ -830,7 +829,8 @@ int KSnapshot::grabMode() const
 
 void KSnapshot::refreshCaption()
 {
-    windowHandle()->setTitle(m_filename.fileName());    // FIXME: no longer can signal modification state! , m_modified);
+    setWindowTitle(m_filename.fileName() + " [*]");
+    setWindowModified(m_modified);
 }
 
 void KSnapshot::slotMovePointer(int x, int y)

@@ -76,7 +76,7 @@ bool KSnapshotObject::urlExists(const QUrl &url, QWidget *window)
     KJobWidgets::setWindow(job, window);
     job->exec();
 
-    return !job->error();
+    return job->error() == KJob::NoError;
 }
 
 void KSnapshotObject::autoincFilenameUntilUnique(QWidget *window)
@@ -122,19 +122,18 @@ void KSnapshotObject::autoincFilename()
     //Rebuild the path
     QUrl newUrl = m_filename;
     newUrl = newUrl.adjusted(QUrl::RemoveFilename);
-    newUrl.setPath(newUrl.path() +  name);
+    newUrl.setPath(newUrl.path() + name);
     changeUrl(newUrl.url());
 }
 
 
-void KSnapshotObject::changeUrl(const QString &url)
+void KSnapshotObject::changeUrl(const QUrl &url)
 {
-    QUrl newURL = QUrl(url);
-    if (newURL == m_filename) {
+    if (url == m_filename) {
         return;
     }
 
-    m_filename = newURL;
+    m_filename = url;
     refreshCaption();
 }
 
@@ -175,7 +174,7 @@ bool KSnapshotObject::save(const QUrl &url, QWidget *window)
 bool KSnapshotObject::saveTo(const QUrl &url, QWidget *window)
 {
     QMimeDatabase db;
-    QString type = db.mimeTypeForName(url.fileName()).name();
+    QString type = db.mimeTypeForUrl(url).preferredSuffix();
     if (type.isEmpty()) {
         type = "PNG";
     }
@@ -191,17 +190,16 @@ bool KSnapshotObject::saveTo(const QUrl &url, QWidget *window)
         QTemporaryFile tmpFile;
         if (tmpFile.open() && saveImage(&tmpFile, type.toLatin1())) {
             // TODO: non-blocking
-            // we only need to test for existence; details about the file are uninteresting, so 0 for third param
             KIO::FileCopyJob *job = KIO::file_copy(tmpFile.fileName(), url);
             KJobWidgets::setWindow(job, window);
             job->exec();
-            ok = !job->error();
+            ok = job->error() == KJob::NoError;
         }
     }
 
     QApplication::restoreOverrideCursor();
     if (!ok) {
-        qWarning() << "KSnapshot was unable to save the m_snapshot to" << url.toDisplayString();
+        qWarning() << "KSnapshot was unable to save the m_snapshot to" << url << "type: " << type;
 
         const QString caption = i18n("Unable to Save Image");
         const QString text = i18n("KSnapshot was unable to save the image to\n%1.", url.toDisplayString());
@@ -236,4 +234,3 @@ bool KSnapshotObject::saveImage(QIODevice *device, const QByteArray &format)
     QImage snap = m_snapshot.toImage();
     return imgWriter.write(snap);
 }
-

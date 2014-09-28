@@ -53,7 +53,7 @@ protected:
     void autoincFilenameUntilUnique(QWidget *window);
     void autoincFilename();
 
-    void changeUrl(const QString &newUrl);
+    void changeUrl(const QUrl &newUrl);
 
     QUrl m_filename;
     QUrl m_successfulSaveUrl;
