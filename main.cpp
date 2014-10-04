@@ -21,6 +21,7 @@
 #include <KAboutData>
 #include <KLocalizedString>
 #include <QCommandLineParser>
+#include <KDBusService>
 
 #include "ksnapshotadaptor.h"
 #include "ksnapshot.h"
@@ -42,6 +43,8 @@ int main(int argc, char **argv)
                         "pgquiles@elpauer.org");
 
     QApplication app(argc, argv);
+    app.setOrganizationDomain("kde.org");
+    KDBusService service;
     QCommandLineParser parser;
     KAboutData::setApplicationData(aboutData);
     parser.addVersionOption();

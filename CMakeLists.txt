@@ -30,7 +30,7 @@ find_package(KF5 REQUIRED
        CoreAddons DocTools GuiAddons I18n
        KDELibs4Support KIO
        Service WindowSystem
-       XmlGui
+       XmlGui DBusAddons
 )
 
 add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
@@ -111,6 +111,7 @@ target_link_libraries(ksnapshot
    KF5::KIOWidgets
    KF5::WindowSystem
    KF5::XmlGui
+   KF5::DBusAddons
    ${X11_LIBRARIES}
    )
 
