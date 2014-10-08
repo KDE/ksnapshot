@@ -22,7 +22,7 @@
 #include <KLocalizedString>
 #include <QCommandLineParser>
 #include <KDBusService>
-
+#include <Kdelibs4ConfigMigrator>
 #include "ksnapshotadaptor.h"
 #include "ksnapshot.h"
 #include "ksnapshot_options.h"
@@ -31,6 +31,10 @@
 
 int main(int argc, char **argv)
 {
+    Kdelibs4ConfigMigrator migrate(QStringLiteral("ksnapshot"));
+    migrate.setConfigFiles(QStringList() << QStringLiteral("ksnapshotrc"));
+    migrate.migrate();
+
     KLocalizedString::setApplicationDomain("ksnapshot");
     KAboutData aboutData("ksnapshot", i18n("KSnapshot"), KSNAPVERSION, i18n("KDE Screenshot Utility"), KAboutLicense::GPL,
                          i18n("(c) 1997-2008, Richard J. Moore,\n(c) 2000, Matthias Ettrich,\n(c) 2002-2014 Aaron J. Seigo"));

@@ -5,7 +5,7 @@ set (QT_MIN_VERSION "5.2.0")
 
 #macro_optional_find_package(Kipi)
 
-find_package(ECM 1.1.0 REQUIRED NO_MODULE)
+find_package(ECM 1.2.0 REQUIRED NO_MODULE)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules
                       ${CMAKE_MODULE_PATH}
@@ -25,7 +25,9 @@ include(FeatureSummary)
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Core DBus Widgets X11Extras)
 
-find_package(KF5 REQUIRED
+set(KF5_MIN_VERSION 5.2.0)
+
+find_package(KF5 ${KF5_MIN_VERSION} REQUIRED
        Config ConfigWidgets
        CoreAddons DocTools GuiAddons I18n
        KIO
