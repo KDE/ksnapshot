@@ -96,5 +96,5 @@ void KSnapshotPreview::mouseReleaseEvent(QMouseEvent * /*e*/)
     mClickPt = QPoint(0, 0);
 }
 
-#include "ksnapshotpreview.moc"
+
 

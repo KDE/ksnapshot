@@ -394,4 +394,4 @@ QRect RegionGrabber::normalizeSelection(const QRect &s) const
     return r;
 }
 
-#include "regiongrabber.moc"
+

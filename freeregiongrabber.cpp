@@ -296,4 +296,4 @@ void FreeRegionGrabber::grabRect()
     }
 }
 
-#include "freeregiongrabber.moc"
+

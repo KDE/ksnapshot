@@ -31,7 +31,7 @@
 #include <KLocalizedString>
 #include <KAboutData>
 
-#include "kbackgroundsnapshot.moc"
+
 #include "regiongrabber.h"
 #include "ksnapshot_options.h"
 #include "windowgrabber.h"
