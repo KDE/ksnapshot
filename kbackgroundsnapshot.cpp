@@ -104,8 +104,7 @@ void KBackgroundSnapshot::performGrab()
     m_grabber->hide();
     if (m_captureMode == ChildWindow) {
         WindowGrabber wndGrab;
-        connect(&wndGrab, &WindowGrabber::windowGrabbed,
-                this, &KBackgroundSnapshot::slotWindowGrabbed);
+        connect(&wndGrab, &WindowGrabber::windowGrabbed, this, &KBackgroundSnapshot::slotWindowGrabbed);
         wndGrab.exec();
         savePictureOnDesktop();
     } else if (m_captureMode == WindowUnderCursor) {
@@ -139,8 +138,7 @@ void KBackgroundSnapshot::grabRegion()
 {
     QRect emptySelection;
     m_regionGrab = new RegionGrabber(emptySelection);
-    connect(m_regionGrab, &RegionGrabber::regionGrabbed,
-            this, &KBackgroundSnapshot::slotRegionGrabbed);
+    connect(m_regionGrab, &RegionGrabber::regionGrabbed, this, &KBackgroundSnapshot::slotRegionGrabbed);
 
 }
 

@@ -28,7 +28,7 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Core DBus Widgets X11Extras)
 find_package(KF5 REQUIRED
        Config ConfigWidgets
        CoreAddons DocTools GuiAddons I18n
-       KDELibs4Support KIO
+       KIO
        Service WindowSystem
        XmlGui DBusAddons
 )

@@ -121,10 +121,8 @@ KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
     buttonBox->addButton(copyToClipboardButton, QDialogButtonBox::ActionRole);
     QPushButton *sendToButton = new QPushButton;
     buttonBox->addButton(sendToButton, QDialogButtonBox::ActionRole);
-    connect(buttonBox, &QDialogButtonBox::accepted,
-            this, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected,
-            this, &QDialog::reject);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     KGuiItem::assign(buttonBox->button(QDialogButtonBox::Apply), KStandardGuiItem::saveAs());
     KGuiItem::assign(copyToClipboardButton, KGuiItem(i18n("Copy")));
     KGuiItem::assign(sendToButton, KGuiItem(i18n("Send To...")));
@@ -161,16 +159,11 @@ KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
 
     m_snapshotWidget = new KSnapshotWidget(this);
 
-    connect(m_snapshotWidget->lblImage, &KSnapshotPreview::startDrag,
-            this, &KSnapshot::slotDragSnapshot);
-    connect(m_snapshotWidget->btnNew, &QPushButton::clicked,
-            this, &KSnapshot::slotGrab);
-    connect(buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked,
-            this, &KSnapshot::slotSaveAs);
-    connect(copyToClipboardButton, &QPushButton::clicked,
-            this, &KSnapshot::slotCopy);
-    connect(m_snapshotWidget->comboMode, (void (QComboBox:: *)(int)) &QComboBox::activated,
-            this, &KSnapshot::slotModeChanged);
+    connect(m_snapshotWidget->lblImage, &KSnapshotPreview::startDrag, this, &KSnapshot::slotDragSnapshot);
+    connect(m_snapshotWidget->btnNew, &QPushButton::clicked, this, &KSnapshot::slotGrab);
+    connect(buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &KSnapshot::slotSaveAs);
+    connect(copyToClipboardButton, &QPushButton::clicked, this, &KSnapshot::slotCopy);
+    connect(m_snapshotWidget->comboMode, (void (QComboBox:: *)(int)) &QComboBox::activated, this, &KSnapshot::slotModeChanged);
 
     if (qApp->desktop()->numScreens() < 2) {
         m_snapshotWidget->comboMode->removeItem(CurrentScreen);
@@ -178,13 +171,10 @@ KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
 
     m_openMenu = new QMenu(this);
     sendToButton->setMenu(m_openMenu);
-    connect(m_openMenu, &QMenu::aboutToShow,
-            this, &KSnapshot::slotPopulateOpenMenu);
-    connect(m_openMenu, &QMenu::triggered,
-            this, (void (KSnapshot:: *)(QAction *)) &KSnapshot::slotOpen);
+    connect(m_openMenu, &QMenu::aboutToShow, this, &KSnapshot::slotPopulateOpenMenu);
+    connect(m_openMenu, &QMenu::triggered, this, (void (KSnapshot:: *)(QAction *)) &KSnapshot::slotOpen);
 
-    connect(m_snapshotWidget->spinDelay, (void (QSpinBox:: *)(int)) &QSpinBox::valueChanged,
-            this, &KSnapshot::setDelaySpinboxSuffix);
+    connect(m_snapshotWidget->spinDelay, (void (QSpinBox:: *)(int)) &QSpinBox::valueChanged, this, &KSnapshot::setDelaySpinboxSuffix);
     setDelaySpinboxSuffix(m_snapshotWidget->spinDelay->value());
 
     mainLayout->addWidget(m_snapshotWidget);
@@ -281,10 +271,8 @@ KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
     setIncludeDecorations(conf.readEntry("includeDecorations", true));
     m_filename = QUrl(conf.readPathEntry("m_filename", QDir::currentPath() + '/' + i18n("snapshot") + "1.png"));
 
-    connect(&m_grabTimer, &SnapshotTimer::timeout,
-            this, &KSnapshot::grabTimerDone);
-    connect(&m_updateTimer, &QTimer::timeout,
-            this, &KSnapshot::updatePreview);
+    connect(&m_grabTimer, &SnapshotTimer::timeout, this, &KSnapshot::grabTimerDone);
+    connect(&m_updateTimer, &QTimer::timeout, this, &KSnapshot::updatePreview);
 
     KHelpMenu *helpMenu = new KHelpMenu(this, KAboutData::applicationData(), true);
     buttonBox->button(QDialogButtonBox::Help)->setMenu(helpMenu->menu());
@@ -695,10 +683,8 @@ void KSnapshot::grabRegion()
     }
 
     m_regionGrab = new RegionGrabber(m_lastRegion);
-    connect(m_regionGrab, &RegionGrabber::regionGrabbed,
-            this, &KSnapshot::slotRegionGrabbed);
-    connect(m_regionGrab, &RegionGrabber::regionUpdated,
-            this, &KSnapshot::slotRegionUpdated);
+    connect(m_regionGrab, &RegionGrabber::regionGrabbed, this, &KSnapshot::slotRegionGrabbed);
+    connect(m_regionGrab, &RegionGrabber::regionUpdated, this, &KSnapshot::slotRegionUpdated);
 
 }
 
@@ -709,10 +695,8 @@ void KSnapshot::grabFreeRegion()
     }
 
     m_freeRegionGrab = new FreeRegionGrabber(m_lastFreeRegion);
-    connect(m_freeRegionGrab, &FreeRegionGrabber::freeRegionGrabbed,
-            this, &KSnapshot::slotRegionGrabbed);
-    connect(m_freeRegionGrab, &FreeRegionGrabber::freeRegionUpdated,
-            this, &KSnapshot::slotFreeRegionUpdated);
+    connect(m_freeRegionGrab, &FreeRegionGrabber::freeRegionGrabbed, this, &KSnapshot::slotRegionGrabbed);
+    connect(m_freeRegionGrab, &FreeRegionGrabber::freeRegionUpdated, this, &KSnapshot::slotFreeRegionUpdated);
 }
 
 void KSnapshot::grabTimerDone()
@@ -737,8 +721,7 @@ void KSnapshot::performGrab()
 
     if (mode() == ChildWindow) {
         WindowGrabber wndGrab;
-        connect(&wndGrab, &WindowGrabber::windowGrabbed,
-                this, &KSnapshot::slotWindowGrabbed);
+        connect(&wndGrab, &WindowGrabber::windowGrabbed, this, &KSnapshot::slotWindowGrabbed);
         wndGrab.exec();
         QPoint offset = wndGrab.lastWindowPosition();
         grabPointerImage(offset.x(), offset.y());

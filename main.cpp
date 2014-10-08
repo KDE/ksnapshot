@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     aboutData.processCommandLine(&parser);
 
     // This is one of the applications that requires the "native" / X11 graphics backend to work.
-    QApplication::setGraphicsSystem("native");
+    //QT5 ? QApplication::setGraphicsSystem("native");
 
     // Create top level window
     bool showTopLevel = false;
