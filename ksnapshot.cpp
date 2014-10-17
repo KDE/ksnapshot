@@ -81,7 +81,7 @@
 #include <libkipi/plugin.h>
 #include <libkipi/version.h>
 #include "kipiinterface.h"
-#include <KAction>
+#include <QAction>
 #endif
 
 #if HAVE_X11
@@ -519,8 +519,8 @@ void KSnapshot::slotPopulateOpenMenu()
 
         plugin->setup(this);
 
-        QList<KAction *> actions = plugin->actions();
-        QSet<KAction *> exportActions;
+        QList<QAction *> actions = plugin->actions();
+        QSet<QAction *> exportActions;
         for (auto action: actions) {
             KIPI::Category category = plugin->category(action);
             if (category == KIPI::ExportPlugin) {
@@ -533,7 +533,7 @@ void KSnapshot::slotPopulateOpenMenu()
             }
         }
 
-        Q_FOREACH(KAction * action, exportActions) {
+        Q_FOREACH(QAction * action, exportActions) {
             m_openMenu->addAction(action);
         }
 
