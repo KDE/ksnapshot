@@ -82,9 +82,9 @@ void KBackgroundSnapshot::savePictureOnDesktop()
 {
     m_filename = QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + '/' + i18n("snapshot") + "1.png");
     // Make sure the name is not already being used
-    autoincFilenameUntilUnique(0);
-    save(m_filename, 0L);
-    exit(0);
+    autoincFilenameUntilUnique(Q_NULLPTR);
+    save(m_filename, Q_NULLPTR);
+    exit(EXIT_SUCCESS);
 }
 
 void KBackgroundSnapshot::grabFullScreen()
@@ -184,12 +184,12 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     QCommandLineParser parser;
     KAboutData::setApplicationData(aboutData);
+    addCommandLineOptions(parser);    // Add our own options.
     parser.addVersionOption();
     parser.addHelpOption();
     aboutData.setupCommandLine(&parser);
     parser.process(app);
     aboutData.processCommandLine(&parser);
-    addCommandLineOptions(parser);    // Add our own options.
 
     if (parser.isSet("current")) {
         new KBackgroundSnapshot(KSnapshotObject::WindowUnderCursor);
