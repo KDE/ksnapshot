@@ -51,11 +51,11 @@ signals:
     void windowGrabbed(const QPixmap &);
 
 protected:
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void wheelEvent(QWheelEvent *);
-    void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent *) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *) Q_DECL_OVERRIDE;
+    void wheelEvent(QWheelEvent *) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
 
 private:
     void platformSetup(QPixmap &pm, QRect &geom);

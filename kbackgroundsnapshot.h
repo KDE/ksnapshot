@@ -41,7 +41,7 @@ protected:
     void performGrab();
     void grabRegion();
     void grabFullScreen();
-    bool eventFilter(QObject *, QEvent *);
+    bool eventFilter(QObject *, QEvent *) Q_DECL_OVERRIDE;
     void savePictureOnDesktop();
 
 private:

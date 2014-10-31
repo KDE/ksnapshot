@@ -29,6 +29,6 @@ namespace PixmapHelperXCB
 
     uint8_t defaultDepth();
     QImage::Format findFormat();
-};
+}
 
 #endif

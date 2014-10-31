@@ -48,7 +48,6 @@ FreeRegionGrabber::~FreeRegionGrabber()
 
 void FreeRegionGrabber::init()
 {
-    QPixmap pixamp;
     const QList<QScreen *> screens = qApp->screens();
     const QDesktopWidget *desktop = QApplication::desktop();
     const int screenId = desktop->screenNumber(QCursor::pos());

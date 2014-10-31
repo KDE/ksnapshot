@@ -47,13 +47,13 @@ signals:
     void regionUpdated(const QRect &);
 
 protected:
-    void paintEvent(QPaintEvent *e);
-    void resizeEvent(QResizeEvent *e);
-    void mousePressEvent(QMouseEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void mouseDoubleClickEvent(QMouseEvent *);
-    void keyPressEvent(QKeyEvent *e);
+    void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *e) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
+    void mouseDoubleClickEvent(QMouseEvent *) Q_DECL_OVERRIDE;
+    void keyPressEvent(QKeyEvent *e) Q_DECL_OVERRIDE;
     void updateHandles();
     QRegion handleMask(MaskType type) const;
     QPoint limitPointToRect(const QPoint &p, const QRect &r) const;

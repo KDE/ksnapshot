@@ -40,8 +40,8 @@ protected slots:
     void bell();
 
 protected:
-    void paintEvent(QPaintEvent *e);
-    void enterEvent(QEvent *e);
+    void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
+    void enterEvent(QEvent *e) Q_DECL_OVERRIDE;
 
 private:
     QTimer timer;

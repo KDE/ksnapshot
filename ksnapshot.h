@@ -87,13 +87,13 @@ public slots:
     void exit();
 
 protected:
-    void reject();
-    virtual void closeEvent(QCloseEvent *e);
-    void resizeEvent(QResizeEvent *);
-    bool eventFilter(QObject *, QEvent *);
+    void reject() Q_DECL_OVERRIDE;
+    void closeEvent(QCloseEvent *e) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *) Q_DECL_OVERRIDE;
+    bool eventFilter(QObject *, QEvent *) Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
-    virtual void refreshCaption();
+    virtual void refreshCaption() Q_DECL_OVERRIDE;
 
 private slots:
     void delayedInit();
