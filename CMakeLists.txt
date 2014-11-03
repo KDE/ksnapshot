@@ -162,8 +162,6 @@ target_link_libraries(kbackgroundsnapshot
                       ${X11_LIBRARIES}
                      )
 
-target_link_libraries(kbackgroundsnapshot ${KDE4_KIO_LIBS})
-
 if (X11_XCB_FOUND)
     target_link_libraries(kbackgroundsnapshot ${X11_XCB_LIBRARIES})
 endif ()
