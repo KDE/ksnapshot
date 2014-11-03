@@ -170,8 +170,7 @@ void FreeRegionGrabber::paintEvent(QPaintEvent *e)
 
     painter.drawText(textRect, txt);
 
-    if ((pol.boundingRect().height() > handleSize * 2 && pol.boundingRect().width() > handleSize * 2)
-            || !mouseDown) {
+    if (!mouseDown || (pol.boundingRect().height() > handleSize * 2 && pol.boundingRect().width() > handleSize * 2)) {
         painter.setBrush(QBrush(Qt::transparent));
         painter.setClipRegion(QRegion(pol));
         painter.drawPolygon(rect());

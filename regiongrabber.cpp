@@ -164,8 +164,7 @@ void RegionGrabber::paintEvent(QPaintEvent *e)
 
     painter.drawText(textRect, txt);
 
-    if ((r.height() > handleSize * 2 && r.width() > handleSize * 2)
-            || !mouseDown) {
+    if (!mouseDown || (r.height() > handleSize * 2 && r.width() > handleSize * 2)) {
         updateHandles();
         painter.setPen(Qt::NoPen);
         painter.setBrush(handleColor);
@@ -225,37 +224,45 @@ void RegionGrabber::mouseMoveEvent(QMouseEvent *e)
 
     if (mouseDown) {
         if (newSelection) {
-            QPoint p = e->pos();
-            QRect r = rect();
+            const QPoint p = e->pos();
+            const QRect r = rect();
             selection = normalizeSelection(QRect(dragStartPoint, limitPointToRect(p, r)));
         } else if (mouseOverHandle == 0) { // moving the whole selection
             QRect r = rect().normalized(), s = selectionBeforeDrag.normalized();
-            QPoint p = s.topLeft() + e->pos() - dragStartPoint;
+            const QPoint p = s.topLeft() + e->pos() - dragStartPoint;
             r.setBottomRight(r.bottomRight() - QPoint(s.width(), s.height()) + QPoint(1, 1));
             if (!r.isNull() && r.isValid()) {
                 selection.moveTo(limitPointToRect(p, r));
             }
         } else { // dragging a handle
             QRect r = selectionBeforeDrag;
-            QPoint offset = e->pos() - dragStartPoint;
+            const QPoint offset = e->pos() - dragStartPoint;
 
-            if (mouseOverHandle == &TLHandle || mouseOverHandle == &THandle
-                    || mouseOverHandle == &TRHandle) { // dragging one of the top handles
+            if (mouseOverHandle == &TLHandle ||
+                mouseOverHandle == &THandle ||
+                mouseOverHandle == &TRHandle) {
+                // dragging one of the top handles
                 r.setTop(r.top() + offset.y());
             }
 
-            if (mouseOverHandle == &TLHandle || mouseOverHandle == &LHandle
-                    || mouseOverHandle == &BLHandle) { // dragging one of the left handles
+            if (mouseOverHandle == &TLHandle ||
+                mouseOverHandle == &LHandle ||
+                mouseOverHandle == &BLHandle) { 
+                // dragging one of the left handles
                 r.setLeft(r.left() + offset.x());
             }
 
-            if (mouseOverHandle == &BLHandle || mouseOverHandle == &BHandle
-                    || mouseOverHandle == &BRHandle) { // dragging one of the bottom handles
+            if (mouseOverHandle == &BLHandle ||
+                mouseOverHandle == &BHandle ||
+                mouseOverHandle == &BRHandle) {
+                // dragging one of the bottom handles
                 r.setBottom(r.bottom() + offset.y());
             }
 
-            if (mouseOverHandle == &TRHandle || mouseOverHandle == &RHandle
-                    || mouseOverHandle == &BRHandle) { // dragging one of the right handles
+            if (mouseOverHandle == &TRHandle ||
+                mouseOverHandle == &RHandle ||
+                mouseOverHandle == &BRHandle) { 
+                // dragging one of the right handles
                 r.setRight(r.right() + offset.x());
             }
             r.setTopLeft(limitPointToRect(r.topLeft(), rect()));
