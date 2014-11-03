@@ -27,7 +27,7 @@
 #include "ksnapshot.h"
 #include "ksnapshot_options.h"
 
-#define KSNAPVERSION "0.8.9"
+#define KSNAPVERSION "1.0"
 
 int main(int argc, char **argv)
 {
