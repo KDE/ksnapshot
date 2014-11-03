@@ -38,9 +38,9 @@ int main(int argc, char **argv)
     KLocalizedString::setApplicationDomain("ksnapshot");
     KAboutData aboutData("ksnapshot", i18n("KSnapshot"), KSNAPVERSION, i18n("KDE Screenshot Utility"), KAboutLicense::GPL,
                          i18n("(c) 1997-2008, Richard J. Moore,\n(c) 2000, Matthias Ettrich,\n(c) 2002-2014 Aaron J. Seigo"));
+    aboutData.addAuthor("Aaron J. Seigo", QString(), "aseigo@kde.org");
     aboutData.addAuthor("Richard J. Moore", QString(), QString("rich@kde.org"));
     aboutData.addAuthor("Matthias Ettrich", QString(), "ettrich@kde.org");
-    aboutData.addAuthor("Aaron J. Seigo", QString(), "aseigo@kde.org");
     aboutData.addCredit("Nadeem Hasan", i18n("Region Grabbing\nReworked GUI"), "nhasan@kde.org");
     aboutData.addCredit("Marcus Hufgard", i18n("\"Open With\" function"), "Marcus.Hufgard@hufgard.de");
     aboutData.addCredit("Pau Garcia i Quiles", i18n("Free region grabbing, KIPI plugins support, port to Windows"),
