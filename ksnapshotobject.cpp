@@ -190,7 +190,7 @@ bool KSnapshotObject::saveTo(const QUrl &url, QWidget *window)
         QTemporaryFile tmpFile;
         if (tmpFile.open() && saveImage(&tmpFile, type.toLatin1())) {
             // TODO: non-blocking
-            KIO::FileCopyJob *job = KIO::file_copy(tmpFile.fileName(), url);
+            KIO::FileCopyJob *job = KIO::file_copy(QUrl::fromLocalFile(tmpFile.fileName()), url);
             KJobWidgets::setWindow(job, window);
             job->exec();
             ok = job->error() == KJob::NoError;
@@ -217,8 +217,6 @@ bool KSnapshotObject::saveImage(QIODevice *device, const QByteArray &format)
         qDebug() << "Cannot write format " << format;
         return false;
     }
-
-    qDebug() << "saving file format" << format << " in quality " << imgWriter.quality();
 
     // For jpeg and webp use 85% quality not the default
     if (qstricmp(format.constData(), "jpeg") == 0 ||
