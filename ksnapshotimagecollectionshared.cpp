@@ -48,5 +48,5 @@ QList<QUrl> KSnapshotImageCollectionShared::images()
     if (!url.isValid()) {
         return QList<QUrl>();
     }
-    return QList<QUrl> (QUrl(url));
+    return QList<QUrl> () <<url;
 }
