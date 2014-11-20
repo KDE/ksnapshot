@@ -35,6 +35,8 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED
        XmlGui DBusAddons
 )
 
+find_package(KF5Kipi)
+
 add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 
 find_package(X11)
@@ -52,10 +54,6 @@ set_package_properties(X11_XCB PROPERTIES DESCRIPTION "Xlib/XCB interface librar
                        TYPE OPTIONAL)
 
 #include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
-if (KIPI_FOUND)
-   include_directories(${KIPI_INCLUDE_DIR})
-endif (KIPI_FOUND)
 
 configure_file(config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnapshot.h)
 
@@ -77,13 +75,14 @@ set(ksnapshot_file_SRCS
    ksnapshotobject.cpp
    ksnapshotpreview.cpp)
 
-if (KIPI_FOUND)
+if (KF5Kipi_FOUND)
+    set(KIPI_FOUND true)
     set(ksnapshot_kipi_SRCS
         kipiinterface.cpp
         ksnapshotimagecollectionshared.cpp
         ksnapshotinfoshared.cpp
         kipiimagecollectionselector.cpp)
-endif (KIPI_FOUND)
+endif ()
 
 set(ksnapshot_SRCS
    main.cpp
@@ -133,9 +132,9 @@ if (XCB_XFIXES_FOUND)
     target_link_libraries(ksnapshot ${XCB_XFIXES_LIBRARY})
 endif ()
 
-if (KIPI_FOUND)
-    target_link_libraries(ksnapshot ${KIPI_LIBRARIES})
-endif (KIPI_FOUND)
+if (KF5Kipi_FOUND)
+    target_link_libraries(ksnapshot KF5::Kipi)
+endif ()
 
 install(TARGETS ksnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
 

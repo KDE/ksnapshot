@@ -25,15 +25,15 @@
 #include "ksnapshotimagecollectionshared.h"
 #include "ksnapshot.h"
 #include "kipiimagecollectionselector.h"
-#include <libkipi/uploadwidget.h>
-#include <libkipi/imagecollectionshared.h>
-#include <libkipi/imageinfo.h>
-#include <libkipi/imageinfoshared.h>
-#include <libkipi/plugin.h>
-#include <libkipi/interface.h>
-#include <libkipi/pluginloader.h>
-#include <libkipi/imagecollection.h>
-#include <libkipi/imagecollectionselector.h>
+#include <kipi/uploadwidget.h>
+#include <kipi/imagecollectionshared.h>
+#include <kipi/imageinfo.h>
+#include <kipi/imageinfoshared.h>
+#include <kipi/plugin.h>
+#include <kipi/interface.h>
+#include <kipi/pluginloader.h>
+#include <kipi/imagecollection.h>
+#include <kipi/imagecollectionselector.h>
 
 struct KIPIInterfacePrivate {
     KSnapshot *ksnapshot;

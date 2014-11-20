@@ -78,8 +78,8 @@
 #include "ui_ksnapshotwidget.h"
 
 #ifdef KIPI_FOUND
-#include <libkipi/plugin.h>
-#include <libkipi/version.h>
+#include <kipi/plugin.h>
+#include <kipi/version.h>
 #include "kipiinterface.h"
 #include <QAction>
 #endif

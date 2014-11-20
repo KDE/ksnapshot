@@ -23,7 +23,7 @@
 #ifndef KSNAPSHOTINFOSHARED_H
 #define KSNAPSHOTINFOSHARED_H
 
-#include <libkipi/imageinfoshared.h>
+#include <kipi/imageinfoshared.h>
 #include "kipiinterface.h"
 
 class KSnapshotInfoShared : public KIPI::ImageInfoShared

@@ -23,7 +23,7 @@
 #ifndef KSNAPSHOTIMAGECOLLECTIONSHARED_H
 #define KSNAPSHOTIMAGECOLLECTIONSHARED_H
 
-#include <libkipi/imagecollectionshared.h>
+#include <kipi/imagecollectionshared.h>
 class KSnapshot;
 
 class KSnapshotImageCollectionShared : public KIPI::ImageCollectionShared

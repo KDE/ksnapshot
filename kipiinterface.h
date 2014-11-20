@@ -25,9 +25,9 @@
 #define KIPIINTERFACE_H
 
 #include <QList>
-#include <libkipi/interface.h>
-#include <libkipi/uploadwidget.h>
-#include <libkipi/imagecollectionshared.h>
+#include <kipi/interface.h>
+#include <kipi/uploadwidget.h>
+#include <kipi/imagecollectionshared.h>
 
 class KSnapshot;
 struct KIPIInterfacePrivate;
