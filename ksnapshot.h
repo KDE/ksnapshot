@@ -73,7 +73,7 @@ public:
     ~KSnapshot();
 
     QString url() const;
-
+    QUrl urlToOpen(bool *isTempfile = 0);
 public slots:
     void slotGrab();
     void slotSave();
@@ -122,13 +122,11 @@ private slots:
     void startUndelayedGrab();
     void slotScreenshotReceived(qulonglong handle);
     void setDelaySpinboxSuffix(int value);
-
 public:
     int grabMode() const;
     int timeout() const;
 
 private:
-    QUrl urlToOpen(bool *isTempfile = 0);
     void performGrab();
     void grabPointerImage(int offsetx, int offsety);
     void grabFullScreen();

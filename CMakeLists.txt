@@ -36,7 +36,7 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED
 )
 
 #Reactivate when libkipi api is free KUrl
-#find_package(KF5Kipi)
+find_package(KF5Kipi)
 
 add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 
