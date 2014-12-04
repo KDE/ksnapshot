@@ -37,6 +37,9 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED
 
 #Reactivate when libkipi api is free KUrl
 find_package(KF5Kipi)
+if (KF5Kipi_FOUND)
+    set(KIPI_FOUND true)
+endif ()
 
 add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 
@@ -77,7 +80,6 @@ set(ksnapshot_file_SRCS
    ksnapshotpreview.cpp)
 
 if (KF5Kipi_FOUND)
-    set(KIPI_FOUND true)
     set(ksnapshot_kipi_SRCS
         kipiinterface.cpp
         ksnapshotimagecollectionshared.cpp
