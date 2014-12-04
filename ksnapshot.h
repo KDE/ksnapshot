@@ -42,7 +42,7 @@ class QMenu;
 
 #ifdef KIPI_FOUND
 #include "ksnapshotimagecollectionshared.h"
-#include <libkipi/pluginloader.h>
+#include <kipi/pluginloader.h>
 #endif
 
 class KSnapshotServiceAction : public QAction

@@ -79,7 +79,7 @@
 
 #ifdef KIPI_FOUND
 #include <kipi/plugin.h>
-#include <kipi/version.h>
+#include <libkipi_version.h>
 #include "kipiinterface.h"
 #include <QAction>
 #endif
