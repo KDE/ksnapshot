@@ -1,0 +1,4 @@
+REVIEWBOARD_URL = "https://git.reviewboard.kde.org"
+REPOSITORY = 'git://anongit.kde.org/ksnapshot'
+TARGET_GROUPS = 'ksnapshot, kdegraphics'
+# BRANCH = 'master'
