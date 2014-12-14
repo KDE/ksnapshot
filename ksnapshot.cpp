@@ -224,25 +224,25 @@ KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
     } else {
         setMode(mode);
         switch (mode) {
-            case KSnapshotObject::WindowUnderCursor: {
-                setIncludeDecorations(true);
-                performGrab();
-                break;
-            }
-            case  KSnapshotObject::ChildWindow: {
-                slotGrab();
-                break;
-            }
-            case KSnapshotObject::Region: {
-                grabRegion();
-                break;
-            }
-            case KSnapshotObject::FreeRegion: {
-                grabFreeRegion();
-                break;
-            }
-            default:
-                break;
+        case KSnapshotObject::WindowUnderCursor: {
+            setIncludeDecorations(true);
+            performGrab();
+            break;
+        }
+        case  KSnapshotObject::ChildWindow: {
+            slotGrab();
+            break;
+        }
+        case KSnapshotObject::Region: {
+            grabRegion();
+            break;
+        }
+        case KSnapshotObject::FreeRegion: {
+            grabFreeRegion();
+            break;
+        }
+        default:
+            break;
         }
     }
 
