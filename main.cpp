@@ -81,13 +81,12 @@ int main(int argc, char **argv)
         showTopLevel = true;
     }
 
-
-    KSnapshot *window = new KSnapshot(startingMode);
-    new KsnapshotAdaptor(window);
-    QDBusConnection::sessionBus().registerObject("/KSnapshot", window);
+    KSnapshot window(startingMode);
+    new KsnapshotAdaptor(&window);
+    QDBusConnection::sessionBus().registerObject("/KSnapshot", &window);
 
     if (showTopLevel) {
-        window->show();
+        window.show();
     }
     return app.exec();
 }

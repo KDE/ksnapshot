@@ -26,6 +26,8 @@
 
 #include "ksnapshot.h"
 
+#include "config-ksnapshot.h"
+
 #include <QClipboard>
 #include <QDebug>
 #include <QDir>
@@ -62,7 +64,6 @@
 #include <KIO/StatJob>
 #include <KJobWidgets>
 #include <KLocalizedString>
-#include <KMimeTypeTrader>
 #include <KOpenWithDialog>
 #include <KRun>
 #include <KSharedConfig>
@@ -75,14 +76,8 @@
 #include "freeregiongrabber.h"
 #include "windowgrabber.h"
 #include "ksnapshotpreview.h"
+#include "ksnapshotsendtoactions.h"
 #include "ui_ksnapshotwidget.h"
-
-#ifdef KIPI_FOUND
-#include <kipi/plugin.h>
-#include <libkipi_version.h>
-#include "kipiinterface.h"
-#include <QAction>
-#endif
 
 #if HAVE_X11
 #include <X11/Xatom.h>
@@ -184,16 +179,6 @@ KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
     m_grabber->grabMouse();
 
     KConfigGroup conf(KSharedConfig::openConfig(), "GENERAL");
-
-#ifdef KIPI_FOUND
-    #if(KIPI_VERSION >= 0x020000)
-        m_pluginLoader = new KIPI::PluginLoader();
-        m_pluginLoader->setInterface(new KIPIInterface(this));
-        m_pluginLoader->init();
-    #else
-        m_pluginLoader = new KIPI::PluginLoader(QStringList(), new KIPIInterface(this), "");
-    #endif
-#endif
 
 #if HAVE_X11
     {
@@ -297,6 +282,11 @@ KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
 
     m_snapshotWidget->btnNew->setFocus();
     resize(QSize(250, 500));
+
+    m_sendToActions = QSharedPointer<KSnapshotSendToActions>::create();
+#ifdef KIPI_FOUND
+    m_sendToActions->setKSnapshotForKipi(this); // todo: better remove this dependency
+#endif
 
     QMetaObject::invokeMethod(this, "delayedInit", Qt::QueuedConnection);
 }
@@ -487,60 +477,17 @@ void KSnapshot::slotPopulateOpenMenu()
     QList<QAction *> currentActions = m_openMenu->actions();
     for (auto currentAction: currentActions) {
         m_openMenu->removeAction(currentAction);
-        currentAction->deleteLater();
     }
 
-    const KService::List services = KMimeTypeTrader::self()->query("image/png");
-    QMap<QString, KService::Ptr> apps;
-
-    for (auto service: services) {
-        apps.insert(service->name(), service);
+    // Cache the list of actions when the menu is first openend.
+    // After that always use the cached list
+    if (m_sendToActions->actions().isEmpty()) {
+        m_sendToActions->retrieveActions();
     }
 
-    for (auto service: apps) {
-        QString name = service->name().replace('&', "&&");
-        m_openMenu->addAction(new KSnapshotServiceAction(service,
-                            QIcon::fromTheme(service->icon()),
-                            name, this));
+    for (auto action: m_sendToActions->actions()) {
+        m_openMenu->addAction(action);
     }
-
-#ifdef KIPI_FOUND
-    KIPI::PluginLoader::PluginList pluginList = m_pluginLoader->pluginList();
-
-    for (auto pluginInfo: pluginList) {
-        if (!pluginInfo->shouldLoad()) {
-            continue;
-        }
-        KIPI::Plugin *plugin = pluginInfo->plugin();
-        if (!plugin) {
-            qWarning() << "Plugin from library" << pluginInfo->library() << "failed to load";
-            continue;
-        }
-
-        plugin->setup(this);
-
-        QList<QAction *> actions = plugin->actions();
-        QSet<QAction *> exportActions;
-        for (auto action: actions) {
-            KIPI::Category category = plugin->category(action);
-            if (category == KIPI::ExportPlugin) {
-                exportActions << action;
-            } else if (category == KIPI::ImagesPlugin) {
-                // Horrible hack. Why are the print images and the e-mail images plugins in the same category as rotate and edit metadata!?
-                if (pluginInfo->library().contains("kipiplugin_printimages") || pluginInfo->library().contains("kipiplugin_sendimages")) {
-                    exportActions << action;
-                }
-            }
-        }
-
-        Q_FOREACH(QAction * action, exportActions) {
-            m_openMenu->addAction(action);
-        }
-
-//        FIXME: Port
-//            plugin->actionCollection()->readShortcutSettings();
-    }
-#endif
 
     m_openMenu->addSeparator();
     KService::Ptr none;
@@ -671,7 +618,7 @@ void KSnapshot::grabCurrentScreen()
     //qDebug() << "Geometry2 = " << geom;
     if (screenId >= screens.count()) {
         m_snapshot = screens[screenId]->grabWindow(desktop->winId(),
-                                                 geom.x(), geom.y(), geom.width(), geom.height());
+                     geom.x(), geom.y(), geom.width(), geom.height());
         grabPointerImage(geom.x(), geom.y());
     }
 }

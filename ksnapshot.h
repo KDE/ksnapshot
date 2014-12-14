@@ -35,34 +35,9 @@
 #include "ksnapshotobject.h"
 #include "snapshottimer.h"
 
-#include "config-ksnapshot.h"
-
 class KSnapshotWidget;
 class QMenu;
-
-#ifdef KIPI_FOUND
-#include "ksnapshotimagecollectionshared.h"
-#include <kipi/pluginloader.h>
-#endif
-
-class KSnapshotServiceAction : public QAction
-{
-    Q_OBJECT
-public:
-    KSnapshotServiceAction(KService::Ptr s, QObject *parent)
-        : QAction(parent), service(s) {}
-    KSnapshotServiceAction(KService::Ptr s,
-                           const QString &text,
-                           QObject *parent)
-        : QAction(text, parent), service(s) {}
-    KSnapshotServiceAction(KService::Ptr s,
-                           const QIcon &icon,
-                           const QString &text,
-                           QObject *parent)
-        : QAction(icon, text, parent), service(s) {}
-
-    KService::Ptr service;
-};
+class KSnapshotSendToActions;
 
 class KSnapshot : public QDialog, public KSnapshotObject
 {
@@ -143,11 +118,7 @@ private:
     bool m_useKwinEffect;
     QPolygon m_lastFreeRegion;
     QRect m_lastRegion;
-
-#ifdef KIPI_FOUND
-    KIPI::PluginLoader *m_pluginLoader;
-    friend QList<QUrl> KSnapshotImageCollectionShared::images();
-#endif
+    QSharedPointer<KSnapshotSendToActions> m_sendToActions;
 };
 
 #endif // KSNAPSHOT_H

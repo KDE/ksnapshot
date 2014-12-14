@@ -89,7 +89,8 @@ endif ()
 
 set(ksnapshot_SRCS
    main.cpp
-   ksnapshot.cpp 
+   ksnapshot.cpp
+   ksnapshotsendtoactions.cpp
    ${ksnapshot_xcb_SRCS}
    ${ksnapshot_file_SRCS}
    ${ksnapshot_kipi_SRCS})
