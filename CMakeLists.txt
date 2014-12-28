@@ -32,7 +32,7 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED
        CoreAddons DocTools GuiAddons I18n
        KIO
        Service WindowSystem
-       XmlGui DBusAddons
+       XmlGui DBusAddons Parts
 )
 
 #Reactivate when libkipi api is free KUrl
