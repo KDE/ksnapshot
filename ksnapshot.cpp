@@ -410,6 +410,7 @@ QUrl KSnapshot::urlToOpen(bool *isTempfile)
     }
 
     QTemporaryFile tmpFile("snapshot_XXXXXX.png");
+    tmpFile.setAutoRemove(false); // Do not remove file when the tmpFile object gets destroyed. KRun in the calling code will do that.
     tmpFile.open();
     const QUrl path = QUrl::fromLocalFile(tmpFile.fileName());
 
@@ -469,7 +470,8 @@ void KSnapshot::slotOpen(QAction *action)
     }
 
     // we have an action with a service, run it!
-    KRun::run(*service, list, this, isTempfile);
+    bool isSuccess = KRun::run(*service, list, this, isTempfile);
+    Q_ASSERT(isSuccess);
 }
 
 void KSnapshot::slotPopulateOpenMenu()
