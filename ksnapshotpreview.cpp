@@ -44,15 +44,17 @@ void KSnapshotPreview::setPreview(const QPixmap &pm)
 {
     static const int BLUR_PAD = 6;
     static const int BLUR_RADIUS = 2;
-    QPixmap pixmap = pm.scaled(width() - BLUR_PAD, height() - BLUR_PAD, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-    QImage blur(pixmap.size() + QSize(BLUR_PAD, BLUR_PAD), QImage::Format_ARGB32);
-    QRect blurRect = QRect(QPoint(BLUR_PAD / 2, BLUR_PAD / 2), pixmap.size());
+    const QSize scaledSourceImageSize = QSize(width() - BLUR_PAD, height() - BLUR_PAD) * devicePixelRatio();
+    QPixmap pixmap = pm.scaled(scaledSourceImageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    pixmap.setDevicePixelRatio(devicePixelRatio());
+
+    QImage blur(pixmap.size() + QSize(BLUR_PAD, BLUR_PAD) * devicePixelRatio(), QImage::Format_ARGB32);
+    blur.setDevicePixelRatio(devicePixelRatio());
+    QRect blurRect = QRect(QPoint(BLUR_PAD / 2, BLUR_PAD / 2), pixmap.size() / pixmap.devicePixelRatio());
     blur.fill(Qt::transparent);
-    ////qDebug() << blur.size() << blurRect << pixmap.size();
 
     const QColor color = qGray(palette().color(QPalette::Base).rgb()) < 192 ? Qt::white : Qt::black;
-
     {
         QPainter p(&blur);
         p.fillRect(blurRect, color);
@@ -66,9 +68,8 @@ void KSnapshotPreview::setPreview(const QPixmap &pm)
         QPainter p(&blur);
         p.setCompositionMode(QPainter::CompositionMode_SourceIn);
         p.fillRect(blur.rect(), color);
-        p.fillRect(QRect(blurRect.topLeft(), pixmap.size()), Qt::transparent);
         p.setCompositionMode(QPainter::CompositionMode_SourceOver);
-        p.drawPixmap(QRect(blurRect.topLeft(), pixmap.size()), pixmap);
+        p.drawPixmap(blurRect.topLeft(), pixmap);
         p.end();
     }
 

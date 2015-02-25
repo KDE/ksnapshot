@@ -47,6 +47,7 @@ int main(int argc, char **argv)
                         "pgquiles@elpauer.org");
 
     QApplication app(argc, argv);
+    app.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
     app.setOrganizationDomain("kde.org");
     KDBusService service;
     QCommandLineParser parser;
