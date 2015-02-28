@@ -18,22 +18,35 @@
  */
 
 #include <QApplication>
+
 #include <KAboutData>
 #include <KLocalizedString>
 #include <QCommandLineParser>
 #include <KDBusService>
 #include <Kdelibs4ConfigMigrator>
+
 #include "ksnapshotadaptor.h"
 #include "ksnapshot.h"
 #include "ksnapshot_options.h"
-
-#define KSNAPVERSION "1.0"
+#include "config-ksnapshot.h"
 
 int main(int argc, char **argv)
 {
+    // migrate configuration from kdelibs4 to kf5
+
     Kdelibs4ConfigMigrator migrate(QStringLiteral("ksnapshot"));
     migrate.setConfigFiles(QStringList() << QStringLiteral("ksnapshotrc"));
     migrate.migrate();
+
+    // set up the application
+
+    QApplication app(argc, argv);
+
+    app.setOrganizationDomain("kde.org");
+    app.setApplicationName("ksnapshot");
+    app.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+
+    // set up the about data
 
     KLocalizedString::setApplicationDomain("ksnapshot");
     KAboutData aboutData("ksnapshot", i18n("KSnapshot"), KSNAPVERSION, i18n("KDE Screenshot Utility"), KAboutLicense::GPL,
@@ -46,30 +59,27 @@ int main(int argc, char **argv)
     aboutData.addCredit("Pau Garcia i Quiles", i18n("Free region grabbing, KIPI plugins support, port to Windows"),
                         "pgquiles@elpauer.org");
 
-    QApplication app(argc, argv);
-    app.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
-    app.setOrganizationDomain("kde.org");
-    KDBusService service;
-    QCommandLineParser parser;
     KAboutData::setApplicationData(aboutData);
+
+    // set up the command line options parser
+
+    QCommandLineParser parser;
     parser.addVersionOption();
     parser.addHelpOption();
     aboutData.setupCommandLine(&parser);
-    addCommandLineOptions(parser);    // Add our own options.
+    addCommandLineOptions(parser); // Add our own options.
     parser.process(app);
     aboutData.processCommandLine(&parser);
 
-    // This is one of the applications that requires the "native" / X11 graphics backend to work.
-    //QT5 ? QApplication::setGraphicsSystem("native");
+    // decide whether to create top level window
 
-    // Create top level window
     bool showTopLevel = false;
     KSnapshotObject::CaptureMode startingMode = KSnapshotObject::FullScreen;
 
     if (parser.isSet("current")) {
         startingMode = KSnapshotObject::WindowUnderCursor;
     } else if (parser.isSet("fullscreen")) {
-        //we grad directly desktop => show dialogbox
+        // we grab directly desktop => show dialogbox
         showTopLevel = true;
         startingMode = KSnapshotObject::FullScreen;
     } else if (parser.isSet("region")) {
@@ -82,13 +92,20 @@ int main(int argc, char **argv)
         showTopLevel = true;
     }
 
+    // create the KSnapshot instance
+
     KSnapshot window(startingMode);
+
+    // take care of the DBus activation and stuff
+
+    KDBusService service;
     new KsnapshotAdaptor(&window);
     QDBusConnection::sessionBus().registerObject("/KSnapshot", &window);
+
+    // show window if we have to and fire the main loop
 
     if (showTopLevel) {
         window.show();
     }
     return app.exec();
 }
-

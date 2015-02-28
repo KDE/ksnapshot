@@ -1,0 +1,167 @@
+# common - configure file and version definitions
+
+set(KSNAPVERSION ${KSnapshot_VERSION})
+configure_file(config-ksnapshot.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ksnapshot.h)
+
+if(XCB_XCB_FOUND AND X11_XCB_FOUND)
+    set(
+        KSnapshot_SRCS_XCB
+            platforms/xcb/pixmaphelper.cpp
+    )
+endif(XCB_XCB_FOUND AND X11_XCB_FOUND)
+
+# KSnapshot target
+
+set(
+    KSnapshot_SRCS_FILE
+        expblur.cpp
+        regiongrabber.cpp
+        freeregiongrabber.cpp
+        snapshottimer.cpp
+        windowgrabber.cpp
+        ksnapshotobject.cpp
+        ksnapshotpreview.cpp
+)
+
+if(KF5Kipi_FOUND)
+    set(
+        KSnapshot_SRCS_KIPI
+            kipiinterface.cpp
+            ksnapshotimagecollectionshared.cpp
+            ksnapshotinfoshared.cpp
+            kipiimagecollectionselector.cpp
+    )
+endif()
+
+set(
+    KSnapshot_SRCS_ALL
+        main.cpp
+        ksnapshot.cpp
+        ksnapshotsendtoactions.cpp
+        ${KSnapshot_SRCS_XCB}
+        ${KSnapshot_SRCS_FILE}
+        ${KSnapshot_SRCS_KIPI}
+)
+
+qt5_add_dbus_adaptor(
+    KSnapshot_SRCS_ALL
+        org.kde.ksnapshot.xml
+        ksnapshot.h
+    KSnapshot
+)
+
+ki18n_wrap_ui(
+    KSnapshot_SRCS_ALL
+        ksnapshotwidget.ui
+)
+
+add_executable(
+    ksnapshot
+        ${KSnapshot_SRCS_ALL}
+)
+
+target_link_libraries(
+    ksnapshot
+        Qt5::X11Extras
+        KF5::CoreAddons
+        KF5::ConfigGui
+        KF5::I18n
+        KF5::KIOWidgets
+        KF5::WindowSystem
+        KF5::XmlGui
+        KF5::DBusAddons
+        ${X11_LIBRARIES}
+)
+
+if (X11_XCB_FOUND)
+    target_link_libraries(
+        ksnapshot
+            ${X11_XCB_LIBRARIES}
+    )
+endif ()
+
+if (XCB_XCB_FOUND)
+    target_link_libraries(
+        ksnapshot
+            ${XCB_XCB_LIBRARY}
+    )
+endif ()
+
+if (XCB_SHAPE_FOUND)
+    target_link_libraries(
+        ksnapshot
+            ${XCB_SHAPE_LIBRARY}
+    )
+endif ()
+
+if (XCB_XFIXES_FOUND)
+    target_link_libraries(
+        ksnapshot
+            ${XCB_XFIXES_LIBRARY}
+    )
+endif ()
+
+if (KF5Kipi_FOUND)
+    target_link_libraries(
+        ksnapshot
+            KF5::Kipi
+    )
+endif ()
+
+install(TARGETS ksnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(FILES org.kde.ksnapshot.xml DESTINATION ${DBUS_INTERFACES_INSTALL_DIR})
+
+# KBackgroundSnapshot target
+
+set(
+    KBackgroundSnapshot_SRCS_ALL
+        kbackgroundsnapshot.cpp
+)
+
+add_executable(
+    kbackgroundsnapshot
+        ${KBackgroundSnapshot_SRCS_ALL}
+        ${KSnapshot_SRCS_XCB}
+        ${KSnapshot_SRCS_FILE}
+)
+
+target_link_libraries(
+    kbackgroundsnapshot
+        Qt5::X11Extras
+        KF5::CoreAddons
+        KF5::ConfigGui
+        KF5::I18n
+        KF5::KIOWidgets
+        KF5::WindowSystem
+        ${X11_LIBRARIES}
+)
+
+if (X11_XCB_FOUND)
+    target_link_libraries(
+        kbackgroundsnapshot
+            ${X11_XCB_LIBRARIES}
+    )
+endif()
+
+if (XCB_XCB_FOUND)
+    target_link_libraries(
+        kbackgroundsnapshot
+            ${XCB_XCB_LIBRARY}
+    )
+endif()
+
+if (XCB_SHAPE_FOUND)
+    target_link_libraries(
+        kbackgroundsnapshot
+            ${XCB_SHAPE_LIBRARY}
+    )
+endif()
+
+if (XCB_XFIXES_FOUND)
+    target_link_libraries(
+        kbackgroundsnapshot
+            ${XCB_XFIXES_LIBRARY}
+    )
+endif()
+
+install(TARGETS kbackgroundsnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})

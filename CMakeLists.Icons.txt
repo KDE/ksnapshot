@@ -1,0 +1,12 @@
+# default icons for the hicolor theme.
+# have ecm install them
+
+ecm_install_icons(
+    ICONS 
+        icons/16-apps-ksnapshot.png
+        icons/22-apps-ksnapshot.png
+        icons/32-apps-ksnapshot.png
+        icons/48-apps-ksnapshot.png
+    DESTINATION ${ICON_INSTALL_DIR}
+    THEME hicolor
+) 
