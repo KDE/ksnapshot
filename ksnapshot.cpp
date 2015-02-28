@@ -470,8 +470,9 @@ void KSnapshot::slotOpen(QAction *action)
     }
 
     // we have an action with a service, run it!
-    bool isSuccess = KRun::run(*service, list, this, isTempfile);
+    bool isSuccess = KRun::runService(*service, list, this, isTempfile);
     Q_ASSERT(isSuccess);
+    Q_UNUSED(isSuccess);
 }
 
 void KSnapshot::slotPopulateOpenMenu()
