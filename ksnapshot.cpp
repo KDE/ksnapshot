@@ -600,12 +600,13 @@ void KSnapshot::updatePreview()
 void KSnapshot::grabFullScreen()
 {
     const QList<QScreen *> screens = qApp->screens();
-    const QDesktopWidget *desktop = QApplication::desktop();
-    const int screenId = desktop->screenNumber(QCursor::pos());
-    if (screenId < screens.count()) {
-        m_snapshot = screens[screenId]->grabWindow(desktop->winId());
-        grabPointerImage(0, 0);
+    if (screens.isEmpty()) {
+        return;
     }
+
+    const QDesktopWidget *desktop = QApplication::desktop();
+    m_snapshot = screens.first()->grabWindow(desktop->winId());
+    grabPointerImage(0, 0);
 }
 
 void KSnapshot::grabCurrentScreen()
