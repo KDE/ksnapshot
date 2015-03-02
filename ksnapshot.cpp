@@ -620,7 +620,7 @@ void KSnapshot::grabCurrentScreen()
 
     const QRect geom = desktop->screenGeometry(screenId);
     //qDebug() << "Geometry2 = " << geom;
-    if (screenId >= screens.count()) {
+    if (screenId < screens.count()) {
         m_snapshot = screens[screenId]->grabWindow(desktop->winId(),
                      geom.x(), geom.y(), geom.width(), geom.height());
         grabPointerImage(geom.x(), geom.y());
