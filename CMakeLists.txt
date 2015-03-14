@@ -12,7 +12,7 @@ cmake_minimum_required (VERSION 2.8.12 FATAL_ERROR)
 set(QT_MIN_VERSION "5.2.0")
 set(KF5_MIN_VERSION "5.6.0")
 
-find_package(ECM 1.2.0 REQUIRED NO_MODULE)
+find_package(ECM 1.7.0 REQUIRED NO_MODULE)
 set(
     CMAKE_MODULE_PATH
         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules
@@ -33,6 +33,7 @@ include(ECMMarkNonGuiExecutable)
 include(ECMGenerateHeaders)
 include(GenerateExportHeader)
 include(FeatureSummary)
+include(ECMAddAppIcon)
 
 find_package(
     Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED
