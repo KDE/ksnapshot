@@ -156,7 +156,6 @@ Type=Application
 Terminal=false
 StartupNotify=false
 X-DocPath=ksnapshot/index.html
-X-KDE-StartupNotify=false
 X-DBUS-StartupType=Multi
 Categories=Qt;KDE;Graphics;
 X-DBUS-ServiceName=org.kde.ksnapshot
