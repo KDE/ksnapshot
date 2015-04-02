@@ -197,8 +197,8 @@ KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
 
     // check if kwin screenshot effect is available
     m_useKwinEffect = false;
-    if (QDBusConnection::sessionBus().interface()->isServiceRegistered("org.kde.kwin")) {
-        QDBusInterface kwinInterface("org.kde.kwin", "/", "org.freedesktop.DBus.Introspectable");
+    if (QDBusConnection::sessionBus().interface()->isServiceRegistered("org.kde.KWin")) {
+        QDBusInterface kwinInterface("org.kde.KWin", "/", "org.freedesktop.DBus.Introspectable");
         QDBusReply<QString> reply = kwinInterface.call("Introspect");
         if (reply.isValid()) {
             QXmlStreamReader xml(reply.value());
@@ -680,10 +680,10 @@ void KSnapshot::performGrab()
     } else if (mode() == WindowUnderCursor) {
         if (m_useKwinEffect) {
             // use kwin effect
-            QDBusConnection::sessionBus().connect("org.kde.kwin", "/Screenshot",
+            QDBusConnection::sessionBus().connect("org.kde.KWin", "/Screenshot",
                                                   "org.kde.kwin.Screenshot", "screenshotCreated",
                                                   this, SLOT(slotScreenshotReceived(qulonglong)));
-            QDBusInterface interface("org.kde.kwin", "/Screenshot", "org.kde.kwin.Screenshot");
+            QDBusInterface interface("org.kde.KWin", "/Screenshot", "org.kde.kwin.Screenshot");
 
             int mask = 0;
             if (includeDecorations()) {
