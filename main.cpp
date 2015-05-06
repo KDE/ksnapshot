@@ -32,19 +32,18 @@
 
 int main(int argc, char **argv)
 {
+    // set up the application
+
+    QApplication app(argc, argv);
+    app.setOrganizationDomain("kde.org");
+    app.setApplicationName("ksnapshot");
+    app.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+
     // migrate configuration from kdelibs4 to kf5
 
     Kdelibs4ConfigMigrator migrate(QStringLiteral("ksnapshot"));
     migrate.setConfigFiles(QStringList() << QStringLiteral("ksnapshotrc"));
     migrate.migrate();
-
-    // set up the application
-
-    QApplication app(argc, argv);
-
-    app.setOrganizationDomain("kde.org");
-    app.setApplicationName("ksnapshot");
-    app.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
     // set up the about data
 
