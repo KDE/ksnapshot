@@ -57,6 +57,7 @@ void RegionGrabber::init()
     const int screenId = desktop->screenNumber(QCursor::pos());
     if (screenId < screens.count()) {
         pixmap = screens[screenId]->grabWindow(desktop->winId());
+        pixmap.setDevicePixelRatio(screens[screenId]->devicePixelRatio());
     }
 
     resize(pixmap.size());
@@ -337,6 +338,11 @@ void RegionGrabber::keyPressEvent(QKeyEvent *e)
 void RegionGrabber::grabRect()
 {
     QRect r = selection;
+
+    qreal pixelRatio = pixmap.devicePixelRatio();
+    r.moveTo(r.x() * pixelRatio, r.y() * pixelRatio);
+    r.setSize(r.size() * pixelRatio);
+
     if (!r.isNull() && r.isValid()) {
         grabbing = true;
         emit regionUpdated(r);
