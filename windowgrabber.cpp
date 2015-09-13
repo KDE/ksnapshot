@@ -39,6 +39,8 @@
 #include "platforms/windows/windowgrabber.cpp"
 #elif XCB_XCB_FOUND
 #include "platforms/xcb/windowgrabber.cpp"
+#elif defined(Q_OS_OSX)
+#include "platforms/osx/windowgrabber.cpp"
 #endif
 
 QString WindowGrabber::title;
