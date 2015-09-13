@@ -40,7 +40,6 @@ find_package(
         Core
         DBus
         Widgets
-        X11Extras
 )
 
 find_package(
@@ -69,6 +68,10 @@ endif ()
 find_package(X11)
 if (X11_FOUND)
     set(HAVE_X11 1)
+    find_package(
+    Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED
+        X11Extras
+)
 endif(X11_FOUND)
 
 # set up xcb and x11_xcb

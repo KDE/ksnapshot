@@ -62,7 +62,6 @@ add_executable(
 
 target_link_libraries(
     ksnapshot
-        Qt5::X11Extras
         KF5::CoreAddons
         KF5::ConfigGui
         KF5::I18n
@@ -72,6 +71,13 @@ target_link_libraries(
         KF5::DBusAddons
         ${X11_LIBRARIES}
 )
+
+if (Qt5X11Extras_FOUND)
+target_link_libraries(
+    ksnapshot
+        Qt5::X11Extras
+)
+endif ()
 
 if (X11_XCB_FOUND)
     target_link_libraries(
@@ -127,7 +133,6 @@ add_executable(
 
 target_link_libraries(
     kbackgroundsnapshot
-        Qt5::X11Extras
         KF5::CoreAddons
         KF5::ConfigGui
         KF5::I18n
@@ -135,6 +140,13 @@ target_link_libraries(
         KF5::WindowSystem
         ${X11_LIBRARIES}
 )
+
+if (Qt5X11Extras_Found)
+target_link_libraries(
+    kbackgroundsnapshot
+        Qt5::X11Extras
+)
+endif()
 
 if (X11_XCB_FOUND)
     target_link_libraries(
