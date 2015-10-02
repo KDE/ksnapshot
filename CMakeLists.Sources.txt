@@ -141,7 +141,7 @@ target_link_libraries(
         ${X11_LIBRARIES}
 )
 
-if (Qt5X11Extras_Found)
+if (Qt5X11Extras_FOUND)
 target_link_libraries(
     kbackgroundsnapshot
         Qt5::X11Extras
