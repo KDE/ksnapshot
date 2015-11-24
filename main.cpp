@@ -29,7 +29,7 @@
 #include "ksnapshot.h"
 #include "ksnapshot_options.h"
 
-#define KSNAPVERSION "0.8.2"
+#define KSNAPVERSION "2015.12"
 
 static const char description[] = I18N_NOOP("KDE Screenshot Utility");
 
@@ -88,4 +88,3 @@ int main(int argc, char **argv)
      toplevel->show();
   return app.exec();
 }
-

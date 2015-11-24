@@ -169,7 +169,7 @@ bool KBackgroundSnapshot::eventFilter( QObject* o, QEvent* e)
 }
 
 
-#define KBACKGROUNDSNAPVERSION "0.1"
+#define KBACKGROUNDSNAPVERSION "2015.12"
 
 static const char description[] = I18N_NOOP("KDE Background Screenshot Utility");
 
