@@ -91,7 +91,6 @@ install(TARGETS kbackgroundsnapshot ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(PROGRAMS ksnapshot.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
 install(FILES org.kde.ksnapshot.xml DESTINATION ${DBUS_INTERFACES_INSTALL_DIR} )
-install(FILES ksnapshot.khotkeys DESTINATION ${DATA_INSTALL_DIR}/khotkeys)
 install(FILES ksnapshot.khotkeys DESTINATION ${CMAKE_INSTALL_PREFIX}/share/khotkeys) # for kf5 khotkeys
 kde4_install_icons(${ICON_INSTALL_DIR} )
 
