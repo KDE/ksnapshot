@@ -254,7 +254,7 @@ KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
 
     setDelay(conf.readEntry("delay", 0));
     setIncludeDecorations(conf.readEntry("includeDecorations", true));
-    m_filename = QUrl(conf.readPathEntry("m_filename", QDir::currentPath() + '/' + i18n("snapshot") + "1.png"));
+    m_filename = QUrl::fromLocalFile(conf.readPathEntry("m_filename", QDir::currentPath() + '/' + i18n("snapshot") + "1.png"));
 
     connect(&m_grabTimer, &SnapshotTimer::timeout, this, &KSnapshot::grabTimerDone);
     connect(&m_updateTimer, &QTimer::timeout, this, &KSnapshot::updatePreview);
