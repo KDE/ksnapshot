@@ -28,9 +28,17 @@
 #include <kipi/interface.h>
 #include <kipi/uploadwidget.h>
 #include <kipi/imagecollectionshared.h>
+#include <libkipi_version.h>
 
 class KSnapshot;
 struct KIPIInterfacePrivate;
+
+#ifndef KIPI_VERSION_MAJOR
+#error KIPI_VERSION_MAJOR should be provided.
+#endif
+#if KIPI_VERSION_MAJOR >= 5
+#define KSNAPSHOT_KIPI_WITH_CREATE_METHODS
+#endif
 
 class KIPIInterface : public KIPI::Interface
 {
@@ -52,6 +60,12 @@ public:
     virtual KIPI::ImageCollection currentSelection();
     virtual int features() const;
     virtual KIPI::ImageInfo info(const QUrl &);
+
+#ifdef KSNAPSHOT_KIPI_WITH_CREATE_METHODS
+    virtual KIPI::FileReadWriteLock* createReadWriteLock(const QUrl& url) const;
+    virtual KIPI::MetadataProcessor* createMetadataProcessor() const;
+    virtual KIPI::RawProcessor* createRawProcessor() const;
+#endif
 
 private:
     KIPIInterfacePrivate *const d;

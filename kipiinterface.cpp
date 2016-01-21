@@ -87,6 +87,23 @@ void KIPIInterface::refreshImages(const QList<QUrl> &)
 // TODO Implement?
 }
 
+#ifdef KSNAPSHOT_KIPI_WITH_CREATE_METHODS
+KIPI::FileReadWriteLock* KIPIInterface::createReadWriteLock(const QUrl& url) const
+{
+    return NULL;
+}
+
+KIPI::MetadataProcessor* KIPIInterface::createMetadataProcessor() const
+{
+    return NULL;
+}
+
+KIPI::RawProcessor* KIPIInterface::createRawProcessor() const
+{
+    return NULL;
+}
+#endif
+
 KIPI::ImageCollectionSelector *KIPIInterface::imageCollectionSelector(QWidget *parent)
 {
     return new KIPIImageCollectionSelector(this, parent);
