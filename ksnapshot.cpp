@@ -409,7 +409,7 @@ QUrl KSnapshot::urlToOpen(bool *isTempfile)
         return m_successfulSaveUrl;
     }
 
-    QTemporaryFile tmpFile("snapshot_XXXXXX.png");
+    QTemporaryFile tmpFile(QDir::tempPath()+"/snapshot_XXXXXX.png");
     tmpFile.setAutoRemove(false); // Do not remove file when the tmpFile object gets destroyed. KRun in the calling code will do that.
     tmpFile.open();
     const QUrl path = QUrl::fromLocalFile(tmpFile.fileName());
