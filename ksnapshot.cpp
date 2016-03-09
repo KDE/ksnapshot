@@ -119,8 +119,8 @@ KSnapshot::KSnapshot(KSnapshotObject::CaptureMode mode, QWidget *parent)
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     KGuiItem::assign(buttonBox->button(QDialogButtonBox::Apply), KStandardGuiItem::saveAs());
-    KGuiItem::assign(copyToClipboardButton, KGuiItem(i18n("Copy")));
-    KGuiItem::assign(sendToButton, KGuiItem(i18n("Send To...")));
+    KGuiItem::assign(copyToClipboardButton, KGuiItem(i18n("Copy"), "edit-copy"));
+    KGuiItem::assign(sendToButton, KGuiItem(i18n("Send To..."), "document-open"));
     buttonBox->button(QDialogButtonBox::Apply)->setDefault(true);
     buttonBox->button(QDialogButtonBox::Apply)->setShortcut(Qt::CTRL | Qt::Key_Return);
     m_grabber = new QWidget(0, Qt::X11BypassWindowManagerHint);
