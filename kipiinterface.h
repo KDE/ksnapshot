@@ -64,7 +64,6 @@ public:
 #ifdef KSNAPSHOT_KIPI_WITH_CREATE_METHODS
     virtual KIPI::FileReadWriteLock* createReadWriteLock(const QUrl& url) const;
     virtual KIPI::MetadataProcessor* createMetadataProcessor() const;
-    virtual KIPI::RawProcessor* createRawProcessor() const;
 #endif
 
 private:

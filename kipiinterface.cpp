@@ -97,11 +97,6 @@ KIPI::MetadataProcessor* KIPIInterface::createMetadataProcessor() const
 {
     return NULL;
 }
-
-KIPI::RawProcessor* KIPIInterface::createRawProcessor() const
-{
-    return NULL;
-}
 #endif
 
 KIPI::ImageCollectionSelector *KIPIInterface::imageCollectionSelector(QWidget *parent)
